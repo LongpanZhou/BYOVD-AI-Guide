@@ -1,0 +1,48 @@
+=== t10_load 2026-10-24T00:13:52.5683512-07:00 ===
+SHA-256 in-guest: 30BEE94794953E2DBF0FC5AFCE0566F335AF022E89819DE145329E7C09C636BD
+SHA-256 expected: 30BEE94794953E2DBF0FC5AFCE0566F335AF022E89819DE145329E7C09C636BD
+SHA OK - proceeding
+--- sc create ---
+  [SC] CreateService SUCCESS
+  sc create exit=0
+--- sc query (pre-start) ---
+  
+  SERVICE_NAME: t10_iastrv 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 1077  (0x435)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+--- sc start ---
+  
+  SERVICE_NAME: t10_iastrv 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+          PID                : 0
+          FLAGS              : 
+  sc start exit=0
+--- sc query (post-start) ---
+  
+  SERVICE_NAME: t10_iastrv 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+  sc query exit=0
+--- driverquery /v (filtered) ---
+  iaStorAVC    Intel Chipset SATA RAI Intel Chipset SATA RAI Kernel        Manual     Stopped    OK         FALSE       FALSE        4,096             786,432     0          9/5/2019 5:07:32 AM    C:\Windows\system32\drivers\iaStorAVC.sys        4,096      
+  iaStorV      Intel RAID Controller  Intel RAID Controller  Kernel        Manual     Stopped    OK         FALSE       FALSE        0                 364,544     0          4/11/2011 11:48:16 AM  C:\Windows\system32\drivers\iaStorV.sys          8,192      
+  t10_iastrv   t10_iastrv             t10_iastrv             Kernel        Manual     Running    OK         TRUE        FALSE        0                 364,544     0          4/11/2011 11:48:16 AM  \??\C:\Users\vmdebug\Desktop\t10_work\iaStorV.sy 8,192      
+--- events 7000/7026 (last 10 min, ASCII-folded) ---
+--- object dir quick probe (device names, admin) ---
+t10_poc start 2026-10-24T00:13:57.2505842-07:00
+t10_poc start 2026-10-24T00:13:58.0605762-07:00

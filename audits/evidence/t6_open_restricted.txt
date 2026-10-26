@@ -1,0 +1,1 @@
+CreateFileW(\\.\audioprotection, acc=0xC0000000) -> FAIL lastErr=2 (T)

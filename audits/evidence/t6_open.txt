@@ -1,0 +1,9 @@
+=== t6 open tests 2026-10-23T19:16:56.0598142-07:00 ===
+no T6NVHDA interface links in DeviceClasses (device did not register an interface)
+--- raw named-object probes (\\.\audioprotection / \\.\audioparameters) ---
+    CreateFileW(\\.\audioprotection, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\audioparameters, acc=0xC0000000) -> FAIL lastErr=2 (T)
+--- restricted-token open (runas /trustlevel:0x20000) on \\.\audioprotection ---
+  restricted: CreateFileW(\\.\audioprotection, acc=0xC0000000) -> FAIL lastErr=2 (T)
+--- restricted-token identity proof ---
+  whoami under restricted token produced NO output file

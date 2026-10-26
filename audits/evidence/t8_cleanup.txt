@@ -1,0 +1,29 @@
+t8_cleanup 2026-10-24T00:09:43.5884761-07:00
+--- sc stop t8_amdpsp ---
+stop exit=1052 out: [SC] ControlService FAILED 1052:
+
+The requested control is not valid for this service.
+--- sc delete t8_amdpsp ---
+delete exit=0 out: [SC] DeleteService SUCCESS
+--- verification: sc query (expect 1060 not-exist / 1062 not-started) ---
+query: SERVICE_NAME: t8_amdpsp 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+--- verification: driverquery rows for t8_amdpsp (expect none) ---
+  STILL PRESENT: t8_amdpsp    t8_amdpsp              t8_amdpsp              Kernel        Disabled   Running    OK         FALSE       FALSE        4,096             32,768      0          3/6/2020 1:04:04 PM    \??\C:\Users\vmdebug\Desktop\t8_work\amdpsp.sys  4,096      
+--- pre-existing services untouched (print only) ---
+  vmci: SERVICE_NAME: vmci          TYPE               : 1  KERNEL_DRIVER           STATE              : 4  RUNNING
+  vsock: SERVICE_NAME: vsock          TYPE               : 1  KERNEL_DRIVER           STATE              : 4  RUNNING
+  b06bdrv: SERVICE_NAME: b06bdrv          TYPE               : 1  KERNEL_DRIVER           STATE              : 1  STOPPED
+--- delete pushed binaries (keep t8_work + logs + scripts) ---
+  deleted C:\Users\vmdebug\Desktop\t8_work\t8_poc.exe
+  deleted C:\Users\vmdebug\Desktop\t8_work\amdpsp.sys
+  t8_poc.exe gone: True
+  amdpsp.sys gone: False
+--- final aliveness marker ---
+  alive: t8_cleanup COMPLETE 2026-10-24T00:09:46.5806425-07:00

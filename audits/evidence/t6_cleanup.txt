@@ -1,0 +1,34 @@
+=== t6 cleanup 2026-10-23T19:20:43.8499451-07:00 ===
+--- remove devnodes ---
+  ROOT\T6NVHDA\0000 : Microsoft PnP Utility
+  ROOT\T6NVHDA\0000 : 
+  ROOT\T6NVHDA\0000 : Removing device:          ROOT\T6NVHDA\0000
+  ROOT\T6NVHDA\0000 : Device removed successfully.
+  ROOT\T6NVHDA\0000 : 
+  ROOT\T6NVHDA2\0000 : Microsoft PnP Utility
+  ROOT\T6NVHDA2\0000 : 
+  ROOT\T6NVHDA2\0000 : Removing device:          ROOT\T6NVHDA2\0000
+  ROOT\T6NVHDA2\0000 : Device removed successfully.
+  ROOT\T6NVHDA2\0000 : 
+--- service stop + delete ---
+  stop: [SC] ControlService FAILED 1062:
+  stop: 
+  stop: The service has not been started.
+  stop: 
+  delete: [SC] DeleteService SUCCESS
+--- delete driver copy ---
+  deleted
+  verified gone
+--- remove leftover enum keys ---
+  clean: T6NVHDA absent
+  clean: T6NVHDA2 absent
+  clean: T6NVHDA3 absent
+--- remove orphan DeviceClasses children created for T6NVHDA ---
+--- final verification ---
+  driverquery: no nvhda rows (clean)
+  Get-PnpDevice: no T6NVHDA devices (clean)
+  enum key T6NVHDA absent
+  enum key T6NVHDA2 absent
+  service deleted (query -> 1060)
+  \\.\audioprotection : fail (expected post-cleanup): 
+  \\.\audioparameters : fail (expected post-cleanup): 

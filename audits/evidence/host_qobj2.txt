@@ -1,0 +1,2 @@
+NtOpenDirectoryObject(\Device) OK; entries=455; matches('audio')=0; endStatus=0x8000001A
+

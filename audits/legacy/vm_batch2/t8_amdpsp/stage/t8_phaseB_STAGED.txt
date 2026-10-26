@@ -1,0 +1,28 @@
+t8_phaseB_STAGED — NEVER EXECUTED BY t8 (marker per project rule 4)
+====================================================================
+
+All items below are DESCRIBED ONLY. They belong to the orchestrator's solo destructive
+phase or are permanently out of scope. t8 must not run them in Phase 2.
+
+B1. PSP-mailbox submit escalation (the WRITE-CRITICAL question):
+    - After 0x9c422002 alloc, write queue/header content into the user-mapped RW view,
+      then trigger the submit path (0x9c422004 slot enable -> PSP consumes by PA).
+    - Basis: FUN_140003dc0 programs contiguous-alloc PAs into MMIO regs 0x48/0x4C
+      (FUN_140002eb0) and polls 0x44 (FUN_140002e50); PSP consumes kernel queues by
+      physical address. If the 100-slot table's kernel VAs (ctx+0x1280+32i) are ever
+      handed to the PSP queue machinery, a user-written PA becomes a PSP DMA write.
+    - Risk: arbitrary kernel memory corruption via PSP DMA. SOLO phase only, fresh snapshot.
+
+B2. Allocation ladder above the 0x40000 hard cap (0x100000+) — contiguous pool exhaustion /
+    fragmentation. Out of project bounds; solo only.
+
+B3. 0x9c422003 free-by-foreign-VA chain:
+    - The free match key is the stored USER VA (slot+0x18 == caller's 8-byte input), with no
+      per-process validation. A second process can free the first process's allocation by VA
+      value; repeat-alloc/free on the same VA gives double-free / slot UAF.
+    - Risk: nonpaged-pool corruption. SOLO only. (t8 Phase 2 tests only: own-VA free, zeros,
+      bogus VA.)
+
+B4. 0x9c422824-shaped probe (in 0x170: qword@0x16C=ptr, dword@0x158=len; leak-family) and
+    band codes beyond 0x9c42283F (0x9c422840-0x9c4228FF). Bounded but unshaped; left for a
+    later phase with kd attached.

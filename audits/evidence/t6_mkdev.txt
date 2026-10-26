@@ -1,0 +1,34 @@
+=== t6 mkdev 2026-10-23T18:56:50.0444980-07:00  id=ROOT\T6NVHDA\0000 class=Media ({4d36e96c-e325-11ce-bfc1-08002be10318}) ===
+service binding: t6_nvhda
+enum key clean: HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\ROOT absent
+--- compiling t6_poc.cs ---
+poc exe ready
+--- (b) CM_Create_DevNodeW (devnode first) ---
+  CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+  CM_Create_DevNodeW(ROOT\T6NVHDA\0000, flags=0) -> CR=0x0 devnode=0x2
+  CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+--- (c) seeding enum key ---
+  seeded HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T6NVHDA\0000
+    ConfigFlags=0  Class=Media  ClassGUID={4d36e96c-e325-11ce-bfc1-08002be10318}
+    DeviceDesc=t6 NVIDIA HDMI Audio stand-in  Service=t6_nvhda  HardwareID=ROOT\T6NVHDA
+--- (d) pnputil /restart-device ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\T6NVHDA\0000
+  Device restarted successfully.
+  
+--- devnode status after restart ---
+  CM_Locate_DevNodeW(ROOT\T6NVHDA\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+--- PnP problem properties ---
+  DEVPKEY_Device_ProblemCode = 10
+  DEVPKEY_Device_ProblemStatus = 3221225473
+--- service state now ---
+  
+  SERVICE_NAME: t6_nvhda 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0

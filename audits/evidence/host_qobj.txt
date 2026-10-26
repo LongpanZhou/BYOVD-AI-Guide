@@ -1,0 +1,5 @@
+NtOpenDirectoryObject(\Device) OK; entries=455; matches('nv')=3; endStatus=0x8000001A
+  NvModuleTracker  [Device]
+  DrDynVc  [Device]
+  NvAdminDevice  [Device]
+

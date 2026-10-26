@@ -1,0 +1,37 @@
+t10_phaseB STAGED ITEM REGISTER - iaStorV.sys (agentT10)
+=========================================================
+DO NOT EXECUTE THESE ITEMS. This file is a marker + plan record only.
+Safety rules violated by these items if executed outside the orchestrator's
+destructive phase: pool corruption / out-of-buffer writes / KM-only tooling.
+
+B0: Kernel-mode MinorFunction-1 sender (NEVER EXECUTED - staged)
+    Gate: kernel-mode driver build tooling (WDK + KMDF signing) - infeasible with
+    guest-only Framework64 csc.exe. Requires a KM component that builds an IRP with
+    IoStackLocation->MajorFunction = IRP_MJ_DEVICE_CONTROL (0x0E), MinorFunction =
+    1 (IRP_MN_SCSI_CLASS), sends it to \Device\Ide\iaStorN via IoCallDriver.
+    Static basis: FUN_0005e300/FUN_0005dcf0 gate SL+1 == 1; user NtDeviceIoControlFile
+    always carries MinorFunction 0.
+    Expected result if ever run: pass-through validation plane reached; with a
+    0x48-byte shaped SPTD (SenseInfoOffset 0x40, SenseInfoLength 16) the sense
+    zero-fill memset(SystemBuffer+0x40, 0, 16) writes 8 bytes past the buffer.
+
+B1: Driver Verifier special-pool ladder for iaStorV.sys (NEVER EXECUTED - staged)
+    Gate: Driver Verifier special pool ON (verifier /standard /driver iaStorV.sys +
+    guest reboot), solo destructive session, orchestrator-owned.
+    Ladder (all KM MinorFunction-1, per B0):
+      L1: SPTD native, Length 0x38, CdbLength 6, SenseInfoOffset 0x38, SenseInfoLength 16,
+          InBuf=OutBuf=0x48 -> expect special-pool hit exactly at buffer end (in-bounds).
+      L2: SenseInfoOffset 0x40, SenseInfoLength 16 -> expect 8-byte overrun catch.
+      L3: SenseInfoOffset 0xF0, SenseInfoLength 16 -> expect far-offset catch.
+      L4: SPT 0x4D004, DataIn 1, CDB 0x28, DTL 16, DataBufferOffset 0x40 -> in-bounds fill.
+      L5: SPT 0x4D004, DataIn 1, DataBufferOffset 0xFFFFFFFFFFFFFFF0 (near 2^64) ->
+          64-bit wrapping bounds check (OutBufLen < DTL + DataBufferOffset wraps) ->
+          expect special-pool fault in FUN_0005dcf0 memset.
+    Each step: single probe, evidence pull between steps, BSOD = stop phase.
+
+B2: dev+0xf48 state forcing (NEVER EXECUTED - staged)
+    devext+0xf48 == 2 is the inline-completion state that arms the 0x4D004
+    (CDB 0x28) zero-fill memset at build time; determining what sets it to 2
+    without an Intel HBA (hardware absent in guest) requires the hardware plane
+    or a debugger-assisted state poke (KM-only).
+=========================================================

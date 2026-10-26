@@ -1,0 +1,34 @@
+t9_phaseB STAGED — DO NOT EXECUTE (orchestrator-only marker, written at Phase 1 prep)
+
+Status: STAGED / NEVER EXECUTED in the t9 agent phase. Solo-VM destructive phase only,
+owned by the orchestrator, and only if the shipped-producer invariant finding is ever
+revisited (see below).
+
+== Why it is staged rather than executed ==
+The Phase-1 static check resolved the decisive open item: the INTNET SG producer is in
+VMMR0.r0 (SrvIntNetR0.cpp, IntNetR0IfSend @ +0x16c9f0, trunk delivery FUN_18016b930 @
++0x16b930), and for every SG delivered to the host trunk clients (VBoxNetAdp6
+FUN_1400021C0, VBoxNetLwf FUN_140004020) the producer sets cbTotal (SG+0x20) and the
+segment lengths from the SAME ring-header cbFrame value: cSegs=cSegsUsed=1 and
+seg[0].cb == cbTotal for normal frames; per-GSO-segment SGs are rebuilt with
+cbTotal == seg[0].cb + seg[1].cb. Sum-of-lengths == total holds by construction.
+Therefore the consumers' unchecked-copy defects are NOT reachable through the shipped
+7.0.14 composition: no violation attempt is justified or planned.
+
+== What phase B would be (if the orchestrator ever decides to run a compositional test) ==
+B0 (gate): a producer delivering a structurally-violating SG. Requires running a genuine
+           VirtualBox VM inside the guest and injecting frames through the emulated NIC
+           plane — EXPLICITLY OUT OF SCOPE for t9 (mission directive), and no in-file
+           or user-mode path reaches the trunk delivery from an unprivileged user.
+B1 (behind B0): deliver SG with cbTotal < sum(segment lengths) to trigger the consumers'
+           unbounded memmove copies (FUN_14001EC40 in adp6, FUN_1400202C0 in lwf).
+           This is a deliberate non-paged/paged-pool overflow — pool-corruption class.
+B2 (behind B1): shape/observe overflow extent with safe sentinel recovery pages.
+NEVER EXECUTED. No staging script for B1/B2 exists in this run; the t7 phaseB ladder
+format applies (one probe per step, evidence pulls between steps, solo VM, kill VM,
+restore orchestrator-only).
+
+== Safety accounting ==
+- Nothing in this run attempts oversized inputs (all sweep inputs 16 B, outputs 0x1000).
+- No host loading; no host device opens from this agent (object-dir enumeration only).
+- In-guest cleanup of everything t9 installs is scripted (t9_cleanup.ps1, marker-gated).

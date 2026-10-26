@@ -1,0 +1,15 @@
+t8_mkdev2 2026-10-23T23:58:44.4300191-07:00
+--- candidate ACPI parents ---
+  candidate: ACPI\PNP0C02\4 | OK | Motherboard resources
+  candidate: ACPI\PNP0A05\10 | OK | Generic Bus
+  candidate: ACPI\PNP0A05\11 | OK | Generic Bus
+  candidate: ACPI\PNP0A05\12 | OK | Generic Bus
+  candidate: ACPI\PNP0A05\13 | OK | Generic Bus
+chosen parent: ACPI\PNP0C02\4
+--- step 1: create devnode ACPI\AMDPSP\0000 parent=ACPI\PNP0C02\4 flags=0 ---
+t8_poc start 2026-10-23T23:58:44.9598629-07:00
+mkdev ACPI\AMDPSP\0000 parent=ACPI\PNP0C02\4 CR=0x5
+t8_poc end 2026-10-23T23:58:44.9664256-07:00
+  mkdev exit=0
+--- step 2: seed enum key ---
+  FATAL: enum key not auto-created; abort

@@ -1,0 +1,83 @@
+t9 EVIDENCE — GUEST PHASE INTERIM STATE (VM went down mid-run; orchestrator handback)
+
+Date: 2026-10-24 ~01:30 PDT guest / host. Agent made NO power ops (vmrun list shows 0
+running VMs; last agent guest action completed 01:28:23 - a benign diagnostics script
+[sc query + event-log read + setupapi tail read]; the next scripted step never ran
+because vmrun returned "The virtual machine is not powered on").
+
+== Phase-2 progress at interruption ==
+1. Push + SHA gate: 9/9 payload files verified in-guest, drift=0. Guest pristine
+   pre-install (no VBox files in drivers\). [t9_push.txt, t9_stage.txt]
+2. VBoxSup (t9_vboxsup, demand): CREATE SUCCESS, START -> STATE 4 RUNNING (exit 0).
+   Device surface (name-based probes):
+   - \Device\VBoxDrv        ntopen 0x12019F -> st=0xE986F15C (DENIED, VBox-specific code)
+   - \Device\VBoxDrvStub    ntopen 0x12019F -> st=0xE986E9F8 (DENIED, VBox-specific code)
+   - \Device\VBoxDrvU       ntopen 0x12019F -> st=0x00000000 (OPENED)
+     DACL: O:BAG:SYD:(A;;0x1201bf;;;WD)(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;RC)
+           -> Everyone = 0x1201BF (GR+GW) - RESOLVES the VBoxSup default-DACL open item
+   - \Device\VBoxDrvErrorInfo ntopen -> st=0x00000000 (OPENED), same Everyone-RW DACL
+   [t9_sup_names.txt]
+3. VBoxNetAdp6 install (layered, all documented):
+   L1 store staging: pnputil /add-driver /install -> SUCCESS (oem9.inf; WHQL score
+      0x0D000005; submission 30041490_...; "Unable to find any matching devices" = no
+      devnode auto-created, expected for virtual adapters). [t9_install_adp.txt]
+   L2 devnode: CM_Create_DevNodeW ROOT\SUN_VBOXNETADP\0000 CR=0 (t3 recipe). First
+      restart FAILED driver matching: "No compatible drivers found" 0xE0000228 ->
+      devnode CM_PROB_NOT_CONFIGURED (problem=1) - the enum key created by the
+      hardware-initiated install lacked HardwareID. FIX: seeded enum key
+      HardwareID=[sun_VBoxNetAdp,SUN_VBOXNETADP] + Service/Class/ClassGUID ->
+      devnode progressed to CM_PROB_REGISTRY (19) transiently; INF's AddService
+      completed asynchronously.
+   FINAL STATE (t9_deployed_hash + adp3 log): miniport RUNNING -
+      devnode CM_PROB_NONE / status=0x180200B (DRIVER_LOADED|STARTED), service
+      VBoxNetAdp STATE 4 RUNNING, deployed copy C:\Windows\system32\drivers\
+      VBoxNetAdp6.sys hash-IDENTICAL to audited binary (4E619BB6..., sig Valid).
+      setupapi: "{Core Device Install - exit(0x00000000)}" + "Device Status:
+      0x0180200b" at 01:23:31 - AddDevice/start succeeded. [t9_install_adp3.txt,
+      t9_deployed_hash.txt, t9_netcfg_retry.txt(setupapi 140-line tail)]
+4. VBoxNetLwf install (layered):
+   L1 store staging: SUCCESS (oem10.inf, WHQL). [t9_install_lwf.txt]
+   L2 netcfg component install: FAILED - "Install network driver - VBoxNetLwf":
+      {Create Device - exit(0)} -> {Build Driver List - exit(0)} -> "Selecting driver
+      failed(0xe0000228)" -> section FAILURE(0x800f0203) (netcfg exit 515).
+      Cause: netcfg's created devnode HWID does not match the INF's indexed model IDs
+      (component ID "VBoxNetLwf" vs INF model hwid "oracle_VBoxNetLwf") - t5-class
+      binding-plane gate, precisely characterized. No service/file/object created
+      (service 1060; drivers\VBoxNetLwf.sys absent; \Device\VBoxNetLwf 0xC0000034).
+   L3 fallback (t7 recipe): sc create/start VBoxNetLwf (binPath=t9_work copy, hash-
+      identical) -> create SUCCESS, StartService FAILED 31 ("A device attached to the
+      system is not functioning") = DriverEntry returned failure; service STOPPED.
+      Decompiled failure path (host Ghidra, guest-identical binary): DriverEntry
+      @0x140003740: RTR0Init -> state init (FUN_1400012d0, magic "VBoxNetflt") ->
+      IDC thread spawn (NOT failure-gated) -> NdisFRegisterFilterDriver(param_1,
+      &DAT_140034150) -> non-zero -> DbgPrint("...failed to register filter driver,
+      status=0x%x") -> return. The exact NDIS status is not observable without a
+      kernel debugger (kd absent in guest; DbgPrint needs an attached debugger).
+   L4 levers NOT RUN (VM went down before the levers script could execute):
+      A: sc config group= NDIS; B: seed the INF Ndi template under Control\Network.
+      Script staged: t9_lwf_start_levers.ps1 (both levers + post-state).
+   [t9_install_lwf2.txt, t9_lwf_start_diag.txt]
+5. qobj: BLOCKED 3/3 (PoC limitation, root-cause forensics + workaround notes in
+   t9_qobj_blocked.txt). Name-based probes used instead - no load-bearing item needs
+   the directory walk.
+6. NOT YET EXECUTED: t9_discover.ps1, t9_lwf_fuzz.ps1 (DACL pull on \Device\VBoxNetLwf
+   = load-bearing; unpriv open = load-bearing; full sweep battery), t9_adp_probe.ps1,
+   t9_cleanup.ps1, t9_verify.ps1, and the two .dynamic.md reports.
+
+== Cleanup state at handback ==
+Guest mutated (VBoxSup demand service + oem9/oem10 store packages + VBoxNetAdp
+service/devnode + VBoxNetLwf stopped service + Ndi registry levers pending) - ALL of
+it is inside the canonical snapshot's blast radius: the orchestrator's
+pre-driver-tests restore reverts everything. t9_cleanup.ps1 remains staged for a
+resumed Phase 2 (it marker-gates the devnode removal and deletes only t9-created
+items). No host mutations were made at any point.
+
+== Notes for the resumed run ==
+- The Adp6 install recipe that WORKED: store-stage + CM devnode + enum-key HardwareID
+  seeding (+ service pre-create optional; the INF's AddService path ran on its own).
+- The LWF needs either netcfg to match its devnode (component-ID/model-hwid mismatch
+  blocked it) or the documented service-recipe start; DriverEntry fails at
+  NdisFRegisterFilterDriver on this bare guest - lever A/B staged to test whether the
+  Ndi/group config unblocks registration; if both fail, that layer is the finding.
+- All script paths expect the files to still exist in t9_work (they will after a
+  revert; a fresh push takes ~30 s if not).

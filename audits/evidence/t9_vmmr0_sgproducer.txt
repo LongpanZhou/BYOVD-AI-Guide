@@ -1,0 +1,111 @@
+t9 EVIDENCE — INTNET SG-PRODUCER INVARIANT (decisive static check; resolves ledger top-3 item)
+
+Date: 2026-10-24 (host, static-only; no driver loaded, no device opened; host reads only)
+
+== Scope correction vs the mission text ==
+The dispatch framed the producer check as "the SG PRODUCER invariant in VBoxSup.sys
+(7.0 family: the old VBoxDrv role)". Binary evidence shows the producer is NOT in
+VBoxSup.sys: its export table has no SUPR0IntNet* symbols, no decompiled function
+references any intnet-named string, and the only trace is the SRV_INTNET service-name
+string at RVA ~0xA1410, which is a dispatch TARGET name for SUP_IOCTL_CALL_SERVICE
+(FUN_140004de0 case 0x228258) resolving into LOADED modules. In VBox 7.0.14 the intnet
+implementation ships as VMMR0.r0 (source path string "\Devices\Network\SrvIntNetR0.cpp"
+at file offset ~0x1A61A2). The invariant check was therefore completed against
+VMMR0.r0 of the SAME host install (read-only static analysis; no load).
+
+== Binary ground truth ==
+VBoxSup.sys  SHA-256 73FA8B463EE9A95930D98DA3F9DD0637E63F06E8CD510BCAA285D91E4DCAE2C7
+             (matches audits\VBoxSup.md and the install copy; triage row re-confirmed)
+VMMR0.r0     SHA-256 1133C74717583660A5208408961A2027FBD3932A7BA44AAD128222A807CBCAB0
+             2,105,688 bytes, PE (MZ at 0, PE at 0xF8), sections .text/.rdata/.data/
+             .pdata/VTGObj/.edata/INIT/.rsrc/.reloc, SizeOfImage 0x20C000
+Engine: local Ghidra 12.1.4 headless (C:\Tools\ghidra_12.1.4_PUBLIC), project T9VMMR0,
+processor x86:LE:64, image base 0x180000000. All VAs below are linked VAs (base 0x180000000).
+
+== The consumption contract (clients side, from the two static audits) ==
+- VBoxNetAdp6.sys FUN_1400021C0 (receive entry) and VBoxNetLwf.sys FUN_140004020 (VBox
+  entry) receive an SG descriptor (param_3) from the VBox transport via indirect
+  callbacks; both copy sum-of-segment-lengths into a buffer sized by SG+0x20 `total`
+  with no in-file check.
+- SG layout (cross-confirmed in this run against VMMR0 writer code):
+  +0x00 sDbgMagic u32, +0x08 pvOwner, +0x10 fFlags u32, +0x18 GSO struct
+  (uType u8 @+0x18, cbMaxSeg u16 @+0x1A, cbHdrsTotal u8 @+0x1C, cbHdrsMin u8 @+0x1D),
+  +0x20 cbTotal u32, +0x26 chksum/flags u16 (bit3 = ARP-responded flag),
+  +0x2C cSegs u16, +0x2E cSegsUsed u16, aSegs[] interleaved: aSegs[i].phys @+0x30+i*0x18,
+  aSegs[i].pv @+0x38+i*0x18, aSegs[i].cb @+0x40+i*0x18 (INTNETSEG stride 0x18).
+
+== Producer analysis (VMMR0.r0) ==
+1) IntNetR0IfSend @ +0x16c9f0 (exported) - the ONLY guest-frame ingress to the network:
+   - walks the interface ring (if+0x18 ring base; +0x48 head offset), reads the 8-byte
+     INTNETHDR at the head: type byte at +3 ('B' normal, 'd' GSO, 'S' suppressed);
+     cbFrame = header dword & 0xFFFFFF (24-bit).
+   - builds a STACK-allocated INTNETSG: cbTotal(+0x20) = cbFrame; cSegs(+0x2C) =
+     cSegsUsed(+0x2E) = 1; aSegs[0].pv(+0x38) = payload (header+8);
+     aSegs[0].cb(+0x40) = cbFrame. aSegs[0].phys(+0x30) = -1 (no phys page table).
+     => SUM(len) == cbTotal BY CONSTRUCTION (one segment, same source value).
+   - 'd' (GSO) frames: cbTotal = cbFrame-8 and payload = header+8 (the 8-byte GSO
+     header is stripped from the SG); validates the guest-side GSO header first:
+     type 1..6; off1Max (GSO+4) > 0xD; off2Max (GSO+5) > off1Max; cbHdrsTotal (GSO+1)
+     > off2Max; (cbHdrsTotal - off1Max) >= 0x14 (TCP types) or >= 8 (UDP types);
+     cbHdrsTotal < payload; cbMaxSeg <= payload - cbHdrsTotal; cbMaxSeg != 0
+     (and > 7 for UDP). Every relation is checked against the SAME cbFrame value.
+   - checksum pre-pass FUN_1801674a0 @+0x1674a0 (runs when network+0xb0 bit0 set):
+     read-only over the frame with cbFrame-bounded checks (0xe < cbFrame; ARP fields
+     validated before any use); only sets the SG+0x26 flag bit (|= 8) for validated
+     ARP frames; inserts into the IF ARP table (kernel-side table insert, not the SG).
+   - routes via FUN_180169170 @+0x169170 (network routing: source-MAC learning into
+     the IF filter table under spinlock; IPv4/ARP/IPv6/IGMP special handling;
+     then target selection FUN_18016a630 @+0x16a630).
+2) Trunk delivery - the single frame-delivery site into host clients:
+   FUN_180168320 @+0x168320 -> FUN_18016b930 @+0x16b930 (trunk = network+0x38 object;
+   trunk's client vtable at trunk+0x68; vtable[+0x30] = interface-notify (no SG);
+   vtable[+0x48] = THE frame-delivery method, called as
+   (pTrunkPorts, session-user-data, pSG, fFlags)).
+   - non-GSO: passes the IfSend-built SG unchanged (1 segment, cb == cbTotal).
+   - GSO: per-segment SGs built by FUN_1801661f0 @+0x1661f0: it outputs
+     seg0.cb = cbHdrsMin|cbHdrsTotal and seg1.cb = payload-part (last segment =
+     cbTotal - hdr - cbMaxSeg*idx; others = cbMaxSeg-derived); b930 then assembles a
+     NEW 2-segment SG with cbTotal(+0x20) = res8[0] + res98[0] == seg[0].cb + seg[1].cb.
+     => SUM(len) == cbTotal BY CONSTRUCTION as well.
+   - guard checks before delivery: cSegs == 1 and cbTotal >= 0xE for the direct path.
+3) Other trunk-vtable invocations: swept all reachable decompilation - only +0x30
+   (notify, no SG, in FUN_180167b10 @+0x167b10 = interface creation) and +0x48 (frame
+   delivery, in FUN_18016b930 only). No second producer exists.
+4) No mutation window: between SG build (IfSend) and client delivery (b930 vtable call)
+   the SG passes through routing/target-selection read-only; the only SG write outside
+   the builders is the +0x26 flag OR (ARP pre-pass), which does not touch length fields.
+
+== Guest influence on cbFrame ==
+The ring buffer is host-process/session-owned memory written by the host-side device
+emulation path; the guest influences frame contents/length only through the emulated
+NIC (bounds-checked in the device model, max-frame limits). cbFrame scales BOTH
+cbTotal and seg[0].cb identically - no asymmetric length source exists.
+
+== INVARIANT VERDICT (headline) ==
+The shipped 7.0.14 SG producer guarantees SUM(seg.len) == SG.total for every descriptor
+delivered to VBoxNetAdp6 FUN_1400021C0 and VBoxNetLwf FUN_140004020:
+- is `total` derived from the same segment set it is later copied against? YES -
+  structurally (same ring-header cbFrame / same splitter outputs).
+- can guest-controlled frame lengths make SUM(len) > total? NO - both sides scale
+  identically with cbFrame; no code path desynchronizes them.
+- is there any clamp/validation? Not as a runtime check (none needed): equality is
+  structural. Explicit checks exist for the GSO header relations and the delivery
+  guards (cSegs==1, cbTotal>=0xE).
+
+== Verdict deltas (to be written up in the .dynamic.md reports at Phase-2 end) ==
+- VBoxNetAdp6.sys: WRITE-HIGH (candidate) -> NO-WRITE via shipped invariant
+  (defect present in-file but unreachable in the shipped composition; the unchecked
+  copy becomes exploitable only if a producer violating the invariant is introduced).
+- VBoxNetLwf.sys: same delta.
+- VBoxSup.sys: NO-WRITE (unchanged); the producer is out-of-file (VMMR0.r0), which the
+  original audit correctly scoped as "OS-signed module plane".
+
+== Evidence file map ==
+- t9_decomp_IntNetR0IfSend.c        (SG builder + routing entry, +0x16c9f0)
+- t9_decomp_FUN_18016b930.c         (trunk delivery, both SG forms)
+- t9_decomp_FUN_1801661f0.c         (GSO per-segment size splitter)
+- t9_decomp_FUN_1801674a0.c         (checksum/ARP pre-pass, flag-bit set)
+- t9_decomp_FUN_180169170.c         (network routing)
+- t9_decomp_FUN_18016a630.c         (target selection)
+- t9_decomp_FUN_180168320.c         (delivery fan-out)
+- t9_vboxsup_sg_check.txt           (VBoxSup.sys in-file negative)

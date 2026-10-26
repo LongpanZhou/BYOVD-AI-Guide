@@ -1,0 +1,8 @@
+t7_verify 2026-10-23T22:25:03.1399933-07:00
+--- qobj \Device filter t7|bxv|qlogic|b06|audio|nv ---
+t7_poc start 2026-10-23T22:25:03.1660003-07:00
+exit = -1073741819 (0xC0000005=-1073741819 would be AV)
+--- qobj \Device filter vmci|vsock (expect the two VMware surfaces only) ---
+t7_poc start 2026-10-23T22:25:03.8396732-07:00
+exit = -1073741819
+=== end verify ===

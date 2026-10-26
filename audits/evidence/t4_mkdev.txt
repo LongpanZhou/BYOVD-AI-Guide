@@ -1,0 +1,22 @@
+=== t4 devnode 2026-10-23T16:51:29.7333147-07:00 (id=ROOT\T4SILABSER\0000) ===
+service binding: t4_silabser
+enum key clean: HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\ROOT absent
+--- compiling t4_poc.cs ---
+poc exe ready
+--- (b) CM_Create_DevNodeW (devnode first) ---
+  CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+  CM_Create_DevNodeW(ROOT\T4SILABSER\0000, flags=0) -> CR=0x0 devnode=0x2
+  CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+--- (c) seeding enum key ---
+  seeded HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T4SILABSER\0000
+    ConfigFlags=0  Class=System  ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+    DeviceDesc=t4 Silabser CP210x  Service=t4_silabser  HardwareID=ROOT\T4SILABSER
+--- (d) pnputil /restart-device ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\T4SILABSER\0000
+  Device restarted successfully.
+  
+--- devnode status after restart ---
+  CM_Locate_DevNodeW(ROOT\T4SILABSER\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)

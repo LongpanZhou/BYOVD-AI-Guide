@@ -1,0 +1,15 @@
+1	Belcarra Technologies 2005	nationalinstrumentsblan	02.04.12.001	Valid	C:\Windows\System32\DriverStore\FileRepository\nationalinstruments.inf_amd64_59a79ee8ab76937f\amd64\nationalinstrumentsblan.sys
+1	Corsair Memory, Inc.	CorsairGamingAudio64	2.3.28.0	Valid	C:\Windows\System32\DriverStore\FileRepository\corsairgamingaudio.inf_amd64_05fbf83af68e4a90\amd64\CorsairGamingAudio64.sys
+1	IVI Foundation	ausbtmc	80.3.17614.00	Valid	C:\Windows\System32\DriverStore\FileRepository\ausbtmc.inf_amd64_cb428e1310c01373\amd64\ausbtmc.sys
+1	namazso	PawnIO	2.2.0	Valid	C:\Windows\System32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+1	Razer Inc	RzCommon	1.0.0.67	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_4607a75a1490cb3e\RzCommon.sys
+1	Razer Inc	RzCommon	1.0.0.69	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_93a1aca39a1d10ec\RzCommon.sys
+1	Razer Inc	RzCommon	1.0.0.71	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_9fcd3ad2d67f7a0a\RzCommon.sys
+1	Razer Inc	RzCommon	1.0.0.71	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_3bc891c4f462075a\RzCommon.sys
+1	System Informer	SystemInformer.sys	3.2	Valid	C:\Users\27175\Downloads\Tools\systeminformer-3.0.7660-release-bin\amd64\SystemInformer.sys
+1	System Informer	SystemInformer.sys	3.2	Valid	C:\Users\27175\Downloads\Tools\systeminformer-3.0.7660-release-bin\arm64\SystemInformer.sys
+1	The OpenVPN Project	tap0901	9.24.2 9/24	Valid	C:\Windows\System32\DriverStore\FileRepository\oemvista.inf_amd64_6d4bec28a2ef0cdf\tap0901.sys
+1	Valve Corporation	steamxbox.sys	1.0.0.17	Valid	C:\Program Files (x86)\Common Files\Steam\drivers\Windows10\x64\steamxbox.sys
+1	Valve Corporation	steamxbox.sys	1.0.0.17	Valid	C:\Program Files (x86)\Common Files\Steam\drivers\Windows10\x86\steamxbox.sys
+1	Windows (R) Win 7 DDK provider	vbaudio_vmvaio64_win10	6.1.7600.16385 built by: WinDDK	Valid	C:\Windows\System32\DriverStore\FileRepository\vbvmvaio64_win10.inf_amd64_ef043bc1a7a2d7fb\vbaudio_vmvaio64_win10.sys
+1	wj32	kprocesshacker.sys	3.0	Valid	C:\Users\27175\Downloads\Tools\processhacker-2.39-bin\x86\kprocesshacker.sys

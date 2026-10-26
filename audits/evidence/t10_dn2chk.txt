@@ -1,0 +1,1 @@
+2696 B SHA=F1B94CF30926E2FB9E86E539890545539FCAE8DBAF1CB8A46EAE8906E8054D46 :: # t10_dn2.ps1 - atomic devnode recipe: mkdev -> seed -> restart -> status -> probes (one shot) | $ErrorActionPreference = 'Continue' | $w = 'C:\Users\vmdebug\Desktop\t10_work' | $log = "$w\t10_dn2.txt" | [IO.File]::WriteAllText($log, ("=== t10_dn2 {0} ===`r`n" -f (Get-Date -Format o)))

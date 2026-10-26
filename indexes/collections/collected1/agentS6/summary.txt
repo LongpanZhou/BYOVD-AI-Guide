@@ -1,0 +1,43 @@
+Vendor,URL,Bytes,.sys found,NEW,EXISTING,KNOWNBAD
+Cooler Master,https://coolermaster.egnyte.com/dd/J3FzMxaWXr,366120507,17,11,1,1
+DeepCool,https://deepcool.io/downloads/DeepCool-1.2.14-setup.exe,509638120,0,0,0,0
+TOTAL,,875758627,17,11,1,1
+
+DUPLICATE (within batch): 4
+Skipped over 500 MiB: 0
+
+Packages:
+  Installer_MasterPlus_v1.9.6.zip  366120507 bytes (349.2 MiB)  SHA256 821BD692BA9446A1048C4B2F5A705C7280398DA48B7FAF7E72BCA7D5F1767675
+  DeepCool-1.2.14-setup.exe        509638120 bytes (486.0 MiB)  SHA256 E28A0362931D3EC225757B4A172FEF219D955BC62617C0F364C555103E6F440F
+  Cap check: both <= 524288000 bytes (500 MiB). Nothing executed, installed, loaded, or written to HKLM.
+
+Extraction:
+  Cooler Master: ZIP -> Installer_MasterPlus_v1.9.6.exe (Inno Setup 6.1.0) -> innounp 2.70.1 -> extract\coolermaster
+                 12 .sys on disk; 5 additional cpuz.sys images (x86/x64/IA64) parsed from RCDATA resources in
+                 {app}\cpuidsdk.dll and carved byte-exact into extract\coolermaster\{app}\cpuz_resources
+  DeepCool:      NSIS-3 Unicode (required 7z -tNsis) -> extract\deepcool -> app-64.7z -> extract\deepcool_app64
+                 No .sys, .inf or .cat anywhere in payload; asar header lists no driver entries.
+
+Dedupe: filter_new_drivers.ps1 run against full extract tree.
+  Status totals: NEW 11, EXISTING 1, KNOWNBAD 1, DUPLICATE 4 (17 unique .sys).
+  new\ contains 11 .sys + 6 .inf + 6 .cat. Independent re-hash: 0 hashes present in
+  existing_hashes.txt or known_bad_hashes.txt.
+
+NEW drivers (all Cooler Master MasterPlus+ 1.9.6):
+  CMTAC_83986D97.sys  x64 C-Media TAC audio  3810136  Valid (Microsoft WHCP)
+  CMTAC_F6772F57.sys  x86 C-Media TAC audio  3163528  Valid (Microsoft WHCP)
+  CMUAC_00D7F507.sys  x64 USB audio (Win10)   613888  NotSigned
+  CMUAC_D5F01449.sys  x86 USB audio (Win10)   444416  NotSigned
+  CMUAC_2F75117C.sys  x64 USB audio (Win7)    646656  NotSigned
+  CMUAC_C2A3B919.sys  x86 USB audio (Win7)    476160  NotSigned
+
+Failures / limitations:
+  1. WinRing0x64.sys (Cooler Master, 14544 B) was quarantined by Windows Defender
+     (ThreatID 2147937641) during innounp extraction. SHA-256 recovered by targeted
+     re-extraction: 11BD2C9F9E2397C9A16E0990E4ED2CF0679498FE0FD418A3DFDAC60B5C160EE5
+     (present in existing_hashes.txt) -> status EXISTING, not copied to new\.
+  2. WinRing0.sys (Cooler Master, 14416 B) matches known_bad_hashes.txt -> KNOWNBAD, not copied.
+  3. DeepCool Digital 1.2.14: NO-DRIVER-IN-PACKAGE. Fan control talks to an externally
+     installed PawnIO driver (only PawnIOLib.dll is shipped); display-driver helper
+     InstallerTemp.exe contains no driver resource. 0 .sys collectible from official package.
+  4. No 403/login wall/unsupported installer. No package exceeded the 500 MiB cap.

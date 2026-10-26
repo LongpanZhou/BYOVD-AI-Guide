@@ -1,0 +1,58 @@
+Official download sources (Tier A RGB/fan vendors, agentR2)
+==========================================================
+Collected: 2026-10-24. Official vendor pages only. No installers executed.
+
+Cooler Master  MasterPlus+
+  Page      : https://www.coolermaster.com/en-global/masterplus.html
+  Resolve   : https://linkto.cm/masterplus
+  File      : https://coolermaster.egnyte.com/dd/J3FzMxaWXr
+  Size      : 366,120,507 bytes (349.2 MiB / 366.1 MB)  -> SKIPPED-OVER-250MB
+
+Lian Li  L-Connect 3
+  Page      : https://lian-li.com/l-connect3/
+  File      : https://lianli-update-2025.lianli-cn.com/L3_CX/20260924-L-Connect%203-x64-v2.1.29-bc599de7.exe
+  Mirror    : https://cdn-update-2026.lianhaomaoyi.cn/L3_CX/20260924-L-Connect%203-x64-v2.1.29-bc599de7.exe
+  Size      : 1,515,066,872 bytes (1,444.9 MiB / 1515.1 MB)  -> SKIPPED-OVER-250MB
+
+Thermaltake  TT RGB PLUS 3.1.0
+  Page      : https://ttrgbplus.thermaltake.com/
+  Download  : https://thermaltake.com/pages/downloads
+  Shortlink : https://bit.ly/TTRGBPlusV310
+  File      : https://file.thermaltake.com/file/software/TTRGBPLUS_Setup_310_x64.zip
+  Size      : 740,426,574 bytes (706.1 MiB / 740.4 MB)  -> SKIPPED-OVER-250MB
+
+Kingston  FURY CTRL 2.0.66.0
+  Page      : https://www.kingston.com/en/gaming/fury-ctrl
+  File      : https://media.kingston.com/kingston/support/downloads/FURYCTRL_Installer_2.0.66.0.zip
+  Status    : FAILED - HTTP 403 + Cloudflare managed challenge ("Just a moment...")
+              on both www.kingston.com and media.kingston.com. No bypass attempted.
+
+ADATA / XPG  XPG PRIME (Windows)
+  Page      : https://prime.xpg.com/
+  Download  : https://bit.ly/3Q0RK1I
+  File      : https://prime.xpg.com/software/XPG_PRIME_V1.4.12_SETUP.zip
+  Status    : FAILED - HTTP 404 (link rot). Alternate official Windows channel is the
+              Microsoft Store stub https://get.microsoft.com/installer/download/XP8LX5KPLCLBGS
+              (Store client delivery, not a driver package).
+
+Sabrent  Rocket Control Panel 2.99
+  Page      : https://sabrent.com/pages/control-panel
+              https://sabrent.com/products/sb-rkt4p-1tb
+  File      : https://sabrent.com/cdn/shop/files/Sabrent-Rocket-Control-Panel_299.zip
+  Size      : 10,506,078 bytes (10.0 MiB / 10.5 MB)  -> DOWNLOADED
+
+DeepCool  DeepCool Digital (DeepCreative)
+  Page      : https://www.deepcool.com/downloadpage/
+  API       : https://downloads.deepcool.com/official/software/official/download-path?name=deep-creative&version=latest
+  File      : https://deepcool.io/downloads/DeepCool-1.2.14-setup.exe
+  Size      : 509,638,120 bytes (486.0 MiB / 509.6 MB)  -> SKIPPED-OVER-250MB
+
+Phanteks  NexLinq 1.5.0.1
+  Page      : https://phanteks.com/nexlinq/
+  File      : https://phanteks.com/NexLinq/Phanteks_NexLinq_Software.zip
+  Size      : 60,884,276 bytes (58.1 MiB / 60.9 MB)  -> DOWNLOADED
+
+Montech  HyperFlow Digital 1.0.1.5
+  Page      : https://www.montechpc.com/hyperflow-digital-360
+  File      : https://www.montechpc.com/download/655376
+  Size      : 7,655,980 bytes (7.3 MiB / 7.7 MB)  -> DOWNLOADED

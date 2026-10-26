@@ -1,0 +1,255 @@
+===ASCII===
+!This program cannot be run in DOS mode.
+Riche
+.text
+h.rdata
+H.data
+.pdata
+HINIT
+.rsrc
+SUVWATAUAVAWH
+(A_A^A]A\_^][
+WATAUAVAWH
+ A_A^A]A\_
+UVWATAUAVAWH
+L$DA;
+L$@A;
+D$DA;
+PA_A^A]A\_^]
+VWATH
+@A\_^
+WATAUAVAWH
+u@<Pt
+l$hD8
+0A_A^A]A\_
+SUVWATAUAVAWH
+XA_A^A]A\_^][
+UVWATAUAVAWH
+@A_A^A]A\_^]
+t$ WATAUAVAWH
+ A_A^A]A\_
+t$ WATAUAVAWH
+ A_A^A]A\_
+|$(A\
+SUVWATAUAVAWH
+D$0D80
+D$,A:
+D2$9D.$uL
+\$$D8
+HA_A^A]A\_^][
+UVWATAUAVAWH
+E8,$t
+0A_A^A]A\_^]
+WATAUH
+t"@8p
+ A]A\_
+t$ WATAUAVAWH
+L$pD9f4vkL
+F8D8l
+Ht:E3
+L$xH3
+A_A^A]A\_
+L$ UVWATAUAVAWH
+0A_A^A]A\_^]
+` AUH
+SUVWATAUAVAWH
+:/tvA
+E9+vPA
+d$!E3
+A_A^A]A\_^][
+\$ UVWATAUAVAWH
+t$ Hi
+T$8@8/
+F u"I
+(tHA+
+^t>A;
+L$hH3
+pA_A^A]A\_^]
+UVWATAUH
+H9D$(
+H9D$(
+L$@H3
+PA]A\_^]
+E)A<A
+@SUVWATAUAVAWH
+HA_A^A]A\_^][
+L9N t
+D9K,t#
+L9N t
+L$HH3
+H9D$0wMA
+H9D$0w
+l$ VWATAUAVH
+t$@A+
+t$XE:
+A^A]A\_^
+WATAVH
+ A^A\_
+WATAWH
+ A_A\_
+tj<?tf3
+D$0E3
+fffffff
+fffffff
+STRIPED
+MIRROR
+STRIPEDMIRROR
+Mirror Disks 
+Broken  StripeMirror Disk 
+Broken  RAID Disk 
+SiS miniport   
+SCSIDISK
+sisraid2.pdb
+StorPortNotification
+StorPortGetBusData
+StorPortGetScatterGatherList
+StorPortGetDeviceBase
+StorPortLogError
+StorPortSetBusDataByOffset
+StorPortStallExecution
+StorPortGetPhysicalAddress
+StorPortInitialize
+StorPortCompleteRequest
+StorPortGetUncachedExtension
+KeBugCheckEx
+storport.sys
+NTOSKRNL.exe
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 20110
+190502212436Z
+200502212436Z0p1
+Washington1
+Redmond1
+Microsoft Corporation1
+Microsoft Windows0
+}bgk#!F
+HA1o7w
+I0G1-0+
+$Microsoft Ireland Operations Limited1
+229879+4541120
+M0K0I
+Chttp://www.microsoft.com/pkiops/crl/MicWinProPCA2011_2011-10-19.crl0a
+U0S0Q
+Ehttp://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt0
+L+x`r
+Washington1
+Redmond1
+Microsoft Corporation1200
+)Microsoft Root Certificate Authority 20100
+111019184142Z
+261019185142Z0
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 20110
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+TlP0X
+R!s4Z
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 2011
+,+zBWTBKMPqXBtT21SfqbmKtAmDu/y2VN0vFl0vZO7mU=0Z
+ http://www.microsoft.com/windows0
+/M%C<
+20191207054705.226Z0
+Washington1
+Redmond1
+Microsoft Corporation1%0#
+Microsoft America Operations1&0$
+Thales TSS ESN:3BBD-E338-E9A11%0#
+Microsoft Time-Stamp Service
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+191113214039Z
+210211214039Z0
+Washington1
+Redmond1
+Microsoft Corporation1%0#
+Microsoft America Operations1&0$
+Thales TSS ESN:3BBD-E338-E9A11%0#
+Microsoft Time-Stamp Service0
+>;^;3
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicTimStaPCA_2010-07-01.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicTimStaPCA_2010-07-01.crt0
+Washington1
+Redmond1
+Microsoft Corporation1200
+)Microsoft Root Certificate Authority 20100
+100701213655Z
+250701214655Z0|1
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+|hK,_
+$`2X`F
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+1http://www.microsoft.com/PKI/docs/CPS/default.htm0@
+oK0D$"<
+z.9Wv
+r~akow
+Washington1
+Redmond1
+Microsoft Corporation1%0#
+Microsoft America Operations1&0$
+Thales TSS ESN:3BBD-E338-E9A11%0#
+Microsoft Time-Stamp Service
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+20191207075226Z
+20191208075226Z0w0=
+1/0-0
+1(0&0
+:>oCS*(Ud
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 2010
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 2010
+6\CQP
+===UNICODE===
+VS_VERSION_INFO
+StringFileInfo
+040904B0
+CompanyName
+Silicon Integrated Systems Corp.
+FileDescription
+SiS RAID Stor Miniport Driver
+FileVersion
+2.60.01 (NT.070926-1510)
+InternalName
+sisraid2.sys 2.60.01
+LegalCopyright
+Copyright (c) SiS Corp. 2000-2010
+OriginalFilename
+sisraid2.sys
+ProductName
+Microsoft
+ Windows
+ Operating System
+ProductVersion
+2.60.01
+VarFileInfo
+Translation
+SubC
+"Microsoft Window
+SubC
+Legal_Policy_Statement

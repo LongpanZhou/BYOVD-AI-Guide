@@ -1,0 +1,29 @@
+=== t5 control 2026-10-23T17:59:22.1917075-07:00 ===
+--- find in-box loopback INF ---
+  candidate: usbncm.inf
+  using INF: C:\Windows\INF\usbncm.inf
+--- extract model hw-id from INF ---
+  hw-id parsed: 'USB\MS_COMP_WINNCM'
+--- create devnode ROOT\TESTLOOP\0000 + seed ---
+CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+CM_Create_DevNodeW(ROOT\TESTLOOP\0000, flags=0) -> CR=0x0 devnode=0x2
+CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  seeded ConfigFlags=0 + HardwareID=USB\MS_COMP_WINNCM
+--- UpdateDriverForPlugAndPlayDevices ---
+UpdateDriverForPlugAndPlayDevices(hwid='USB\MS_COMP_WINNCM', inf='C:\Windows\INF\usbncm.inf', INSTALLFLAG_FORCE)
+  -> ok=True err=0 (T) rebootRequired=False
+  instdev exit=0
+--- checks (loopback adapter should appear / devnode should start) ---
+CM_Locate_DevNodeW(ROOT\TESTLOOP\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+NtOpenDirectoryObject(\Device) OK; entries=335; matches('LOOP')=0; endStatus=0x8000001A
+
+  ProblemCode = 10
+
+  (no kmtest/loopback driver rows)
+--- remove control device ---
+  Microsoft PnP Utility
+  
+  Removing device:          ROOT\TESTLOOP\0000
+  Device removed successfully.
+  

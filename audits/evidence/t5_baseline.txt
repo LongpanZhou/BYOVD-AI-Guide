@@ -1,0 +1,322 @@
+=== t5 baseline 2026-10-23T17:26:34.2006122-07:00 ===
+--- Get-PnpDevice (full list) ---
+
+Status  Class          FriendlyName                                                    InstanceId                                                                                        
+------  -----          ------------                                                    ----------                                                                                        
+OK                                                                                     HTREE\ROOT\0                                                                                      
+OK      AudioEndpoint  Speakers (High Definition Audio Device)                         SWD\MMDEVAPI\{0.0.0.00000000}.{3D7E1157-5660-423A-855A-14328BE98904}                              
+OK      AudioEndpoint  Microphone (High Definition Audio Device)                       SWD\MMDEVAPI\{0.0.1.00000000}.{B65BCF07-C177-4C45-8C33-22798EB2E583}                              
+OK      Battery        Microsoft AC Adapter                                            ACPI\ACPI0003\1                                                                                   
+OK      CDROM          NECVMWar VMware SATA CD01                                       SCSI\CDROM&VEN_NECVMWAR&PROD_VMWARE_SATA_CD01\5&260E6D66&0&010000                                 
+OK      Computer       ACPI x64-based PC                                               ROOT\ACPI_HAL\0000                                                                                
+OK      DiskDrive      VMware Virtual NVMe Disk                                        SCSI\DISK&VEN_NVME&PROD_VMWARE_VIRTUAL_N\5&25A13950&0&000000                                      
+OK      Display        VMware SVGA 3D                                                  PCI\VEN_15AD&DEV_0405&SUBSYS_040515AD&REV_00\3&61AAA01&0&78                                       
+OK      HDC            Standard SATA AHCI Controller                                   PCI\VEN_15AD&DEV_07E0&SUBSYS_07E015AD&REV_00\4&BBF9765&0&1888                                     
+OK      HDC            Intel(R) 82371AB/EB PCI Bus Master IDE Controller               PCI\VEN_8086&DEV_7111&SUBSYS_197615AD&REV_01\3&61AAA01&0&39                                       
+OK      HDC            ATA Channel 0                                                   PCIIDE\IDECHANNEL\4&23686003&0&0                                                                  
+OK      HDC            ATA Channel 1                                                   PCIIDE\IDECHANNEL\4&23686003&0&1                                                                  
+OK      HIDClass       USB Input Device                                                USB\VID_0E0F&PID_0003&MI_00\7&BCBFCC2&0&0000                                                      
+OK      HIDClass       USB Input Device                                                USB\VID_0E0F&PID_0003&MI_01\7&BCBFCC2&0&0001                                                      
+OK      Keyboard       Standard PS/2 Keyboard                                          ACPI\PNP0303\4&1BD7F811&0                                                                         
+OK      MEDIA          High Definition Audio Device                                    HDAUDIO\FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001\5&217BE3D6&0&0001                      
+Unknown Monitor        Generic Non-PnP Monitor                                         DISPLAY\DEFAULT_MONITOR\1&8713BCA&0&UID0                                                          
+OK      Monitor        Generic Non-PnP Monitor                                         DISPLAY\DEFAULT_MONITOR\4&427137E&0&UID0                                                          
+OK      Mouse          VMware Pointing Device                                          ACPI\VMW0003\4&1BD7F811&0                                                                         
+OK      Mouse          VMware USB Pointing Device                                      HID\VID_0E0F&PID_0003&MI_00\8&217CCB29&0&0000                                                     
+OK      Mouse          HID-compliant mouse                                             HID\VID_0E0F&PID_0003&MI_01\8&34ACE767&0&0000                                                     
+Error   Net            Intel(R) 82574L Gigabit Network Connection                      PCI\VEN_8086&DEV_10D3&SUBSYS_07D015AD&REV_00\000C29FFFF11F56D00                                   
+OK      Net            Microsoft Kernel Debug Network Adapter                          ROOT\KDNIC\0000                                                                                   
+OK      Net            WAN Miniport (IKEv2)                                            SWD\MSRRAS\MS_AGILEVPNMINIPORT                                                                    
+OK      Net            WAN Miniport (L2TP)                                             SWD\MSRRAS\MS_L2TPMINIPORT                                                                        
+OK      Net            WAN Miniport (Network Monitor)                                  SWD\MSRRAS\MS_NDISWANBH                                                                           
+OK      Net            WAN Miniport (IP)                                               SWD\MSRRAS\MS_NDISWANIP                                                                           
+OK      Net            WAN Miniport (IPv6)                                             SWD\MSRRAS\MS_NDISWANIPV6                                                                         
+OK      Net            WAN Miniport (PPPOE)                                            SWD\MSRRAS\MS_PPPOEMINIPORT                                                                       
+OK      Net            WAN Miniport (PPTP)                                             SWD\MSRRAS\MS_PPTPMINIPORT                                                                        
+OK      Net            WAN Miniport (SSTP)                                             SWD\MSRRAS\MS_SSTPMINIPORT                                                                        
+OK      Ports          Communications Port (COM1)                                      ACPI\PNP0501\1                                                                                    
+OK      PrintQueue     Microsoft XPS Document Writer                                   SWD\PRINTENUM\{08078885-583D-4370-B792-071C7B6E002A}                                              
+OK      PrintQueue     Microsoft Print to PDF                                          SWD\PRINTENUM\{26C8A71A-2DCA-42E8-BDB3-5852EE5AA417}                                              
+OK      PrintQueue     OneNote for Windows 10                                          SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108}                                              
+OK      PrintQueue     Fax                                                             SWD\PRINTENUM\{98E6CA27-B9EE-4857-B654-63CC92A94128}                                              
+OK      PrintQueue     OneNote for Windows 10                                          SWD\PRINTENUM\{AF0A557F-7D5A-49E5-A87B-DF56FFB68277}                                              
+OK      PrintQueue     Root Print Queue                                                SWD\PRINTENUM\PRINTQUEUES                                                                         
+OK      Processor      AMD Ryzen 5 3600X 6-Core Processor                              ACPI\AUTHENTICAMD_-_AMD64_FAMILY_23_MODEL_113_-_AMD_RYZEN_5_3600X_6-CORE_PROCESSOR_____________\_0
+OK      Processor      AMD Ryzen 5 3600X 6-Core Processor                              ACPI\AUTHENTICAMD_-_AMD64_FAMILY_23_MODEL_113_-_AMD_RYZEN_5_3600X_6-CORE_PROCESSOR_____________\_1
+OK      SCSIAdapter    Standard NVM Express Controller                                 PCI\VEN_15AD&DEV_07F0&SUBSYS_07F015AD&REV_00\4&3B50545D&0&00B8                                    
+OK      SCSIAdapter    Microsoft Storage Spaces Controller                             ROOT\SPACEPORT\0000                                                                               
+OK      SoftwareDevice Microsoft GS Wavetable Synth                                    SWD\MMDEVAPI\MICROSOFTGSWAVETABLESYNTH                                                            
+Unknown SoftwareDevice Microsoft Device Association Root Enumerator                    SWD\MSDAS\{CE958E9A-424F-4C88-86F4-11314821E75A}                                                  
+OK      SoftwareDevice Microsoft RRAS Root Enumerator                                  SWD\MSRRAS\{5E259276-BC7E-40E3-B93B-8F89B5F3ABC0}                                                 
+OK      SoftwareDevice Microsoft Radio Device Enumeration Bus                          SWD\RADIO\{3DB5895D-CC28-44B3-AD3D-6F01A782B8D2}                                                  
+OK      System         ACPI Fixed Feature Button                                       ACPI\FIXEDBUTTON\2&DABA3FF&0                                                                      
+OK      System         EISA programmable interrupt controller                          ACPI\PNP0001\4&1BD7F811&0                                                                         
+OK      System         System timer                                                    ACPI\PNP0100\4&1BD7F811&0                                                                         
+OK      System         High precision event timer                                      ACPI\PNP0103\4&1BD7F811&0                                                                         
+OK      System         Direct memory access controller                                 ACPI\PNP0200\4&1BD7F811&0                                                                         
+OK      System         System speaker                                                  ACPI\PNP0800\4&1BD7F811&0                                                                         
+OK      System         PCI Bus                                                         ACPI\PNP0A03\2&DABA3FF&0                                                                          
+OK      System         Generic Bus                                                     ACPI\PNP0A05\10                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\11                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\12                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\13                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\14                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\15                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\16                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\17                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\18                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\19                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\1A                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\1B                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\1C                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\1D                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\1E                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\1F                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\20                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\21                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\22                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\23                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\24                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\25                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\26                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\27                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\28                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\29                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\2A                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\2B                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\2C                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\2D                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\2E                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\2F                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\30                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\31                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\32                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\33                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\34                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\35                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\36                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\37                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\38                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\39                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\3A                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\3B                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\3C                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\3D                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\3E                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\3F                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4&1BD7F811&0                                                                         
+OK      System         Generic Bus                                                     ACPI\PNP0A05\40                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\41                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\42                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\43                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\44                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\45                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\46                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\47                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\48                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\49                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4A                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4B                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4C                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4D                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4E                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\4F                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\50                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\51                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\52                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\53                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\54                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\55                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\56                                                                                   
+OK      System         Generic Bus                                                     ACPI\PNP0A05\57                                                                                   
+OK      System         System CMOS/real time clock                                     ACPI\PNP0B00\4&1BD7F811&0                                                                         
+OK      System         Motherboard resources                                           ACPI\PNP0C02\1F                                                                                   
+OK      System         Motherboard resources                                           ACPI\PNP0C02\4                                                                                    
+OK      System         Microsoft Hyper-V Generation Counter                            ACPI\VMW0001\7                                                                                    
+OK      System         Microsoft ACPI-Compliant System                                 ACPI_HAL\PNP0C08\0                                                                                
+OK      System         VMware VMCI Bus Device                                          PCI\VEN_15AD&DEV_0740&SUBSYS_074015AD&REV_10\3&61AAA01&0&3F                                       
+OK      System         PCI-to-PCI Bridge                                               PCI\VEN_15AD&DEV_0790&SUBSYS_079015AD&REV_02\3&61AAA01&0&88                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&A8                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&A9                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AA                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AB                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AC                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AD                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AE                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AF                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B0                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B1                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B2                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B3                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B4                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B5                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B6                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B7                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B8                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&B9                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&BA                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&BB                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&BC                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&BD                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&BE                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&BF                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C0                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C1                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C2                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C3                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C4                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C5                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C6                                       
+OK      System         PCI Express Root Port                                           PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&C7                                       
+OK      System         High Definition Audio Controller                                PCI\VEN_15AD&DEV_1977&SUBSYS_197715AD&REV_09\4&BBF9765&0&0888                                     
+OK      System         PCI to ISA Bridge                                               PCI\VEN_8086&DEV_7110&SUBSYS_197615AD&REV_08\3&61AAA01&0&38                                       
+OK      System         CPU to PCI Bridge                                               PCI\VEN_8086&DEV_7190&SUBSYS_197615AD&REV_01\3&61AAA01&0&00                                       
+OK      System         PCI-to-PCI Bridge                                               PCI\VEN_8086&DEV_7191&SUBSYS_00000000&REV_01\3&61AAA01&0&08                                       
+OK      System         Microsoft Basic Display Driver                                  ROOT\BASICDISPLAY\0000                                                                            
+OK      System         Microsoft Basic Render Driver                                   ROOT\BASICRENDER\0000                                                                             
+OK      System         Composite Bus Enumerator                                        ROOT\COMPOSITEBUS\0000                                                                            
+OK      System         Microsoft System Management BIOS Driver                         ROOT\MSSMBIOS\0000                                                                                
+OK      System         NDIS Virtual Network Adapter Enumerator                         ROOT\NDISVIRTUALBUS\0000                                                                          
+OK      System         Remote Desktop Device Redirector Bus                            ROOT\RDPBUS\0000                                                                                  
+OK      System         Plug and Play Software Device Enumerator                        ROOT\SYSTEM\0000                                                                                  
+OK      System         UMBus Root Bus Enumerator                                       ROOT\UMBUS\0000                                                                                   
+OK      System         Microsoft Virtual Drive Enumerator                              ROOT\VDRVROOT\0000                                                                                
+OK      System         Microsoft Hyper-V Virtualization Infrastructure Driver          ROOT\VID\0000                                                                                     
+OK      System         Volume Manager                                                  ROOT\VOLMGR\0000                                                                                  
+OK      USB            Standard Enhanced PCI to USB Host Controller                    PCI\VEN_15AD&DEV_0770&SUBSYS_077015AD&REV_00\4&BBF9765&0&1088                                     
+OK      USB            Standard Universal PCI to USB Host Controller                   PCI\VEN_15AD&DEV_0774&SUBSYS_197615AD&REV_00\4&BBF9765&0&0088                                     
+OK      USB            Standard USB 3.20 eXtensible Host Controller - 1.20 (Microsoft) PCI\VEN_15AD&DEV_077A&SUBSYS_077A15AD&REV_00\4&1EE266C4&0&00B0                                    
+OK      USB            USB Root Hub                                                    USB\ROOT_HUB\5&2891968B&0                                                                         
+OK      USB            USB Root Hub                                                    USB\ROOT_HUB20\5&36A4B5D6&0                                                                       
+OK      USB            USB Root Hub (USB 3.0)                                          USB\ROOT_HUB30\5&11106705&0&0                                                                     
+OK      USB            USB Composite Device                                            USB\VID_0E0F&PID_0003\6&39D724FE&0&5                                                              
+OK      Volume         Volume                                                          STORAGE\VOLUME\{741682A7-2AFD-11F0-9E25-806E6F6E6963}#0000000000100000                            
+OK      Volume         Volume                                                          STORAGE\VOLUME\{741682A7-2AFD-11F0-9E25-806E6F6E6963}#0000000006500000                            
+OK      Volume         Volume                                                          STORAGE\VOLUME\{741682A7-2AFD-11F0-9E25-806E6F6E6963}#0000000007500000                            
+OK      Volume         Volume                                                          STORAGE\VOLUME\{741682A7-2AFD-11F0-9E25-806E6F6E6963}#0000000FDDC00000                            
+
+
+
+--- Get-PnpDevice rows matching VPN/VA/Net-class Cisco (highlight) ---
+
+Status Class FriendlyName         InstanceId                    
+------ ----- ------------         ----------                    
+OK     Net   WAN Miniport (IKEv2) SWD\MSRRAS\MS_AGILEVPNMINIPORT
+
+
+
+--- DeviceClasses GUID keys ---
+{09485f5a-759e-42c2-bd4b-a349b75c8643}
+{0a4252a0-7e70-11d0-a5d6-28db04c10000}
+{0ecef634-6ef0-472a-8085-5ad023ecbccd}
+{10910c20-0c64-4172-9409-add3064c0cad}
+{1ca05180-a699-450a-9a0c-de4fbe3ddd89}
+{21157c1f-2651-4cc1-90ca-1f28b02263f6}
+{2accfe60-c130-11d2-b082-00a0c91efb8b}
+{2e34d650-5819-42ca-84ae-d30803bae505}
+{2eef81be-33fa-4800-9670-1cd474972c3f}
+{378de44c-56ef-11d1-bc8c-00a0c91405dd}
+{3abf6f2d-71c4-462a-8a92-1e6861e6af27}
+{3c0d501a-140b-11d1-b40f-00a0c9223196}
+{3ff2c92b-6598-4e60-8e1c-0ccf4927e319}
+{4747b320-62ce-11cf-a5d6-28db04c10000}
+{4afa3d53-74a7-11d0-be5e-00a0c9062857}
+{4d1e55b2-f16f-11cf-88cb-001111000030}
+{4d36e978-e325-11ce-bfc1-08002be10318}
+{53172480-4791-11d0-a5d6-28db04c10000}
+{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+{53f56308-b6bf-11d0-94f2-00a0c91efb8b}
+{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}
+{53f5630e-b6bf-11d0-94f2-00a0c91efb8b}
+{5b45201d-f2f2-4f3b-85bb-30ff1f953599}
+{65a9a6cf-64cd-480b-843e-32c86e1ba19f}
+{65e8773d-8f56-11d0-a3b9-00a0c9223196}
+{65e8773e-8f56-11d0-a3b9-00a0c9223196}
+{6994ad04-93ef-11d0-a3cc-00a0c9223196}
+{6dc23320-ab33-4ce4-80d4-bbb3ebbf2814}
+{6ead3d82-25ec-46bc-b7fd-c1f0df8f5037}
+{76b5ce0d-17dd-414d-93a1-e127f40bdf6e}
+{7f108a28-9833-4b3b-b780-2c6b5fa5c062}
+{7fccc86c-228a-40ad-8a58-f590af7bfdce}
+{866519b5-3f07-4c97-b7df-24c5d8a8ccb8}
+{86841137-ed8e-4d97-9975-f2ed56b4430e}
+{86a19291-0482-402c-bf4c-addac52b1c39}
+{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+{884b96c3-56ef-11d1-bc8c-00a0c91405dd}
+{97ebaacb-95bd-11d0-a3ea-00a0c9223196}
+{97f115c8-599a-4153-8894-d2d12899918a}
+{97fadb10-4e33-40ae-359c-8bef029dbdd0}
+{9d9e0118-1807-4f2e-96e4-2ce57142e196}
+{a17579f0-4fec-4936-9364-249460863be5}
+{a5dcbf10-6530-11d2-901f-00c04fb951ed}
+{ad498944-762f-11d0-8dcb-00c04fc3358c}
+{b84919fb-ea85-4976-8444-6f6f5c6d31db}
+{bfa794e4-f964-4fdb-90f6-51056bfe4b44}
+{bfcd56f7-3943-457f-a312-2e19bb6dc648}
+{c2fb0f5f-e2d2-4c78-bcd0-352a9582819d}
+{cac88484-7515-4c03-82e6-71a87abac361}
+{cdb5d8f7-3cfd-41c8-8542-cce622cf5d6e}
+{cf1dda2c-9743-11d0-a3ee-00a0c9223196}
+{dbe4373d-3c81-40cb-ace4-e0e5d05f0c9f}
+{dda54a40-1e4c-11d1-a050-405705c10000}
+{e5323777-f976-4f5b-9b55-b94699c46e44}
+{e6327cad-dcec-4949-ae8a-991e976a79d2}
+{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+{e83af229-8640-4d18-a213-e22675ebb2c3}
+{eb115ffc-10c8-4964-831d-6dcb02e6f23f}
+{ef66a56f-88d1-4cd8-98c4-49faf57ad8af}
+{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+{fb3842cd-9e2a-4f83-8fcc-4b0761139ae9}
+{ffbb6e3f-ccfe-4d84-90d9-421418b03a8e}
+--- HKLM\SYSTEM\CCS\Enum\ROOT children ---
+ACPI_HAL
+BasicDisplay
+BasicRender
+CompositeBus
+KDNIC
+mssmbios
+NdisVirtualBus
+RDPBUS
+spaceport
+SYSTEM
+UMBUS
+vdrvroot
+VID
+volmgr
+--- driverquery /v rows matching vpnva (none = absent) ---
+(no vpnva rows)
+--- vpnva*/t5_* service keys (pre-existing check) ---
+  (no vpnva*/t5_* service keys)
+--- existing C:\Windows\System32\drivers\vpnva64-6.sys ---
+  absent
+--- t5 enum-key leftovers (expect none) ---
+  clean: T5VPNVA absent
+  clean: T5VPNVA2 absent
+--- network adapter list (baseline, before load) ---
+
+Name                                  InterfaceDescription                       Status       MediaConnectState ifIndex DriverVersionString
+----                                  --------------------                       ------       ----------------- ------- -------------------
+6to4 Adapter                                                                     Not Present                  0       2                    
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up                           1       5 10.0.19041.1       
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present                  0       3 12.17.10.8         
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected                 0      11 10.0.19041.1       
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected                 0      10 10.0.19041.1       
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected                 0       7 10.0.19041.1       
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected                 0      12 10.0.19041.1       
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected                 0       8 10.0.19041.1       
+Local Area Connection* 6              WAN Miniport (IP)                          Up                           1      14 10.0.19041.1       
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up                           1       6 10.0.19041.1       
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up                           1      13 10.0.19041.1       
+Microsoft IP-HTTPS Platform Interface                                            Not Present                  0       4                    
+Teredo Tunneling Pseudo-Interface                                                Not Present                  0       9                    
+
+
+
+--- netsh interface show interface (compact) ---
+  
+  Admin State    State          Type             Interface Name
+  -------------------------------------------------------------------------
+  Enabled        Connected      Dedicated        Ethernet (Kernel Debugger)
+  
+--- netsh i i show all (FULL output saved to t5_netsh_before.txt) ---
+  saved; contains-Cisco-AnyConnect mentions: 0

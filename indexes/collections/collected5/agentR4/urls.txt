@@ -1,0 +1,15 @@
+# Official download URLs — agentR4 (monitoring / CPU-Z replacement batch)
+# Collected 2026-10-24. Installer size cap in force: 500 MiB.
+
+CPUID CPU-Z 3.01                 https://download.cpuid.com/cpu-z/cpu-z_3.01-en.exe
+REALiX HWiNFO 8.54               https://www.hwinfo.com/files/hwi64_854.exe
+CPUID HWMonitor 1.68             https://download.cpuid.com/hwmonitor/hwmonitor_1.68.exe
+TechPowerUp GPU-Z 2.71.0         https://us1-dl.techpowerup.com/files/GPU-Z.2.71.0.exe
+FinalWire AIDA64 Extreme 8.40    https://download.aida64.com/aida64extreme840.exe
+ALCPU Core Temp 1.21             https://www.alcpu.com/CoreTemp/Core-Temp-setup-v1.21.0.207.exe
+OCBase OCCT 17.1.10              https://www.ocbase.com/download/edition:Personal/version:17.1.10/os:Windows
+LibreHardwareMonitor 0.9.6       https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/releases/download/v0.9.6/LibreHardwareMonitor.zip
+Open Hardware Monitor 0.9.6      https://openhardwaremonitor.org/files/openhardwaremonitor-v0.9.6.zip
+OpenRGB 1.1                      https://github.com/CalcProgrammer1/OpenRGB/releases/download/release_1.1/OpenRGB_1.1_Windows_64_8e16de2.msi
+PassMark BurnInTest 11.1         https://www.passmark.com/downloads/BurnInTest_Windows_x86-64.exe
+ThrottleStop 9.7.3               https://www.techpowerup.com/download/techpowerup-throttlestop/  (POST form -> us7-dl CDN, SHA256 verified 7B5E1A65...)

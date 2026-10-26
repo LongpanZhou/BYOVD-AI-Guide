@@ -1,0 +1,27 @@
+﻿# Official vendor URLs (agentS1 - peripheral RGB/input vendors) 2026-10-24
+Wooting        page  https://wooting.io/wootility
+Wooting        file  https://wooting.io/_backend/public/wootility/download?os=win&version=5.4.2
+Glorious       page  https://www.gloriousgaming.com/pages/software
+Glorious       file  https://gloriouscore.nyc3.digitaloceanspaces.com/CORE2/app/GloriousCORE_2.1.23_Setup.zip
+Glorious       file  https://downloads.gloriousgamingservices.com/download/GloriousCore.zip
+Keychron       page  https://www.keychron.com/pages/m1-mouse-driver
+Keychron       file  https://cdn.shopify.com/s/files/1/0059/0630/1017/files/Keychron_M1_V1.2.zip?v=1649305494
+Akko           page  https://en.akkogear.com/download/
+Akko           file  https://file.akkogear.com/Akko_Cloud_v4_setup_372.2.35_WIN20260920.zip
+Akko           file  https://file.akkogear.com/AkkoHubInstaller-V5.38-Win20260929.zip
+Akko           file  https://file.akkogear.com/Akko_Wired_Manager2.0.zip
+Akko           file  https://file.akkogear.com/Akko_Akko_Cloud_Gaming_Nest_v1.1.0.43_2025.08.25_setup.zip
+Royal Kludge   page  https://www.rkgaming.com/download/
+Royal Kludge   file  https://www.rkgaming.com/media/files/20260826/RK_Keyboard_Software_Setup_V4.6_20260816.exe
+Ducky          page  https://ducky.global/pages/download
+Ducky          file  https://cdn.shopify.com/s/files/1/0728/4382/1295/files/Ducky_One_3_RGB_V1.16.exe
+Ducky          soft  https://duckyhub.io/
+Pulsar         page  https://www.pulsar.gg/pages/download
+Pulsar         file  https://bbb-pulsar-cdn-huaadgambje7cub7.a02.azurefd.net/bbbpulsargg-cdn/PulsarHub/Pulsar_v1.32_rev2_setup.zip
+Lamzu          page  https://lamzu.com/pages/download
+Lamzu          file  https://cdn.shopify.com/s/files/1/0581/9675/4466/files/LAMZU_v1.6.0.43_2025.04.18.exe
+Endgame Gear   page  https://endgamegear.com/pages/downloads            [HTTP 429 - blocked]
+Vaxee          page  https://www.vaxee.co/en/download.php                 [Cloudflare CAPTCHA - blocked]
+Zowie          page  https://zowie.benq.com/en-us/support/download-search.html  [JS portal, no package]
+Finalmouse     page  https://xpanel.finalmouse.com/firmware               [web XPanel only]
+Epomaker       page  https://epomaker.com/blogs/software                  [web hub only]

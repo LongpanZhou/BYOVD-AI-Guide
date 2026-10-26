@@ -1,0 +1,59 @@
+﻿# Re-downloadable toolchain (WiX toolset, innoextract) — not source
+tools/wix/
+tools/innoextract/
+
+# Downloads are disposable scratch.
+downloads/*
+!downloads/README.md
+!downloads/.gitkeep
+
+# Old scratch patterns (kept so a re-created folder cannot be committed).
+_collected*/**/packages/
+_collected*/**/extract/
+_collected*/**/work/
+_collected*/**/manual/
+_collected*/**/staging/
+_scratch/
+
+# Binaries are denied everywhere EXCEPT the drivers corpus (see bottom).
+*.sys
+*.SYS
+*.cat
+*.CAT
+*.dll
+*.DLL
+*.exe
+*.EXE
+*.lib
+*.chm
+*.cub
+*.msi
+*.zip
+*.7z
+*.cab
+
+# Ghidra project databases and caches (regenerable from the .sys)
+*.rep/
+*.gbf
+**/ghidraProj/
+**/ghidraproj/
+**/ghidraproj_*/
+**/ghidra/
+
+# Transient
+*.tmp
+*.log.lock
+Thumbs.db
+desktop.ini
+
+# --- Publication policy (repo "AI BYOVD", PRIVATE) ---------------------------
+# The driver corpus IS published this time. Order matters: the re-include
+# below must come before the two targeted exclusions at the very end.
+VM_ACCESS.md
+!drivers/*.sys
+!drivers/*.SYS
+# vgk.sys is 104.6 MB: over GitHub's 100 MB hard push limit, and not audited.
+drivers/vgk.sys
+
+# exported-build hash gate (local-only, never committed)
+indexes/dedupe/exported_hashes_local.txt

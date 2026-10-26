@@ -1,0 +1,170 @@
+t9_resume_state 2026-10-24T01:42:27.4621753-07:00
+--- services ---
+
+SERVICE_NAME: t9_vboxsup 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+
+SERVICE_NAME: VBoxNetAdp 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+
+SERVICE_NAME: VBoxNetLwf 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+--- driverquery rows ---
+
+t9_vboxsup   t9_vboxsup             t9_vboxsup             Kernel        Manual     Running    OK 
+        TRUE        FALSE        0                 643,072     0          1/15/2024 6:00:11 AM   
+\??\C:\Users\vmdebug\Desktop\t9_work\VBoxSup.sys 4,096      
+VBoxNetAdp   VirtualBox NDIS 6.0 Mi VirtualBox NDIS 6.0 Mi Kernel        Manual     Running    OK 
+        TRUE        FALSE        0                 126,976     0          1/15/2024 5:59:30 AM   
+C:\Windows\system32\drivers\VBoxNetAdp6.sys      4,096      
+VBoxNetLwf   VBoxNetLwf             VBoxNetLwf             Kernel        Manual     Stopped    OK 
+        FALSE       FALSE        0                 131,072     0          1/15/2024 5:59:30 AM   
+\??\C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf. 4,096      
+
+
+
+--- driver store packages (oem9/oem10) ---
+Microsoft PnP Utility
+
+Published Name:     oem3.inf
+Original Name:      efifw.inf
+Provider Name:      Broadcom Inc.
+Class Name:         Firmware
+Class GUID:         {f2e7dd72-6468-4e36-b6f1-6488f42c1b52}
+Driver Version:     06/27/2024 1.0.0.1
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem5.inf
+Original Name:      pvscsi.inf
+Provider Name:      Broadcom Inc.
+Class Name:         Storage controllers
+Class GUID:         {4d36e97b-e325-11ce-bfc1-08002be10318}
+Driver Version:     06/06/2024 1.3.28.0
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem2.inf
+Original Name:      vmci.inf
+Provider Name:      Broadcom Inc.
+Class Name:         System devices
+Class GUID:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Driver Version:     03/17/2025 9.8.30.0
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem7.inf
+Original Name:      vmmouse.inf
+Provider Name:      Broadcom Inc.
+Class Name:         Mice and other pointing devices
+Class GUID:         {4d36e96f-e325-11ce-bfc1-08002be10318}
+Driver Version:     06/13/2024 12.5.14.0
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem6.inf
+Original Name:      vmusbmouse.inf
+Provider Name:      Broadcom Inc.
+Class Name:         Mice and other pointing devices
+Class GUID:         {4d36e96f-e325-11ce-bfc1-08002be10318}
+Driver Version:     06/13/2024 12.5.14.0
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem1.inf
+Original Name:      prnms001.inf
+Provider Name:      Microsoft
+Class Name:         Printers
+Class GUID:         {4d36e979-e325-11ce-bfc1-08002be10318}
+Class Version:      4.0
+Driver Version:     06/21/2006 10.0.19041.3636
+Signer Name:        Microsoft Windows
+
+Published Name:     oem0.inf
+Original Name:      prnms009.inf
+Provider Name:      Microsoft
+Class Name:         Printers
+Class GUID:         {4d36e979-e325-11ce-bfc1-08002be10318}
+Class Version:      4.0
+Driver Version:     06/21/2006 10.0.19041.3636
+Signer Name:        Microsoft Windows
+
+Published Name:     oem9.inf
+Original Name:      vboxnetadp6.inf
+Provider Name:      Oracle Corporation
+Class Name:         Network adapters
+Class GUID:         {4d36e972-e325-11ce-bfc1-08002be10318}
+Driver Version:     01/15/2024 7.0.14.11095
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem10.inf
+Original Name:      vboxnetlwf.inf
+Provider Name:      Oracle Corporation
+Class Name:         Network Service
+Class GUID:         {4d36e974-e325-11ce-bfc1-08002be10318}
+Driver Version:     01/15/2024 7.0.14.11095
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem8.inf
+Original Name:      vm3d.inf
+Provider Name:      Broadcom Inc.
+Class Name:         Display adapters
+Class GUID:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Driver Version:     07/24/2024 9.17.8.9
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+Published Name:     oem4.inf
+Original Name:      vmxnet3.inf
+Provider Name:      Broadcom Inc.
+Class Name:         Network adapters
+Class GUID:         {4d36e972-e325-11ce-bfc1-08002be10318}
+Driver Version:     07/25/2024 1.9.19.0
+Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+
+
+--- deployed copies ---
+drivers\VBoxNetAdp6.sys present: True
+drivers\VBoxNetLwf.sys present: False
+hash VBoxNetAdp6.sys: 4E619BB6370F4BC4BE52F43D6C43F3A86E3E2CE7BB04BAADFF17D3B731F18F3F
+--- devnode ---
+
+
+InstanceId : ROOT\SUN_VBOXNETADP\0000
+Status     : OK
+Class      : Net
+Problem    : CM_PROB_NONE
+
+
+
+
+--- device surfaces by name ---
+t9_poc start 2026-10-24T01:42:29.6310412-07:00
+ntopen \Device\VBoxDrv acc=0x12019F -> st=0xE986F15C
+t9_poc end 2026-10-24T01:42:29.6376193-07:00
+
+t9_poc start 2026-10-24T01:42:29.6629819-07:00
+ntopen \Device\VBoxDrvU acc=0x12019F -> st=0x00000000
+t9_poc end 2026-10-24T01:42:29.6690107-07:00
+
+t9_poc start 2026-10-24T01:42:29.6954705-07:00
+ntopen \Device\VBoxNetLwf acc=0x12019F -> st=0xC0000034
+t9_poc end 2026-10-24T01:42:29.7011151-07:00
+
+--- staged levers script present in guest? ---
+t9_lwf_start_levers.ps1: True
+t9_verify.ps1: True

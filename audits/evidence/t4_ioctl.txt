@@ -1,0 +1,8 @@
+=== t4 ioctl battery 2026-10-23T16:57:01.6598105-07:00 ===
+SCOPE: bounded probes only (0x222008, 0x222080, 0x222098, 0x22209C, 0x22200C) + ONE 0x222028 wLength=1 probe. No 0x222024/0x222094.
+--- IOCTL session on bridge-interface: \\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748} ---
+  t4_poc session exit=2
+  SESSION OPEN \\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748} -> FAIL lastErr=2 (T)
+--- IOCTL session on comport-interface: \\?\ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73} ---
+  t4_poc session exit=2
+  SESSION OPEN \\?\ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73} -> FAIL lastErr=2 (T)

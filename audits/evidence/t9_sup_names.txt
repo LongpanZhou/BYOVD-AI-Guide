@@ -1,0 +1,33 @@
+t9_sup_names 2026-10-24T01:19:34.9850087-07:00
+t9_poc start 2026-10-24T01:19:35.0104791-07:00
+ntopen \Device\VBoxDrv acc=0x12019F -> st=0xE986F15C
+t9_poc end 2026-10-24T01:19:35.0165040-07:00
+
+t9_poc start 2026-10-24T01:19:35.0406457-07:00
+daclnt \Device\VBoxDrv NtCreateFile st=0xE986F15C
+t9_poc end 2026-10-24T01:19:35.0456713-07:00
+
+t9_poc start 2026-10-24T01:19:35.0680236-07:00
+ntopen \Device\VBoxDrvU acc=0x12019F -> st=0x00000000
+t9_poc end 2026-10-24T01:19:35.0731117-07:00
+
+t9_poc start 2026-10-24T01:19:35.0934975-07:00
+dacl \Device\VBoxDrvU SDDL=O:BAG:SYD:(A;;0x1201bf;;;WD)(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;RC)
+t9_poc end 2026-10-24T01:19:35.0995205-07:00
+
+t9_poc start 2026-10-24T01:19:35.1189162-07:00
+ntopen \Device\VBoxDrvStub acc=0x12019F -> st=0xE986E9F8
+t9_poc end 2026-10-24T01:19:35.1256999-07:00
+
+t9_poc start 2026-10-24T01:19:35.1465805-07:00
+daclnt \Device\VBoxDrvStub NtCreateFile st=0xE986E9F8
+t9_poc end 2026-10-24T01:19:35.1529990-07:00
+
+t9_poc start 2026-10-24T01:19:35.1741909-07:00
+ntopen \Device\VBoxDrvErrorInfo acc=0x12019F -> st=0x00000000
+t9_poc end 2026-10-24T01:19:35.1803771-07:00
+
+t9_poc start 2026-10-24T01:19:35.2050919-07:00
+dacl \Device\VBoxDrvErrorInfo SDDL=O:BAG:SYD:(A;;0x1201bf;;;WD)(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;RC)
+t9_poc end 2026-10-24T01:19:35.2116481-07:00
+

@@ -1,0 +1,13 @@
+
+Name             Length LastWriteTime         
+----             ------ -------------         
+t7_alive.txt         48 10/23/2026 9:52:08 PM 
+t7_alive2.txt       199 10/23/2026 10:07:51 PM
+t7_bootstrap.ps1   1232 10/23/2026 9:51:50 PM 
+t7_bootstrap.txt    259 10/23/2026 9:52:09 PM 
+t7_dir.txt            0 10/23/2026 10:08:09 PM
+t7_inv.ps1         3181 10/23/2026 9:53:21 PM 
+t7_inv.txt        12334 10/23/2026 9:53:33 PM 
+
+
+

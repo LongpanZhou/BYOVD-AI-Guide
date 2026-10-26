@@ -1,0 +1,1 @@
+SD probe \Device\DrDynVc -> open FAIL lastErr=3 (T) (no SD query possible)

@@ -1,0 +1,51 @@
+t7_open_restr 2026-10-23T22:11:26.1977553-07:00
+recompiling t7_poc.cs ...
+
+compile exit=0
+=== DACL pulls (admin, READ_CONTROL) ===
+t7_poc start 2026-10-23T22:11:26.3616443-07:00
+dacl \Device\VMCIGuestDev SDDL=O:BAG:SYD:P(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1201bf;;;WD)(A;;0x1200a9;;;RC)
+t7_poc end 2026-10-23T22:11:26.3676872-07:00
+t7_poc start 2026-10-23T22:11:26.3977976-07:00
+dacl \\.\VMCIDev SDDL=O:BAG:SYD:P(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1201bf;;;WD)(A;;0x1200a9;;;RC)
+t7_poc end 2026-10-23T22:11:26.4058426-07:00
+t7_poc start 2026-10-23T22:11:26.4258624-07:00
+dacl \\.\vmci SDDL=O:BAG:SYD:P(A;;FA;;;SY)(A;;0x1201bf;;;BA)(A;;0x12019f;;;WD)(A;;FR;;;RC)
+t7_poc end 2026-10-23T22:11:26.4356662-07:00
+=== restricted-token probes (runas /trustlevel:0x20000) ===
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt open \\.\VMCIDev c0000000 3
+t7_poc start 2026-10-23T22:11:26.5517557-07:00
+open \\.\VMCIDev acc=0xC0000000 share=0x3 -> OK handle=0x348
+t7_poc end 2026-10-23T22:11:26.5598805-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt open \\.\VMCIDev 120089 3
+t7_poc start 2026-10-23T22:11:27.5836209-07:00
+open \\.\VMCIDev acc=0x120089 share=0x3 -> OK handle=0x348
+t7_poc end 2026-10-23T22:11:27.5896187-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt open \\.\vmci c0000000 3
+t7_poc start 2026-10-23T22:11:28.5798272-07:00
+open \\.\vmci acc=0xC0000000 share=0x3 -> OK handle=0x298
+t7_poc end 2026-10-23T22:11:28.5859099-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt open \\.\vmci 120089 3
+t7_poc start 2026-10-23T22:11:29.5919815-07:00
+open \\.\vmci acc=0x120089 share=0x3 -> OK handle=0x348
+t7_poc end 2026-10-23T22:11:29.6000394-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt dacl \\.\VMCIDev
+t7_poc start 2026-10-23T22:11:30.6000095-07:00
+dacl \\.\VMCIDev SDDL=O:BAG:SYD:P(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1201bf;;;WD)(A;;0x1200a9;;;RC)
+t7_poc end 2026-10-23T22:11:30.6060624-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt dacl \\.\vmci
+t7_poc start 2026-10-23T22:11:31.6116666-07:00
+dacl \\.\vmci SDDL=O:BAG:SYD:P(A;;FA;;;SY)(A;;0x1201bf;;;BA)(A;;0x12019f;;;WD)(A;;FR;;;RC)
+t7_poc end 2026-10-23T22:11:31.6197176-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt qobj \Device vmci|vsock
+t7_poc start 2026-10-23T22:11:32.6218284-07:00
+qobj \Device open st=0xC0000022
+t7_poc end 2026-10-23T22:11:32.6298886-07:00
+
+=== end ===

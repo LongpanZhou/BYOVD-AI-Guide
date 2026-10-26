@@ -1,0 +1,1 @@
+CreateFileW(\\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}, acc=0xC0000000) -> FAIL lastErr=2 (T)

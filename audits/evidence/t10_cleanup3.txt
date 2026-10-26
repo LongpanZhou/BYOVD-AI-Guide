@@ -1,0 +1,33 @@
+t1: 2026-10-24T00:59:32.6250178-07:00
+[SC] ControlService FAILED 1052:
+
+The requested control is not valid for this service.
+
+
+SERVICE_NAME: t10_iastrv 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] DeleteService FAILED 1072:
+
+The specified service has been marked for deletion.
+
+
+SERVICE_NAME: t10_iastrv 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+t10_iastrv   t10_iastrv             t10_iastrv             Kernel        Disabled   Running    OK 
+        FALSE       FALSE        0                 364,544     0          4/11/2011 11:48:16 AM  
+\??\C:\Users\vmdebug\Desktop\t10_work\iaStorV.sy 8,192      
+
+

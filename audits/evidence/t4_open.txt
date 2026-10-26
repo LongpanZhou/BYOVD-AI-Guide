@@ -1,0 +1,81 @@
+=== t4 open tests 2026-10-23T16:56:04.4435594-07:00 ===
+--- custom SILABUSBSERIALBRIDGE interface path (admin token) ---
+  path: \\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}
+    CreateFileW(\\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}, acc=0x40000000) -> FAIL lastErr=2 (T)
+--- GUID_DEVINTERFACE_COMPORT interface path (admin token) ---
+  path: \\?\ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+    CreateFileW(\\?\ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\?\ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\?\ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}, acc=0x40000000) -> FAIL lastErr=2 (T)
+--- raw named device \\.\Silabser0 ---
+  path: \\.\Silabser0
+    CreateFileW(\\.\Silabser0, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\Silabser0, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\Silabser0, acc=0x40000000) -> FAIL lastErr=2 (T)
+--- raw named device \\.\Silabser1 ---
+  path: \\.\Silabser1
+    CreateFileW(\\.\Silabser1, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\Silabser1, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\Silabser1, acc=0x40000000) -> FAIL lastErr=2 (T)
+--- raw named device \\.\Silabser2 ---
+  path: \\.\Silabser2
+    CreateFileW(\\.\Silabser2, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\Silabser2, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\Silabser2, acc=0x40000000) -> FAIL lastErr=2 (T)
+no Silabser entry in SERIALCOMM DeviceMap (no DOS name published - probe \\.\COM1..COM3 anyway for completeness)
+--- probe \\.\COM1 (should hit baseline COM1 or fail) ---
+  path: \\.\COM1
+    CreateFileW(\\.\COM1, acc=0xC0000000) -> handle=0x2EC OK
+    handle closed
+    CreateFileW(\\.\COM1, acc=0x80000000) -> handle=0x29C OK
+    handle closed
+    CreateFileW(\\.\COM1, acc=0x40000000) -> handle=0x29C OK
+    handle closed
+--- probe \\.\COM2 (should hit baseline COM1 or fail) ---
+  path: \\.\COM2
+    CreateFileW(\\.\COM2, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\COM2, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\COM2, acc=0x40000000) -> FAIL lastErr=2 (T)
+--- probe \\.\COM3 (should hit baseline COM1 or fail) ---
+  path: \\.\COM3
+    CreateFileW(\\.\COM3, acc=0xC0000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\COM3, acc=0x80000000) -> FAIL lastErr=2 (T)
+    CreateFileW(\\.\COM3, acc=0x40000000) -> FAIL lastErr=2 (T)
+--- pnputil /enable-device attempts (re-start attempt; NOT a power/snapshot op) ---
+  device: ROOT\T4SILABSER\0000
+    Microsoft PnP Utility
+    
+    Failed to enable device:  ROOT\T4SILABSER\0000
+    Device is already enabled.
+    
+  device: ROOT\T4SILABSER2\0000
+    Microsoft PnP Utility
+    
+    Failed to enable device:  ROOT\T4SILABSER2\0000
+    Device is already enabled.
+    
+--- post-enable ifenum bridge + SERIALCOMM recheck ---
+    interfaces for a2a39220-39f4-4b88-aecb-3d86a35dc748: count=0
+    SERIALCOMM: \Device\Serial0 = COM1
+--- post-enable raw \\.\Silabser0 recheck ---
+    CreateFileW(\\.\Silabser0, acc=0xC0000000) -> FAIL lastErr=2 (T)
+--- Kernel-PnP/Configuration log (raw last 15) ---
+  [10/17/2026 4:55:37 AM] id=410 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [10/17/2026 4:55:37 AM] id=400 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [10/17/2026 4:55:37 AM] id=420 Device SWD\PRINTENUM\{101D3A8E-C67A-4757-95CD-2E8FF9492833} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+  [10/17/2026 3:06:31 AM] id=410 Device ACPI\PNP0501\1 was started. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Service: Serial | Lower Filters:  | Upper Filters: serenum
+  [10/17/2026 3:06:25 AM] id=430 Device ACPI\PNP0501\1 requires further installation.
+  [10/17/2026 3:06:25 AM] id=400 Device ACPI\PNP0501\1 was configured. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: ComPort.NT | Driver Rank: 0xFF0002 | Matching Device Id: *PNP0501 | Outranked Drivers:  | Device Updated: false | Parent Device: ACPI\PNP0A05\4&1bd7f811&0
+  [5/19/2025 1:22:28 PM] id=410 Device ROOT\VID\0000 was started. |  | Driver Name: wvid.inf | Class Guid: {4d36e97d-e325-11ce-bfc1-08002be10318} | Service: Vid | Lower Filters:  | Upper Filters: 
+  [5/10/2025 1:23:10 AM] id=410 Device SWD\MSDAS\{ce958e9a-424f-4c88-86f4-11314821e75a} was started. |  | Driver Name: c_swdevice.inf | Class Guid: {62f9c741-b25a-46ce-b54c-9bccce08b6f2} | Service:  | Lower Filters:  | Upper Filters: 
+  [5/10/2025 1:23:10 AM] id=400 Device SWD\MSDAS\{ce958e9a-424f-4c88-86f4-11314821e75a} was configured. |  | Driver Name: c_swdevice.inf | Class Guid: {62f9c741-b25a-46ce-b54c-9bccce08b6f2} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: SoftwareDevice | Driver Rank: 0xFF3000 | Matching Device Id: SWD\GenericRaw | Outranked Drivers:  | Device Updated: false | Parent Device: HTREE\ROOT\0
+  [5/9/2025 2:02:23 AM] id=410 Device ROOT\VID\0000 was started. |  | Driver Name: wvid.inf | Class Guid: {4d36e97d-e325-11ce-bfc1-08002be10318} | Service: Vid | Lower Filters:  | Upper Filters: 
+  [5/9/2025 12:08:14 AM] id=410 Device SWD\PRINTENUM\{529047B3-202B-466C-B2D4-6A4D7EB66CF6} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [5/9/2025 12:08:14 AM] id=400 Device SWD\PRINTENUM\{529047B3-202B-466C-B2D4-6A4D7EB66CF6} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [5/9/2025 12:08:14 AM] id=420 Device SWD\PRINTENUM\{B2B41527-0F22-488D-9576-92001957A62B} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+  [5/6/2025 6:13:30 PM] id=410 Device SWD\MSRRAS\MS_NDISWANBH was started. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Service: NdisWan | Lower Filters: NdisTapi | Upper Filters: 
+  [5/6/2025 6:13:30 PM] id=400 Device SWD\MSRRAS\MS_NDISWANBH was configured. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: Ndi-Mp-Bh | Driver Rank: 0xFF0000 | Matching Device Id: ms_ndiswanbh | Outranked Drivers:  | Device Updated: false | Parent Device: SWD\MSRRAS\{5e259276-bc7e-40e3-b93b-8f89b5f3abc0}
+--- restricted-token open (runas /trustlevel:0x20000) ---
+  restricted: CreateFileW(\\?\ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}, acc=0xC0000000) -> FAIL lastErr=2 (T)

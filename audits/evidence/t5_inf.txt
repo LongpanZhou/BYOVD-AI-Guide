@@ -1,0 +1,157 @@
+=== t5 inf-deploy 2026-10-23T17:35:45.9646053-07:00 ===
+--- pnputil /remove-device on failed manual devnodes ---
+  Microsoft PnP Utility
+  
+  Removing device:          ROOT\T5VPNVA\0000
+  Device removed successfully.
+  
+  Microsoft PnP Utility
+  
+  Removing device:          ROOT\T5VPNVA2\0000
+  Device removed successfully.
+  
+--- pnputil /add-driver vpnva-6.inf /install ---
+  Microsoft PnP Utility
+  
+  Adding driver package:  vpnva-6.inf
+  Driver package added successfully.
+  Published Name:         oem9.inf
+  
+  Total driver packages:  1
+  Added driver packages:  1
+  exit: 0
+--- pnputil /enum-drivers (vpnva context) ---
+  Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+  
+  Published Name:     oem9.inf
+  Original Name:      vpnva-6.inf
+  Provider Name:      Cisco Systems
+  Class Name:         Network adapters
+  Class GUID:         {4d36e972-e325-11ce-bfc1-08002be10318}
+  Driver Version:     12/14/2021 4.10.5040.0
+  Signer Name:        Microsoft Windows Hardware Compatibility Publisher
+  
+  
+  ---
+CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+CM_Create_DevNodeW(ROOT\VPNVA\0000, flags=0) -> CR=0x0 devnode=0x2
+CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  mkdev ROOT\VPNVA\0000 exit=CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1 CM_Create_DevNodeW(ROOT\VPNVA\0000, flags=0) -> CR=0x0 devnode=0x2 CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  ABORT: mkdev failed
+--- pnputil /restart-device ROOT\VPNVA\0000 (INF install + MiniportInitializeEx) ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\VPNVA\0000
+  Device restarted successfully.
+  
+--- checks ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1 (dec 1)
+  devstat exit=CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1 CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1 (dec 1)
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+
+Name                                  InterfaceDescription                       Status       MediaConnectState ifIndex
+----                                  --------------------                       ------       ----------------- -------
+6to4 Adapter                                                                     Not Present                  0       2
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up                           1       5
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present                  0       3
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected                 0      11
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected                 0      10
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected                 0       7
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected                 0      12
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected                 0       8
+Local Area Connection* 6              WAN Miniport (IP)                          Up                           1      14
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up                           1       6
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up                           1      13
+Microsoft IP-HTTPS Platform Interface                                            Not Present                  0       4
+Teredo Tunneling Pseudo-Interface                                                Not Present                  0       9
+
+
+
+--- sc query vpnva ---
+  [SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+  
+  The specified service does not exist as an installed service.
+  
+--- driverquery rows ---
+  "t5_vpnva","t5_vpnva","t5_vpnva","Kernel ","Manual","Stopped","OK","FALSE","FALSE","8,192","32,768","0","12/14/2021 11:47:57 AM","\??\C:\Windows\System32\drivers\vpnva64-6.sys","4,096"
+--- Kernel-PnP/Configuration log (last 10) ---
+  [10/23/2026 5:35:46 PM] id=430 Device ROOT\VPNVA\0000 requires further installation.
+  [10/23/2026 5:35:46 PM] id=420 Device ROOT\T5VPNVA2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 5:35:45 PM] id=420 Device ROOT\T5VPNVA\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/17/2026 4:55:37 AM] id=410 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [10/17/2026 4:55:37 AM] id=400 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [10/17/2026 4:55:37 AM] id=420 Device SWD\PRINTENUM\{101D3A8E-C67A-4757-95CD-2E8FF9492833} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+  [10/17/2026 3:06:31 AM] id=410 Device ACPI\PNP0501\1 was started. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Service: Serial | Lower Filters:  | Upper Filters: serenum
+  [10/17/2026 3:06:25 AM] id=430 Device ACPI\PNP0501\1 requires further installation.
+=== t5 inf-deploy fix 2026-10-23T17:36:32.0848246-07:00 ===
+seeded ConfigFlags=0 (DWORD) + HardwareID=VPNVA (MULTI_SZ)
+  
+Capabilities ContainerID                            ConfigFlags HardwareID
+------------ -----------                            ----------- ----------
+           0 {00000000-0000-0000-FFFF-FFFFFFFFFFFF}           0 {VPNVA}   
+
+
+
+--- pnputil /restart-device ROOT\VPNVA\0000 ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\VPNVA\0000
+  Device restarted successfully.
+  
+--- checks ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+
+Name                                  InterfaceDescription                       Status       MediaConnectState ifIndex
+----                                  --------------------                       ------       ----------------- -------
+6to4 Adapter                                                                     Not Present                  0       2
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up                           1       5
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present                  0       3
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected                 0      11
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected                 0      10
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected                 0       7
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected                 0      12
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected                 0       8
+Local Area Connection* 6              WAN Miniport (IP)                          Up                           1      14
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up                           1       6
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up                           1      13
+Microsoft IP-HTTPS Platform Interface                                            Not Present                  0       4
+Teredo Tunneling Pseudo-Interface                                                Not Present                  0       9
+
+
+
+--- sc query vpnva ---
+  [SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+  
+  The specified service does not exist as an installed service.
+  
+--- driverquery rows ---
+  "t5_vpnva","t5_vpnva","t5_vpnva","Kernel ","Manual","Stopped","OK","FALSE","FALSE","8,192","32,768","0","12/14/2021 11:47:57 AM","\??\C:\Windows\System32\drivers\vpnva64-6.sys","4,096"
+--- devnode properties ---
+  DEVPKEY_Device_ProblemCode = 0
+  DEVPKEY_Device_ProblemStatus = 
+  DEVPKEY_Device_DriverInfPath = 
+  DEVPKEY_Device_Service = 
+  DEVPKEY_Device_ClassGuid = 
+--- Kernel-PnP/Configuration log (last 8) ---
+  [10/23/2026 5:35:46 PM] id=430 Device ROOT\VPNVA\0000 requires further installation.
+  [10/23/2026 5:35:46 PM] id=420 Device ROOT\T5VPNVA2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 5:35:45 PM] id=420 Device ROOT\T5VPNVA\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/17/2026 4:55:37 AM] id=410 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [10/17/2026 4:55:37 AM] id=400 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [10/17/2026 4:55:37 AM] id=420 Device SWD\PRINTENUM\{101D3A8E-C67A-4757-95CD-2E8FF9492833} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}

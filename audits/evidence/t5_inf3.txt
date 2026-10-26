@@ -1,0 +1,99 @@
+=== t5 inf3 2026-10-23T17:38:10.2208381-07:00 ===
+=== Attempt B: pnputil /scan-devices (trigger pending INF install) ===
+  Microsoft PnP Utility
+  
+  Scanning for device hardware changes.
+  Scan complete.
+  
+--- checks: after scan-devices ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+  DEVPKEY_Device_ProblemCode = 0
+  DEVPKEY_Device_ProblemStatus = 
+  DEVPKEY_Device_DriverInfPath = 
+  DEVPKEY_Device_Service = 
+  DEVPKEY_Device_ClassGuid = 
+Attempt B failed (Service still empty) -> Attempt C
+=== Attempt C: hand-built driver key ===
+  driver key: HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\0010
+  built (NetCfgInstanceId={953e2ede-f451-4739-b6b7-6f986dfdd47f})
+  enum key linked (Driver={4d36e972-e325-11ce-bfc1-08002be10318}\0010, Class=Net, Service=t5_vpnva)
+  service t5_vpnva: Group=NDIS added
+--- sc start t5_vpnva (reload after earlier stop) ---
+  
+  SERVICE_NAME: t5_vpnva 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+          PID                : 0
+          FLAGS              : 
+--- pnputil /restart-device ROOT\VPNVA\0000 (2nd attempt with driver key) ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\VPNVA\0000
+  Device restarted successfully.
+  
+--- checks: after hand-built driver key ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+  DEVPKEY_Device_ProblemCode = 31
+  DEVPKEY_Device_ProblemStatus = 3221225473
+  DEVPKEY_Device_DriverInfPath = 
+  DEVPKEY_Device_Service = t5_vpnva
+  DEVPKEY_Device_ClassGuid = 
+--- Get-NetAdapter -IncludeHidden ---
+
+Name                                  InterfaceDescription                       Status       MediaConnectState ifIndex
+----                                  --------------------                       ------       ----------------- -------
+6to4 Adapter                                                                     Not Present                  0       2
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up                           1       5
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present                  0       3
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected                 0      11
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected                 0      10
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected                 0       7
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected                 0      12
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected                 0       8
+Local Area Connection* 6              WAN Miniport (IP)                          Up                           1      14
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up                           1       6
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up                           1      13
+Microsoft IP-HTTPS Platform Interface                                            Not Present                  0       4
+Teredo Tunneling Pseudo-Interface                                                Not Present                  0       9
+
+
+
+--- sc query t5_vpnva ---
+  
+  SERVICE_NAME: t5_vpnva 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+--- driverquery rows ---
+  "t5_vpnva","t5_vpnva","t5_vpnva","Kernel ","Manual","Stopped","OK","FALSE","FALSE","8,192","32,768","0","12/14/2021 11:47:57 AM","\??\C:\Windows\System32\drivers\vpnva64-6.sys","4,096"
+--- Kernel-PnP/Configuration log (last 8) ---
+  [10/23/2026 5:35:46 PM] id=430 Device ROOT\VPNVA\0000 requires further installation.
+  [10/23/2026 5:35:46 PM] id=420 Device ROOT\T5VPNVA2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 5:35:45 PM] id=420 Device ROOT\T5VPNVA\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/17/2026 4:55:37 AM] id=410 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [10/17/2026 4:55:37 AM] id=400 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [10/17/2026 4:55:37 AM] id=420 Device SWD\PRINTENUM\{101D3A8E-C67A-4757-95CD-2E8FF9492833} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}

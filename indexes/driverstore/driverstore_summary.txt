@@ -1,0 +1,28 @@
+﻿DriverStore inventory: 435 files
+Unique hashes: 427
+Already in existing 94: 84
+Microsoft/inbox: 362
+On LOLDrivers: 
+NEW valid non-Microsoft candidates: 34
+New candidates loaded right now: 8
+New candidates size: 16 MB
+
+By suggested tier:
+  Tier 1: 5
+  Tier 2: 13
+  Tier 4: 16
+
+By vendor (top 25):
+  National Instruments Corporation: 10
+  NVIDIA Corporation: 9
+  Razer Inc: 4
+  Apple Inc.: 2
+  Windows (R) Win 7 DDK provider: 1
+  The OpenVPN Project: 1
+  IVI Foundation: 1
+  Belcarra Technologies 2005: 1
+  Realtek Semiconductor Corporation                           : 1
+  Corsair Memory, Inc.: 1
+  Broadcom Inc.: 1
+  namazso: 1
+  Oracle and/or its affiliates: 1

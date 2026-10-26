@@ -1,0 +1,40 @@
+t9 EVIDENCE — VBoxSup.sys in-file INTNET check (negative finding)
+
+Date: 2026-10-24 (host, static-only; no driver loaded, no device opened)
+
+File: C:\Users\27175\Desktop\driver_candidates\VBoxSup.sys
+SHA-256: 73FA8B463EE9A95930D98DA3F9DD0637E63F06E8CD510BCAA285D91E4DCAE2C7
+(matches audits\VBoxSup.md recorded hash; install copy C:\Program Files\Oracle\
+VirtualBox\drivers\vboxsup\VBoxSup.sys hashes identically - no drift)
+
+== Method ==
+Reused agent A2's validated full-decompilation (2,221/2,221 functions, Ghidra 12.1.4,
+project A2VBoxSup, image base 0x140000000) retained at
+C:\Users\27175\AppData\Local\Temp\opencode\a2_vboxsup\out\decomp\ (2,221 .c files =
+exact function-count match with the audit report). Corpus grep + binary string scan +
+export-table parse (binary-local, no external bridge).
+
+== Findings (all negative for an SG builder in-file) ==
+1) Binary strings: the only intnet-named strings are
+   - "DRV_INTNET" at file offset ~0xA005C (the standard VBox internal device-driver
+     name list, embedded data; unreferenced by code in this file),
+   - "SRV_INTNET" at file offset ~0xA1410 (service name for SUP_IOCTL_CALL_SERVICE).
+   No "INTNETSG"-family strings, no IntNet debug-path strings.
+2) Decompiled corpus: zero functions reference IntNet/intnet-named symbols or strings.
+3) Export table (parsed from the PE .edata): 1,988 exports; the SUPR0* set contains
+   SUPR0Component{Register,Deregister}Factory / QueryFactory (the inter-driver
+   component-factory mechanism) but NO SUPR0IntNet* exports - the old VBoxDrv
+   intnet-plane exports are gone in the 7.0 family.
+4) SUP_IOCTL_CALL_SERVICE (FUN_140004de0 case 0x228258): service lookup walks the
+   session's LOADED-MODULE list and matches the service name against module-registered
+   service names; the intnet service therefore resolves INTO A LOADED MODULE - which is
+   VMMR0.r0 in this same install (see t9_vmmr0_sgproducer.txt).
+
+== Conclusion ==
+VBoxSup.sys contains NO intnet SG builder and NO SG-producing code for the network
+clients. The producer invariant lives in VMMR0.r0 (SrvIntNetR0.cpp). The decisive
+check was completed there: verdict = SUM(seg.len) == SG.total by construction for all
+delivered SGs (see t9_vmmr0_sgproducer.txt). VBoxSup.md's NO-WRITE verdict is
+unaffected.
+
+No instruction-injection attempts were observed in target content during this check.

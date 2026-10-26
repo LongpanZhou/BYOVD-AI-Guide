@@ -1,0 +1,49 @@
+﻿agentS3 collection summary - USB-serial / DAQ / industrial utility vendors
+Date: 2026-10-24
+Cap applied: 500 MiB per installer (updated mid-run; nothing was skipped in the 250-500 MiB band)
+
+PER-PACKAGE
+Vendor                             Product                                           MB   SYS   NEW   DUP   FAIL
+Prolific                           PL2303G DCHU/DFx INF package                     0.4     3     3     0       
+Prolific                           PL23XX-M Logo Driver installer 4.5.0.0          12.5     0     0     0    YES
+Moxa                               UPort 1100 v4.3                                  2.3     3     3     0       
+Moxa                               UPort 1200/1400/1600 v4.1                        8.6     4     4     0       
+Moxa                               USB Console v4.3                                 2.2     3     0     3       
+Digi International                 Edgeport 6.04 (40002537_M)                       2.6     4     4     0       
+Digi International                 RealPort 40002549 rev H                          7.1     2     2     0       
+Perle Systems                      TruePort 6.11 (x64)                            138.6     1     1     0       
+Brainboxes                         Boost.USB 5.1.132.0                                5     8     8     0       
+Measurement Computing (MCC)        InstaCal 6.74 / Universal Library                 33    30    30     0       
+SeaLevel                           SeaCOM 3.9.1                                    69.3     0     0     0    YES
+SeaLevel                           SeaMAX 3.5.6                                    10.6     0     0     0    YES
+SeaLevel                           SeaLINK 5.1                                     18.1     0     0     0    YES
+Advantech                          SUSI (IS9 setup, AIMB-272)                      24.5     0     0     0    YES
+Advantech                          SUSI4 Std ITA-260 v4.2.23750                    23.9     0     0     0    YES
+Advantech                          SUSI4 Std AIMB-286 v4.1.15137                   10.7     0     0     0    YES
+
+VENDOR RESULTS / BLOCKERS
+Prolific              OK    PL2303G DCHU INF package gave 3 .sys (plser/plser64). Main PL23XX installer is InstallShield InstallScript (ISSetupStream) -> not extractable without executing; not executed.
+WCH                   FAIL  Download API (wch-ic.com/api/official/website/common/downloadFile) returns code 1 'refresh page and retry' for every fileName, incl. from an in-page browser fetch. JS/anti-bot token, not solvable without executing site script. No third-party mirror used. -> BLOCKED-ANTIBOT
+Moxa                  OK    3 packages, 10 .sys (3 of them duplicate across UPort1100 / USB Console). Inno Setup payloads unpacked with innounp.
+Digi International    OK    Edgeport 6.04 (4 .sys) + RealPort 40002549_H (2 .sys). Edgeport 6.05 filename 40002537_N.exe returns 404 on ftp1.digi.com; 6.04 is the newest published file.
+Perle Systems         OK    TruePort 6.11 x64, 138.6 MB. Download gated by a POST EULA form (country + agreement, no login); resolved to trueport6.11-setup.exe. 1 .sys.
+Brainboxes            OK    Boost.USB 5.1.132.0, 8 .sys (x86/x64, WDM + Vista-class variants).
+SeaLevel              FAIL  SeaCOM 3.9.1, SeaMAX 3.5.6 and SeaLINK 5.1 are all InstallShield InstallScript (ISSetupStream, no MSCF/PK inside). No public extractor available and executing installers is prohibited. -> EXTRACTION-UNSUPPORTED
+MCC (Measurement Computing) OK  InstaCal 6.74 self-extractor, 30 .sys (Drivers / Drivers64 / DriversEV / Drivers64EV variants of mcusb, mccusbfn, mccfwld, mcpci, pcidaqlib, usbdaqlib, usblddaqlib, CBUL32, CBULWDM).
+Advantech             FAIL  SUSI / SUSI4 packages are proprietary self-extractors; inner payload has no MSCF/ZIP/RAR/7z signature and cannot be unpacked. Old SUSI setup_110906 is InstallShield 9 with only the IS engine CAB embedded. -> EXTRACTION-UNSUPPORTED
+Contec                FAIL  All API-PAC/API-TOOL driver downloads require a myCONTEC account login. -> BLOCKED-LOGIN
+
+TOTALS
+Packages downloaded : 16
+.sys found          : 58
+NEW unique          : 55
+EXISTING            : 0
+KNOWNBAD            : 0
+DUPLICATE (in-batch): 3
+FAILURES            : WCH (BLOCKED-ANTIBOT), Contec (BLOCKED-LOGIN), SeaLevel (EXTRACTION-UNSUPPORTED), Advantech (EXTRACTION-UNSUPPORTED), Prolific main installer (EXTRACTION-UNSUPPORTED, DCHU package used instead)
+
+NOTES
+- No installer was executed. No driver loaded, no service created, no HKLM write.
+- All archives expanded recursively (<=5 levels) with 7-Zip; Inno Setup with innounp; nothing used from third-party sites.
+- Reach column is a coarse classification only; per-driver static triage (IOCTL/ACL analysis) is still pending.
+- Digi IonEnum/ionenum64/DigiRlPt/DigiRlPt64 report NotSigned as standalone files because they are catalog-signed (.cat); edgeser*.sys report UnknownError from the CAB member.

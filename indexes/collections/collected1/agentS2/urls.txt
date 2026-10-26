@@ -1,0 +1,11 @@
+Vendor	Product	DownloadURL	InstallerMB	Notes
+Fanatec	Fanatec App 1.6.1.3 (WiX Burn, contains Fanatec_64_driver.msi)	https://www3.corsair.com/Files/Fanatec/App/FanatecAppInstaller_v1_6_1_3.zip	440.38	Official fanatec.com software page; extracted via dark.exe; no .sys inside (firmware only)
+Fanatec	Fanatec Driver V474 (legacy)	https://www3.corsair.com/Files/Fanatec/Drivers/474/2025.08.08-Fanatec_Driver_474.zip	652.19	SKIPPED-OVER-500MiB (exceeds 500 MiB cap) - not downloaded
+MOZA Racing	MOZA Pit House 1.3.5.36 offline installer	https://ace.gudsen.vip/racing/cdn/indirect/63a5273b-749d-4cc6-9f69-2fc45cecf11f	490.11	Official link on https://mozaracing.com/pages/download-center (redirects to cdn.gudsen.vip signed URL)
+Simagic	SimPro Manager V3.2.3	https://service.simagic.com/software/websiteDownLoad	412.63	Official download button on https://www.simagic.com/pages/download-center; requires Referer header; no .sys inside
+Asetek SimSports	RaceHub 4.5.1	https://download.aseteksimsports.com/racehub/RaceHub%E2%84%A2-4.5.1-Setup.exe	113.73	Official page https://www.asetek.com/simsports/racehub/
+Heusinkveld	SmartControl 26.02.5	https://cdn.heusinkveld.com/wp-content/uploads/2026/02/Heusinkveld-SmartControl-Setup-26.02.5.zip	48.71	Official https://heusinkveld.com/downloads/ ; Inno Setup; no .sys inside
+Virpil	VPC Software Suite V20260901	https://support.virpil.com/helpdesk/attachments/47440999987	15.13	Official article https://support.virpil.com/en/support/solutions/articles/47001304183-vpc-software-setup-v20260901 ; Inno Setup; no .sys inside
+VKB	VKBDevCfg-C v0.93.89	https://cdn.shopify.com/s/files/1/0808/7827/2731/files/VKBDevCfg-C_v0.93.89.zip	11.06	Official https://vkbsimcontrollers.com/pages/downloads ; no .sys inside
+Thrustmaster	PC Force Feedback Driver package 2026_TTRS_2.exe	https://ts.thrustmaster.com/download/pub/webupdate/T500RS/2026_TTRS_2.exe	48.48	Official https://support.thrustmaster.com/en/product/t300rs/ ; InstallShield payload could not be unpacked (7z/innounp/dark/expand all fail, unshield unavailable)
+Honeycomb Aeronautical	Downloads page (no software/driver package linked)	https://flyhoneycomb.com/pages/downloads	0	NO-DRIVER-PACKAGE-FOUND: page lists only Canto-hosted profiles/docs and Aerosoft FSX/X-Plane add-ons

@@ -1,0 +1,6 @@
+workdir exists: True
+alive marker written: True
+csc present: True
+kd present: False / path check: False
+whoami: desktop-s76bgqm\vmdebug
+t1-t6 work dirs present (read-only check, DO NOT TOUCH): driver_batch1 processhacker-2.39-bin PTView t6_work t7_work

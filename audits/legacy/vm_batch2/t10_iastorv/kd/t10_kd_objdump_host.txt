@@ -1,0 +1,5 @@
+kd objdump start 2026-10-24T03:40:35.4806558-04:00
+kd pid=24024
+kd exited rc=-2147024809
+--- transcript ---
+  Opened log file 'C:\Users\27175\Desktop\driver_candidates\_vm_batch2\t10_iastorv\kd\t10_kd_objdump.log'

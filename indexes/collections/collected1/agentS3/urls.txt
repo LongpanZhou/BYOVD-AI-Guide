@@ -1,0 +1,54 @@
+# Official vendor download URLs used by agentS3 (USB-serial / DAQ / industrial utility)
+# All URLs are official vendor domains only. No third-party mirrors.
+
+## Prolific
+https://www.prolific.com.tw/wp-content/uploads/2025/09/PL23XX-M_LogoDriver_Setup_4500.zip
+https://www.prolific.com.tw/wp-content/uploads/2026/01/PL2303G_DCHU_DFx.zip
+https://www.prolific.com.tw/en/portfolio-item/pl2303gs/            # download page
+
+## WCH (CH340/CH341)
+https://www.wch-ic.com/downloads/CH341SER_EXE.html                  # product page (SPA)
+https://www.wch-ic.com/api/official/website/common/downloadFile?fileName=CH341SER.ZIP   # BLOCKED: JS/anti-bot token
+https://www.wch-ic.com/api/official/website/common/search?searchStr=CH341SER            # metadata only
+
+## Moxa
+https://cdn-cms-frontdoor-dfc8ebanh6bkb3hs.a02.azurefd.net/getmedia/778d91c9-e7c0-449c-a37a-720807d5211d/moxa-uport-1100-series-windows-11-and-windows-server-2022-whql-certified-driver-v4.3.zip
+https://cdn-cms-frontdoor-dfc8ebanh6bkb3hs.a02.azurefd.net/getmedia/1dca0e0f-418f-446d-9c36-d524428a1678/moxa-uport-1200-1400-1600-1200-g2-1400-g2-1600-8-g2-win-11-win-server-2022-later-whql-certified-driver-v4.1.zip
+https://cdn-cms-frontdoor-dfc8ebanh6bkb3hs.a02.azurefd.net/getmedia/0cf5a04f-9e64-4d73-9f1e-c9e135b161f6/moxa-usb-console-win-11-win-server-2022-to-2025-whql-certified-driver-v4.3.zip
+https://www.moxa.com/en/support/product-support/software-and-documentation?psid=118866   # download page
+
+## Digi International
+https://ftp1.digi.com/support/driver/40002537_M.exe                  # Edgeport 6.04
+https://ftp1.digi.com/support/driver/40002549_H.zip                  # RealPort 40002549 rev H
+https://www.digi.com/support/product-support/drivers
+
+## Perle Systems
+https://www.perle.com/downloads/trueport.shtml
+https://www.perle.com/downloads/software-download-agreement.aspx?id=TruePort-Windows11
+https://www.perle.com/downloads/software-download-agreement-submit   # POST -> trueport6.11-setup.exe
+
+## Brainboxes
+https://www.brainboxes.com/files/pages/support/faqs/drivers%20and%20firmware/Boost.USB-5.1.132.0.zip
+https://www.brainboxes.com/faq/where-can-i-find-the-latest-driver-for-my-us-or-vx-product-win10
+
+## SeaLevel
+https://www.sealevel.com/software-seacom-windows
+https://www.sealevel.com/content/uploads/Drivers/ss030901.exe        # SeaCOM 3.9.1 - EXTRACTION UNSUPPORTED
+https://www.sealevel.com/content/uploads/sx030506.exe               # SeaMAX 3.5.6 - EXTRACTION UNSUPPORTED
+https://www.sealevel.com/content/uploads/SL050100.exe               # SeaLINK 5.1 - EXTRACTION UNSUPPORTED
+
+## Measurement Computing (MCC)
+https://files.digilent.com/downloads/InstaCal/icalsetup.exe          # InstaCal 6.74
+https://www.mccdaq.com/Software-Downloads                            # redirects to digilent.com
+
+## Advantech
+https://www.advantech.com/en-us/support/details/driver?id=1-MV3RKD   # SUSI Software
+https://downloadt.advantech.com/download/downloadsr.aspx?File_Id=1-MV3TGP    # SUSI (old IS9) - EXTRACTION UNSUPPORTED
+https://www.advantech.com/en-us/support/details/software-api?id=1-2F6KWYD
+https://downloadt.advantech.com/download/downloadsr.aspx?File_Id=1-2F6KX2T   # SUSI4 ITA-260 - EXTRACTION UNSUPPORTED
+https://www.advantech.com/en-us/support/details/software-api?id=1-1OIQHJW
+https://downloadt.advantech.com/download/downloadsr.aspx?File_Id=1-1OIQHK4   # SUSI4 AIMB-286 - EXTRACTION UNSUPPORTED
+
+## Contec
+https://www.contec.com/download/list/driver-software/apipac/          # BLOCKED: myCONTEC login required
+https://www.contec.com/products-services/daq-control/pc-helper/daq-software/api-dio-wdm/support/

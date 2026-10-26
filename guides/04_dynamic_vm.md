@@ -1,0 +1,62 @@
+# Dynamic testing — only inside a disposable VM, only against your own pages
+
+> [!CAUTION]
+> **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
+> commands, paths, versions, and hashes against your own environment before relying on them.
+
+> Static analysis finds the primitive; you only need dynamic testing to *prove* it. This is where
+> the discipline matters: one driver at a time, snapshot first, and never a live system address.
+
+## 1. The VM rules of this repo
+
+- One test VM, one snapshot baseline, revert **before and after** every test batch.
+- One driver at a time: load it, exercise its IOCTL, unload it, *then* revert.
+- Credentials for the guest live in a local file (`VM_ACCESS.md`) that is .gitignored and
+  never leaves your machine.
+- The harness only writes to pages **you** allocated (`AllocateUserPhysicalPages`); it never
+  targets a live system address. Expected failure mode is a clean BSOD you can debug from the guest's dump.
+
+## 2. The harness pattern (this repo's `poc/dynamic/`)
+
+> [!NOTE]
+> The self-test harness and the `run_<driver>.ps1` wrappers are **not shipped** in this repo.
+> `poc/dynamic/` on `main` contains only the helper scripts (`get_privs.ps1`,
+> `grant_lockmem.ps1`, `list_minidumps.ps1`, `ObjList.cs`). Treat the block below as the shape to
+> implement, not something you can run as-is.
+
+```text
+ControlledIoctlSelfTest.exe
+├── allocate 3 PFNs            (SeLockMemoryPrivilege needed)
+├── map two via the driver's own IOCTL  (or per-driver config)
+├── fill page A with a pattern, zero-fill page B ── the two pages are *yours*
+├── poke the driver:           "copy PA(A) -> mappedVA(B)"
+└── verify:  pattern seen in B?  write primitive confirmed → finding recorded
+```
+
+Each driver gets a tiny `.ps1` wrapper (`run_<driver>.ps1`) that: create service → start →
+harness → stop → delete service → revert snapshot; the wrapper writes a log under
+`poc/dynamic/results/` so every claim in `audits/evidence/` has a file backing it.
+
+## 3. What can go wrong, and the countermeasure
+
+| Failure | Try this |
+|---|---|
+| `MapUserPhysicalPages` not permitted | use the driver's own PA→user mapping IOCTL as the mapper (fewer assumptions) |
+| Device open fails with error 2 (`ERROR_FILE_NOT_FOUND`) | the C# `CreateFileW` P/Invoke *must* set `CharSet.Unicode`, or the path is sent as garbage bytes |
+| Harness bugcheck | do NOT assume the driver is malicious — check the dump; in this repo two crashes were the harness's own field-order bug |
+| Driver loads but no device | verify the object-manager namespace and the service actually reported RUNNING |
+
+Pull the guest dump out (`C:\Windows\MEMORY.DMP`) and analyze it with WinDbg; this repo uses
+the `mcp-windbg` MCP server to run `!analyze -v` against the dump.
+
+## 4. Recording
+
+`poc/dynamic/results/<yyyy-mm-dd>/<driver>_<harness>.log` contains the raw harness output;
+`audits/evidence/` holds the "reproduction recipe" (down the syscall chain, exact IOCTLs).
+Static or dynamic, every finding ends in the same format per driver before it is merged:
+
+```
+Verdict: MW1 | reach=R2 setup=none write=W1 load=signed
+```
+
+The one-line "why" lives in `audits/STATUS.md`.

@@ -1,0 +1,7 @@
+
+        STATE              : 4  RUNNING 
+Status:                     Problem
+Problem Code:               28 (0x1C) [CM_PROB_FAILED_INSTALL]
+Problem Status:             0xC0000490
+
+

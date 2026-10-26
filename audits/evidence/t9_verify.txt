@@ -1,0 +1,298 @@
+t9_verify 2026-10-24T01:45:04.3416130-07:00
+--- qobj \Device filter VBox|adp|lwf|sup|t9 ---
+t9_poc start 2026-10-24T01:45:04.3671343-07:00
+qobj: begin dir=\Device filter=VBox|adp|lwf|sup|t9
+qobj: attrs built, opening
+qobj: open st=0x00000000
+qobj: iter 1 st=0x00000000 ret=96
+qobj: buf[0..95]=100012000000000080964c00000000000c000e000000000092964c000000000000000000000000000000000000000000000000000000000000000000000000003000300030003000300030003700650000004400650076006900630065000000
+qobj: e0 nlen=16 nptr=0x4C9680 tlen=12 tptr=0x4C9692
+qobj: e1 nlen=0 nptr=0x0 tlen=0 tptr=0x0
+qobj: e2 nlen=48 nptr=0x65003700300030 tlen=0 tptr=0x6500630069
+exit = -1073741819 (0xC0000005 = -1073741819 would be AV)
+--- sc / driverquery / netcfg final state ---
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+
+
+
+netcfg [-v] [-winpe] [-l <full-path-to-component-INF>] -c <p|s|c> 
+
+       -i <comp-id>
+
+    
+
+    -winpe installs TCP/IP, NetBIOS and Microsoft Client for Windows 
+
+           preinstallation environment
+
+    -l	   provides the location of INF
+
+    -c	   provides the class of the component to be installed (p == Protocol, 
+
+           s == Service, c == Client)
+
+    -i	   provides the component ID
+
+
+
+    The arguments must be passed in the order shown.
+
+
+
+    Examples:
+
+    
+
+    netcfg -l c:\oemdir\myprot.inf -c p -i myprot
+
+    
+
+        Installs protocol 'myprot' using c:\oemdir\myprot.inf
+
+
+
+    netcfg -c s -i MS_Server
+
+     
+
+        Installs service 'MS_Server'
+
+ 
+
+OR
+
+
+
+netcfg [-v] -winpe
+
+
+
+    Example:
+
+    
+
+    netcfg -v -winpe
+
+
+
+        Installs TCP/IP, NetBIOS, and Microsoft Client for Windows 
+
+        preinstallation environment
+
+
+
+OR
+
+
+
+netcfg [-v] -q <comp-id>
+
+
+
+    Example:
+
+    
+
+    netcfg -q MS_IPX
+
+    
+
+        Displays if component 'MS_IPX' is installed
+
+
+
+OR
+
+
+
+netcfg [-v] -u <comp-id>
+
+
+
+    Example:
+
+
+
+    netcfg -u MS_IPX
+
+
+
+        Uninstalls component 'MS_IPX'
+
+
+
+OR
+
+
+
+netcfg [-v] -s <a|n>
+
+
+
+    -s  provides the type of components to show (a == adapters, 
+
+        n == net components)
+
+
+
+    Example:
+
+    
+
+    netcfg -s n
+
+
+
+        Shows all installed net components
+
+
+
+OR
+
+
+
+netcfg [-v] -b <comp-id>
+
+
+
+    Example:
+
+
+
+    netcfg -b ms_tcpip
+
+
+
+        Shows binding paths containing 'MS_TCPIP'
+
+
+
+OR
+
+
+
+netcfg [-v] -m
+
+
+
+    Example:
+
+
+
+    netcfg -m 
+
+
+
+        Outputs the binding map to NetworkBindingMap.txt in the current directory.
+
+        -v will also display the binding map to the console.
+
+
+
+OR
+
+
+
+netcfg -d
+
+
+
+    Example:
+
+
+
+    netcfg -d
+
+
+
+        Performs a cleanup on all networking devices.
+
+		This will require a reboot.
+
+
+
+OR
+
+
+
+netcfg -x
+
+
+
+    Example:
+
+
+
+    netcfg -x
+
+
+
+        Performs a cleanup on networking devices, skipping those without physical
+
+        object names.
+
+		This will require a reboot.
+
+
+
+General Notes:
+
+  -v	Run in verbose (detailed) mode
+
+  -?	Displays this help information
+
+
+
+--- t9 files left in guest (t9_work only, per policy) ---
+t9_adp_created.txt
+t9_adp_probe.ps1
+t9_adp_probe.txt
+t9_alive.txt
+t9_bootstrap.ps1
+t9_bootstrap.txt
+t9_cleanup.ps1
+t9_cleanup.txt
+t9_deployed_hash.ps1
+t9_deployed_hash.txt
+t9_discover.ps1
+t9_discover.txt
+t9_install_adp.ps1
+t9_install_adp.txt
+t9_install_lwf.ps1
+t9_install_lwf.txt
+t9_lwf_fuzz.ps1
+t9_lwf_start_diag.ps1
+t9_lwf_start_diag.txt
+t9_lwf_start_levers.ps1
+t9_lwf_start_levers.txt
+t9_netcfg_retry.ps1
+t9_netcfg_retry.txt
+t9_phaseB_STAGED.txt
+t9_poc.cs
+t9_poc.exe
+t9_resume_state.ps1
+t9_resume_state.txt
+t9_stage.ps1
+t9_stage.txt
+t9_sup_names.ps1
+t9_sup_names.txt
+t9_sup_surface.txt
+t9_sup_surface2.txt
+t9_sup_surface3.txt
+t9_sup_surface4.txt
+t9_sup_surface5.txt
+t9_verify.ps1
+t9_verify.txt
+VBoxNetAdp6.cat
+VBoxNetAdp6.inf
+VBoxNetAdp6.sys
+VBoxNetLwf.cat
+VBoxNetLwf.inf
+VBoxNetLwf.sys
+VBoxSup.cat
+VBoxSup.inf
+VBoxSup.sys
+
+=== end verify ===

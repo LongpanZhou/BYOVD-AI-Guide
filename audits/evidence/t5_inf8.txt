@@ -1,0 +1,99 @@
+=== t5 inf8 2026-10-23T17:56:59.0597653-07:00 ===
+--- System events (last 40 min, all providers - driver/NDIS error hunt) ---
+  [10/23/2026 5:45:20 PM] id=20003 prov=Microsoft-Windows-UserPnp lvl=4
+      Driver Management has concluded the process to add Service vpnva for Device Instance ID ROOT\VPNVA\0000 with the following status: 0.
+  [10/23/2026 5:41:35 PM] id=7045 prov=Service Control Manager lvl=4
+      A service was installed in the system. |  | Service Name:  Cisco AnyConnect Virtual Miniport Adapter for Windows x64 | Service File Name:  \SystemRoot\System32\drivers\vpnva64-6.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+  [10/23/2026 5:38:59 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+  [10/23/2026 5:27:32 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+  [10/23/2026 5:27:14 PM] id=7045 prov=Service Control Manager lvl=4
+      A service was installed in the system. |  | Service Name:  t5_vpnva | Service File Name:  C:\Windows\System32\drivers\vpnva64-6.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+  [10/23/2026 5:19:56 PM] id=16 prov=Microsoft-Windows-Kernel-General lvl=4
+      The access history in hive \??\C:\ProgramData\Microsoft\Provisioning\Microsoft-Desktop-Provisioning-Sequence.dat was cleared updating 0 keys and creating 0 modified pages.
+--- bcdedit /enum {current} (READ-ONLY probe: is kernel debugging enabled?) ---
+  
+  Windows Boot Loader
+  -------------------
+  identifier              {current}
+  device                  partition=C:
+  path                    \Windows\system32\winload.efi
+  description             Windows 10
+  locale                  en-US
+  inherit                 {bootloadersettings}
+  recoverysequence        {1d685b81-2afd-11f0-bb07-c5499994433f}
+  displaymessageoverride  Recovery
+  recoveryenabled         Yes
+  testsigning             Yes
+  isolatedcontext         Yes
+  allowedinmemorysettings 0x15000075
+  osdevice                partition=C:
+  systemroot              \Windows
+  resumeobject            {1d685b7f-2afd-11f0-bb07-c5499994433f}
+  nx                      OptIn
+  bootmenupolicy          Standard
+  debug                   Yes
+--- bcdedit /dbgsettings (READ-ONLY probe) ---
+  key                     1.2.3.4
+  debugtype               NET
+  hostip                  192.168.121.1
+  port                    50001
+  dhcp                    Yes
+  The operation completed successfully.
+--- pnputil /restart-device (long wait for netcfg) ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\VPNVA\0000
+  Device restarted successfully.
+  
+--- checks ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+  DEVPKEY_Device_ProblemCode = 31
+  DEVPKEY_Device_ProblemStatus = 3221225473
+--- setupapi.dev.log tail (post-vpnva sections) ---
+                          {Install from INF Section - exit(0x00000000)} 17:45:20.985
+       dvi:                               {Install DEVICE exit (0x00000000)}
+       sto:                               {Configure Driver Package: c:\windows\system32\driverstore\filerepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf}
+       sto:                                    Source Filter  = Cisco.ndi.NTamd64
+       sto:                                    Target Filter  = ROOT\VPNVA\0000
+       inf:                                    Class GUID     = {4d36e972-e325-11ce-bfc1-08002be10318}
+       inf:                                    Class Options  = Configurable
+       inf:                                    {Configure Driver: Cisco AnyConnect Virtual Miniport Adapter for Windows x64}
+       inf:                                         Section Name = Cisco.ndi.NTamd64
+       inf:                                         {Configure Device: ROOT\VPNVA\0000}
+       inf:                                         {Configure Device: exit(0x00000000)}
+       inf:                                    {Configure Driver: exit(0x00000000)}
+       sto:                               {Configure Driver Package: exit(0x00000000)}
+       dvi:                               Install Device: Configuring device class. 17:45:20.992
+       dvi:                               Install Device: Configuring device class completed. 17:45:20.992
+       dvi:                               Device Status: 0x01802401 [0x38 - 0xc0000001]
+       dvi:                               Install Device: Starting device 'ROOT\VPNVA\0000'. 17:45:20.993
+       dvi:                               Install Device: Starting device completed. 17:45:20.996
+  !    dvi:                               Device pending start: Device has problem: 0x38 (CM_PROB_NEED_CLASS_CONFIG), problem status: 0xc0000001.
+       dvi:                          Default installer: Exit
+       dvi:                     {DIF_INSTALLDEVICE - exit(0x00000000)} 17:45:20.997
+       dvi:                     Device Status: 0x01802401 [0x38]
+       dvi:                     {DIF_NEWDEVICEWIZARD_FINISHINSTALL} 17:45:20.998
+       dvi:                          Default installer: Enter 17:45:20.998
+       dvi:                          Default installer: Exit
+       dvi:                     {DIF_NEWDEVICEWIZARD_FINISHINSTALL - exit(0xe000020e)} 17:45:20.999
+       dvi:                {Install Device - exit(0x00000000)} 17:45:21.000
+       dvi:           {Core Device Install - exit(0x00000000)} 17:45:21.000
+       dvi:           Waiting for device post-install to complete. 17:45:21.001
+  !!!  dvi:           Timed out waiting for device post-install to complete. 17:49:06.001
+       ump:      {Plug and Play Service: Device Install exit(00000000)}
+       ndv: {Update Device Driver - exit(00000000)}
+       ndv: {Install Related Drivers} 17:49:06.006
+       ndv: {Install Related Drivers: exit(0x00000000)} 17:49:06.028
+  <<<  Section end 2026/10/23 17:49:06.030
+  <<<  [Exit status: SUCCESS]
+  
+  

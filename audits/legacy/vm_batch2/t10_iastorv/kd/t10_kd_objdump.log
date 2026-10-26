@@ -1,0 +1,36 @@
+Opened log file 'C:\Users\27175\Desktop\driver_candidates\_vm_batch2\t10_iastorv\kd\t10_kd_objdump.log'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.3916 AMD64
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Using NET for debugging
+Opened WinSock 2.0
+Port 50001 already in use by another process. Check for other running debugger instances and try again.
+Failed to initialize IPv6 socket.  Error 0n-2147467259
+Will attempt to connect on IPv4 only.
+Port 50001 already in use by another process. Check for other running debugger instances and try again.
+Failed to initialize IPv4 socket.  Error 0n-2147467259
+Kernel debugger failed initialization, HRESULT 0x80004005
+    "Unspecified error"

@@ -1,0 +1,93 @@
+=== t5 mkdev 2026-10-23T17:27:30.3328077-07:00 ===
+(a) enum keys T5VPNVA/T5VPNVA2 absent - OK
+(b) CM_Create_DevNodeW(ROOT\T5VPNVA\0000, parent=HTREE\ROOT\0, flags=0)
+CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+CM_Create_DevNodeW(ROOT\T5VPNVA\0000, flags=0) -> CR=0x0 devnode=0x2
+CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  poc exit=0
+(c) seeding enum key: HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T5VPNVA\0000
+  ConfigFlags=0 (DWORD), Class=Net, ClassGUID={4d36e972-...} (Net), DeviceDesc='t5 Cisco VPN VA', Service=t5_vpnva, HardwareID=ROOT\T5VPNVA (MULTI_SZ)
+(d) pnputil /restart-device ROOT\T5VPNVA\0000  (triggers AddDevice/MiniportInitializeEx -> NdisRegisterDeviceEx)
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\T5VPNVA\0000
+  Device restarted successfully.
+  
+  pnputil exit: 0
+--- quick surface check (Net-class devnode) ---
+CM_Locate_DevNodeW(ROOT\T5VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \Device filter VPNVA -> matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW -> exit=1 (0=open OK, 1=fail)
+
+Name                                  InterfaceDescription                       Status       MediaConnectState ifIndex
+----                                  --------------------                       ------       ----------------- -------
+6to4 Adapter                                                                     Not Present                  0       2
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up                           1       5
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present                  0       3
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected                 0      11
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected                 0      10
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected                 0       7
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected                 0      12
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected                 0       8
+Local Area Connection* 6              WAN Miniport (IP)                          Up                           1      14
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up                           1       6
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up                           1      13
+Microsoft IP-HTTPS Platform Interface                                            Not Present                  0       4
+Teredo Tunneling Pseudo-Interface                                                Not Present                  0       9
+
+
+
+--- Net-class devnode produced NO openable \Device\VPNVA -> trying System-class variant T5VPNVA2 ---
+CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+CM_Create_DevNodeW(ROOT\T5VPNVA2\0000, flags=0) -> CR=0x0 devnode=0x2
+CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  mkdev T5VPNVA2 exit=0
+  seeded T5VPNVA2: Class=System, ClassGUID={4d36e97d-...}, HardwareID=ROOT\T5VPNVA2, Service=t5_vpnva
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\T5VPNVA2\0000
+  Device restarted successfully.
+  
+CM_Locate_DevNodeW(ROOT\T5VPNVA2\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+NtOpenDirectoryObject(\Device) OK; entries=335; matches('VPNVA')=0; endStatus=0x8000001A
+
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW after T5VPNVA2 -> exit=1
+
+Name                                  InterfaceDescription                       Status       MediaConnectState ifIndex
+----                                  --------------------                       ------       ----------------- -------
+6to4 Adapter                                                                     Not Present                  0       2
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up                           1       5
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present                  0       3
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected                 0      11
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected                 0      10
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected                 0       7
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected                 0      12
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected                 0       8
+Local Area Connection* 6              WAN Miniport (IP)                          Up                           1      14
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up                           1       6
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up                           1      13
+Microsoft IP-HTTPS Platform Interface                                            Not Present                  0       4
+Teredo Tunneling Pseudo-Interface                                                Not Present                  0       9
+
+
+
+--- Kernel-PnP/Configuration log (last 12) ---
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER2\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/23/2026 4:57:19 PM] id=420 Device ROOT\T4SILABSER\0000 was deleted. |  | Class Guid: {00000000-0000-0000-0000-000000000000}
+  [10/17/2026 4:55:37 AM] id=410 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [10/17/2026 4:55:37 AM] id=400 Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [10/17/2026 4:55:37 AM] id=420 Device SWD\PRINTENUM\{101D3A8E-C67A-4757-95CD-2E8FF9492833} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+  [10/17/2026 3:06:31 AM] id=410 Device ACPI\PNP0501\1 was started. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Service: Serial | Lower Filters:  | Upper Filters: serenum
+  [10/17/2026 3:06:25 AM] id=430 Device ACPI\PNP0501\1 requires further installation.
+  [10/17/2026 3:06:25 AM] id=400 Device ACPI\PNP0501\1 was configured. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: ComPort.NT | Driver Rank: 0xFF0002 | Matching Device Id: *PNP0501 | Outranked Drivers:  | Device Updated: false | Parent Device: ACPI\PNP0A05\4&1bd7f811&0
+  [5/19/2025 1:22:28 PM] id=410 Device ROOT\VID\0000 was started. |  | Driver Name: wvid.inf | Class Guid: {4d36e97d-e325-11ce-bfc1-08002be10318} | Service: Vid | Lower Filters:  | Upper Filters: 
+  [5/10/2025 1:23:10 AM] id=410 Device SWD\MSDAS\{ce958e9a-424f-4c88-86f4-11314821e75a} was started. |  | Driver Name: c_swdevice.inf | Class Guid: {62f9c741-b25a-46ce-b54c-9bccce08b6f2} | Service:  | Lower Filters:  | Upper Filters: 
+  [5/10/2025 1:23:10 AM] id=400 Device SWD\MSDAS\{ce958e9a-424f-4c88-86f4-11314821e75a} was configured. |  | Driver Name: c_swdevice.inf | Class Guid: {62f9c741-b25a-46ce-b54c-9bccce08b6f2} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: SoftwareDevice | Driver Rank: 0xFF3000 | Matching Device Id: SWD\GenericRaw | Outranked Drivers:  | Device Updated: false | Parent Device: HTREE\ROOT\0
+  [5/9/2025 2:02:23 AM] id=410 Device ROOT\VID\0000 was started. |  | Driver Name: wvid.inf | Class Guid: {4d36e97d-e325-11ce-bfc1-08002be10318} | Service: Vid | Lower Filters:  | Upper Filters: 

@@ -1,0 +1,29 @@
+t7_cleanup 2026-10-23T22:23:48.5496384-07:00
+=== remove devnode ROOT\T7BXV\0000 ===
+Microsoft PnP Utility
+
+Removing device:          ROOT\T7BXV\0000
+Device removed successfully.
+
+
+=== remove leftover enum keys ===
+HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T7BXV already absent
+=== stop + delete t7_bxv service ===
+[SC] ControlService FAILED 1062:
+
+The service has not been started.
+
+
+[SC] DeleteService SUCCESS
+
+=== verification ===
+t7_bxv query: [SC] EnumQueryServicesStatus:OpenService FAILED 1060: |  | The specified service does not exist as an installed service. |  | 
+b06bdrv query (pre-existing, expect STOPPED untouched):  | SERVICE_NAME: b06bdrv  |         TYPE               : 1  KERNEL_DRIVER   |         STATE              : 1  STOPPED  |         WIN32_EXIT_CODE    : 1077  (0x435) |         SERVICE_EXIT_CODE  : 0  (0x0) |         CHECKPOINT         : 0x0 |         WAIT_HINT          : 0x0 | 
+vmci query (expect RUNNING):  | SERVICE_NAME: vmci  |         TYPE               : 1  KERNEL_DRIVER   |         STATE              : 4  RUNNING  |                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN) |         WIN32_EXIT_CODE    : 0  (0x0) |         SERVICE_EXIT_CODE  : 0  (0x0) |         CHECKPOINT         : 0x0 |         WAIT_HINT          : 0x0 | 
+vsock query (expect RUNNING):  | SERVICE_NAME: vsock  |         TYPE               : 1  KERNEL_DRIVER   |         STATE              : 4  RUNNING  |                                 (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN) |         WIN32_EXIT_CODE    : 0  (0x0) |         SERVICE_EXIT_CODE  : 0  (0x0) |         CHECKPOINT         : 0x0 |         WAIT_HINT          : 0x0 | 
+Enum\ROOT\T7BXV present: False
+DeviceClasses {2AF67184} present: False
+t7_poc start 2026-10-23T22:23:48.6936406-07:00
+t7 services remaining: 0
+t7_work kept: True
+=== end cleanup ===

@@ -1,0 +1,5 @@
+﻿label 0x68C00 fileoff 0x58000: [\Device\Ide]
+label 0x68C20 fileoff 0x58020: [\Device\Ide\iaStor%d]
+label 0x68CB0 fileoff 0x580B0: [\DosDevices\Scsi%d:]
+label 0x68CE0 fileoff 0x580E0: [\Device\ScsiPort%d]
+label 0x694C0 fileoff 0x588C0: [\Device\Ide\IAAStorageDevice-%d]

@@ -1,0 +1,52 @@
+agentS5 - RGB/fan vendor small-package hunt
+Cap: 500 MiB (524,288,000 bytes). All downloads official vendor domains only.
+
+[1] Cooler Master - MasterPlus+
+    URL    : https://coolermaster.egnyte.com/dd/J3FzMxaWXr
+    Landing: https://www.coolermaster.com/en-global/masterplus.html  (button -> https://linkto.cm/masterplus)
+    File   : packages\CoolerMaster_MasterPlusPlus_1.9.6.exe
+    Size   : 366,120,507 bytes (349.2 MiB) - FULL UTILITY (Inno Setup 6.1.0 inside SFX zip)
+    Result : extracted, 12 .sys, 6 NEW, 1 KNOWNBAD, 4 DUPLICATE, 1 AV-blocked
+
+[2] DeepCool - DeepCreative
+    URL    : https://deepcool.io/downloads/DeepCool-1.2.14-setup.exe
+    Landing: https://www.deepcool.com/downloadpage/  (API downloads.deepcool.com)
+    File   : packages\DeepCool_DeepCreative_1.2.14.exe
+    Size   : 509,638,120 bytes (486.0 MiB) - FULL UTILITY (NSIS -> Electron app-64.7z)
+    Result : extracted, 0 .sys
+
+[2b] DeepCool - Digital
+    URL    : https://repo-sg.deepcool.com/deepcool-digitalSetup1.1.7.exe
+    Landing: https://www.deepcool.com/downloadpage/  (API name=deepcool-digital)
+    File   : packages\DeepCool_Digital_1.1.7.exe
+    Size   : 68,981,032 bytes (65.8 MiB) - FULL UTILITY (NSIS -> Electron)
+    Result : extracted, 0 .sys
+
+[3] Lian Li - L-Connect 3
+    Latest : https://lianli-update-2025.lianli-cn.com/L3_CX/20260924-L-Connect%203-x64-v2.1.29-bc599de7.exe
+            1,515,066,872 bytes (1.41 GiB) - SKIPPED over cap
+    Used   : https://lianli-update.oss-cn-beijing.aliyuncs.com/L3_CX/L-Connect_3_V1.7.4_X64.ZIP
+    Landing: https://lian-li.com/l-connect3/
+    File   : packages\LianLi_LConnect3_v1.7.4_x64.zip
+    Size   : 109,271,660 bytes (104.2 MiB) - FULL UTILITY (zip -> NSIS -> app-64.7z Electron)
+    Result : extracted, 0 .sys
+
+[4] Thermaltake - TT RGB Plus
+    Latest : https://bit.ly/TTRGBPlusV310 -> 740,426,574 bytes (706 MiB) - SKIPPED over cap
+             https://bit.ly/TTRGBPlusV309 -> 691,554,331 bytes (660 MiB) - SKIPPED over cap
+    Used   : https://file.thermaltake.com/file/software/TTRGBPLUS_Setup_219_x64.zip
+    Landing: https://thermaltake.com/pages/downloads  (V2.19 button -> https://bit.ly/TTRGBPlusV219)
+    File   : packages\Thermaltake_TTRGBPlus_2.19_x64.zip
+    Size   : 162,195,532 bytes (154.7 MiB) - FULL UTILITY (zip -> NSIS)
+    Result : extracted; only TT021/TT039 *firmware* blobs named .sys (header "idisplay", not PE) - excluded as non-drivers
+
+[5] Kingston - FURY CTRL
+    URL    : https://media.kingston.com/kingston/support/downloads/FURYCTRL_Installer_2.0.66.0.zip
+    Landing: https://www.kingston.com/en/gaming/fury-ctrl
+    Result : FAILED - Cloudflare challenge (HTTP 403, Cf-Mitigated: challenge) on HEAD/GET/curl; not downloaded
+
+[6] ADATA / XPG - PRIME
+    Landing: https://prime.xpg.com/
+    Windows: button -> https://bit.ly/4j5gkfF -> https://get.microsoft.com/installer/download/XP8LX5KPLCLBGS (MS Store stub, not vendor domain)
+    macOS  : https://prime.xpg.com/files_assets/XPG_PRIME_MAC_V1.0.2.pkg - 343,017,818 bytes (327.1 MiB), macOS only
+    Result : NO Windows vendor-hosted installer; no Windows driver available

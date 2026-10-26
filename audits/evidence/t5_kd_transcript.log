@@ -1,0 +1,1138 @@
+21:00:32 
+21:00:32 ************* Preparing the environment for Debugger Extensions Gallery repositories **************
+21:00:32    ExtensionRepository : Implicit
+21:00:32    UseExperimentalFeatureForNugetShare : true
+21:00:32    AllowNugetExeUpdate : true
+21:00:32    NonInteractiveNuget : true
+21:00:32    AllowNugetMSCredentialProviderInstall : true
+21:00:32    AllowParallelInitializationOfLocalRepositories : true
+21:00:32 
+21:00:32    EnableRedirectToV8JsProvider : false
+21:00:32 
+21:00:32    -- Configuring repositories
+21:00:32       ----> Repository : LocalInstalled, Enabled: true
+21:00:32       ----> Repository : UserExtensions, Enabled: true
+21:00:32 
+21:00:32 >>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+21:00:32 
+21:00:32 ************* Waiting for Debugger Extensions Gallery to Initialize **************
+21:00:32 
+21:00:32 >>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.188 seconds
+21:00:32    ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+21:00:32    ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+21:00:32 
+21:00:32 Microsoft (R) Windows Debugger Version 10.0.26100.3916 AMD64
+21:00:32 Copyright (c) Microsoft Corporation. All rights reserved.
+21:00:32 
+21:00:32 Using NET for debugging
+21:00:32 Opened WinSock 2.0
+21:00:32 Kernel Debug Target Status: [no_debuggee]; Retries: [0] times in last [7] seconds.
+21:00:32 Waiting to reconnect...
+21:00:33 Connected to target 192.168.121.129 on port 50001 on local IP 192.168.121.1.
+21:00:33 You can get the target MAC address by running .kdtargetmac command.
+21:00:34 Connected to Windows 10 19041 x64 target at (Fri Oct 23 21:00:34.114 2026 (UTC - 4:00)), ptr64 TRUE
+21:00:34 Kernel Debugger connection established.
+21:00:34 
+21:00:34 ************* Path validation summary **************
+21:00:34 Response                         Time (ms)     Location
+21:00:34 Deferred                                       SRV*C:\Symbols*https://msdl.microsoft.com/download/symbols
+21:00:34 Symbol search path is: SRV*C:\Symbols*https://msdl.microsoft.com/download/symbols
+21:00:34 Executable search path is:
+21:00:34 Windows 10 Kernel Version 19041 MP (2 procs) Free x64
+21:00:34 Product: WinNt, suite: TerminalServer SingleUserTS
+21:00:34 Edition build lab: 19041.1.amd64fre.vb_release.191206-1406
+21:00:34 Kernel base = 0xfffff801`17c00000 PsLoadedModuleList = 0xfffff801`1882a420
+21:00:34 Debug session time: Fri Oct 23 21:00:33.662 2026 (UTC - 4:00)
+21:00:34 System Uptime: 0 days 0:51:20.741
+21:00:34 Break instruction exception - code 80000003 (first chance)
+21:00:34 *******************************************************************************
+21:00:34 *                                                                             *
+21:00:34 *   You are seeing this message because you pressed either                    *
+21:00:34 *       CTRL+C (if you run console kernel debugger) or,                       *
+21:00:34 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+21:00:34 *   on your debugger machine's keyboard.                                      *
+21:00:34 *                                                                             *
+21:00:34 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+21:00:34 *                                                                             *
+21:00:34 * If you did not intend to break into the debugger, press the "g" key, then   *
+21:00:34 * press the "Enter" key now.  This message might immediately reappear.  If it *
+21:00:34 * does, press "g" and "Enter" again.                                          *
+21:00:34 *                                                                             *
+21:00:34 *******************************************************************************
+21:00:34 nt!DbgBreakPointWithStatus:
+21:00:34 fffff801`18006f80 cc              int     3
+21:00:34 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_1
+21:00:34 0: kd> Windows 10 Kernel Version 19041 MP (2 procs) Free x64
+21:00:34 Product: WinNt, suite: TerminalServer SingleUserTS
+21:00:34 Edition build lab: 19041.1.amd64fre.vb_release.191206-1406
+21:00:34 Kernel base = 0xfffff801`17c00000 PsLoadedModuleList = 0xfffff801`1882a420
+21:00:34 Debug session time: Fri Oct 23 21:00:33.662 2026 (UTC - 4:00)
+21:00:34 System Uptime: 0 days 0:51:20.741
+21:00:34 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_2
+21:00:34 0: kd> rax=0000000000031101 rbx=ffffd40a3ce48a10 rcx=0000000000000001
+21:00:34 rdx=00000ab600000000 rsi=fffff8011427b610 rdi=0000000000000000
+21:00:34 rip=fffff80118006f80 rsp=fffff8011b328878 rbp=0000000000000000
+21:00:34  r8=00000000000001ec  r9=ffffd40a3bada000 r10=fffff80118006f80
+21:00:34 r11=0000000000000000 r12=fffff8011b328b10 r13=000000000001cb28
+21:00:34 r14=0000000000000000 r15=0000000000000000
+21:00:34 iopl=0         nv up ei pl nz na pe nc
+21:00:34 cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+21:00:34 nt!DbgBreakPointWithStatus:
+21:00:34 fffff801`18006f80 cc              int     3
+21:00:34 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_3
+21:00:39 0: kd> Browse full module list
+21:00:39 start             end                 module name
+21:00:39 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_4
+21:00:39 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_5
+21:00:39 0: kd> Couldn't resolve error at 'i ld:vpnva64-6'
+21:00:39 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_6
+21:02:36 0: kd> nt!DebugService2+0x5:
+21:02:36 fffff801`18006fd5 cc              int     3
+21:02:36 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_7
+21:02:36 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_8
+21:07:54 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_9
+21:07:54 0: kd> rax=0000000000000003 rbx=ffffb40050549220 rcx=ffffb40050549220
+21:07:54 rdx=ffffb400505491d0 rsi=ffffd40a4112d730 rdi=0000000000000100
+21:07:54 rip=fffff80118006fd5 rsp=ffffb400505491a8 rbp=ffffb400505492c0
+21:07:54  r8=0000000000000003  r9=ffffb400505491b8 r10=0000000000000000
+21:07:54 r11=0000000000001001 r12=ffffd40a4133bb00 r13=000000000000001f
+21:07:54 r14=ffffb40050549380 r15=0000000000000016
+21:07:54 iopl=0         nv up ei ng nz na pe nc
+21:07:54 cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b             efl=00040282
+21:07:54 nt!DebugService2+0x5:
+21:07:54 fffff801`18006fd5 cc              int     3
+21:07:54 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_10
+21:08:10 0: kd> Browse full module list
+21:08:10 start             end                 module name
+21:08:10 
+21:08:10 Unable to enumerate kernel-mode unloaded modules, HRESULT 0x80004005
+21:08:10 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_11
+21:08:10 0: kd>  # Child-SP          RetAddr               Call Site
+21:08:10 00 ffffb400`505491a8 fffff801`17f72825     nt!DebugService2+0x5
+21:08:10 01 ffffb400`505491b0 fffff801`17f727b7     nt!DbgLoadImageSymbols+0x45
+21:08:10 02 ffffb400`50549200 fffff801`1835bee1     nt!DbgLoadImageSymbolsUnicode+0x33
+21:08:10 03 ffffb400`50549240 fffff801`1835ba13     nt!MiDriverLoadSucceeded+0x18d
+21:08:10 04 ffffb400`505492e0 fffff801`1835b1f6     nt!MmLoadSystemImageEx+0x807
+21:08:10 05 ffffb400`50549480 fffff801`1833ce64     nt!MmLoadSystemImage+0x26
+21:08:10 06 ffffb400`505494c0 fffff801`1833ea96     nt!IopLoadDriver+0x23c
+21:08:10 07 ffffb400`50549690 fffff801`1833e7a6     nt!PipCallDriverAddDeviceQueryRoutine+0x1be
+21:08:10 08 ffffb400`50549720 fffff801`1833e164     nt!PnpCallDriverQueryServiceHelper+0xda
+21:08:10 09 ffffb400`505497d0 fffff801`1833d8f7     nt!PipCallDriverAddDevice+0x41c
+21:08:10 0a ffffb400`50549990 fffff801`18333f6a     nt!PipProcessDevNodeTree+0x333
+21:08:10 0b ffffb400`50549a60 fffff801`17f6fe5a     nt!PiRestartDevice+0xba
+21:08:10 0c ffffb400`50549ab0 fffff801`17e418f5     nt!PnpDeviceActionWorker+0x46a
+21:08:10 0d ffffb400`50549b70 fffff801`17f5d6e5     nt!ExpWorkerThread+0x105
+21:08:10 0e ffffb400`50549c10 fffff801`180065c8     nt!PspSystemThreadStartup+0x55
+21:08:10 0f ffffb400`50549c60 00000000`00000000     nt!KiStartSystemThread+0x28
+21:08:10 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_12
+21:08:30 0: kd> Bp expression 'vpnva64-6+0xe000' could not be resolved, adding deferred bp
+21:08:30 *** Bp expression 'vpnva64-6+0xe000' contains symbols not qualified with module name.
+21:08:30 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_13
+21:08:30 0: kd> Bp expression 'vpnva64-6+0xcc80' could not be resolved, adding deferred bp
+21:08:30 *** Bp expression 'vpnva64-6+0xcc80' contains symbols not qualified with module name.
+21:08:30 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_14
+21:08:30 0: kd> Bp expression 'vpnva64-6+0x4a3d' could not be resolved, adding deferred bp
+21:08:30 *** Bp expression 'vpnva64-6+0x4a3d' contains symbols not qualified with module name.
+21:08:30 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_15
+21:08:30 0: kd>      0 e Disable Clear u                      0001 (0001) (vpnva64-6+0xe000)
+21:08:30      1 e Disable Clear u                      0001 (0001) (vpnva64-6+0xcc80)
+21:08:30      2 e Disable Clear u                      0001 (0001) (vpnva64-6+0x4a3d)
+21:08:30 
+21:08:30 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_16
+21:08:41 0: kd> Bp expression 'vpnva64-6+0x4854' could not be resolved, adding deferred bp
+21:08:41 *** Bp expression 'vpnva64-6+0x4854' contains symbols not qualified with module name.
+21:08:41 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_17
+21:10:33 0: kd> Break instruction exception - code 80000003 (first chance)
+21:10:33 *******************************************************************************
+21:10:33 *                                                                             *
+21:10:33 *   You are seeing this message because you pressed either                    *
+21:10:33 *       CTRL+C (if you run console kernel debugger) or,                       *
+21:10:33 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+21:10:33 *   on your debugger machine's keyboard.                                      *
+21:10:33 *                                                                             *
+21:10:33 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+21:10:33 *                                                                             *
+21:10:33 * If you did not intend to break into the debugger, press the "g" key, then   *
+21:10:33 * press the "Enter" key now.  This message might immediately reappear.  If it *
+21:10:33 * does, press "g" and "Enter" again.                                          *
+21:10:33 *                                                                             *
+21:10:33 *******************************************************************************
+21:10:33 nt!DbgBreakPointWithStatus:
+21:10:33 fffff801`18006f80 cc              int     3
+21:10:33 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_18
+21:10:33 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_19
+21:10:33 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_20
+21:10:33 0: kd> Browse full module list
+21:10:33 start             end                 module name
+21:10:33 
+21:10:33 Unloaded modules:
+21:10:33 fffff801`13ac0000 fffff801`13ad2000   vpnva64-6.sys
+21:10:33 fffff801`13a30000 fffff801`13a42000   vpnva64-6.sys
+21:10:33 fffff801`13a10000 fffff801`13a22000   vpnva64-6.sys
+21:10:33 fffff801`139f0000 fffff801`13a02000   vpnva64-6.sys
+21:10:33 fffff801`139d0000 fffff801`139e2000   vpnva64-6.sys
+21:10:33 fffff801`139b0000 fffff801`139c2000   vpnva64-6.sys
+21:10:33 fffff801`13990000 fffff801`139a2000   vpnva64-6.sys
+21:10:33 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_21
+21:10:33 0: kd>  # Child-SP          RetAddr               Call Site
+21:10:33 00 fffff801`1b328878 fffff801`1cf825d4     nt!DbgBreakPointWithStatus
+21:10:33 01 fffff801`1b328880 ffffd40a`3ce48a10     0xfffff801`1cf825d4
+21:10:33 02 fffff801`1b328888 fffff801`1427b610     0xffffd40a`3ce48a10
+21:10:33 03 fffff801`1b328890 00000000`00000000     0xfffff801`1427b610
+21:10:33 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_22
+21:10:44 0: kd> Browse full module list
+21:10:44 start             end                 module name
+21:10:44 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_23
+21:10:44 0: kd> Loaded Module Info: [vpnva64-6]
+21:10:44 vpnva64-6 not found
+21:10:44 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_24
+21:12:14 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_25
+21:12:14 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_26
+21:12:19 0: kd> nt!DebugService2+0x5:
+21:12:19 fffff801`18006fd5 cc              int     3
+21:12:19 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_27
+21:14:05 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_28
+21:14:05 0: kd>  # Child-SP          RetAddr               Call Site
+21:14:05 00 ffffb400`505491a8 fffff801`17f72825     nt!DebugService2+0x5
+21:14:05 01 ffffb400`505491b0 fffff801`17f727b7     nt!DbgLoadImageSymbols+0x45
+21:14:05 02 ffffb400`50549200 fffff801`1835bee1     nt!DbgLoadImageSymbolsUnicode+0x33
+21:14:05 03 ffffb400`50549240 fffff801`1835ba13     nt!MiDriverLoadSucceeded+0x18d
+21:14:05 04 ffffb400`505492e0 fffff801`1835b1f6     nt!MmLoadSystemImageEx+0x807
+21:14:05 05 ffffb400`50549480 fffff801`1833ce64     nt!MmLoadSystemImage+0x26
+21:14:05 06 ffffb400`505494c0 fffff801`1833ea96     nt!IopLoadDriver+0x23c
+21:14:05 07 ffffb400`50549690 fffff801`1833e7a6     nt!PipCallDriverAddDeviceQueryRoutine+0x1be
+21:14:05 08 ffffb400`50549720 fffff801`1833e164     nt!PnpCallDriverQueryServiceHelper+0xda
+21:14:05 09 ffffb400`505497d0 fffff801`1833d8f7     nt!PipCallDriverAddDevice+0x41c
+21:14:05 0a ffffb400`50549990 fffff801`18333f6a     nt!PipProcessDevNodeTree+0x333
+21:14:05 0b ffffb400`50549a60 fffff801`17f6fe5a     nt!PiRestartDevice+0xba
+21:14:05 0c ffffb400`50549ab0 fffff801`17e418f5     nt!PnpDeviceActionWorker+0x46a
+21:14:05 0d ffffb400`50549b70 fffff801`17f5d6e5     nt!ExpWorkerThread+0x105
+21:14:05 0e ffffb400`50549c10 fffff801`180065c8     nt!PspSystemThreadStartup+0x55
+21:14:05 0f ffffb400`50549c60 00000000`00000000     nt!KiStartSystemThread+0x28
+21:14:05 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_29
+21:14:05 0: kd> Browse full module list
+21:14:05 start             end                 module name
+21:14:05 fffff801`13ae0000 fffff801`13af1000   vpnva64_6   (deferred)
+21:14:05 
+21:14:05 Unloaded modules:
+21:14:05 fffff801`13ac0000 fffff801`13ad2000   vpnva64-6.sys
+21:14:05 fffff801`13a30000 fffff801`13a42000   vpnva64-6.sys
+21:14:05 fffff801`13a10000 fffff801`13a22000   vpnva64-6.sys
+21:14:05 fffff801`139f0000 fffff801`13a02000   vpnva64-6.sys
+21:14:05 fffff801`139d0000 fffff801`139e2000   vpnva64-6.sys
+21:14:05 fffff801`139b0000 fffff801`139c2000   vpnva64-6.sys
+21:14:05 fffff801`13990000 fffff801`139a2000   vpnva64-6.sys
+21:14:05 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_30
+21:14:42 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_31
+21:14:42 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_32
+21:14:42 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_33
+21:14:42 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_34
+21:14:43 0: kd>      0 e Disable Clear  fffff801`13aee000     0001 (0001) vpnva64_6+0xe000
+21:14:43      1 e Disable Clear  fffff801`13aecc80     0001 (0001) vpnva64_6+0xcc80
+21:14:43      2 e Disable Clear  fffff801`13ae4854     0001 (0001) vpnva64_6+0x4854
+21:14:43      3 e Disable Clear  fffff801`13ae4a3d     0001 (0001) vpnva64_6+0x4a3d
+21:14:43 
+21:14:43 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_35
+21:14:50 0: kd> Breakpoint 0 hit
+21:14:50 vpnva64_6+0xe000:
+21:14:50 fffff801`13aee000 488bc4          mov     rax,rsp
+21:14:50 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_36
+21:14:51 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_37
+21:14:51 0: kd>  # Child-SP          RetAddr               Call Site
+21:14:51 00 ffffb400`50549458 fffff801`1836fff0     vpnva64_6+0xe000
+21:14:51 01 ffffb400`50549460 fffff801`1833d10d     nt!PnpCallDriverEntry+0x4c
+21:14:51 02 ffffb400`505494c0 fffff801`1833ea96     nt!IopLoadDriver+0x4e5
+21:14:51 03 ffffb400`50549690 fffff801`1833e7a6     nt!PipCallDriverAddDeviceQueryRoutine+0x1be
+21:14:51 04 ffffb400`50549720 fffff801`1833e164     nt!PnpCallDriverQueryServiceHelper+0xda
+21:14:51 05 ffffb400`505497d0 fffff801`1833d8f7     nt!PipCallDriverAddDevice+0x41c
+21:14:51 06 ffffb400`50549990 fffff801`18333f6a     nt!PipProcessDevNodeTree+0x333
+21:14:51 07 ffffb400`50549a60 fffff801`17f6fe5a     nt!PiRestartDevice+0xba
+21:14:51 08 ffffb400`50549ab0 fffff801`17e418f5     nt!PnpDeviceActionWorker+0x46a
+21:14:51 09 ffffb400`50549b70 fffff801`17f5d6e5     nt!ExpWorkerThread+0x105
+21:14:51 0a ffffb400`50549c10 fffff801`180065c8     nt!PspSystemThreadStartup+0x55
+21:14:51 0b ffffb400`50549c60 00000000`00000000     nt!KiStartSystemThread+0x28
+21:14:51 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_38
+21:15:28 0: kd> Break instruction exception - code 80000003 (first chance)
+21:15:28 *******************************************************************************
+21:15:28 *                                                                             *
+21:15:28 *   You are seeing this message because you pressed either                    *
+21:15:28 *       CTRL+C (if you run console kernel debugger) or,                       *
+21:15:28 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+21:15:28 *   on your debugger machine's keyboard.                                      *
+21:15:28 *                                                                             *
+21:15:28 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+21:15:28 *                                                                             *
+21:15:28 * If you did not intend to break into the debugger, press the "g" key, then   *
+21:15:28 * press the "Enter" key now.  This message might immediately reappear.  If it *
+21:15:28 * does, press "g" and "Enter" again.                                          *
+21:15:28 *                                                                             *
+21:15:28 *******************************************************************************
+21:15:28 nt!DbgBreakPointWithStatus:
+21:15:28 fffff801`18006f80 cc              int     3
+21:15:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_39
+21:15:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_40
+21:15:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_41
+21:15:28 0: kd>  # Child-SP          RetAddr               Call Site
+21:15:28 00 fffff801`1b328858 fffff801`1cf82bdd     nt!DbgBreakPointWithStatus
+21:15:28 01 fffff801`1b328860 ffffd40a`3ce48a10     0xfffff801`1cf82bdd
+21:15:28 02 fffff801`1b328868 fffff801`13447180     0xffffd40a`3ce48a10
+21:15:28 03 fffff801`1b328870 ffffd40a`3ce701c0     0xfffff801`13447180
+21:15:28 04 fffff801`1b328878 fffff801`00000002     0xffffd40a`3ce701c0
+21:15:28 05 fffff801`1b328880 00000000`00000000     0xfffff801`00000002
+21:15:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_42
+21:15:28 0: kd> rax=0000000000041e01 rbx=ffffd40a3ce48a10 rcx=0000000000000001
+21:15:28 rdx=00000dcd00000000 rsi=fffff80113447180 rdi=0000000000000080
+21:15:28 rip=fffff80118006f80 rsp=fffff8011b328858 rbp=0000000000000001
+21:15:28  r8=0000000000000130  r9=ffffd40a3bada000 r10=fffff80118006f80
+21:15:28 r11=0000000000000000 r12=fffff8011b328b10 r13=000000000001ed93
+21:15:28 r14=ffffd40a3ce5e4e0 r15=0000000000000000
+21:15:28 iopl=0         nv up ei pl nz na pe nc
+21:15:28 cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+21:15:28 nt!DbgBreakPointWithStatus:
+21:15:28 fffff801`18006f80 cc              int     3
+21:15:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_43
+21:18:23 0: kd> Break instruction exception - code 80000003 (first chance)
+21:18:23 *******************************************************************************
+21:18:23 *                                                                             *
+21:18:23 *   You are seeing this message because you pressed either                    *
+21:18:23 *       CTRL+C (if you run console kernel debugger) or,                       *
+21:18:23 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+21:18:23 *   on your debugger machine's keyboard.                                      *
+21:18:23 *                                                                             *
+21:18:23 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+21:18:23 *                                                                             *
+21:18:23 * If you did not intend to break into the debugger, press the "g" key, then   *
+21:18:23 * press the "Enter" key now.  This message might immediately reappear.  If it *
+21:18:23 * does, press "g" and "Enter" again.                                          *
+21:18:23 *                                                                             *
+21:18:23 *******************************************************************************
+21:18:23 nt!DbgBreakPointWithStatus:
+21:18:23 fffff801`18006f80 cc              int     3
+21:18:23 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_44
+21:18:23 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_45
+21:18:23 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_46
+21:18:23 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_47
+21:18:23 0: kd>              ^ Couldn't resolve 'x ndis'
+21:18:23 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_48
+21:18:23 0: kd> Browse full module list
+21:18:23 start             end                 module name
+21:18:24 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_49
+21:18:28 0: kd>              ^ Couldn't resolve 'x ndis'
+21:18:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_50
+21:18:52 0: kd> nt!PipCallDriverAddDeviceQueryRoutine:
+21:18:52 fffff801`1833e8d8 48895c2410      mov     qword ptr [rsp+10h],rbx
+21:18:52 fffff801`1833e8dd 4889742418      mov     qword ptr [rsp+18h],rsi
+21:18:52 fffff801`1833e8e2 48897c2420      mov     qword ptr [rsp+20h],rdi
+21:18:52 fffff801`1833e8e7 55              push    rbp
+21:18:52 fffff801`1833e8e8 4154            push    r12
+21:18:52 fffff801`1833e8ea 4155            push    r13
+21:18:52 fffff801`1833e8ec 4156            push    r14
+21:18:52 fffff801`1833e8ee 4157            push    r15
+21:18:52 fffff801`1833e8f0 488bec          mov     rbp,rsp
+21:18:52 fffff801`1833e8f3 4883ec60        sub     rsp,60h
+21:18:52 fffff801`1833e8f7 33c0            xor     eax,eax
+21:18:52 fffff801`1833e8f9 488d1df08d0900  lea     rbx,[nt! ?? ::NNGAKEGL::`string' (fffff801`183d76f0)]
+21:18:52 fffff801`1833e900 8945d4          mov     dword ptr [rbp-2Ch],eax
+21:18:52 fffff801`1833e903 0f57c0          xorps   xmm0,xmm0
+21:18:52 fffff801`1833e906 8945d0          mov     dword ptr [rbp-30h],eax
+21:18:52 fffff801`1833e909 0f57c9          xorps   xmm1,xmm1
+21:18:52 fffff801`1833e90c 884530          mov     byte ptr [rbp+30h],al
+21:18:52 fffff801`1833e90f 498bf9          mov     rdi,r9
+21:18:52 fffff801`1833e912 488945d8        mov     qword ptr [rbp-28h],rax
+21:18:52 fffff801`1833e916 8bf0            mov     esi,eax
+21:18:52 fffff801`1833e918 448be8          mov     r13d,eax
+21:18:52 fffff801`1833e91b 448ae0          mov     r12b,al
+21:18:52 fffff801`1833e91e 448bf8          mov     r15d,eax
+21:18:52 fffff801`1833e921 0f1145e0        movups  xmmword ptr [rbp-20h],xmm0
+21:18:52 fffff801`1833e925 0f114df0        movups  xmmword ptr [rbp-10h],xmm1
+21:18:52 fffff801`1833e929 83f901          cmp     ecx,1
+21:18:52 fffff801`1833e92c 0f852e010000    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x188 (fffff801`1833ea60)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x5a:
+21:18:52 fffff801`1833e932 4183f802        cmp     r8d,2
+21:18:52 fffff801`1833e936 0f8624010000    jbe     nt!PipCallDriverAddDeviceQueryRoutine+0x188 (fffff801`1833ea60)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x64:
+21:18:52 fffff801`1833e93c 488d4de0        lea     rcx,[rbp-20h]
+21:18:52 fffff801`1833e940 e8eb6bc0ff      call    nt!RtlInitUnicodeString (fffff801`17f45530)
+21:18:52 fffff801`1833e945 4c8b45e8        mov     r8,qword ptr [rbp-18h]
+21:18:52 fffff801`1833e949 418d575c        lea     edx,[r15+5Ch]
+21:18:52 fffff801`1833e94d 4533c9          xor     r9d,r9d
+21:18:52 fffff801`1833e950 41b601          mov     r14b,1
+21:18:52 fffff801`1833e953 418bc9          mov     ecx,r9d
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x7e:
+21:18:52 fffff801`1833e956 8bc1            mov     eax,ecx
+21:18:52 fffff801`1833e958 6641391440      cmp     word ptr [r8+rax*2],dx
+21:18:52 fffff801`1833e95d 0f84f9010000    je      nt!PipCallDriverAddDeviceQueryRoutine+0x284 (fffff801`1833eb5c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x8b:
+21:18:52 fffff801`1833e963 33db            xor     ebx,ebx
+21:18:52 fffff801`1833e965 448af3          mov     r14b,bl
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x90:
+21:18:52 fffff801`1833e968 4584f6          test    r14b,r14b
+21:18:52 fffff801`1833e96b 0f8570020000    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x309 (fffff801`1833ebe1)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x99:
+21:18:52 fffff801`1833e971 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`1833e974 66395838        cmp     word ptr [rax+38h],bx
+21:18:52 fffff801`1833e978 0f84c2550e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5668 (fffff801`18423f40)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xa6:
+21:18:52 fffff801`1833e97e 4533c9          xor     r9d,r9d
+21:18:52 fffff801`1833e981 885c2420        mov     byte ptr [rsp+20h],bl
+21:18:52 fffff801`1833e985 4c8d45d8        lea     r8,[rbp-28h]
+21:18:52 fffff801`1833e989 ba19000200      mov     edx,20019h
+21:18:52 fffff801`1833e98e 488d4de0        lea     rcx,[rbp-20h]
+21:18:52 fffff801`1833e992 e815060000      call    nt!PipOpenServiceEnumKeys (fffff801`1833efac)
+21:18:52 fffff801`1833e997 8bd8            mov     ebx,eax
+21:18:52 fffff801`1833e999 85c0            test    eax,eax
+21:18:52 fffff801`1833e99b 0f8802560e00    js      nt!PipCallDriverAddDeviceQueryRoutine+0xe56cb (fffff801`18423fa3)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xc9:
+21:18:52 fffff801`1833e9a1 4c8b7dd8        mov     r15,qword ptr [rbp-28h]
+21:18:52 fffff801`1833e9a5 488d55f0        lea     rdx,[rbp-10h]
+21:18:52 fffff801`1833e9a9 498bcf          mov     rcx,r15
+21:18:52 fffff801`1833e9ac e80f030000      call    nt!IopGetDriverNameFromKeyNode (fffff801`1833ecc0)
+21:18:52 fffff801`1833e9b1 8bd8            mov     ebx,eax
+21:18:52 fffff801`1833e9b3 85c0            test    eax,eax
+21:18:52 fffff801`1833e9b5 0f8813560e00    js      nt!PipCallDriverAddDeviceQueryRoutine+0xe56f6 (fffff801`18423fce)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe3:
+21:18:52 fffff801`1833e9bb c6453001        mov     byte ptr [rbp+30h],1
+21:18:52 fffff801`1833e9bf 33db            xor     ebx,ebx
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe9:
+21:18:52 fffff801`1833e9c1 488d4df0        lea     rcx,[rbp-10h]
+21:18:52 fffff801`1833e9c5 e82e020000      call    nt!IopReferenceDriverObjectByName (fffff801`1833ebf8)
+21:18:52 fffff801`1833e9ca 448b6550        mov     r12d,dword ptr [rbp+50h]
+21:18:52 fffff801`1833e9ce 488bf0          mov     rsi,rax
+21:18:52 fffff801`1833e9d1 488945d8        mov     qword ptr [rbp-28h],rax
+21:18:52 fffff801`1833e9d5 4885c0          test    rax,rax
+21:18:52 fffff801`1833e9d8 0f85f3000000    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x1f9 (fffff801`1833ead1)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x106:
+21:18:52 fffff801`1833e9de 4584f6          test    r14b,r14b
+21:18:52 fffff801`1833e9e1 754e            jne     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x10b:
+21:18:52 fffff801`1833e9e3 488b4de8        mov     rcx,qword ptr [rbp-18h]
+21:18:52 fffff801`1833e9e7 4c8d45d4        lea     r8,[rbp-2Ch]
+21:18:52 fffff801`1833e9eb 498bd7          mov     rdx,r15
+21:18:52 fffff801`1833e9ee e841070000      call    nt!PnpGetServiceStartType (fffff801`1833f134)
+21:18:52 fffff801`1833e9f3 448b75d4        mov     r14d,dword ptr [rbp-2Ch]
+21:18:52 fffff801`1833e9f7 8d4e04          lea     ecx,[rsi+4]
+21:18:52 fffff801`1833e9fa 85c0            test    eax,eax
+21:18:52 fffff801`1833e9fc 440f48f1        cmovs   r14d,ecx
+21:18:52 fffff801`1833ea00 4183fc03        cmp     r12d,3
+21:18:52 fffff801`1833ea04 0f856e010000    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x2a0 (fffff801`1833eb78)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x132:
+21:18:52 fffff801`1833ea0a 488b4708        mov     rax,qword ptr [rdi+8]
+21:18:52 fffff801`1833ea0e 443b30          cmp     r14d,dword ptr [rax]
+21:18:52 fffff801`1833ea11 0f870e560e00    ja      nt!PipCallDriverAddDeviceQueryRoutine+0xe574d (fffff801`18424025)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x13f:
+21:18:52 fffff801`1833ea17 385804          cmp     byte ptr [rax+4],bl
+21:18:52 fffff801`1833ea1a 7563            jne     nt!PipCallDriverAddDeviceQueryRoutine+0x1a7 (fffff801`1833ea7f)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x144:
+21:18:52 fffff801`1833ea1c 4585f6          test    r14d,r14d
+21:18:52 fffff801`1833ea1f 7410            je      nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x149:
+21:18:52 fffff801`1833ea21 498bcf          mov     rcx,r15
+21:18:52 fffff801`1833ea24 e8bbed0700      call    nt!PnpCheckPossibleBootStartDriver (fffff801`183bd7e4)
+21:18:52 fffff801`1833ea29 84c0            test    al,al
+21:18:52 fffff801`1833ea2b 0f841c010000    je      nt!PipCallDriverAddDeviceQueryRoutine+0x275 (fffff801`1833eb4d)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x159:
+21:18:52 fffff801`1833ea31 bb010000c0      mov     ebx,0C0000001h
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x15e:
+21:18:52 fffff801`1833ea36 448a6530        mov     r12b,byte ptr [rbp+30h]
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x162:
+21:18:52 fffff801`1833ea3a 4d85ff          test    r15,r15
+21:18:52 fffff801`1833ea3d 7408            je      nt!PipCallDriverAddDeviceQueryRoutine+0x16f (fffff801`1833ea47)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x167:
+21:18:52 fffff801`1833ea3f 498bcf          mov     rcx,r15
+21:18:52 fffff801`1833ea42 e809b2cbff      call    nt!ZwClose (fffff801`17ff9c50)
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x16f:
+21:18:52 fffff801`1833ea47 4584e4          test    r12b,r12b
+21:18:52 fffff801`1833ea4a 7409            je      nt!PipCallDriverAddDeviceQueryRoutine+0x17d (fffff801`1833ea55)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x174:
+21:18:52 fffff801`1833ea4c 488d4df0        lea     rcx,[rbp-10h]
+21:18:52 fffff801`1833ea50 e85b42ecff      call    nt!RtlFreeAnsiString (fffff801`18202cb0)
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x17d:
+21:18:52 fffff801`1833ea55 4885f6          test    rsi,rsi
+21:18:52 fffff801`1833ea58 0f85d5570e00    jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe595b (fffff801`18424233)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x186:
+21:18:52 fffff801`1833ea5e 8bc3            mov     eax,ebx
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x188:
+21:18:52 fffff801`1833ea60 4c8d5c2460      lea     r11,[rsp+60h]
+21:18:52 fffff801`1833ea65 498b5b38        mov     rbx,qword ptr [r11+38h]
+21:18:52 fffff801`1833ea69 498b7340        mov     rsi,qword ptr [r11+40h]
+21:18:52 fffff801`1833ea6d 498b7b48        mov     rdi,qword ptr [r11+48h]
+21:18:52 fffff801`1833ea71 498be3          mov     rsp,r11
+21:18:52 fffff801`1833ea74 415f            pop     r15
+21:18:52 fffff801`1833ea76 415e            pop     r14
+21:18:52 fffff801`1833ea78 415d            pop     r13
+21:18:52 fffff801`1833ea7a 415c            pop     r12
+21:18:52 fffff801`1833ea7c 5d              pop     rbp
+21:18:52 fffff801`1833ea7d c3              ret
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x1a7:
+21:18:52 fffff801`1833ea7f 8a5558          mov     dl,byte ptr [rbp+58h]
+21:18:52 fffff801`1833ea82 4c8d4dd0        lea     r9,[rbp-30h]
+21:18:52 fffff801`1833ea86 4183fc03        cmp     r12d,3
+21:18:52 fffff801`1833ea8a 498bcf          mov     rcx,r15
+21:18:52 fffff801`1833ea8d 410f95c0        setne   r8b
+21:18:52 fffff801`1833ea91 e892e1ffff      call    nt!IopLoadDriver (fffff801`1833cc28)
+21:18:52 fffff801`1833ea96 33d2            xor     edx,edx
+21:18:52 fffff801`1833ea98 8bd8            mov     ebx,eax
+21:18:52 fffff801`1833ea9a 448bfa          mov     r15d,edx
+21:18:52 fffff801`1833ea9d 448be8          mov     r13d,eax
+21:18:52 fffff801`1833eaa0 85c0            test    eax,eax
+21:18:52 fffff801`1833eaa2 0f88ab550e00    js      nt!PipCallDriverAddDeviceQueryRoutine+0xe577b (fffff801`18424053)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x1d0:
+21:18:52 fffff801`1833eaa8 41be6c0200c0    mov     r14d,0C000026Ch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x1d6:
+21:18:52 fffff801`1833eaae 381560615000    cmp     byte ptr [nt!PnPInitialized (fffff801`18844c14)],dl
+21:18:52 fffff801`1833eab4 0f851b010000    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x2fd (fffff801`1833ebd5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x1e2:
+21:18:52 fffff801`1833eaba 488d4df0        lea     rcx,[rbp-10h]
+21:18:52 fffff801`1833eabe e835010000      call    nt!IopReferenceDriverObjectByName (fffff801`1833ebf8)
+21:18:52 fffff801`1833eac3 488bf0          mov     rsi,rax
+21:18:52 fffff801`1833eac6 4885c0          test    rax,rax
+21:18:52 fffff801`1833eac9 0f84f2550e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe57e9 (fffff801`184240c1)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x1f7:
+21:18:52 fffff801`1833eacf 33db            xor     ebx,ebx
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x1f9:
+21:18:52 fffff801`1833ead1 8b4610          mov     eax,dword ptr [rsi+10h]
+21:18:52 fffff801`1833ead4 ba10000000      mov     edx,10h
+21:18:52 fffff801`1833ead9 84c2            test    dl,al
+21:18:52 fffff801`1833eadb 0f8450ffffff    je      nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x209:
+21:18:52 fffff801`1833eae1 488bce          mov     rcx,rsi
+21:18:52 fffff801`1833eae4 e8c3dbffff      call    nt!PnpIsLegacyDriver (fffff801`1833c6ac)
+21:18:52 fffff801`1833eae9 85c0            test    eax,eax
+21:18:52 fffff801`1833eaeb 0f850e570e00    jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe5927 (fffff801`184241ff)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x219:
+21:18:52 fffff801`1833eaf1 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`1833eaf4 8b882c010000    mov     ecx,dword ptr [rax+12Ch]
+21:18:52 fffff801`1833eafa 81e902030000    sub     ecx,302h
+21:18:52 fffff801`1833eb00 83f901          cmp     ecx,1
+21:18:52 fffff801`1833eb03 0f8728ffffff    ja      nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x231:
+21:18:52 fffff801`1833eb09 4a8d3ce7        lea     rdi,[rdi+r12*8]
+21:18:52 fffff801`1833eb0d 41b85070656e    mov     r8d,6E657050h
+21:18:52 fffff801`1833eb13 8d4af1          lea     ecx,[rdx-0Fh]
+21:18:52 fffff801`1833eb16 4803fa          add     rdi,rdx
+21:18:52 fffff801`1833eb19 e842562700      call    nt!ExAllocatePoolWithTag (fffff801`185b4160)
+21:18:52 fffff801`1833eb1e 4533e4          xor     r12d,r12d
+21:18:52 fffff801`1833eb21 488bc8          mov     rcx,rax
+21:18:52 fffff801`1833eb24 4885c0          test    rax,rax
+21:18:52 fffff801`1833eb27 0f84fc560e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5951 (fffff801`18424229)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x255:
+21:18:52 fffff801`1833eb2d 488930          mov     qword ptr [rax],rsi
+21:18:52 fffff801`1833eb30 418bf4          mov     esi,r12d
+21:18:52 fffff801`1833eb33 4c896008        mov     qword ptr [rax+8],r12
+21:18:52 fffff801`1833eb37 eb04            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x265 (fffff801`1833eb3d)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x261:
+21:18:52 fffff801`1833eb39 488d7808        lea     rdi,[rax+8]
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x265:
+21:18:52 fffff801`1833eb3d 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`1833eb40 4885c0          test    rax,rax
+21:18:52 fffff801`1833eb43 75f4            jne     nt!PipCallDriverAddDeviceQueryRoutine+0x261 (fffff801`1833eb39)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x26d:
+21:18:52 fffff801`1833eb45 48890f          mov     qword ptr [rdi],rcx
+21:18:52 fffff801`1833eb48 e9e9feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x275:
+21:18:52 fffff801`1833eb4d 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`1833eb50 c680b002000001  mov     byte ptr [rax+2B0h],1
+21:18:52 fffff801`1833eb57 e9d5feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x284:
+21:18:52 fffff801`1833eb5c 4883c302        add     rbx,2
+21:18:52 fffff801`1833eb60 ffc1            inc     ecx
+21:18:52 fffff801`1833eb62 0fb703          movzx   eax,word ptr [rbx]
+21:18:52 fffff801`1833eb65 0fb7d0          movzx   edx,ax
+21:18:52 fffff801`1833eb68 6685c0          test    ax,ax
+21:18:52 fffff801`1833eb6b 0f85e5fdffff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x7e (fffff801`1833e956)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x299:
+21:18:52 fffff801`1833eb71 33db            xor     ebx,ebx
+21:18:52 fffff801`1833eb73 e9f0fdffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x90 (fffff801`1833e968)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2a0:
+21:18:52 fffff801`1833eb78 381d3a635000    cmp     byte ptr [nt!PnPBootDriversInitialized (fffff801`18844eb8)],bl
+21:18:52 fffff801`1833eb7e 0f8586feffff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x132 (fffff801`1833ea0a)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2ac:
+21:18:52 fffff801`1833eb84 498bcf          mov     rcx,r15
+21:18:52 fffff801`1833eb87 e874003200      call    nt!PpInitGetGroupOrderIndex (fffff801`1865ec00)
+21:18:52 fffff801`1833eb8c 440fb7c0        movzx   r8d,ax
+21:18:52 fffff801`1833eb90 4c8d4dd8        lea     r9,[rbp-28h]
+21:18:52 fffff801`1833eb94 488d55f0        lea     rdx,[rbp-10h]
+21:18:52 fffff801`1833eb98 498bcf          mov     rcx,r15
+21:18:52 fffff801`1833eb9b e800ca3100      call    nt!PnpLoadBootFilterDriver (fffff801`1865b5a0)
+21:18:52 fffff801`1833eba0 33f6            xor     esi,esi
+21:18:52 fffff801`1833eba2 8bd8            mov     ebx,eax
+21:18:52 fffff801`1833eba4 85c0            test    eax,eax
+21:18:52 fffff801`1833eba6 0f8838540e00    js      nt!PipCallDriverAddDeviceQueryRoutine+0xe570c (fffff801`18423fe4)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2d4:
+21:18:52 fffff801`1833ebac 488b75d8        mov     rsi,qword ptr [rbp-28h]
+21:18:52 fffff801`1833ebb0 4885f6          test    rsi,rsi
+21:18:52 fffff801`1833ebb3 0f8436550e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5817 (fffff801`184240ef)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2e1:
+21:18:52 fffff801`1833ebb9 488bce          mov     rcx,rsi
+21:18:52 fffff801`1833ebbc e87fcdb8ff      call    nt!ObfReferenceObject (fffff801`17ecb940)
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2e9:
+21:18:52 fffff801`1833ebc1 41be6c0200c0    mov     r14d,0C000026Ch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2ef:
+21:18:52 fffff801`1833ebc7 4885f6          test    rsi,rsi
+21:18:52 fffff801`1833ebca 0f85fffeffff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x1f7 (fffff801`1833eacf)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2f8:
+21:18:52 fffff801`1833ebd0 e920550e00      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe581d (fffff801`184240f5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x2fd:
+21:18:52 fffff801`1833ebd5 33c9            xor     ecx,ecx
+21:18:52 fffff801`1833ebd7 e8d82a0300      call    nt!IopCallDriverReinitializationRoutines (fffff801`183716b4)
+21:18:52 fffff801`1833ebdc e9d9feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x1e2 (fffff801`1833eaba)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0x309:
+21:18:52 fffff801`1833ebe1 498bd0          mov     rdx,r8
+21:18:52 fffff801`1833ebe4 488d4df0        lea     rcx,[rbp-10h]
+21:18:52 fffff801`1833ebe8 e84369c0ff      call    nt!RtlInitUnicodeString (fffff801`17f45530)
+21:18:52 fffff801`1833ebed e9cffdffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe9 (fffff801`1833e9c1)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5668:
+21:18:52 fffff801`18423f40 0f1045e0        movups  xmm0,xmmword ptr [rbp-20h]
+21:18:52 fffff801`18423f44 b901000000      mov     ecx,1
+21:18:52 fffff801`18423f49 41b8506e7048    mov     r8d,48706E50h
+21:18:52 fffff801`18423f4f f30f7f4038      movdqu  xmmword ptr [rax+38h],xmm0
+21:18:52 fffff801`18423f54 0fb755e2        movzx   edx,word ptr [rbp-1Eh]
+21:18:52 fffff801`18423f58 e803021900      call    nt!ExAllocatePoolWithTag (fffff801`185b4160)
+21:18:52 fffff801`18423f5d 488bc8          mov     rcx,rax
+21:18:52 fffff801`18423f60 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`18423f63 48894840        mov     qword ptr [rax+40h],rcx
+21:18:52 fffff801`18423f67 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`18423f6a 488b4840        mov     rcx,qword ptr [rax+40h]
+21:18:52 fffff801`18423f6e 4885c9          test    rcx,rcx
+21:18:52 fffff801`18423f71 7414            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe56af (fffff801`18423f87)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe569b:
+21:18:52 fffff801`18423f73 440fb745e2      movzx   r8d,word ptr [rbp-1Eh]
+21:18:52 fffff801`18423f78 488b55e8        mov     rdx,qword ptr [rbp-18h]
+21:18:52 fffff801`18423f7c e8bff5beff      call    nt!memcpy (fffff801`18013540)
+21:18:52 fffff801`18423f81 90              nop
+21:18:52 fffff801`18423f82 e9f7a9f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xa6 (fffff801`1833e97e)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56af:
+21:18:52 fffff801`18423f87 6689583a        mov     word ptr [rax+3Ah],bx
+21:18:52 fffff801`18423f8b 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`18423f8e 66895838        mov     word ptr [rax+38h],bx
+21:18:52 fffff801`18423f92 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`18423f95 48895840        mov     qword ptr [rax+40h],rbx
+21:18:52 fffff801`18423f99 bb010000c0      mov     ebx,0C0000001h
+21:18:52 fffff801`18423f9e e9bbaaf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x186 (fffff801`1833ea5e)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56cb:
+21:18:52 fffff801`18423fa3 3d340000c0      cmp     eax,0C0000034h
+21:18:52 fffff801`18423fa8 750b            jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe56dd (fffff801`18423fb5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56d2:
+21:18:52 fffff801`18423faa 44397d50        cmp     dword ptr [rbp+50h],r15d
+21:18:52 fffff801`18423fae 7505            jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe56dd (fffff801`18423fb5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56d8:
+21:18:52 fffff801`18423fb0 418bdf          mov     ebx,r15d
+21:18:52 fffff801`18423fb3 eb10            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe56ed (fffff801`18423fc5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56dd:
+21:18:52 fffff801`18423fb5 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`18423fb8 448bc0          mov     r8d,eax
+21:18:52 fffff801`18423fbb ba13000000      mov     edx,13h
+21:18:52 fffff801`18423fc0 e8e780f2ff      call    nt!PipSetDevNodeProblem (fffff801`1834c0ac)
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56ed:
+21:18:52 fffff801`18423fc5 4c8b7dd8        mov     r15,qword ptr [rbp-28h]
+21:18:52 fffff801`18423fc9 e96caaf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x162 (fffff801`1833ea3a)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe56f6:
+21:18:52 fffff801`18423fce 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`18423fd1 448bc0          mov     r8d,eax
+21:18:52 fffff801`18423fd4 ba13000000      mov     edx,13h
+21:18:52 fffff801`18423fd9 e8ce80f2ff      call    nt!PipSetDevNodeProblem (fffff801`1834c0ac)
+21:18:52 fffff801`18423fde 90              nop
+21:18:52 fffff801`18423fdf e956aaf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x162 (fffff801`1833ea3a)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe570c:
+21:18:52 fffff801`18423fe4 0595fcff3f      add     eax,3FFFFC95h
+21:18:52 fffff801`18423fe9 83f801          cmp     eax,1
+21:18:52 fffff801`18423fec 762e            jbe     nt!PipCallDriverAddDeviceQueryRoutine+0xe5744 (fffff801`1842401c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5716:
+21:18:52 fffff801`18423fee 4585f6          test    r14d,r14d
+21:18:52 fffff801`18423ff1 7420            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe573b (fffff801`18424013)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe571b:
+21:18:52 fffff801`18423ff3 488b4708        mov     rax,qword ptr [rdi+8]
+21:18:52 fffff801`18423ff7 40387004        cmp     byte ptr [rax+4],sil
+21:18:52 fffff801`18423ffb 7516            jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe573b (fffff801`18424013)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5725:
+21:18:52 fffff801`18423ffd 498bcf          mov     rcx,r15
+21:18:52 fffff801`18424000 e8df97f9ff      call    nt!PnpCheckPossibleBootStartDriver (fffff801`183bd7e4)
+21:18:52 fffff801`18424005 84c0            test    al,al
+21:18:52 fffff801`18424007 750a            jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe573b (fffff801`18424013)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5731:
+21:18:52 fffff801`18424009 488b07          mov     rax,qword ptr [rdi]
+21:18:52 fffff801`1842400c c680b002000001  mov     byte ptr [rax+2B0h],1
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe573b:
+21:18:52 fffff801`18424013 488b75d8        mov     rsi,qword ptr [rbp-28h]
+21:18:52 fffff801`18424017 e91aaaf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5744:
+21:18:52 fffff801`1842401c 488b75d8        mov     rsi,qword ptr [rbp-28h]
+21:18:52 fffff801`18424020 e99cabf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x2e9 (fffff801`1833ebc1)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe574d:
+21:18:52 fffff801`18424025 443bf1          cmp     r14d,ecx
+21:18:52 fffff801`18424028 0f8503aaf1ff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5756:
+21:18:52 fffff801`1842402e 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`18424031 f7818c01000000600000 test dword ptr [rcx+18Ch],6000h
+21:18:52 fffff801`1842403b 0f85f0a9f1ff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5769:
+21:18:52 fffff801`18424041 4533c0          xor     r8d,r8d
+21:18:52 fffff801`18424044 418d5020        lea     edx,[r8+20h]
+21:18:52 fffff801`18424048 e85f80f2ff      call    nt!PipSetDevNodeProblem (fffff801`1834c0ac)
+21:18:52 fffff801`1842404d 90              nop
+21:18:52 fffff801`1842404e e9dea9f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe577b:
+21:18:52 fffff801`18424053 81fb650300c0    cmp     ebx,0C0000365h
+21:18:52 fffff801`18424059 751b            jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe579e (fffff801`18424076)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5783:
+21:18:52 fffff801`1842405b b89a0000c0      mov     eax,0C000009Ah
+21:18:52 fffff801`18424060 41be6c0200c0    mov     r14d,0C000026Ch
+21:18:52 fffff801`18424066 3945d0          cmp     dword ptr [rbp-30h],eax
+21:18:52 fffff801`18424069 0f853faaf1ff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x1d6 (fffff801`1833eaae)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5797:
+21:18:52 fffff801`1842406f 8bd8            mov     ebx,eax
+21:18:52 fffff801`18424071 e938aaf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x1d6 (fffff801`1833eaae)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe579e:
+21:18:52 fffff801`18424076 05a1fcff3f      add     eax,3FFFFCA1h
+21:18:52 fffff801`1842407b 83f82f          cmp     eax,2Fh
+21:18:52 fffff801`1842407e 7714            ja      nt!PipCallDriverAddDeviceQueryRoutine+0xe57bc (fffff801`18424094)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57a8:
+21:18:52 fffff801`18424080 48b90130000000800000 mov rcx,800000003001h
+21:18:52 fffff801`1842408a 480fa3c1        bt      rcx,rax
+21:18:52 fffff801`1842408e 0f8214aaf1ff    jb      nt!PipCallDriverAddDeviceQueryRoutine+0x1d0 (fffff801`1833eaa8)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57bc:
+21:18:52 fffff801`18424094 81fb5e0200c0    cmp     ebx,0C000025Eh
+21:18:52 fffff801`1842409a 0f8408aaf1ff    je      nt!PipCallDriverAddDeviceQueryRoutine+0x1d0 (fffff801`1833eaa8)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57c8:
+21:18:52 fffff801`184240a0 41be6c0200c0    mov     r14d,0C000026Ch
+21:18:52 fffff801`184240a6 81fb9a0000c0    cmp     ebx,0C000009Ah
+21:18:52 fffff801`184240ac 0f84fca9f1ff    je      nt!PipCallDriverAddDeviceQueryRoutine+0x1d6 (fffff801`1833eaae)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57da:
+21:18:52 fffff801`184240b2 81fb280400c0    cmp     ebx,0C0000428h
+21:18:52 fffff801`184240b8 410f45de        cmovne  ebx,r14d
+21:18:52 fffff801`184240bc e9eda9f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x1d6 (fffff801`1833eaae)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57e9:
+21:18:52 fffff801`184240c1 44383d1cb33e00  cmp     byte ptr [nt!PnpBootMode (fffff801`1880f3e4)],r15b
+21:18:52 fffff801`184240c8 742b            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe581d (fffff801`184240f5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57f2:
+21:18:52 fffff801`184240ca 8d83a1fcff3f    lea     eax,[rbx+3FFFFCA1h]
+21:18:52 fffff801`184240d0 83f80d          cmp     eax,0Dh
+21:18:52 fffff801`184240d3 770a            ja      nt!PipCallDriverAddDeviceQueryRoutine+0xe5807 (fffff801`184240df)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe57fd:
+21:18:52 fffff801`184240d5 b941300000      mov     ecx,3041h
+21:18:52 fffff801`184240da 0fa3c1          bt      ecx,eax
+21:18:52 fffff801`184240dd 7216            jb      nt!PipCallDriverAddDeviceQueryRoutine+0xe581d (fffff801`184240f5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5807:
+21:18:52 fffff801`184240df 81fb280400c0    cmp     ebx,0C0000428h
+21:18:52 fffff801`184240e5 740e            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe581d (fffff801`184240f5)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe580f:
+21:18:52 fffff801`184240e7 418bde          mov     ebx,r14d
+21:18:52 fffff801`184240ea e9d8aaf1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x2ef (fffff801`1833ebc7)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5817:
+21:18:52 fffff801`184240ef 41be6c0200c0    mov     r14d,0C000026Ch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe581d:
+21:18:52 fffff801`184240f5 488b17          mov     rdx,qword ptr [rdi]
+21:18:52 fffff801`184240f8 4c8d4df0        lea     r9,[rbp-10h]
+21:18:52 fffff801`184240fc 8364242000      and     dword ptr [rsp+20h],0
+21:18:52 fffff801`18424101 488d0d380b81ff  lea     rcx,[nt!KMPnPEvt_DriverLoad_Fail (fffff801`17c34c40)]
+21:18:52 fffff801`18424108 4883c228        add     rdx,28h
+21:18:52 fffff801`1842410c 448bc3          mov     r8d,ebx
+21:18:52 fffff801`1842410f e8507cb5ff      call    nt!PnpDiagnosticTraceDeviceOperation (fffff801`17f7bd64)
+21:18:52 fffff801`18424114 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`18424117 f7818c01000000600000 test dword ptr [rcx+18Ch],6000h
+21:18:52 fffff801`18424121 0f850fa9f1ff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe584f:
+21:18:52 fffff801`18424127 b8650300c0      mov     eax,0C0000365h
+21:18:52 fffff801`1842412c 3bd8            cmp     ebx,eax
+21:18:52 fffff801`1842412e 7f70            jg      nt!PipCallDriverAddDeviceQueryRoutine+0xe58c8 (fffff801`184241a0)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5858:
+21:18:52 fffff801`18424130 7463            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe58bd (fffff801`18424195)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe585a:
+21:18:52 fffff801`18424132 b89a0000c0      mov     eax,0C000009Ah
+21:18:52 fffff801`18424137 3bd8            cmp     ebx,eax
+21:18:52 fffff801`18424139 7453            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe58b6 (fffff801`1842418e)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5863:
+21:18:52 fffff801`1842413b 41b8600100c0    mov     r8d,0C0000160h
+21:18:52 fffff801`18424141 413bd8          cmp     ebx,r8d
+21:18:52 fffff801`18424144 7441            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe58af (fffff801`18424187)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe586e:
+21:18:52 fffff801`18424146 81fb9d0100c0    cmp     ebx,0C000019Dh
+21:18:52 fffff801`1842414c 740e            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5884 (fffff801`1842415c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5876:
+21:18:52 fffff801`1842414e b85e0200c0      mov     eax,0C000025Eh
+21:18:52 fffff801`18424153 3bd8            cmp     ebx,eax
+21:18:52 fffff801`18424155 740f            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe588e (fffff801`18424166)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe587f:
+21:18:52 fffff801`18424157 413bde          cmp     ebx,r14d
+21:18:52 fffff801`1842415a 756b            jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe58ef (fffff801`184241c7)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5884:
+21:18:52 fffff801`1842415c 458bc5          mov     r8d,r13d
+21:18:52 fffff801`1842415f ba27000000      mov     edx,27h
+21:18:52 fffff801`18424164 eb16            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe58a4 (fffff801`1842417c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe588e:
+21:18:52 fffff801`18424166 ba29000000      mov     edx,29h
+21:18:52 fffff801`1842416b eb05            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe589a (fffff801`18424172)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5895:
+21:18:52 fffff801`1842416d ba34000000      mov     edx,34h
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe589a:
+21:18:52 fffff801`18424172 448bc0          mov     r8d,eax
+21:18:52 fffff801`18424175 eb05            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe58a4 (fffff801`1842417c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe589f:
+21:18:52 fffff801`18424177 ba26000000      mov     edx,26h
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58a4:
+21:18:52 fffff801`1842417c e82b7ff2ff      call    nt!PipSetDevNodeProblem (fffff801`1834c0ac)
+21:18:52 fffff801`18424181 90              nop
+21:18:52 fffff801`18424182 e9afa8f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58af:
+21:18:52 fffff801`18424187 ba28000000      mov     edx,28h
+21:18:52 fffff801`1842418c ebee            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe58a4 (fffff801`1842417c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58b6:
+21:18:52 fffff801`1842418e ba03000000      mov     edx,3
+21:18:52 fffff801`18424193 ebdd            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe589a (fffff801`18424172)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58bd:
+21:18:52 fffff801`18424195 448b45d0        mov     r8d,dword ptr [rbp-30h]
+21:18:52 fffff801`18424199 ba25000000      mov     edx,25h
+21:18:52 fffff801`1842419e ebdc            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe58a4 (fffff801`1842417c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58c8:
+21:18:52 fffff801`184241a0 41b86b0300c0    mov     r8d,0C000036Bh
+21:18:52 fffff801`184241a6 413bd8          cmp     ebx,r8d
+21:18:52 fffff801`184241a9 7437            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe590a (fffff801`184241e2)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58d3:
+21:18:52 fffff801`184241ab 81fb6c0300c0    cmp     ebx,0C000036Ch
+21:18:52 fffff801`184241b1 741e            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe58f9 (fffff801`184241d1)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58db:
+21:18:52 fffff801`184241b3 41b88e0300c0    mov     r8d,0C000038Eh
+21:18:52 fffff801`184241b9 413bd8          cmp     ebx,r8d
+21:18:52 fffff801`184241bc 74b9            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe589f (fffff801`18424177)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58e6:
+21:18:52 fffff801`184241be b8280400c0      mov     eax,0C0000428h
+21:18:52 fffff801`184241c3 3bd8            cmp     ebx,eax
+21:18:52 fffff801`184241c5 74a6            je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5895 (fffff801`1842416d)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58ef:
+21:18:52 fffff801`184241c7 448bc3          mov     r8d,ebx
+21:18:52 fffff801`184241ca ba1f000000      mov     edx,1Fh
+21:18:52 fffff801`184241cf ebab            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe58a4 (fffff801`1842417c)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe58f9:
+21:18:52 fffff801`184241d1 ba00001000      mov     edx,100000h
+21:18:52 fffff801`184241d6 e801d8f1ff      call    nt!PipSetDevNodeFlags (fffff801`183419dc)
+21:18:52 fffff801`184241db 33db            xor     ebx,ebx
+21:18:52 fffff801`184241dd e954a8f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe590a:
+21:18:52 fffff801`184241e2 ba30000000      mov     edx,30h
+21:18:52 fffff801`184241e7 e8c07ef2ff      call    nt!PipSetDevNodeProblem (fffff801`1834c0ac)
+21:18:52 fffff801`184241ec 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`184241ef ba00001000      mov     edx,100000h
+21:18:52 fffff801`184241f4 e8e3d7f1ff      call    nt!PipSetDevNodeFlags (fffff801`183419dc)
+21:18:52 fffff801`184241f9 90              nop
+21:18:52 fffff801`184241fa e937a8f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5927:
+21:18:52 fffff801`184241ff 4183fc03        cmp     r12d,3
+21:18:52 fffff801`18424203 0f852da8f1ff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5931:
+21:18:52 fffff801`18424209 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`1842420c ba00100000      mov     edx,1000h
+21:18:52 fffff801`18424211 e8c6d7f1ff      call    nt!PipSetDevNodeFlags (fffff801`183419dc)
+21:18:52 fffff801`18424216 488b0f          mov     rcx,qword ptr [rdi]
+21:18:52 fffff801`18424219 ba08030000      mov     edx,308h
+21:18:52 fffff801`1842421e e885acb4ff      call    nt!PipSetDevNodeState (fffff801`17f6eea8)
+21:18:52 fffff801`18424223 90              nop
+21:18:52 fffff801`18424224 e908a8f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe5951:
+21:18:52 fffff801`18424229 bb9a0000c0      mov     ebx,0C000009Ah
+21:18:52 fffff801`1842422e e903a8f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)  Branch
+21:18:52 
+21:18:52 nt!PipCallDriverAddDeviceQueryRoutine+0xe595b:
+21:18:52 fffff801`18424233 488bce          mov     rcx,rsi
+21:18:52 fffff801`18424236 e8f575aaff      call    nt!HalPutDmaAdapter (fffff801`17ecb830)
+21:18:52 fffff801`1842423b 90              nop
+21:18:52 fffff801`1842423c e91da8f1ff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x186 (fffff801`1833ea5e)  Branch
+21:18:52 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_51
+21:19:28 0: kd> nt!PipCallDriverAddDeviceQueryRoutine+0x1be:
+21:19:28 fffff801`1833ea96 33d2            xor     edx,edx
+21:19:28 fffff801`1833ea98 8bd8            mov     ebx,eax
+21:19:28 fffff801`1833ea9a 448bfa          mov     r15d,edx
+21:19:28 fffff801`1833ea9d 448be8          mov     r13d,eax
+21:19:28 fffff801`1833eaa0 85c0            test    eax,eax
+21:19:28 fffff801`1833eaa2 0f88ab550e00    js      nt!PipCallDriverAddDeviceQueryRoutine+0xe577b (fffff801`18424053)
+21:19:28 fffff801`1833eaa8 41be6c0200c0    mov     r14d,0C000026Ch
+21:19:28 fffff801`1833eaae 381560615000    cmp     byte ptr [nt!PnPInitialized (fffff801`18844c14)],dl
+21:19:28 fffff801`1833eab4 0f851b010000    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x2fd (fffff801`1833ebd5)
+21:19:28 fffff801`1833eaba 488d4df0        lea     rcx,[rbp-10h]
+21:19:28 fffff801`1833eabe e835010000      call    nt!IopReferenceDriverObjectByName (fffff801`1833ebf8)
+21:19:28 fffff801`1833eac3 488bf0          mov     rsi,rax
+21:19:28 fffff801`1833eac6 4885c0          test    rax,rax
+21:19:28 fffff801`1833eac9 0f84f2550e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe57e9 (fffff801`184240c1)
+21:19:28 fffff801`1833eacf 33db            xor     ebx,ebx
+21:19:28 fffff801`1833ead1 8b4610          mov     eax,dword ptr [rsi+10h]
+21:19:28 fffff801`1833ead4 ba10000000      mov     edx,10h
+21:19:28 fffff801`1833ead9 84c2            test    dl,al
+21:19:28 fffff801`1833eadb 0f8450ffffff    je      nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)
+21:19:28 fffff801`1833eae1 488bce          mov     rcx,rsi
+21:19:28 fffff801`1833eae4 e8c3dbffff      call    nt!PnpIsLegacyDriver (fffff801`1833c6ac)
+21:19:28 fffff801`1833eae9 85c0            test    eax,eax
+21:19:28 fffff801`1833eaeb 0f850e570e00    jne     nt!PipCallDriverAddDeviceQueryRoutine+0xe5927 (fffff801`184241ff)
+21:19:28 fffff801`1833eaf1 488b07          mov     rax,qword ptr [rdi]
+21:19:28 fffff801`1833eaf4 8b882c010000    mov     ecx,dword ptr [rax+12Ch]
+21:19:28 fffff801`1833eafa 81e902030000    sub     ecx,302h
+21:19:28 fffff801`1833eb00 83f901          cmp     ecx,1
+21:19:28 fffff801`1833eb03 0f8728ffffff    ja      nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)
+21:19:28 fffff801`1833eb09 4a8d3ce7        lea     rdi,[rdi+r12*8]
+21:19:28 fffff801`1833eb0d 41b85070656e    mov     r8d,6E657050h
+21:19:28 fffff801`1833eb13 8d4af1          lea     ecx,[rdx-0Fh]
+21:19:28 fffff801`1833eb16 4803fa          add     rdi,rdx
+21:19:28 fffff801`1833eb19 e842562700      call    nt!ExAllocatePoolWithTag (fffff801`185b4160)
+21:19:28 fffff801`1833eb1e 4533e4          xor     r12d,r12d
+21:19:28 fffff801`1833eb21 488bc8          mov     rcx,rax
+21:19:28 fffff801`1833eb24 4885c0          test    rax,rax
+21:19:28 fffff801`1833eb27 0f84fc560e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5951 (fffff801`18424229)
+21:19:28 fffff801`1833eb2d 488930          mov     qword ptr [rax],rsi
+21:19:28 fffff801`1833eb30 418bf4          mov     esi,r12d
+21:19:28 fffff801`1833eb33 4c896008        mov     qword ptr [rax+8],r12
+21:19:28 fffff801`1833eb37 eb04            jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x265 (fffff801`1833eb3d)
+21:19:28 fffff801`1833eb39 488d7808        lea     rdi,[rax+8]
+21:19:28 fffff801`1833eb3d 488b07          mov     rax,qword ptr [rdi]
+21:19:28 fffff801`1833eb40 4885c0          test    rax,rax
+21:19:28 fffff801`1833eb43 75f4            jne     nt!PipCallDriverAddDeviceQueryRoutine+0x261 (fffff801`1833eb39)
+21:19:28 fffff801`1833eb45 48890f          mov     qword ptr [rdi],rcx
+21:19:28 fffff801`1833eb48 e9e9feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x15e (fffff801`1833ea36)
+21:19:28 fffff801`1833eb4d 488b07          mov     rax,qword ptr [rdi]
+21:19:28 fffff801`1833eb50 c680b002000001  mov     byte ptr [rax+2B0h],1
+21:19:28 fffff801`1833eb57 e9d5feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x159 (fffff801`1833ea31)
+21:19:28 fffff801`1833eb5c 4883c302        add     rbx,2
+21:19:28 fffff801`1833eb60 ffc1            inc     ecx
+21:19:28 fffff801`1833eb62 0fb703          movzx   eax,word ptr [rbx]
+21:19:28 fffff801`1833eb65 0fb7d0          movzx   edx,ax
+21:19:28 fffff801`1833eb68 6685c0          test    ax,ax
+21:19:28 fffff801`1833eb6b 0f85e5fdffff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x7e (fffff801`1833e956)
+21:19:28 fffff801`1833eb71 33db            xor     ebx,ebx
+21:19:28 fffff801`1833eb73 e9f0fdffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x90 (fffff801`1833e968)
+21:19:28 fffff801`1833eb78 381d3a635000    cmp     byte ptr [nt!PnPBootDriversInitialized (fffff801`18844eb8)],bl
+21:19:28 fffff801`1833eb7e 0f8586feffff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x132 (fffff801`1833ea0a)
+21:19:28 fffff801`1833eb84 498bcf          mov     rcx,r15
+21:19:28 fffff801`1833eb87 e874003200      call    nt!PpInitGetGroupOrderIndex (fffff801`1865ec00)
+21:19:28 fffff801`1833eb8c 440fb7c0        movzx   r8d,ax
+21:19:28 fffff801`1833eb90 4c8d4dd8        lea     r9,[rbp-28h]
+21:19:28 fffff801`1833eb94 488d55f0        lea     rdx,[rbp-10h]
+21:19:28 fffff801`1833eb98 498bcf          mov     rcx,r15
+21:19:28 fffff801`1833eb9b e800ca3100      call    nt!PnpLoadBootFilterDriver (fffff801`1865b5a0)
+21:19:28 fffff801`1833eba0 33f6            xor     esi,esi
+21:19:28 fffff801`1833eba2 8bd8            mov     ebx,eax
+21:19:28 fffff801`1833eba4 85c0            test    eax,eax
+21:19:28 fffff801`1833eba6 0f8838540e00    js      nt!PipCallDriverAddDeviceQueryRoutine+0xe570c (fffff801`18423fe4)
+21:19:28 fffff801`1833ebac 488b75d8        mov     rsi,qword ptr [rbp-28h]
+21:19:28 fffff801`1833ebb0 4885f6          test    rsi,rsi
+21:19:28 fffff801`1833ebb3 0f8436550e00    je      nt!PipCallDriverAddDeviceQueryRoutine+0xe5817 (fffff801`184240ef)
+21:19:28 fffff801`1833ebb9 488bce          mov     rcx,rsi
+21:19:28 fffff801`1833ebbc e87fcdb8ff      call    nt!ObfReferenceObject (fffff801`17ecb940)
+21:19:28 fffff801`1833ebc1 41be6c0200c0    mov     r14d,0C000026Ch
+21:19:28 fffff801`1833ebc7 4885f6          test    rsi,rsi
+21:19:28 fffff801`1833ebca 0f85fffeffff    jne     nt!PipCallDriverAddDeviceQueryRoutine+0x1f7 (fffff801`1833eacf)
+21:19:28 fffff801`1833ebd0 e920550e00      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe581d (fffff801`184240f5)
+21:19:28 fffff801`1833ebd5 33c9            xor     ecx,ecx
+21:19:28 fffff801`1833ebd7 e8d82a0300      call    nt!IopCallDriverReinitializationRoutines (fffff801`183716b4)
+21:19:28 fffff801`1833ebdc e9d9feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x1e2 (fffff801`1833eaba)
+21:19:28 fffff801`1833ebe1 498bd0          mov     rdx,r8
+21:19:28 fffff801`1833ebe4 488d4df0        lea     rcx,[rbp-10h]
+21:19:28 fffff801`1833ebe8 e84369c0ff      call    nt!RtlInitUnicodeString (fffff801`17f45530)
+21:19:28 fffff801`1833ebed e9cffdffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe9 (fffff801`1833e9c1)
+21:19:28 fffff801`1833ebf2 cc              int     3
+21:19:28 fffff801`1833ebf3 cc              int     3
+21:19:28 fffff801`1833ebf4 cc              int     3
+21:19:28 fffff801`1833ebf5 cc              int     3
+21:19:28 fffff801`1833ebf6 cc              int     3
+21:19:28 fffff801`1833ebf7 cc              int     3
+21:19:28 nt!IopReferenceDriverObjectByName:
+21:19:28 fffff801`1833ebf8 4c8bdc          mov     r11,rsp
+21:19:28 fffff801`1833ebfb 49895b18        mov     qword ptr [r11+18h],rbx
+21:19:28 fffff801`1833ebff 49897b20        mov     qword ptr [r11+20h],rdi
+21:19:28 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_52
+21:19:56 0: kd> nt!PipCallDriverAddDeviceQueryRoutine+0x2fd:
+21:19:56 fffff801`1833ebd5 33c9            xor     ecx,ecx
+21:19:56 fffff801`1833ebd7 e8d82a0300      call    nt!IopCallDriverReinitializationRoutines (fffff801`183716b4)
+21:19:56 fffff801`1833ebdc e9d9feffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0x1e2 (fffff801`1833eaba)
+21:19:56 fffff801`1833ebe1 498bd0          mov     rdx,r8
+21:19:56 fffff801`1833ebe4 488d4df0        lea     rcx,[rbp-10h]
+21:19:56 fffff801`1833ebe8 e84369c0ff      call    nt!RtlInitUnicodeString (fffff801`17f45530)
+21:19:56 fffff801`1833ebed e9cffdffff      jmp     nt!PipCallDriverAddDeviceQueryRoutine+0xe9 (fffff801`1833e9c1)
+21:19:56 fffff801`1833ebf2 cc              int     3
+21:19:56 fffff801`1833ebf3 cc              int     3
+21:19:56 fffff801`1833ebf4 cc              int     3
+21:19:56 fffff801`1833ebf5 cc              int     3
+21:19:56 fffff801`1833ebf6 cc              int     3
+21:19:56 fffff801`1833ebf7 cc              int     3
+21:19:57 nt!IopReferenceDriverObjectByName:
+21:19:57 fffff801`1833ebf8 4c8bdc          mov     r11,rsp
+21:19:57 fffff801`1833ebfb 49895b18        mov     qword ptr [r11+18h],rbx
+21:19:57 fffff801`1833ebff 49897b20        mov     qword ptr [r11+20h],rdi
+21:19:57 fffff801`1833ec03 55              push    rbp
+21:19:57 fffff801`1833ec04 488bec          mov     rbp,rsp
+21:19:57 fffff801`1833ec07 4883ec70        sub     rsp,70h
+21:19:57 fffff801`1833ec0b 33ff            xor     edi,edi
+21:19:57 fffff801`1833ec0d 897dd4          mov     dword ptr [rbp-2Ch],edi
+21:19:57 fffff801`1833ec10 897dec          mov     dword ptr [rbp-14h],edi
+21:19:57 fffff801`1833ec13 48897d10        mov     qword ptr [rbp+10h],rdi
+21:19:57 fffff801`1833ec17 663939          cmp     word ptr [rcx],di
+21:19:57 fffff801`1833ec1a 744c            je      nt!IopReferenceDriverObjectByName+0x70 (fffff801`1833ec68)
+21:19:57 fffff801`1833ec1c 488b1585d95b00  mov     rdx,qword ptr [nt!IoDriverObjectType (fffff801`188fc5a8)]
+21:19:57 fffff801`1833ec23 488d4510        lea     rax,[rbp+10h]
+21:19:57 fffff801`1833ec27 498943b8        mov     qword ptr [r11-48h],rax
+21:19:57 fffff801`1833ec2b 0f57c0          xorps   xmm0,xmm0
+21:19:57 fffff801`1833ec2e 48894de0        mov     qword ptr [rbp-20h],rcx
+21:19:57 fffff801`1833ec32 4533c9          xor     r9d,r9d
+21:19:57 fffff801`1833ec35 49897bb0        mov     qword ptr [r11-50h],rdi
+21:19:57 fffff801`1833ec39 488d4dd0        lea     rcx,[rbp-30h]
+21:19:57 fffff801`1833ec3d 4533c0          xor     r8d,r8d
+21:19:57 fffff801`1833ec40 c744242080000000 mov     dword ptr [rsp+20h],80h
+21:19:57 fffff801`1833ec48 c745d030000000  mov     dword ptr [rbp-30h],30h
+21:19:57 fffff801`1833ec4f 48897dd8        mov     qword ptr [rbp-28h],rdi
+21:19:57 fffff801`1833ec53 c745e840020000  mov     dword ptr [rbp-18h],240h
+21:19:57 fffff801`1833ec5a f30f7f45f0      movdqu  xmmword ptr [rbp-10h],xmm0
+21:19:57 fffff801`1833ec5f e8acfdf8ff      call    nt!ObOpenObjectByName (fffff801`182cea10)
+21:19:57 fffff801`1833ec64 85c0            test    eax,eax
+21:19:57 fffff801`1833ec66 7915            jns     nt!IopReferenceDriverObjectByName+0x85 (fffff801`1833ec7d)
+21:19:57 fffff801`1833ec68 33c0            xor     eax,eax
+21:19:57 fffff801`1833ec6a 4c8d5c2470      lea     r11,[rsp+70h]
+21:19:57 fffff801`1833ec6f 498b5b20        mov     rbx,qword ptr [r11+20h]
+21:19:57 fffff801`1833ec73 498b7b28        mov     rdi,qword ptr [r11+28h]
+21:19:57 fffff801`1833ec77 498be3          mov     rsp,r11
+21:19:57 fffff801`1833ec7a 5d              pop     rbp
+21:19:57 fffff801`1833ec7b c3              ret
+21:19:57 fffff801`1833ec7c cc              int     3
+21:19:57 fffff801`1833ec7d 4c8b0524d95b00  mov     r8,qword ptr [nt!IoDriverObjectType (fffff801`188fc5a8)]
+21:19:57 fffff801`1833ec84 488d4518        lea     rax,[rbp+18h]
+21:19:57 fffff801`1833ec88 488b4d10        mov     rcx,qword ptr [rbp+10h]
+21:19:57 fffff801`1833ec8c 4533c9          xor     r9d,r9d
+21:19:57 fffff801`1833ec8f 48897c2428      mov     qword ptr [rsp+28h],rdi
+21:19:57 fffff801`1833ec94 33d2            xor     edx,edx
+21:19:57 fffff801`1833ec96 4889442420      mov     qword ptr [rsp+20h],rax
+21:19:57 fffff801`1833ec9b 48897d18        mov     qword ptr [rbp+18h],rdi
+21:19:57 fffff801`1833ec9f e83cf6efff      call    nt!ObReferenceObjectByHandle (fffff801`1823e2e0)
+21:19:57 fffff801`1833eca4 488b4d10        mov     rcx,qword ptr [rbp+10h]
+21:19:57 fffff801`1833eca8 8bd8            mov     ebx,eax
+21:19:57 fffff801`1833ecaa e8a1afcbff      call    nt!ZwClose (fffff801`17ff9c50)
+21:19:57 fffff801`1833ecaf 85db            test    ebx,ebx
+21:19:57 fffff801`1833ecb1 78b5            js      nt!IopReferenceDriverObjectByName+0x70 (fffff801`1833ec68)
+21:19:57 fffff801`1833ecb3 488b4518        mov     rax,qword ptr [rbp+18h]
+21:19:57 fffff801`1833ecb7 ebb1            jmp     nt!IopReferenceDriverObjectByName+0x72 (fffff801`1833ec6a)
+21:19:57 fffff801`1833ecb9 cc              int     3
+21:19:57 fffff801`1833ecba cc              int     3
+21:19:57 fffff801`1833ecbb cc              int     3
+21:19:57 fffff801`1833ecbc cc              int     3
+21:19:57 fffff801`1833ecbd cc              int     3
+21:19:57 fffff801`1833ecbe cc              int     3
+21:19:57 fffff801`1833ecbf cc              int     3
+21:19:57 nt!IopGetDriverNameFromKeyNode:
+21:19:57 fffff801`1833ecc0 48895c2408      mov     qword ptr [rsp+8],rbx
+21:19:57 fffff801`1833ecc5 55              push    rbp
+21:19:57 fffff801`1833ecc6 56              push    rsi
+21:19:57 fffff801`1833ecc7 57              push    rdi
+21:19:57 fffff801`1833ecc8 4154            push    r12
+21:19:57 fffff801`1833ecca 4155            push    r13
+21:19:57 fffff801`1833eccc 4156            push    r14
+21:19:57 fffff801`1833ecce 4157            push    r15
+21:19:57 fffff801`1833ecd0 488bec          mov     rbp,rsp
+21:19:57 fffff801`1833ecd3 4883ec40        sub     rsp,40h
+21:19:57 fffff801`1833ecd7 33db            xor     ebx,ebx
+21:19:57 fffff801`1833ecd9 4c8d4d58        lea     r9,[rbp+58h]
+21:19:57 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_53
+21:20:10 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_1397c92d78a44358a1a2a432e57a108c_54

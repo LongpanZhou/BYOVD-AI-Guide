@@ -1,0 +1,45 @@
+﻿agentR3 - fan/thermal/watercooling batch (Tier A)
+================================================
+
+Downloaded packages (4 files, all <= 250 MB; no package exceeded the 250 MB cap, none deleted):
+  aquasuite_setup.exe = 1.2 MB
+  Argus Monitor_7.4.3.3193_X64_nullsoft_en-US.exe = 14.6 MB
+  FanControl_284_X64_inno_en-US.exe = 19.9 MB
+  SIV_5.88.zip = 34.4 MB
+
+Per vendor:
+  Rem0o FanControl 284            - downloaded 19.9 MB - 0 .sys (app only, driver via plugin)
+  Argotronic Argus Monitor 7.4.3  - downloaded 14.6 MB - 1 .sys -> NEW
+  Ray Hinchliffe SIV 5.88        - downloaded 34.4 MB - 7 .sys -> NEW
+  Aqua Computer aquasuite         - SKIPPED (1.2 MB web downloader, payload only at install -> would require execution)
+  EK Water Blocks EK-Loop Connect - SKIPPED (403 Cloudflare challenge, no file URL)
+  Bitspower                       - SKIPPED (no software published)
+  Alphacool                       - SKIPPED (download center = datasheets/manuals only)
+  Almico SpeedFan 4.52            - FAILED (almico.com HTTP 503; winget 0x8a15006d)
+
+Extraction: innounp (FanControl, Inno), 7z (Argus NSIS, SIV zip). No WiX Burn package encountered.
+No installer executed, no service created, no registry write.
+
+Dedupe filter results (final pass):
+  .sys found (>=4 KB): 8
+  NEW      : 8
+  EXISTING : 0
+  KNOWNBAD : 0
+  DUPLICATE: 0
+  SKIPPED  : 0
+  Files in new\: 8 (.sys only; no .inf/.cat exist in these packages)
+
+Verification (independent recompute over new\):
+  hashes present in existing_hashes.txt : 0
+  hashes present in known_bad_hashes.txt: 0
+
+Signature status: all 8 NEW drivers = Valid
+  ArgusMonitor.sys - Argotronic eGbR - 4.04.4
+  SIV*.sys         - Ray Hinchliffe - V5.88
+
+Reach signals (static string scan):
+  \Device\ArgusMonitor  - IoCreateDevice + RtlSetDaclSecurityDescriptor (programmatic DACL)
+  \Device\SIVDRIVER     - IoCreateDevice; SIVA32/SIVNT3/SIVNT4/SIVP32 also import MmMapIoSpace
+
+Size cap: every retained package is <= 250 MB (largest = SIV_5.88.zip, 34.4 MB). SKIPPED-OVER-250MB: none.
+Failures / skips: aquasuite (web downloader only), ekwb.com (403), bitspower (no software), alphacool (no software), almico.com (503), SIV winget URL (filecroco 404 -> used official rh-software.com instead).

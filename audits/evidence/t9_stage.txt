@@ -1,0 +1,65 @@
+t9_stage 2026-10-24T01:05:39.1732735-07:00
+--- SHA-256 verification of pushed files ---
+OK VBoxSup.cat
+OK VBoxNetLwf.inf
+OK VBoxNetAdp6.sys
+OK VBoxNetLwf.sys
+OK VBoxSup.sys
+OK VBoxNetAdp6.inf
+OK VBoxNetAdp6.cat
+OK VBoxSup.inf
+OK VBoxNetLwf.cat
+drift count = 0 (0 required to proceed; nonzero means DISCLOSED drift)
+--- pre-existing file check ---
+drivers\VBoxSup.sys exists: False
+drivers\VBoxNetAdp6.sys exists: False
+drivers\VBoxNetLwf.sys exists: False
+--- sc create t9_vboxsup ---
+[SC] CreateService SUCCESS
+
+--- sc start t9_vboxsup ---
+
+SERVICE_NAME: t9_vboxsup 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+        PID                : 0
+        FLAGS              : 
+
+--- sc query t9_vboxsup ---
+
+SERVICE_NAME: t9_vboxsup 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+--- sc qc t9_vboxsup ---
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: t9_vboxsup
+        TYPE               : 1  KERNEL_DRIVER 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : \??\C:\Users\vmdebug\Desktop\t9_work\VBoxSup.sys
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : t9_vboxsup
+        DEPENDENCIES       : 
+        SERVICE_START_NAME : 
+
+--- driverquery filter VBoxSup ---
+
+t9_vboxsup   t9_vboxsup             t9_vboxsup             Kernel        Manual     Running    OK         TRUE        
+FALSE        0                 643,072     0          1/15/2024 6:00:11 AM   
+\??\C:\Users\vmdebug\Desktop\t9_work\VBoxSup.sys 4,096      
+
+
+

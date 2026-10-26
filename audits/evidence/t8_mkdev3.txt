@@ -1,0 +1,16 @@
+t8_mkdev3 2026-10-24T00:09:05.8283430-07:00
+--- candidate PCI parents ---
+  candidate: PCI\VEN_8086&DEV_7191&SUBSYS_00000000&REV_01\3&61AAA01&0&08 | PCI-to-PCI Bridge
+  candidate: PCI\VEN_15AD&DEV_077A&SUBSYS_077A15AD&REV_00\4&1EE266C4&0&00B0 | Standard USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)
+  candidate: PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&A8 | PCI Express Root Port
+  candidate: PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&A9 | PCI Express Root Port
+  candidate: PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AA | PCI Express Root Port
+  candidate: PCI\VEN_15AD&DEV_07A0&SUBSYS_07A015AD&REV_01\3&61AAA01&0&AB | PCI Express Root Port
+chosen parent: PCI\VEN_8086&DEV_7191&SUBSYS_00000000&REV_01\3&61AAA01&0&08
+--- step 1: create devnode PCI\AMDPSP\0000 parent=PCI\VEN_8086&DEV_7191&SUBSYS_00000000&REV_01\3&61AAA01&0&08 flags=0 ---
+t8_poc start 2026-10-24T00:09:06.3245447-07:00
+mkdev PCI\AMDPSP\0000 parent=PCI\VEN_8086&DEV_7191&SUBSYS_00000000&REV_01\3&61AAA01&0&08 CR=0x5
+t8_poc end 2026-10-24T00:09:06.3305377-07:00
+  mkdev exit=0
+--- step 2: seed enum key ---
+  FATAL: enum key not auto-created; abort

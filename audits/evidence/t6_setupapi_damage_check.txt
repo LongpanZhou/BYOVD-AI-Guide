@@ -1,0 +1,8 @@
+=== t6 inf 2026-10-23T19:18:36.8860086-07:00 ===
+--- setupapi.dev.log: sections mentioning T6NVHDA (context 3 lines each) ---
+  (no T6NVHDA mentions in setupapi.dev.log)
+--- System event log: entries mentioning t6_nvhda (last 24h) ---
+  [10/23/2026 6:56:08 PM] id=7045 prov=Service Control Manager lvl=4
+      A service was installed in the system. |  | Service Name:  t6_nvhda | Service File Name:  C:\Windows\System32\drivers\nvhda64v.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+--- Kernel-PnP/Configuration: entries mentioning T6NVHDA ---
+  (none)

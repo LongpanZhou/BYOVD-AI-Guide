@@ -1,0 +1,7 @@
+workdir exists: True
+alive marker written: True
+csc present: True
+kd present: False / path check: False
+whoami: desktop-s76bgqm\vmdebug
+prior work dirs present (read-only check, DO NOT TOUCH): driver_batch1 processhacker-2.39-bin PTView t9_work
+pre-existing VBox files in guest drivers (expect none, must stay none before t9 install): sup=False adp6=False lwf=False

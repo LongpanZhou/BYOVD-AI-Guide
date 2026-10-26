@@ -1,0 +1,93 @@
+t7_battery 2026-10-23T22:14:05.5082687-07:00
+recompiling ...
+
+compile exit=0
+=== vmci device (\\.\VMCIDev) documented codes ===
+t7_poc start 2026-10-23T22:14:05.6816838-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=0 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:14:05.6897587-07:00
+t7_poc start 2026-10-23T22:14:05.7096210-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:14:05.7156573-07:00
+t7_poc start 2026-10-23T22:14:05.7358494-07:00
+ioctl \\.\VMCIDev code=0x81032008 in=16 out=0x40 -> st=0xC0000022 ret=0
+t7_poc end 2026-10-23T22:14:05.7418840-07:00
+t7_poc start 2026-10-23T22:14:05.7636719-07:00
+ioctl \\.\VMCIDev code=0x81032008 in=64 out=0x40 -> st=0xC0000022 ret=0
+t7_poc end 2026-10-23T22:14:05.7696861-07:00
+t7_poc start 2026-10-23T22:14:05.7880785-07:00
+ioctl \\.\VMCIDev code=0x81032018 in=16 out=0x40 -> st=0xC0000022 ret=0
+t7_poc end 2026-10-23T22:14:05.7956061-07:00
+t7_poc start 2026-10-23T22:14:05.8143058-07:00
+ioctlsink \\.\VMCIDev code=0x81032018 in=0x18 ptrOff=8 dword4=4 -> st=0xC0000022 ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:14:05.8218171-07:00
+=== vsock device (\\.\vmci) documented codes ===
+t7_poc start 2026-10-23T22:14:05.8403988-07:00
+ioctlsink \\.\vmci code=0x81032074 in=0x18 ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:14:05.8477050-07:00
+t7_poc start 2026-10-23T22:14:05.8684618-07:00
+ioctlsink \\.\vmci code=0x81032074 in=0x20 ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:14:05.8738308-07:00
+t7_poc start 2026-10-23T22:14:05.8939767-07:00
+ioctl \\.\vmci code=0x81032080 in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:05.8999686-07:00
+t7_poc start 2026-10-23T22:14:05.9199973-07:00
+ioctl \\.\vmci code=0x81032088 in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:05.9279839-07:00
+t7_poc start 2026-10-23T22:14:05.9455635-07:00
+ioctl \\.\vmci code=0x8103208C in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:05.9516364-07:00
+t7_poc start 2026-10-23T22:14:05.9717337-07:00
+ioctl \\.\vmci code=0x81032094 in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:05.9778059-07:00
+t7_poc start 2026-10-23T22:14:05.9978782-07:00
+ioctl \\.\vmci code=0x81032098 in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.0056202-07:00
+t7_poc start 2026-10-23T22:14:06.0257419-07:00
+ioctl \\.\vmci code=0x8103209C in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.0317468-07:00
+t7_poc start 2026-10-23T22:14:06.0519445-07:00
+ioctl \\.\vmci code=0x810320C0 in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.0579762-07:00
+t7_poc start 2026-10-23T22:14:06.0778567-07:00
+ioctl \\.\vmci code=0x810320C7 in=16 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.0838881-07:00
+--- InLen==OutLen variants (common dispatch gate) ---
+t7_poc start 2026-10-23T22:14:06.1043188-07:00
+ioctl \\.\vmci code=0x81032080 in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.1103516-07:00
+t7_poc start 2026-10-23T22:14:06.1316764-07:00
+ioctl \\.\vmci code=0x81032088 in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.1377829-07:00
+t7_poc start 2026-10-23T22:14:06.1659095-07:00
+ioctl \\.\vmci code=0x8103208C in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.1725331-07:00
+t7_poc start 2026-10-23T22:14:06.1937306-07:00
+ioctl \\.\vmci code=0x81032094 in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.1997356-07:00
+t7_poc start 2026-10-23T22:14:06.2199505-07:00
+ioctl \\.\vmci code=0x81032098 in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.2256888-07:00
+t7_poc start 2026-10-23T22:14:06.2458590-07:00
+ioctl \\.\vmci code=0x8103209C in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.2524328-07:00
+t7_poc start 2026-10-23T22:14:06.2720095-07:00
+ioctl \\.\vmci code=0x810320C0 in=4096 out=0x1000 -> st=0xC0000022 ret=0
+t7_poc end 2026-10-23T22:14:06.2780364-07:00
+t7_poc start 2026-10-23T22:14:06.2978737-07:00
+ioctl \\.\vmci code=0x810320C7 in=4096 out=0x1000 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:14:06.3037258-07:00
+=== end t7_battery ===
+t7_poc start 2026-10-23T22:15:00.6139770-07:00
+ioctlsink \\.\vmci code=0x81032074 in=0x18 ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:15:00.6220054-07:00
+t7_poc start 2026-10-23T22:15:00.6460286-07:00
+ioctlsink \\.\vmci code=0x81032074 in=0x20 ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:15:00.6540432-07:00

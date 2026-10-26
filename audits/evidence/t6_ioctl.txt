@@ -1,0 +1,23 @@
+=== t6 ioctl battery 2026-10-23T19:17:50.3758586-07:00 ===
+NO interface link exists - the IOCTL battery CANNOT be delivered (pre-IOCTL open gate).
+Zero 0x264800 calls were made.
+--- post-battery service/devnode health ---
+  
+  SERVICE_NAME: t6_nvhda 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+  CM_Locate_DevNodeW(ROOT\T6NVHDA\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+--- System event log (last 8) after battery ---
+  [10/23/2026 6:56:08 PM] id=7045 prov=Service Control Manager lvl=4
+  [10/23/2026 6:55:22 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+  [10/23/2026 6:55:22 PM] id=24 prov=Microsoft-Windows-Kernel-General lvl=4
+  [10/23/2026 6:36:52 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+  [10/23/2026 6:36:52 PM] id=24 prov=Microsoft-Windows-Kernel-General lvl=4
+  [10/23/2026 12:51:45 PM] id=4107 prov=Display lvl=4
+  [10/23/2026 12:45:49 PM] id=7040 prov=Service Control Manager lvl=4
+  [10/23/2026 12:43:04 PM] id=7040 prov=Service Control Manager lvl=4

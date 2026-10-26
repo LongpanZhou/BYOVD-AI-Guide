@@ -1,0 +1,185 @@
+===== NetSetupSvc ===== 
+
+SERVICE_NAME: NetSetupSvc 
+        TYPE               : 30  WIN32  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: NetSetupSvc
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\System32\svchost.exe -k netsvcs -p
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Network Setup Service
+        DEPENDENCIES       : RpcSs
+        SERVICE_START_NAME : LocalSystem
+===== netprofm ===== 
+
+SERVICE_NAME: netprofm 
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: netprofm
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\System32\svchost.exe -k LocalService -p
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Network List Service
+        DEPENDENCIES       : RpcSs
+                           : nlasvc
+        SERVICE_START_NAME : NT AUTHORITY\LocalService
+===== NlaSvc ===== 
+
+SERVICE_NAME: NlaSvc 
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: NlaSvc
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\System32\svchost.exe -k NetworkService -p
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Network Location Awareness
+        DEPENDENCIES       : NSI
+                           : RpcSs
+                           : TcpIp
+                           : Dhcp
+                           : Eventlog
+        SERVICE_START_NAME : NT AUTHORITY\NetworkService
+===== netman ===== 
+
+SERVICE_NAME: netman 
+        TYPE               : 20  WIN32_SHARE_PROCESS  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 1077  (0x435)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: netman
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Network Connections
+        DEPENDENCIES       : RpcSs
+                           : nsi
+        SERVICE_START_NAME : LocalSystem
+===== Dhcp ===== 
+
+SERVICE_NAME: Dhcp 
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: Dhcp
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\system32\svchost.exe -k LocalServiceNetworkRestricted -p
+        LOAD_ORDER_GROUP   : TDI
+        TAG                : 0
+        DISPLAY_NAME       : DHCP Client
+        DEPENDENCIES       : NSI
+                           : Afd
+        SERVICE_START_NAME : NT Authority\LocalService
+===== Dnscache ===== 
+
+SERVICE_NAME: Dnscache 
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: Dnscache
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\system32\svchost.exe -k NetworkService -p
+        LOAD_ORDER_GROUP   : TDI
+        TAG                : 0
+        DISPLAY_NAME       : DNS Client
+        DEPENDENCIES       : nsi
+                           : Afd
+        SERVICE_START_NAME : NT AUTHORITY\NetworkService
+===== nsI ===== 
+
+SERVICE_NAME: nsI 
+        TYPE               : 30  WIN32  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: nsI
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\system32\svchost.exe -k LocalService -p
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Network Store Interface Service
+        DEPENDENCIES       : rpcss
+                           : nsiproxy
+        SERVICE_START_NAME : NT Authority\LocalService
+===== dot3svc ===== 
+
+SERVICE_NAME: dot3svc 
+        TYPE               : 20  WIN32_SHARE_PROCESS  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 1077  (0x435)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: dot3svc
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+        LOAD_ORDER_GROUP   : TDI
+        TAG                : 0
+        DISPLAY_NAME       : Wired AutoConfig
+        DEPENDENCIES       : RpcSs
+                           : Ndisuio
+                           : Eaphost
+        SERVICE_START_NAME : localSystem
+done 

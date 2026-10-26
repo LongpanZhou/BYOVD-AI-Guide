@@ -1,0 +1,34 @@
+--- monitor start 2026-10-24 08:29:30 for 40m ---
+[08:29:30] ACTIVE  ghidra=4 new_files=1 done=0/13  A1:0/1 A2:0/4 A3:0/4 A4:0/4
+--- monitor v2 start 08:30:11 for 40m ---
+[08:30:11] quiet   A1:proc0/done0/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=0
+--- monitor v2 start 08:30:49 for 45m ---
+[08:30:49] quiet   A1:proc0/done0/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=0
+--- monitor v2 start 08:31:21 for 45m ---
+[08:31:21] ACTIVE  A1:proc0/done0/1 A2:proc1/done0/4 A3:proc1/done0/4 A4:proc0/done0/4 other=1
+[08:32:21] quiet   A1:proc0/done0/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=1
+[08:33:21] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=1
+[08:34:21] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=1
+[08:35:21] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=1
+[08:36:21] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=1
+[08:37:21] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done0/4 other=1
+[08:38:21] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done1/4 other=1
+[08:39:21] ACTIVE  A1:proc0/done1/1 A2:proc0/done0/4 A3:proc1/done0/4 A4:proc0/done3/4 other=1
+[08:40:22] ACTIVE  A1:proc0/done1/1 A2:proc0/done0/4 A3:proc1/done0/4 A4:proc0/done4/4 other=1
+[08:41:22] ACTIVE  A1:proc0/done1/1 A2:proc0/done0/4 A3:proc1/done0/4 A4:proc0/done4/4 other=1
+[08:42:22] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:43:22] ACTIVE  A1:proc0/done1/1 A2:proc0/done0/4 A3:proc1/done0/4 A4:proc0/done4/4 other=1
+[08:44:22] ACTIVE  A1:proc0/done1/1 A2:proc1/done0/4 A3:proc0/done0/4 A4:proc1/done4/4 other=0
+[08:45:22] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:46:22] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:47:22] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:48:22] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:49:22] quiet   A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:50:22] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:51:22] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:52:22] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:53:22] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:54:22] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:55:23] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=0
+[08:56:23] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1
+[08:57:23] STALLED A1:proc0/done1/1 A2:proc0/done0/4 A3:proc0/done0/4 A4:proc0/done4/4 other=1

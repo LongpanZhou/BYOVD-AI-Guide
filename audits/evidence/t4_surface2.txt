@@ -1,0 +1,16 @@
+=== t4 surface2 (fixed object-dir probes) 2026-10-23T16:54:13.8793482-07:00 ===
+--- \Device filter Silabser ---
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('Silabser')=0; endStatus=0x8000001A
+  
+--- \Device filter COM (context) ---
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('COM')=0; endStatus=0x8000001A
+  
+--- \GLOBAL?? filter COM ---
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('COM')=1; endStatus=0x8000001A
+    COM1  [SymbolicLink]
+  
+--- \GLOBAL?? filter Silabser ---
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('Silabser')=0; endStatus=0x8000001A
+  
+--- ifenum bridge GUID (recheck) ---
+  interfaces for a2a39220-39f4-4b88-aecb-3d86a35dc748: count=0

@@ -1,0 +1,28 @@
+=== t6 phase-B staging 2026-10-23T19:21:09.1161600-07:00 ===
+--- compile t6_phaseB.cs -> t6_phaseB.exe (compile-verified build, NOT RUN) ---
+  build OK: 8192 bytes, 10/23/2026 7:21:09 PM
+  sha256  : 9CBB8C4D8DAB223E5EDB9547A8A7117CF6230A8845D43D8DC1C61802B121B657
+--- staged files manifest ---
+  C:\Users\vmdebug\Desktop\t6_work\t6_phaseB.cs  6396 B
+  C:\Users\vmdebug\Desktop\t6_work\t6_phaseB.exe  8192 B
+  C:\Users\vmdebug\Desktop\t6_work\t6_phaseB.ps1  2937 B
+--- ladder definition (FOR THE ORCHESTRATOR - each step = ONE vmrun invocation + immediate pull) ---
+  B0  gate : t6_phaseB.ps1 -Step gate -DevicePath <audioprotection path>   (admin+restricted open proof; MUST pass first)
+  B1  s5   : in=5 out=5   -> allocation 5 B -> 1-byte OOB
+  B2  s4   : in=4 out=4   -> allocation 4 B -> 2-byte OOB
+  B3  s3   : in=3 out=3   -> allocation 3 B -> 3-byte OOB
+  B4  s2   : in=2 out=2   -> allocation 2 B -> 4-byte OOB
+  B5  s1   : in=1 out=1   -> allocation 1 B -> 5-byte OOB
+  B6  s0   : in=0 out=0   -> allocation 0 B (SystemBuffer possibly NULL) -> full 6-byte write; HIGHEST bugcheck risk
+  NEVER run out of ladder order; run SOLO; snapshot-restore is orchestrator-owned.
+
+--- escalation-value honesty note (pre-computed) ---
+  Overflow extent is at most 6 bytes past a <=5-byte non-paged pool allocation.
+  Overflow content: channelConfig dword (member of {0x107,0x33,0x3F,0x60F,0x63F,0xFF}) +
+  channels word (2..8) - semi-fixed small values. A 5-B request occupies a >=8-B pool
+  chunk, so spilled bytes land in chunk slack or the adjacent pool header. Adjacent-pool
+  corruption is possible but tiny and low-control; the finding may remain WRITE-MEDIUM
+  even if the overflow is empirically confirmed.
+
+--- t6 agent statement ---
+  Agent t6 did NOT execute any of gate/s5..s0 and will not. Phase B is orchestrator-gated.

@@ -1,0 +1,42 @@
+
+Name                   Length LastWriteTime        
+----                   ------ -------------        
+nvhda64v.sys           131656 9/15/2024 10:24:58 PM
+t6_alive.txt               50 10/23/2026 7:18:37 PM
+t6_baseline.ps1          4014 10/23/2026 6:47:48 PM
+t6_baseline.txt         40275 10/23/2026 6:55:40 PM
+t6_cleanup.ps1           3897 10/23/2026 6:52:03 PM
+t6_dc_before.txt         2480 10/23/2026 6:55:37 PM
+t6_inf.ps1               2084 10/23/2026 7:18:14 PM
+t6_ioctl.ps1             2609 10/23/2026 6:51:40 PM
+t6_ioctl.txt             1279 10/23/2026 7:17:50 PM
+t6_ioctl_devstat.txt      145 10/23/2026 7:17:50 PM
+t6_kdrestart.ps1         2553 10/23/2026 6:57:58 PM
+t6_kd_create.txt          216 10/23/2026 6:58:24 PM
+t6_kd_restart.txt        1039 10/23/2026 6:59:02 PM
+t6_kd_status.txt          146 10/23/2026 6:59:01 PM
+t6_load.ps1              2875 10/23/2026 6:48:05 PM
+t6_load.txt              4494 10/23/2026 6:56:13 PM
+t6_mkdev.ps1             3932 10/23/2026 6:50:33 PM
+t6_mkdev.txt             1562 10/23/2026 6:56:56 PM
+t6_mkdev_create.txt       215 10/23/2026 6:56:50 PM
+t6_mkdev_status.txt       145 10/23/2026 6:56:55 PM
+t6_open.ps1              4095 10/23/2026 6:51:28 PM
+t6_open.txt               636 10/23/2026 7:17:02 PM
+t6_open_last.txt           72 10/23/2026 7:16:56 PM
+t6_open_restricted.txt     72 10/23/2026 7:16:56 PM
+t6_open_whoami.txt       5801 10/23/2026 7:17:56 PM
+t6_phaseB.cs             6396 10/23/2026 6:53:14 PM
+t6_phaseB.ps1            2937 10/23/2026 6:53:30 PM
+t6_phaseB_stage.ps1      2958 10/23/2026 6:53:58 PM
+t6_poc.cs               20705 10/23/2026 6:50:14 PM
+t6_poc.exe              17920 10/23/2026 6:56:50 PM
+t6_surface.ps1           4273 10/23/2026 6:50:55 PM
+t6_surface.txt          25831 10/23/2026 7:16:26 PM
+t6_surface_devstat.txt    291 10/23/2026 7:16:25 PM
+t6_surface_ifall.txt      126 10/23/2026 7:16:26 PM
+t6_surface_qobj.txt      1895 10/23/2026 7:16:26 PM
+t6_whoami.ps1             597 10/23/2026 7:17:44 PM
+
+
+

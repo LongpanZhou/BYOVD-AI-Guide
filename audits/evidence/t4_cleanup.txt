@@ -1,0 +1,73 @@
+=== t4 cleanup 2026-10-23T16:57:19.5097726-07:00 ===
+--- pnputil /remove-device (created devnodes) ---
+  device: ROOT\T4SILABSER\0000
+    Microsoft PnP Utility
+    
+    Removing device:          ROOT\T4SILABSER\0000
+    Device removed successfully.
+    
+  device: ROOT\T4SILABSER2\0000
+    Microsoft PnP Utility
+    
+    Removing device:          ROOT\T4SILABSER2\0000
+    Device removed successfully.
+    
+--- sc stop + sc delete t4_silabser ---
+    [SC] ControlService FAILED 1062:
+    
+    The service has not been started.
+    
+    [SC] DeleteService SUCCESS
+--- delete drivers\silabser.sys copy ---
+  deleted
+--- remove leftover enum keys ---
+  absent HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T4SILABSER
+  absent HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T4SILABSER2
+--- DeviceClasses: remove T4 instance keys; delete GUID roots only if empty ---
+  removed EMPTY GUID root: {a2a39220-39f4-4b88-aecb-3d86a35dc748}
+  GUID root kept (1 non-t4 children remain): {86e0d1e0-8089-11d0-9ce4-08003e301f73}
+--- verify: no t4/silabser services ---
+    [SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+    
+    The specified service does not exist as an installed service.
+    
+--- verify: no T4SILABSER pnp devices ---
+    (clean)
+--- verify: DeviceClasses GUID roots gone ---
+  {a2a39220-39f4-4b88-aecb-3d86a35dc748}: False
+  {86e0d1e0-8089-11d0-9ce4-08003e301f73}: True
+--- verify: drivers\silabser.sys gone ---
+  True
+--- SERIALCOMM DeviceMap (post-cleanup) ---
+  \Device\Serial0 = COM1
+--- kept: t4_work\ scripts + staged phase-B files (per instructions) ---
+  silabser.sys
+  t4_alive.txt
+  t4_baseline.ps1
+  t4_baseline.txt
+  t4_cleanup.ps1
+  t4_copy.ps1
+  t4_devnode.ps1
+  t4_ioctl.ps1
+  t4_ioctl.txt
+  t4_ioctl_session.txt
+  t4_load.txt
+  t4_mkdev.txt
+  t4_mkdev_create.txt
+  t4_mkdev_fallback.txt
+  t4_mkdev_status.txt
+  t4_open.ps1
+  t4_open.txt
+  t4_open_last.txt
+  t4_open_restricted.txt
+  t4_phaseB.cs
+  t4_phaseB.ps1
+  t4_poc.cs
+  t4_poc.exe
+  t4_surface.ps1
+  t4_surface.txt
+  t4_surface2.ps1
+  t4_surface2.txt
+  t4_surface2_poc.txt
+  t4_surface_poc.txt
+  t4_svcname.txt

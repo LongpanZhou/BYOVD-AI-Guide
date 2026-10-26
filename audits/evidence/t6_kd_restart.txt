@@ -1,0 +1,24 @@
+=== t6 kdrestart 2026-10-23T18:58:24.8599955-07:00 (attempt #2: ROOT\T6NVHDA2\0000, Class=System) ===
+  enum key clean
+  CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+  CM_Create_DevNodeW(ROOT\T6NVHDA2\0000, flags=0) -> CR=0x0 devnode=0x2
+  CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  seeded HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T6NVHDA2\0000
+--- pnputil /restart-device ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\T6NVHDA2\0000
+  Device restarted successfully.
+  
+  CM_Locate_DevNodeW(ROOT\T6NVHDA2\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+  ProblemCode = 10
+  ProblemStatus = 3221225473
+  
+  SERVICE_NAME: t6_nvhda 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0

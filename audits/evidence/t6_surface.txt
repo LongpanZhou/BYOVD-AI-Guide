@@ -1,0 +1,316 @@
+=== t6 surface 2026-10-23T19:16:24.7481045-07:00 ===
+--- devnode statuses ---
+  CM_Locate_DevNodeW(ROOT\T6NVHDA\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+    DEVPKEY_Device_ProblemCode = 10
+    DEVPKEY_Device_ProblemStatus = 3221225473
+    DEVPKEY_Device_Service = t6_nvhda
+  CM_Locate_DevNodeW(ROOT\T6NVHDA\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+  CM_Locate_DevNodeW(ROOT\T6NVHDA2\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+    DEVPKEY_Device_ProblemCode = 10
+    DEVPKEY_Device_ProblemStatus = 3221225473
+    DEVPKEY_Device_Service = t6_nvhda
+--- service state ---
+  
+  SERVICE_NAME: t6_nvhda 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+--- DeviceClasses scan: any T6NVHDA instance under ANY GUID root ---
+  (none)
+--- DeviceClasses GUID diff vs baseline (t6_dc_before.txt) ---
+  (no new GUID roots)
+--- SetupAPI: all present device interfaces matching 'T6NVHDA' ---
+  FATAL FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+--- Kernel object directory probes ---
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('parameters')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('parameters')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('parameters')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('parameters')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('audio')=7; endStatus=0x8000001A
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{65e8773e-8f56-11d0-a3b9-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{a17579f0-4fec-4936-9364-249460863be5}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{eb115ffc-10c8-4964-831d-6dcb02e6f23f}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{6994ad04-93ef-11d0-a3cc-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{dda54a40-1e4c-11d1-a050-405705c10000}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{65e8773d-8f56-11d0-a3b9-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{86841137-ed8e-4d97-9975-f2ed56b4430e}  [SymbolicLink]
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('parameters')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('audio')=7; endStatus=0x8000001A
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{65e8773e-8f56-11d0-a3b9-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{a17579f0-4fec-4936-9364-249460863be5}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{eb115ffc-10c8-4964-831d-6dcb02e6f23f}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{6994ad04-93ef-11d0-a3cc-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{dda54a40-1e4c-11d1-a050-405705c10000}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{65e8773d-8f56-11d0-a3b9-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{86841137-ed8e-4d97-9975-f2ed56b4430e}  [SymbolicLink]
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('audio')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\Device) OK; entries=335; matches('parameters')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('nvhda')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('NvHDA')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('audio')=7; endStatus=0x8000001A
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{65e8773e-8f56-11d0-a3b9-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{a17579f0-4fec-4936-9364-249460863be5}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{eb115ffc-10c8-4964-831d-6dcb02e6f23f}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{6994ad04-93ef-11d0-a3cc-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{dda54a40-1e4c-11d1-a050-405705c10000}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{65e8773d-8f56-11d0-a3b9-00a0c9223196}  [SymbolicLink]
+    HDAUDIO#FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001#5&217be3d6&0&0001#{86841137-ed8e-4d97-9975-f2ed56b4430e}  [SymbolicLink]
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('protection')=0; endStatus=0x8000001A
+  
+  NtOpenDirectoryObject(\GLOBAL??) OK; entries=185; matches('parameters')=0; endStatus=0x8000001A
+  
+--- audio devices (Win32_SoundDevice) after start attempt ---
+
+Name                         Manufacturer Status PNPDeviceID                                                                 
+----                         ------------ ------ -----------                                                                 
+High Definition Audio Device Microsoft    OK     HDAUDIO\FUNC_01&VEN_15AD&DEV_1975&SUBSYS_15AD1975&REV_1001\5&217BE3D6&0&0001
+
+
+
+--- System event log (last 12) ---
+  [10/23/2026 6:56:08 PM] id=7045 prov=Service Control Manager lvl=4
+      A service was installed in the system. |  | Service Name:  t6_nvhda | Service File Name:  C:\Windows\System32\drivers\nvhda64v.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+  [10/23/2026 6:55:22 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+      The system time has changed to ‎2026‎-‎10‎-‎24T01:55:22.763000000Z from ‎2026‎-‎10‎-‎24T01:47:54.140219100Z. |  | Change Reason: An application or system component changed the time. | Process: '\Device\HarddiskVolume3\Program Files\VMware\VMware Tools\vmtoolsd.exe' (PID 2896).
+  [10/23/2026 6:55:22 PM] id=24 prov=Microsoft-Windows-Kernel-General lvl=4
+      The time zone information was refreshed with exit reason 0. Current time zone bias is 420.
+  [10/23/2026 6:36:52 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+      The system time has changed to ‎2026‎-‎10‎-‎24T01:36:52.074000000Z from ‎2026‎-‎10‎-‎23T19:55:49.025191700Z. |  | Change Reason: An application or system component changed the time. | Process: '\Device\HarddiskVolume3\Program Files\VMware\VMware Tools\vmtoolsd.exe' (PID 2896).
+  [10/23/2026 6:36:52 PM] id=24 prov=Microsoft-Windows-Kernel-General lvl=4
+      The time zone information was refreshed with exit reason 0. Current time zone bias is 420.
+  [10/23/2026 12:51:45 PM] id=4107 prov=Display lvl=4
+      A caller specified the SDC_FORCE_MODE_ENUMERATION flag in a call to the SetDisplayConfig() API
+  [10/23/2026 12:45:49 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+  [10/23/2026 12:43:04 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+  [10/23/2026 12:43:04 PM] id=10016 prov=Microsoft-Windows-DistributedCOM lvl=3
+      The machine-default permission settings do not grant Local Activation permission for the COM Server application with CLSID  | {F87B28F1-DA9A-4F35-8EC0-800EFCF26B83} |  and APPID  | {0868DC9B-D9A2-4F64-9362-133CEA201299} |  to the user NT AUTHORITY\NETWORK SERVICE SID (S-1-5-20) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool.
+  [10/23/2026 12:42:58 PM] id=1 prov=Microsoft-Windows-Power-Troubleshooter lvl=4
+      The system has returned from a low power state. |  | Sleep Time: ‎2026‎-‎10‎-‎23T18:57:27.700642700Z | Wake Time: ‎2026‎-‎10‎-‎23T19:42:57.325780700Z |  | Wake Source: Power Button
+  [10/23/2026 12:42:55 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+      The system time has changed to ‎2026‎-‎10‎-‎23T19:42:55.500000000Z from ‎2026‎-‎10‎-‎23T18:57:36.689006200Z. |  | Change Reason: System time synchronized with the hardware clock. | Process: '' (PID 4).
+  [10/23/2026 11:57:36 AM] id=107 prov=Microsoft-Windows-Kernel-Power lvl=4
+      The system has resumed from sleep.
+--- Kernel-PnP/Configuration log (last 20) ---
+  [10/17/2026 4:55:37 AM] id=410 lvl=4
+      Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [10/17/2026 4:55:37 AM] id=400 lvl=4
+      Device SWD\PRINTENUM\{32D0B399-4DF1-4495-9AE2-D9A27A8D9108} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [10/17/2026 4:55:37 AM] id=420 lvl=4
+      Device SWD\PRINTENUM\{101D3A8E-C67A-4757-95CD-2E8FF9492833} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+  [10/17/2026 3:06:31 AM] id=410 lvl=4
+      Device ACPI\PNP0501\1 was started. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Service: Serial | Lower Filters:  | Upper Filters: serenum
+  [10/17/2026 3:06:25 AM] id=430 lvl=4
+      Device ACPI\PNP0501\1 requires further installation.
+  [10/17/2026 3:06:25 AM] id=400 lvl=4
+      Device ACPI\PNP0501\1 was configured. |  | Driver Name: msports.inf | Class Guid: {4d36e978-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: ComPort.NT | Driver Rank: 0xFF0002 | Matching Device Id: *PNP0501 | Outranked Drivers:  | Device Updated: false | Parent Device: ACPI\PNP0A05\4&1bd7f811&0
+  [5/19/2025 1:22:28 PM] id=410 lvl=4
+      Device ROOT\VID\0000 was started. |  | Driver Name: wvid.inf | Class Guid: {4d36e97d-e325-11ce-bfc1-08002be10318} | Service: Vid | Lower Filters:  | Upper Filters: 
+  [5/10/2025 1:23:10 AM] id=410 lvl=4
+      Device SWD\MSDAS\{ce958e9a-424f-4c88-86f4-11314821e75a} was started. |  | Driver Name: c_swdevice.inf | Class Guid: {62f9c741-b25a-46ce-b54c-9bccce08b6f2} | Service:  | Lower Filters:  | Upper Filters: 
+  [5/10/2025 1:23:10 AM] id=400 lvl=4
+      Device SWD\MSDAS\{ce958e9a-424f-4c88-86f4-11314821e75a} was configured. |  | Driver Name: c_swdevice.inf | Class Guid: {62f9c741-b25a-46ce-b54c-9bccce08b6f2} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: SoftwareDevice | Driver Rank: 0xFF3000 | Matching Device Id: SWD\GenericRaw | Outranked Drivers:  | Device Updated: false | Parent Device: HTREE\ROOT\0
+  [5/9/2025 2:02:23 AM] id=410 lvl=4
+      Device ROOT\VID\0000 was started. |  | Driver Name: wvid.inf | Class Guid: {4d36e97d-e325-11ce-bfc1-08002be10318} | Service: Vid | Lower Filters:  | Upper Filters: 
+  [5/9/2025 12:08:14 AM] id=410 lvl=4
+      Device SWD\PRINTENUM\{529047B3-202B-466C-B2D4-6A4D7EB66CF6} was started. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Service:  | Lower Filters:  | Upper Filters: 
+  [5/9/2025 12:08:14 AM] id=400 lvl=4
+      Device SWD\PRINTENUM\{529047B3-202B-466C-B2D4-6A4D7EB66CF6} was configured. |  | Driver Name: printqueue.inf | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: NO_DRV_LOCAL | Driver Rank: 0x1 | Matching Device Id: PRINTENUM\LocalPrintQueue | Outranked Drivers: prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\GenericRaw:00FF3001 | Device Updated: false | Parent Device: SWD\PRINTENUM\PrintQueues
+  [5/9/2025 12:08:14 AM] id=420 lvl=4
+      Device SWD\PRINTENUM\{B2B41527-0F22-488D-9576-92001957A62B} was deleted. |  | Class Guid: {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+  [5/6/2025 6:13:30 PM] id=410 lvl=4
+      Device SWD\MSRRAS\MS_NDISWANBH was started. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Service: NdisWan | Lower Filters: NdisTapi | Upper Filters: 
+  [5/6/2025 6:13:30 PM] id=400 lvl=4
+      Device SWD\MSRRAS\MS_NDISWANBH was configured. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: Ndi-Mp-Bh | Driver Rank: 0xFF0000 | Matching Device Id: ms_ndiswanbh | Outranked Drivers:  | Device Updated: false | Parent Device: SWD\MSRRAS\{5e259276-bc7e-40e3-b93b-8f89b5f3abc0}
+  [5/6/2025 6:13:30 PM] id=410 lvl=4
+      Device SWD\MSRRAS\MS_NDISWANIPV6 was started. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Service: NdisWan | Lower Filters: NdisTapi | Upper Filters: 
+  [5/6/2025 6:13:30 PM] id=400 lvl=4
+      Device SWD\MSRRAS\MS_NDISWANIPV6 was configured. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: Ndi-Mp-Ipv6 | Driver Rank: 0xFF0000 | Matching Device Id: ms_ndiswanipv6 | Outranked Drivers:  | Device Updated: false | Parent Device: SWD\MSRRAS\{5e259276-bc7e-40e3-b93b-8f89b5f3abc0}
+  [5/6/2025 6:13:30 PM] id=410 lvl=4
+      Device SWD\MSRRAS\MS_NDISWANIP was started. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Service: NdisWan | Lower Filters: NdisTapi | Upper Filters: 
+  [5/6/2025 6:13:30 PM] id=400 lvl=4
+      Device SWD\MSRRAS\MS_NDISWANIP was configured. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Driver Date: 06/21/2006 | Driver Version: 10.0.19041.1 | Driver Provider: Microsoft | Driver Section: Ndi-Mp-Ip | Driver Rank: 0xFF0000 | Matching Device Id: ms_ndiswanip | Outranked Drivers:  | Device Updated: false | Parent Device: SWD\MSRRAS\{5e259276-bc7e-40e3-b93b-8f89b5f3abc0}
+  [5/6/2025 6:13:30 PM] id=410 lvl=4
+      Device SWD\MSRRAS\MS_PPPOEMINIPORT was started. |  | Driver Name: netrasa.inf | Class Guid: {4d36e972-e325-11ce-bfc1-08002be10318} | Service: RasPppoe | Lower Filters:  | Upper Filters: 
+--- setupapi.dev.log tail (last 80 lines) ---
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\npsvctrig.inf_amd64_b98e9a5325075265\npsvctrig.inf} 13:39:52.725
+       idb:           Driver package 'npsvctrig.inf_amd64_b98e9a5325075265' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.725
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.725
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicdisplay.inf_amd64_19e58b6267591a82\basicdisplay.inf} 13:39:52.725
+       sto:      Driver Package = basicdisplay.inf_amd64_19e58b6267591a82
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicdisplay.inf_amd64_19e58b6267591a82\basicdisplay.inf} 13:39:52.725
+       idb:           Driver package 'basicdisplay.inf_amd64_19e58b6267591a82' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicrender.inf_amd64_eebb5a8467eb88ec\basicrender.inf} 13:39:52.727
+       sto:      Driver Package = basicrender.inf_amd64_eebb5a8467eb88ec
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicrender.inf_amd64_eebb5a8467eb88ec\basicrender.inf} 13:39:52.727
+       idb:           Driver package 'basicrender.inf_amd64_eebb5a8467eb88ec' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\display.inf_amd64_35d5534e5de21a4b\display.inf} 13:39:52.729
+       sto:      Driver Package = display.inf_amd64_35d5534e5de21a4b
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\display.inf_amd64_35d5534e5de21a4b\display.inf} 13:39:52.729
+       idb:           Driver package 'display.inf_amd64_35d5534e5de21a4b' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.729
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf} 13:39:52.730
+       sto:      Driver Package = ntprint.inf_x86_20ea026aadec8898
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf} 13:39:52.730
+       idb:           Driver package 'ntprint.inf_amd64_20ea026aadec8898' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf} 13:39:52.732
+       sto:      Driver Package = prnms003.inf_x86_60589e1e769a15c6
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf} 13:39:52.732
+       idb:           Driver package 'prnms003.inf_amd64_fe878017f474877a' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.732
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.732
+       sto: Driver update 'dc1-controller.inf' is already reflected.
+       sto: Driver update 'xusb22.inf' is already reflected.
+       sto: Driver update 'oposdrv.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_a2dp.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_avrcptransport.inf' is already reflected.
+       sto: Driver update 'btampm.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_hfp.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_a2dp_snk.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_a2dp_src.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_hfp_ag.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_hfp_hf.inf' is already reflected.
+       sto: Driver update 'xboxgip.inf' is already reflected.
+       sto: Driver update 'xboxgipsynthetic.inf' is already reflected.
+       sto: Driver update 'xinputhid.inf' is already reflected.
+       sto: Driver update 'vdrvroot.inf' is already reflected.
+       sto: Driver update 'vhdmp.inf' is already reflected.
+       sto: Driver update 'kdnic.inf' is already reflected.
+       sto: Driver update 'ndisuio.inf' is already reflected.
+       sto: Driver update 'npsvctrig.inf' is already reflected.
+       sto: Driver update 'basicdisplay.inf' is already reflected.
+       sto: Driver update 'basicrender.inf' is already reflected.
+       sto: Driver update 'display.inf' is already reflected.
+       sto: Skipping non-native x86 driver package 'ntprint.inf' on amd64.
+       sto: Skipping non-native x86 driver package 'prnms003.inf' on amd64.
+  <<<  Section end 2026/10/21 13:39:52.790
+  <<<  [Exit status: SUCCESS]
+  
+  
+  [Boot Session: 2026/10/21 13:40:22.500]
+  
+  >>>  [Enable Device Install]
+  >>>  Section start 2026/10/21 13:40:40.455
+        cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+       ump: DeviceInstall service is not started.
+  <<<  Section end 2026/10/21 13:40:40.459
+  <<<  [Exit status: SUCCESS]
+  
+  
+  >>>  [Enable Device Install]
+  >>>  Section start 2026/10/21 13:40:40.683
+        cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+       ump: DeviceInstall service is not disabled.
+       ump: DeviceInstall service is not started.
+  <<<  Section end 2026/10/21 13:40:40.685
+  <<<  [Exit status: SUCCESS]
+  

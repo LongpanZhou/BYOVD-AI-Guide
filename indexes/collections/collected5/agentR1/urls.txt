@@ -1,0 +1,28 @@
+﻿iCUE 5 package repository index:
+https://www3.corsair.com/software/CUE_V5/public/modules/icue_initial_installer.json
+https://www3.corsair.com/software/CUE_V5/public/modules/windows/installerpackage/cuepkg_bootstrap.zip
+https://www3.corsair.com/software/CUE_V5/public/modules/windows/packages/cuepkg-metadata.json
+
+iCUE 5 driver packages (download base https://www3.corsair.com/software/CUE_V5/public/modules/windows/packages/):
+driver-audio_5.51.1-2.3.104_win32-release-amd64.cuepkg
+driver-usbxp_5.51.1-3.3.0_win32-release-amd64.cuepkg
+driver-vhid_5.51.1-3.0.88_win32-release-amd64.cuepkg
+driver-scuf-audio_5.51.1-1.0.96_win32-release-amd64.cuepkg
+driver-scuf-hid_5.52.0-1.0.100_win32-release-amd64.cuepkg
+driver-cmedia_5.28.99-5.12.0_win32-release-amd64.cuepkg
+driver-llaccess_5.28.99-1.0.74_win32-release-amd64.cuepkg
+cdcs-installer_5.52.93_win32-release-amd64.cuepkg
+
+Official vendor installers (winget download):
+https://www3.corsair.com/software/CUE_V5/public/modules/windows/installer/Install%20iCUE.exe
+https://dl.razerzone.com/drivers/Synapse4/RazerSynapseInstaller.exe
+https://download01.logi.com/web/ftp/pub/techsupport/gaming/lghub_installer.exe
+
+Razer runtime endpoints referenced by official installer (not usable without executing the installer):
+https://discovery3.razerapi.com/api/v1/endpoints
+https://manifest3.razerapi.com
+https://manifest-assets.razersynapse.com/lwi/manifest.json
+
+Logitech runtime endpoints referenced by official installer (authenticated; 403 to direct requests):
+https://updates.ghub.logitechg.com/pipeline/v2/update
+https://pipeline.logitech.io/pipeline/v2/update

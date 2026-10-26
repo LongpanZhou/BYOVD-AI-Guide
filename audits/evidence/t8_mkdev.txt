@@ -1,0 +1,38 @@
+t8_mkdev 2026-10-23T23:54:18.9276949-07:00
+--- step 1: create devnode (flags=0) ---
+t8_poc start 2026-10-23T23:54:18.9540778-07:00
+mkdev ROOT\AMDPSP\0000 parent=HTREE\ROOT\0 CR=0 dn=0x2 status=0x1802001 problem=0 (statCR=0x0)
+t8_poc end 2026-10-23T23:54:18.9600625-07:00
+  mkdev exit=0
+--- step 2: seed enum key ---
+  seeded:  |  | Capabilities : 0 | ConfigFlags  : 0 | Class        : System | ClassGUID    : {4d36e97d-e325-11ce-bfc1-08002be10318} | DeviceDesc   : @t8_amdpsp.DeviceDesc;t8 AMD PSP test node | HardwareID   : {ROOT\AMDPSP} | Service      : t8_amdpsp | PSPath       : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enu |                m\ROOT\AMDPSP\0000 | PSParentPath : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enu |                m\ROOT\AMDPSP | PSChildName  : 0000 | PSDrive      : HKLM | PSProvider   : Microsoft.PowerShell.Core\Registry |  |  |  | 
+--- step 3: pnputil /restart-device ---
+Microsoft PnP Utility
+
+Restarting device:         ROOT\AMDPSP\0000
+Device restarted successfully.
+  pnputil exit: 0
+--- step 4: post-state ---
+t8_poc start 2026-10-23T23:54:27.0480049-07:00
+devstat ROOT\AMDPSP\0000 dn=0x1 CR=0x0 status=0x1802401 problem=10
+t8_poc end 2026-10-23T23:54:27.0540665-07:00
+  devstat exit=0
+--- open probes ---
+t8_poc start 2026-10-23T23:54:27.0746091-07:00
+open \\.\amdpsp acc=0xC0000000 share=0x3 -> FAIL err=2
+t8_poc end 2026-10-23T23:54:27.0806075-07:00
+t8_poc start 2026-10-23T23:54:27.1006561-07:00
+open \\.\amdpsp acc=0x12019F share=0x3 -> FAIL err=2
+t8_poc end 2026-10-23T23:54:27.1056478-07:00
+t8_poc start 2026-10-23T23:54:27.1245785-07:00
+open \Device\amdpsp (nt) st=0xC0000034
+t8_poc end 2026-10-23T23:54:27.1285782-07:00
+--- DACL pulls (load-bearing) ---
+t8_poc start 2026-10-23T23:54:27.1500404-07:00
+open \\.\amdpsp acc=0x20000 -> FAIL err=2
+t8_poc end 2026-10-23T23:54:27.1558184-07:00
+t8_poc start 2026-10-23T23:54:27.1738664-07:00
+unknown cmd: daclnt
+t8_poc end 2026-10-23T23:54:27.1799225-07:00
+--- driverquery row ---
+  t8_amdpsp    t8_amdpsp              t8_amdpsp              Kernel        Manual     Stopped    OK         FALSE       FALSE        4,096             32,768      0          3/6/2020 1:04:04 PM    \??\C:\Users\vmdebug\Desktop\t8_work\amdpsp.sys  4,096      

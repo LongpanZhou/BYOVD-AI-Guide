@@ -1,0 +1,385 @@
+t9_install_lwf 2026-10-24T01:27:50.3765760-07:00
+--- step 0: sanity ---
+inf present: True
+sys hash: CD3AF3B853C27626FCFC85997FEEAD0A48E56D618E2129F62FE1B96A203A44C7
+inf hash: DBCC2C6F3DC2A68EABC698D2D7D94837E9F79711DD13B414299E20C00C016779
+pre-existing drivers\VBoxNetLwf.sys: False
+--- step 1: netcfg -l VBoxNetLwf.inf -c s -i VBoxNetLwf ---
+Trying to install VBoxNetLwf ...
+
+
+... C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf was copied to C:\Windows\INF\oem10.inf.
+
+
+... failed. Error code: 0x800f0203.
+
+
+
+netcfg exit=515
+--- step 2: post-install state ---
+netcfg [-v] [-winpe] [-l <full-path-to-component-INF>] -c <p|s|c> 
+
+       -i <comp-id>
+
+    
+
+    -winpe installs TCP/IP, NetBIOS and Microsoft Client for Windows 
+
+           preinstallation environment
+
+    -l	   provides the location of INF
+
+    -c	   provides the class of the component to be installed (p == Protocol, 
+
+           s == Service, c == Client)
+
+    -i	   provides the component ID
+
+
+
+    The arguments must be passed in the order shown.
+
+
+
+    Examples:
+
+    
+
+    netcfg -l c:\oemdir\myprot.inf -c p -i myprot
+
+    
+
+        Installs protocol 'myprot' using c:\oemdir\myprot.inf
+
+
+
+    netcfg -c s -i MS_Server
+
+     
+
+        Installs service 'MS_Server'
+
+ 
+
+OR
+
+
+
+netcfg [-v] -winpe
+
+
+
+    Example:
+
+    
+
+    netcfg -v -winpe
+
+
+
+        Installs TCP/IP, NetBIOS, and Microsoft Client for Windows 
+
+        preinstallation environment
+
+
+
+OR
+
+
+
+netcfg [-v] -q <comp-id>
+
+
+
+    Example:
+
+    
+
+    netcfg -q MS_IPX
+
+    
+
+        Displays if component 'MS_IPX' is installed
+
+
+
+OR
+
+
+
+netcfg [-v] -u <comp-id>
+
+
+
+    Example:
+
+
+
+    netcfg -u MS_IPX
+
+
+
+        Uninstalls component 'MS_IPX'
+
+
+
+OR
+
+
+
+netcfg [-v] -s <a|n>
+
+
+
+    -s  provides the type of components to show (a == adapters, 
+
+        n == net components)
+
+
+
+    Example:
+
+    
+
+    netcfg -s n
+
+
+
+        Shows all installed net components
+
+
+
+OR
+
+
+
+netcfg [-v] -b <comp-id>
+
+
+
+    Example:
+
+
+
+    netcfg -b ms_tcpip
+
+
+
+        Shows binding paths containing 'MS_TCPIP'
+
+
+
+OR
+
+
+
+netcfg [-v] -m
+
+
+
+    Example:
+
+
+
+    netcfg -m 
+
+
+
+        Outputs the binding map to NetworkBindingMap.txt in the current directory.
+
+        -v will also display the binding map to the console.
+
+
+
+OR
+
+
+
+netcfg -d
+
+
+
+    Example:
+
+
+
+    netcfg -d
+
+
+
+        Performs a cleanup on all networking devices.
+
+		This will require a reboot.
+
+
+
+OR
+
+
+
+netcfg -x
+
+
+
+    Example:
+
+
+
+    netcfg -x
+
+
+
+        Performs a cleanup on networking devices, skipping those without physical
+
+        object names.
+
+		This will require a reboot.
+
+
+
+General Notes:
+
+  -v	Run in verbose (detailed) mode
+
+  -?	Displays this help information
+
+
+
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+
+
+
+drivers\VBoxNetLwf.sys now present: False
+--- step 2b: netcfg component presence query ---
+'VBoxNetLwf' is not installed.
+
+
+
+--- step 2c: FALLBACK - t7 service recipe (filter device surface is created in DriverEntry; bindings are the netcfg-gated layer) ---
+[SC] CreateService SUCCESS
+
+[SC] StartService FAILED 31:
+
+A device attached to the system is not functioning.
+
+
+
+SERVICE_NAME: VBoxNetLwf 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+
+VBoxNetLwf   VBoxNetLwf             VBoxNetLwf             Kernel        Manual     Stopped    OK         FALSE       
+FALSE        0                 131,072     0          1/15/2024 5:59:30 AM   
+\??\C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf. 4,096      
+
+
+
+--- step 3: device object check ---
+t9_poc start 2026-10-24T01:27:52.8633656-07:00
+ntopen \Device\VBoxNetLwf acc=0x12019F -> st=0xC0000034
+t9_poc end 2026-10-24T01:27:52.8683736-07:00
+
+t9_poc start 2026-10-24T01:27:52.8884519-07:00
+daclnt \Device\VBoxNetLwf NtCreateFile st=0xC0000034
+t9_poc end 2026-10-24T01:27:52.8935003-07:00
+
+--- step 4: setupapi.dev.log VBox lines (t5 forensics) ---
+setupapi lines 1265..1447:
+     dvi:           {Core Device Install - exit(0x00000000)} 01:23:31.454
+     dvi:           Waiting for device post-install to complete. 01:23:31.456
+     dvi:           Device post-install completed. 01:23:31.603
+     dvi:           Device Status: 0x0180200b
+     ump:      {Plug and Play Service: Device Install exit(00000000)}
+     dvs:      {Install Related Drivers} 01:23:31.654
+     dvs:      {Install Related Drivers: exit(0x00000000)} 01:23:31.655
+     dvs: {Driver Setup Update Device - exit(0x00000000)} 01:23:31.655
+<<<  Section end 2026/10/24 01:23:31.656
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [SetupCopyOEMInf - C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf]
+>>>  Section start 2026/10/24 01:25:26.111
+      cmd: "C:\Windows\system32\netcfg.exe" -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     inf: Copy style: 0x00000000
+     sto: {Setup Import Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf} 01:25:26.112
+     inf:      Provider: Oracle Corporation
+     inf:      Class GUID: {4D36E974-E325-11CE-BFC1-08002BE10318}
+     inf:      Driver Version: 01/15/2024,7.0.14.11095
+     inf:      Catalog File: VBoxNetLwf.cat
+     sto:      {Copy Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf} 01:25:26.117
+     sto:           Driver Package = C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf
+     sto:           Flags          = 0x00000007
+     sto:           Destination    = C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}
+     sto:           Copying driver package files to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}'.
+     flq:           {FILE_QUEUE_COMMIT} 01:25:26.118
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.cat' to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.cat'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf' to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.sys' to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.sys'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:25:26.124
+     sto:      {Copy Driver Package: exit(0x00000000)} 01:25:26.124
+     ump:      Import flags: 0x00000000
+     pol:      {Driver package policy check} 01:25:26.130
+     pol:      {Driver package policy check - exit(0x00000000)} 01:25:26.130
+     sto:      {Stage Driver Package: C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf} 01:25:26.130
+     inf:           {Query Configurability: C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf} 01:25:26.132
+     inf:                Driver package 'VBoxNetLwf.inf' is configurable.
+     inf:           {Query Configurability: exit(0x00000000)} 01:25:26.133
+     flq:           {FILE_QUEUE_COMMIT} 01:25:26.135
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.cat' to 'C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.cat'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf' to 'C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.inf'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.sys' to 'C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.sys'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:25:26.143
+     sto:           {DRIVERSTORE IMPORT VALIDATE} 01:25:26.143
+     sig:                Driver package catalog is valid.
+     sig:                {_VERIFY_FILE_SIGNATURE} 01:25:26.156
+     sig:                     Key      = VBoxNetLwf.inf
+     sig:                     FilePath = C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.inf
+     sig:                     Catalog  = C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.cat
+     sig:                     Success: File is signed in catalog.
+     sig:                {_VERIFY_FILE_SIGNATURE exit(0x00000000)} 01:25:26.161
+     sto:           {DRIVERSTORE IMPORT VALIDATE: exit(0x00000000)} 01:25:26.163
+     sig:           Signer Score  = 0x0D000005 (WHQL)
+     sig:           Signer Name   = Microsoft Windows Hardware Compatibility Publisher
+     sig:           Submission ID = 30041490_13562717952827599_1152921505697260923
+     sto:           {Core Driver Package Import: vboxnetlwf.inf_amd64_c5e1a8904c87a072} 01:25:26.165
+     sto:                {DRIVERSTORE IMPORT BEGIN} 01:25:26.165
+     sto:                {DRIVERSTORE IMPORT BEGIN: exit(0x00000000)} 01:25:26.165
+     cpy:                {Copy Directory: C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}} 01:25:26.165
+     cpy:                     Target Path = C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072
+     cpy:                {Copy Directory: exit(0x00000000)} 01:25:26.167
+     idb:                {Register Driver Package: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\VBoxNetLwf.inf} 01:25:26.168
+     idb:                     Created driver package object 'vboxnetlwf.inf_amd64_c5e1a8904c87a072' in DRIVERS database node.
+     idb:                     Created driver INF file object 'oem10.inf' in DRIVERS database node.
+     idb:                     Registered driver package 'vboxnetlwf.inf_amd64_c5e1a8904c87a072' with 'oem10.inf'.
+     idb:                {Register Driver Package: exit(0x00000000)} 01:25:26.170
+     idb:                {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\VBoxNetLwf.inf} 01:25:26.171
+     idb:                     Activating driver package 'vboxnetlwf.inf_amd64_c5e1a8904c87a072'.
+     cpy:                     Published 'vboxnetlwf.inf_amd64_c5e1a8904c87a072\vboxnetlwf.inf' to 'oem10.inf'.
+     idb:                     Indexed 2 device IDs for 'vboxnetlwf.inf_amd64_c5e1a8904c87a072'.
+     sto:                     Flushed driver database node 'DRIVERS'. Time = 15 ms
+     sto:                     Flushed driver database node 'SYSTEM'. Time = 0 ms
+     idb:                {Publish Driver Package: exit(0x00000000)} 01:25:26.176
+     sto:                {DRIVERSTORE IMPORT END} 01:25:26.177
+     dvi:                     Flushed all driver package files to disk. Time = 0 ms
+     sig:                     Installed catalog 'VBoxNetLwf.cat' as 'oem10.cat'.
+     sto:                {DRIVERSTORE IMPORT END: exit(0x00000000)} 01:25:26.184
+     sto:           {Core Driver Package Import: exit(0x00000000)} 01:25:26.185
+     sto:      {Stage Driver Package: exit(0x00000000)} 01:25:26.185
+     sto: {Setup Import Driver Package - exit (0x00000000)} 01:25:26.214
+     inf: Driver Store Path: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\VBoxNetLwf.inf
+     inf: Published Inf Path: C:\Windows\INF\oem10.inf
+<<<  Section end 2026/10/24 01:25:26.216
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Install network driver - VBoxNetLwf]
+>>>  Section start 2026/10/24 01:25:26.266
+      cmd: "C:\Windows\system32\netcfg.exe" -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+

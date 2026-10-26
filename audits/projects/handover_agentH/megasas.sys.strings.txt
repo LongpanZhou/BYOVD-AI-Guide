@@ -1,0 +1,359 @@
+===ASCII===
+!This program cannot be run in DOS mode.
+Rich8
+.text
+h.rdata
+H.data
+.pdata
+H.idata
+HINIT
+bGFIDS
+B.rsrc
+B.reloc
+UVWATAUAVAWH
+D$bB;D
+A_A^A]A\_^]
+L$DHc
+L$LH#
+D$OA98v
+L$PH3
+x AVH
+t:@8=v
+VWATAVAWH
+f;C r
+ A_A^A\_^
+VWAVH
+@A^_^
+x AVH
+t9@8j
+t$@8n
+L$0H3
+VWAVH
++|$@u
+ A^_^
+|$ AVH
+8\$0t
+D8RVt&
+@ D8RWt
+C H9G(u
+@H8AH
+N@tID
+C H9G(
+saD8J
+u[D8J
+VWAVH
+ A^_^
+VWAVH
+B8D9v
+ A^_^
+VWAUAVAWH
+B8A9o
+ A_A^A]_^
+\$ UVWAVAWH
+L$PfD
+ A_A^_^]
+t$ WATAUAVAWH
+d$pD8bx
+D8cdfA
+A_A^A]A\_
+t$ WATAUAVAWH
+ A_A^A]A\_
+x AVH
+K|D8s
+u%D8s
+G$D9u
+t$ WATAUAVAWH
+t'E8f
+H)G@D8
+@D8gVt$
+D8gWt8D8oXv2D
+D8gWu
+D8gyu
+t^D8gxtX
+;G|tJ
+A_A^A]A\_
+WATAUAVAWH
+ A_A^A]A\_
+x AVH
+fD;w 
+fD9w 
+x ATAVAW
+|$8A_A^A\
+x ATAVAWH
+|$8A_A^A\
+x AVI
+E9P t
+|$(A^
+x ATAUAVAWL
+|$@A_A^A]A\
+E9Z t
+x ATAVAWH
+L$hfA
+ A_A^A\
+t$ WAVAWH
+0A_A^_
+x AVA
+t$ D:
+UVWATAUAVAWH
+l$hf#
+D$X@8
+H9D$hu
+D$XHi
+H9L$hu
+H9D$x
+T$Tt5H
+A_A^A]A\_^]
+UVWATAUAVAWH
+l$hB:
+ A_A^A]A\_^]
+WATAUAVAWH
+uRD8cI
+u{D8cIuuD8cJuoD8cMuiD
+D8fVt2
+u:D8f
+-t>A+
+)u!E3
+0A_A^A]A\_
+x AVH
+UVWATAUAVAWH
+oiA8w
+ A_A^A]A\_^]
+WAVAWH
+ A_A^_
+@88tn@
+L$8J+
+|$ UH
+x AWH
+D9D$`A
+T$XE3
+tID9D$`rBE3
+H9T$0|
+H9D$P
+x AVH
+L!7L!w
+t)L92u
+VWATH
+@A\_^
+x ATAVAWH
+ A_A^A\
+WATAUAVAWH
+T$8E3
+\$ E3
+A_A^A]A\_
+ffffff
+fffffff
+ffffff
+ffffff
+fffffff
+ffffff
+fffffff
+fffffff
+fffffff
+megasas2.sys
+6.706.06.00
+balancecount
+busywaitcount
+coalescedepth
+coalescestart
+debuglevel
+extimeout
+fastpathoff
+maxnumrequests
+maxtransfersize
+msiqueues
+nobusywait
+nonuma
+nosrbflush
+qdepth
+pdqdepth
+disablewdtocr
+maxiosize
+ DummyDevice    
+megasas.pdb
+10000409
+10000411
+10000413
+10280015(
+10000060
+10000071
+10000073
+10000078
+10000079
+1000005B
+1000005D
+10000092
+1000005F
+  RAID  
+LSILOGIC
+Windows
+version
+megasas2.sys
+6.706.06.00
+2015.03.02
+StorPortQuerySystemTime
+StorPortNotification
+StorPortGetBusData
+StorPortGetDeviceBase
+StorPortLogError
+StorPortGetPhysicalAddress
+StorPortInitialize
+StorPortGetUncachedExtension
+StorPortStallExecution
+StorPortExtendedFunction
+StorPortGetScatterGatherList
+StorPortBusy
+StorPortPause
+StorPortSynchronizeAccess
+StorPortResume
+StorPortReady
+StorPortSetDeviceQueueDepth
+StorPortSetBusDataByOffset
+storport.sys
+RtlIsNtDdiVersionAvailable
+strstr
+__C_specific_handler
+ntoskrnl.exe
+ScsiPortNotification
+6}j4j
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 20110
+190502212436Z
+200502212436Z0p1
+Washington1
+Redmond1
+Microsoft Corporation1
+Microsoft Windows0
+}bgk#!F
+HA1o7w
+I0G1-0+
+$Microsoft Ireland Operations Limited1
+229879+4541120
+M0K0I
+Chttp://www.microsoft.com/pkiops/crl/MicWinProPCA2011_2011-10-19.crl0a
+U0S0Q
+Ehttp://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt0
+L+x`r
+Washington1
+Redmond1
+Microsoft Corporation1200
+)Microsoft Root Certificate Authority 20100
+111019184142Z
+261019185142Z0
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 20110
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+TlP0X
+R!s4Z
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 2011
+,SaNm0F569ONNi9tR4nffZHl8+HyMonDoDkUTw6Lj2Z0=0Z
+ http://www.microsoft.com/windows0
+uiUG'^
+20191207054907.846Z0
+Redmond1
+Microsoft Corporation1-0+
+$Microsoft Ireland Operations Limited1&0$
+Thales TSS ESN:FF06-4BC3-B9DA1%0#
+Microsoft Time-Stamp Service
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+191023231937Z
+210121231937Z0
+Redmond1
+Microsoft Corporation1-0+
+$Microsoft Ireland Operations Limited1&0$
+Thales TSS ESN:FF06-4BC3-B9DA1%0#
+Microsoft Time-Stamp Service0
+-%i<@L
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicTimStaPCA_2010-07-01.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicTimStaPCA_2010-07-01.crt0
+0zR>yL{
+Washington1
+Redmond1
+Microsoft Corporation1200
+)Microsoft Root Certificate Authority 20100
+100701213655Z
+250701214655Z0|1
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+|hK,_
+$`2X`F
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+1http://www.microsoft.com/PKI/docs/CPS/default.htm0@
+oK0D$"<
+z.9Wv
+r~akow
+Redmond1
+Microsoft Corporation1-0+
+$Microsoft Ireland Operations Limited1&0$
+Thales TSS ESN:FF06-4BC3-B9DA1%0#
+Microsoft Time-Stamp Service
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+20191207034121Z
+20191208034121Z0t0:
+1,0*0
+1(0&0
+cPW}iy
+aF{T|
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 2010
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 2010
+jXQP1
+K)2Xs
+===UNICODE===
+MofResource
+ScsiMiniPort
+MOFDATA
+MOFRESOURCE
+VS_VERSION_INFO
+StringFileInfo
+040904B0
+CompanyName
+Avago Technologies
+FileDescription
+MEGASAS RAID Controller Driver for Windows
+FileVersion
+6.706.06.00 (NT.150223-1854)
+InternalName
+megasas2.sys
+LegalCopyright
+Copyright 
+ Avago Technologies2013
+OriginalFilename
+megasas2.sys
+ProductName
+MEGASAS RAID Controller Driver for Windows
+ProductVersion
+6.706.06.00
+VarFileInfo
+Translation
+SubC
+"Microsoft Window
+SubC
+Legal_Policy_Statement

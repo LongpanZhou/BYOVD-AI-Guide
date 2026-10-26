@@ -1,0 +1,13 @@
+=== t4 PHASE-B STAGING (compile-only, NEVER executed) 2026-10-23T16:58:22.5296938-07:00 ===
+t4_phaseB.exe built OK (STAGED - NOT RUN; size=10240 bytes)
+--- staged phase-B files in t4_work ---
+  t4_phaseB.cs  8636 bytes
+  t4_phaseB.exe  10240 bytes
+  t4_phaseB.ps1  4442 bytes
+  t4_phaseB_stage.ps1  1717 bytes
+--- execution policy note ---
+  t4_phaseB.exe was NOT executed by agent t4. PHASE B IS ORCHESTRATOR-GATED (solo phase).
+  Run pattern per step (B0/B1/B2/B3), see t4_phaseB.ps1 header:
+    vmrun -T ws -gu vmdebug -gp 123456 runProgramInGuest <vmx> powershell.exe -NoProfile
+      -ExecutionPolicy Bypass -File C:\Users\vmdebug\Desktop\t4_work\t4_phaseB.ps1 -Step <step>
+    then immediately CopyFileFromGuestToHost t4_phaseB_<step>.txt to host evidence dir.

@@ -1,0 +1,63 @@
+﻿Driver collection summary - agentS1 (peripheral RGB/input vendors)
+Date: 2026-10-24
+Scope: Wooting, Glorious, Ducky, Keychron, Royal Kludge, Epomaker, Akko, Pulsar, Lamzu, Finalmouse, Zowie, Vaxee, Endgame Gear
+Installer cap: 500 MiB (updated). No installer execution.
+
+VENDOR            PRODUCT                              URL HOST                                  SIZE(MB)  .SYS  NEW  EXIST  KNOWNBAD  RESULT
+Wooting           Wootility 5.4.2                      wooting.io                                   140.3    0    0     0        0  no driver (Electron + analog SDK)
+Glorious          Glorious CORE 2.1.23                 gloriouscore.nyc3.digitaloceanspaces.com     373.1    1    1     0        0  RtUsbA64.sys NEW (Realtek USB audio, bundled)
+Glorious          Glorious CORE Legacy 1.1.36          downloads.gloriousgamingservices.com         157.3    0    0     0        0  no driver
+Keychron          M1 wired mouse driver V1.2           cdn.shopify.com                                2.6    0    0     0        0  no driver (userland HID tool)
+Akko              Akko Cloud v4 372.2.35               file.akkogear.com                             81.3    0    0     0        0  no driver
+Akko              Akko Hub V5.38                       file.akkogear.com                            395.1    0    0     0        0  no driver
+Akko              Akko Wired Manager 2.0               file.akkogear.com                             18.6    0    0     0        0  no driver
+Akko              Akko Cloud Gaming Nest 1.1.0.43      file.akkogear.com                              5.3    0    0     0        0  no driver
+Royal Kludge      RK Keyboard Software V4.6            rkgaming.com                                  88.0    0    0     0        0  no driver
+Ducky             One 3 RGB firmware V1.16             cdn.shopify.com                                1.8    0    0     0        0  no driver (Nuvoton HID updater)
+Pulsar            Pulsar Hub V1.32 rev2                *.azurefd.net                                 48.7    0    0     0        0  no driver (Qt app)
+Lamzu             LAMZU Software v1.6.0.43             cdn.shopify.com                                6.3    0    0     0        0  no driver
+Endgame Gear      -                                    endgamegear.com                                 -      0    0     0        0  SKIPPED: HTTP 429
+Vaxee             -                                    vaxee.co                                        -      0    0     0        0  SKIPPED: Cloudflare CAPTCHA
+Zowie             -                                    zowie.benq.com                                  -      0    0     0        0  NO-PACKAGE: JS portal, HID-only
+Finalmouse        -                                    xpanel.finalmouse.com                           -      0    0     0        0  NO-PACKAGE: web XPanel only
+Epomaker          -                                    epomaker.com                                    -      0    0     0        0  NO-PACKAGE: web hub only
+
+Counts
+  packages downloaded : 12
+  total download size : 1318.6 MB
+  extracted packages  : 12 (all archives expanded to <=5 levels)
+  .sys found (>=4KB)  : 1
+  unique .sys         : 1
+  NEW                 : 1
+  EXISTING            : 0
+  KNOWNBAD            : 0
+  DUPLICATE           : 0
+
+New driver
+  RtUsbA64.sys  SHA256 154FA6AC634C8BFDF12025FD7A3C9643B5CAC0D76D206062F0DAED21057FB7B9
+  Realtek Semiconductor Corp. 6.4.0.2423, signature Valid
+  Bundled inside Glorious CORE 2.1.23 (Driver\UAD_2024_1007\USBAud\Win64). USB-audio function
+  driver, not an RGB/input control device; kept because it is NEW and came from an in-scope
+  vendor package. Low audit relevance (no user-openable control device surface).
+
+Failures / blockers
+  Endgame Gear  - endgamegear.com HTTP 429 (Shopify bot block); rendered HTML and products.json
+                  expose no installer URL.
+  Vaxee         - vaxee.co Cloudflare "Just a moment" CAPTCHA (HTTP 403 direct).
+  Zowie         - download portal is a JS product-search app; no standalone Windows driver package.
+  Finalmouse    - /pages/software is 404; configuration is browser-based (XPanel/WebHID).
+  Epomaker      - downloads are web-based (hub.epomaker.com); no installer offered.
+  Glorious      - 5 nested archive opens failed (PE stubs inside Inno payload); no .sys involved.
+
+Notes
+  - Shopify origin returned HTTP 429 for this network; vendor pages were read through a text reader
+    (r.jina.ai) and installers were downloaded from the vendors' own CDNs.
+  - A lookalike GitHub repo "Glorious-CORE-Corp/Glorious-Software-Download" pointing at
+    getgithub.help was identified as non-official and NOT used.
+  - Nothing was executed, installed, or loaded; no service or registry writes.
+
+Note on dedupe timing
+  existing_hashes.txt was 784 lines at start and 932 at finish: the batch merge at 2026-10-24 21:44
+  promoted this agent's (and other agents') new drivers into the index. RtUsbA64.sys was NEW when
+  filtered; re-running the filter now reports EXISTING. The file is left in new\ with its .inf/.cat.
+

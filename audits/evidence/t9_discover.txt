@@ -1,0 +1,331 @@
+t9_discover 2026-10-24T01:43:25.8632634-07:00
+--- qobj \Device filter VBox|adp|lwf|sup ---
+t9_poc start 2026-10-24T01:43:25.8891867-07:00
+qobj: begin dir=\Device filter=VBox|adp|lwf|sup
+qobj: attrs built, opening
+qobj: open st=0x00000000
+qobj: iter 1 st=0x00000000 ret=96
+qobj: buf[0..95]=100012000000000010076200000000000c000e0000000000220762000000000000000000000000000000000000000000000000000000000000000000000000003000300030003000300030003700650000004400650076006900630065000000
+qobj: e0 nlen=16 nptr=0x620710 tlen=12 tptr=0x620722
+qobj: e1 nlen=0 nptr=0x0 tlen=0 tptr=0x0
+qobj: e2 nlen=48 nptr=0x65003700300030 tlen=0 tptr=0x6500630069
+t9_poc.exe : 
+At C:\Users\vmdebug\Desktop\t9_work\t9_discover.ps1:9 char:6
++ Log (& "$work\t9_poc.exe" $out qobj '\Device' 'VBox|adp|lwf|sup' 2>&1 ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Unhandled Exception: System.AccessViolationException: Attempted to read or write protected 
+memory. This is often an indication that other memory is corrupt.
+   at System.Buffer.Memmove(Byte* dest, Byte* src, UInt64 len)
+   at System.String.CtorCharPtrStartLength(Char* ptr, Int32 startIndex, Int32 length)
+   at System.Runtime.InteropServices.Marshal.PtrToStringUni(IntPtr ptr, Int32 len)
+   at T9.USAt(IntPtr baseP, Int32 off, String& s)
+   at T9.CmdQobj(String dir, String filter)
+   at T9.Main(String[] args)
+
+qobj exit=-1073741819
+--- netcfg /s t (all net components) ---
+netcfg [-v] [-winpe] [-l <full-path-to-component-INF>] -c <p|s|c> 
+
+       -i <comp-id>
+
+    
+
+    -winpe installs TCP/IP, NetBIOS and Microsoft Client for Windows 
+
+           preinstallation environment
+
+    -l	   provides the location of INF
+
+    -c	   provides the class of the component to be installed (p == Protocol, 
+
+           s == Service, c == Client)
+
+    -i	   provides the component ID
+
+
+
+    The arguments must be passed in the order shown.
+
+
+
+    Examples:
+
+    
+
+    netcfg -l c:\oemdir\myprot.inf -c p -i myprot
+
+    
+
+        Installs protocol 'myprot' using c:\oemdir\myprot.inf
+
+
+
+    netcfg -c s -i MS_Server
+
+     
+
+        Installs service 'MS_Server'
+
+ 
+
+OR
+
+
+
+netcfg [-v] -winpe
+
+
+
+    Example:
+
+    
+
+    netcfg -v -winpe
+
+
+
+        Installs TCP/IP, NetBIOS, and Microsoft Client for Windows 
+
+        preinstallation environment
+
+
+
+OR
+
+
+
+netcfg [-v] -q <comp-id>
+
+
+
+    Example:
+
+    
+
+    netcfg -q MS_IPX
+
+    
+
+        Displays if component 'MS_IPX' is installed
+
+
+
+OR
+
+
+
+netcfg [-v] -u <comp-id>
+
+
+
+    Example:
+
+
+
+    netcfg -u MS_IPX
+
+
+
+        Uninstalls component 'MS_IPX'
+
+
+
+OR
+
+
+
+netcfg [-v] -s <a|n>
+
+
+
+    -s  provides the type of components to show (a == adapters, 
+
+        n == net components)
+
+
+
+    Example:
+
+    
+
+    netcfg -s n
+
+
+
+        Shows all installed net components
+
+
+
+OR
+
+
+
+netcfg [-v] -b <comp-id>
+
+
+
+    Example:
+
+
+
+    netcfg -b ms_tcpip
+
+
+
+        Shows binding paths containing 'MS_TCPIP'
+
+
+
+OR
+
+
+
+netcfg [-v] -m
+
+
+
+    Example:
+
+
+
+    netcfg -m 
+
+
+
+        Outputs the binding map to NetworkBindingMap.txt in the current directory.
+
+        -v will also display the binding map to the console.
+
+
+
+OR
+
+
+
+netcfg -d
+
+
+
+    Example:
+
+
+
+    netcfg -d
+
+
+
+        Performs a cleanup on all networking devices.
+
+		This will require a reboot.
+
+
+
+OR
+
+
+
+netcfg -x
+
+
+
+    Example:
+
+
+
+    netcfg -x
+
+
+
+        Performs a cleanup on networking devices, skipping those without physical
+
+        object names.
+
+		This will require a reboot.
+
+
+
+General Notes:
+
+  -v	Run in verbose (detailed) mode
+
+  -?	Displays this help information
+
+
+
+--- Get-NetAdapter (all, incl. hidden/broken) ---
+
+Name                                  InterfaceDescription                       Status       Driv
+                                                                                              erVe
+                                                                                              rsio
+                                                                                              n   
+----                                  --------------------                       ------       ----
+Local Area Connection* 6              WAN Miniport (IP)                          Up           1...
+Local Area Connection* 8              WAN Miniport (Network Monitor)             Up           1...
+Local Area Connection* 4              WAN Miniport (PPTP)                        Disconnected 1...
+Local Area Connection* 1              WAN Miniport (SSTP)                        Disconnected 1...
+Ethernet                              VirtualBox Host-Only Ethernet Adapter      Up           7...
+Local Area Connection* 2              WAN Miniport (IKEv2)                       Disconnected 1...
+Teredo Tunneling Pseudo-Interface                                                Not Present      
+Local Area Connection* 5              WAN Miniport (PPPOE)                       Disconnected 1...
+Local Area Connection* 3              WAN Miniport (L2TP)                        Disconnected 1...
+Local Area Connection* 7              WAN Miniport (IPv6)                        Up           1...
+Ethernet (Kernel Debugger)            Microsoft Kernel Debug Network Adapter     Up           1...
+Microsoft IP-HTTPS Platform Interface                                            Not Present      
+Ethernet0                             Intel(R) 82574L Gigabit Network Connection Not Present  1...
+6to4 Adapter                                                                     Not Present      
+
+
+
+--- driverquery VBox rows ---
+
+t9_vboxsup   t9_vboxsup             t9_vboxsup             Kernel        Manual     Running    OK 
+        TRUE        FALSE        0                 643,072     0          1/15/2024 6:00:11 AM   
+\??\C:\Users\vmdebug\Desktop\t9_work\VBoxSup.sys 4,096      
+VBoxNetAdp   VirtualBox NDIS 6.0 Mi VirtualBox NDIS 6.0 Mi Kernel        Manual     Running    OK 
+        TRUE        FALSE        0                 126,976     0          1/15/2024 5:59:30 AM   
+C:\Windows\system32\drivers\VBoxNetAdp6.sys      4,096      
+VBoxNetLwf   VBoxNetLwf             VBoxNetLwf             Kernel        Manual     Stopped    OK 
+        FALSE       FALSE        0                 131,072     0          1/15/2024 5:59:30 AM   
+\??\C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf. 4,096      
+
+
+
+--- sc query t9_vboxsup / VBoxNetAdp / VBoxNetLwf ---
+
+SERVICE_NAME: t9_vboxsup 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+
+SERVICE_NAME: VBoxNetAdp 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+
+SERVICE_NAME: VBoxNetLwf 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+--- registry: Net class instances with VBox ---
+
+--- registry: NetService class instances with VBox ---
+
+--- DeviceClasses: filter VBox GUIDs ---
+

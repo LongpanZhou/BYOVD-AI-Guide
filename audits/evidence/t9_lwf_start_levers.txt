@@ -1,0 +1,41 @@
+t9_lwf_start_levers 2026-10-24T01:42:38.0492306-07:00
+=== lever A: LoadOrderGroup=NDIS + retry ===
+[SC] ChangeServiceConfig SUCCESS
+
+[SC] StartService FAILED 31:
+
+A device attached to the system is not functioning.
+
+
+exit=31
+
+SERVICE_NAME: VBoxNetLwf 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+=== lever B: seed INF Ndi template under Control\Network (netcfg rollback left none) ===
+Ndi template seeded at HKLM:\SYSTEM\CurrentControlSet\Control\Network\{4d36e974-e325-11ce-bfc1-08002be10318}\{7af6b074-048d-4444-bfce-1ecc8bc5cb76}
+[SC] StartService FAILED 31:
+
+A device attached to the system is not functioning.
+
+
+exit=31
+
+SERVICE_NAME: VBoxNetLwf 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+t9_poc start 2026-10-24T01:42:38.1979507-07:00
+ntopen \Device\VBoxNetLwf acc=0x12019F -> st=0xC0000034
+t9_poc end 2026-10-24T01:42:38.2045446-07:00
+
+=== end levers ===

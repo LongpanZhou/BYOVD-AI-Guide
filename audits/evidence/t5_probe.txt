@@ -1,0 +1,21 @@
+=== t5 probe 2026-10-23T17:49:19.0567181-07:00 ===
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x38 (dec 56)
+  devstat exit=0  elapsed=28 ms
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj matched=False
+  DEVPKEY_Device_ProblemCode = 56
+  DEVPKEY_Device_ProblemStatus = 3221225473
+  DEVPKEY_Device_DriverInfPath = oem9.inf
+  DEVPKEY_Device_Service = vpnva
+--- relevant processes ---
+--- sc query t5_vpnva ---
+  
+  SERVICE_NAME: t5_vpnva 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0

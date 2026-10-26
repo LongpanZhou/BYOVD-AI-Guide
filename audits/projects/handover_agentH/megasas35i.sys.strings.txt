@@ -1,0 +1,506 @@
+===ASCII===
+!This program cannot be run in DOS mode.
+ DRicht
+.text
+h.rdata
+H.data
+.pdata
+HINIT
+b.rsrc
+B.reloc
+VWAVH
+ A^_^
+@SVAVAWH
+(A_A^^[
+;K`v 
+(A_A^^[
+@USVWAVH
+G`fA#
+l$Dfff
+fD9k,u
+r8fE9o|}1D8n
+A^_^[]
+|$ ATAVAWH
+|$8A_A^A\
+K WATAUAVAWH
+BH<%t
+ui<%u0
+c<%u0
+@A_A^A]A\_
+@SUWATAUAVAWH
+`A_A^A]A\_][
+`A_A^A]A\_][
+|$0E3
+l$(E3
+`A_A^A]A\_][
+l$ VWAVH
+)u!E3
+t$mtC
+D$ptC
+@A^_^
+UVWATAUAVAWH
+d$]D8
+D$@D;
+L$TtW
+l$DI+
+D$HE3
+`A_A^A]A\_^]
+D$Rt@
+@SUVWAVH
+PA^_^][
+PA^_^][
+PA^_^][
+PA^_^][
+PA^_^][
+PA^_^][
+PA^_^][
+D$@@2
+D$HtJ
+UVWATAUAVAWH
+@A_A^A]A\_^]
+|$ AVH
+t$ WATAUAVAWH
+ A_A^A]A\_
+UVWAVAWH
+0A_A^_^]
+0A_A^_^]
+|$ AVAW
+|$0A_A^
+UVWATAUAVAWH
+A_A^A]A\_^]
+W8D;W`v
+T$PfD#
+D$HD*
+H9D$Hu
+\$hH9\$PI
+D$(fD
+l$ VW
+l$0_^
+E8fB9
+l$0E:
+fA;J,r
+WAVAWH
+@A_A^_
+UVWATAUAVAWH
+|$ E3
+0A_A^A]A\_^]
+UVWATAUAVAWH
+9D$8s@A
+f9p,u2f
+L$HH3
+PA_A^A]A\_^]
+fA1N|
+@UVWAUAVH
+H9C0w
+S8;S`
+L$8H3
+PA^A]_^]
+C@t"L
+f3G|f#
+t$ WAVAWH
+fD9z,
+ A_A^_
+l$ VWAVH
+D$PE3
+L$PH3
+8fB9|
+L$8H3
+|$0@2
+@SUAWH
+PA_][
+|$xD8~ 
+t$pD8
+PA_][
+A8OwA
+|$ E3
+l$ VWATAVAWH
+D+m4A
+D+m0A
+ A_A^A\_^
+@SUVWAWH
+|$Lfff
+v3D9?u.
+L$XH3
+`A__^][
+|$ AVH
+@SVWH
+L$KfA;
+D$@E3
+D$`@L
+t$ WAVAWH
+0A_A^_
+@USVWATAVH
+A^A\_^[]
+\$ WH
+D$1A9
+v fff
+L$8H3
+d$PH;
+t$ WH
+\$ UH
+t$@E3
+SUVWAVAWH
+W\uSL
+XA_A^_^][
+XA_A^_^][
+XA_A^_^][
+@SUVWAVH
+\$XE3
+ A^_^][
+WAVAWH
+f3N|f#
+ A_A^_
+\$0fA
+UVAVH
+ A^^]
+\$ UVWH
+@SUVWATAUAVH
+G>H)GHD
+D8gxt3H
+D8 t'
+D8gzt8
+O<f3K|f#
+f1K|A
+D8g u
+D8gztq
+ucD8g
+t]D8ghtWfD9
+C`fA#
+C`fA#
+C`fA#
+fD9f,u
+L$PD8!
+uxD8g
+pA^A]A\_^][
+fD9c|
+CtE8f
+pA^A]A\_^][
+t$XtN
+\$ UVWAVAWH
+ A_A^_^]
+H9T$X||
+H9L$0}
+D$PtH
+L$XH3
+H9D$0
+t$ WH
+H92t-H
+L$P H
+D$X#f
+D$Z@8
+WATAUAVAWH
+t0H9+u
+t`fff
+D$`E3
+ A_A^A]A\_
+L$p H
+D$BD8
+t$ WATAUAVAWH
+\$@E3
+D$vD8
+D9%[k
+D9%Vk
+D$8E3
+L$xH3
+A_A^A]A\_
+|$ ATAVAWH
+@A_A^A\
+UVWATAUAVAWH
+D$`tD
+D$`tD
+D$@E3
+D$@E3
+D$@E3
+D$@E3
+FX=3516tm=B
+D$@E3
+D$@E3
+D$htD
+L$pH3
+A_A^A]A\_^]
+t$ AV
+t$(A^
+|$ D;
+fA9A<t 
+t$(A^
+t$ WH
+@SUWAVH
+|$@t#
+u-A8F
+m<$uY
+XA^_][
+t(< t$<
+ A8Zz
+UVWAVAWH
+L$`H3
+pA_A^_^]
+s\fff
+t$ AWH
+|$ AVH
+VWAVH
+D9D$p
+L$hE3
+tP9t$prJE
+ A^_^
+|$ UATAUAVAWH
+T$8E3
+\$ E3
+A_A^A]A\]
+fffffff
+ffffff
+fffffff
+ffffff
+ffffff
+fffffff
+ffffff
+FIRMWARE
+megasas35.sys
+7.710.10.00
+2019.06.20
+MEGASAS35
+balancecount
+busywaitcount
+coalescedepth
+coalescestart
+debuglevel
+extimeout
+fastpathoff
+maxnumrequests
+maxtransfersize
+msiqueues
+nobusywait
+nonuma
+nosrbflush
+queuedepth
+pdqdepth
+disablewdtocr
+maxiosize
+normwfp
+bgtimerperiod
+syncreg
+disablesd
+logevent
+r1iohinting
+errorlevel
+RTTraceBufferSize
+perfmode
+RSDS/
+MegaSas35i.pdb
+.text$mn
+.text$mn$00
+.text$mn$21
+.text$s
+.idata$5
+.00cfg
+.gfids
+.rdata
+.rdata$zzzdbg
+.xdata
+.data
+.pdata
+.idata$2
+.idata$3
+.idata$4
+.idata$6
+.rsrc$01
+.rsrc$02
+ DummyDevice    
+  RAID  
+RTTrace
+LSILOGIC
+Windows
+megasas35.sys
+7.710.10.00
+2019.06.20
+7.710.10.00
+100000AA
+100000AB
+100000AC
+100000AD
+100000AE
+100000AF
+100000D0
+100000D1
+100000D3
+100000D4
+10000014
+10000015
+10000016
+10000017
+1000001B
+1000001C
+100000D3
+100010E1
+100010E2
+100010E5
+100010E6
+StorPortGetScatterGatherList
+StorPortGetPhysicalAddress
+StorPortBusy
+StorPortNotification
+StorPortExtendedFunction
+StorPortSetDeviceQueueDepth
+StorPortStallExecution
+StorPortInitialize
+StorPortGetBusData
+StorPortGetDeviceBase
+StorPortGetUncachedExtension
+StorPortQuerySystemTime
+StorPortPause
+StorPortResume
+StorPortReady
+storport.sys
+RtlFindLeastSignificantBit
+RtlFindMostSignificantBit
+strstr
+ntoskrnl.exe
+ScsiPortNotification
+SAMPLE_IDENTIFIER{dd38f7fc-d7bd-488b-9242-7d8754cde80d}
+7jNilZ!
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 20110
+190502212436Z
+200502212436Z0p1
+Washington1
+Redmond1
+Microsoft Corporation1
+Microsoft Windows0
+}bgk#!F
+HA1o7w
+I0G1-0+
+$Microsoft Ireland Operations Limited1
+229879+4541120
+M0K0I
+Chttp://www.microsoft.com/pkiops/crl/MicWinProPCA2011_2011-10-19.crl0a
+U0S0Q
+Ehttp://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt0
+L+x`r
+Washington1
+Redmond1
+Microsoft Corporation1200
+)Microsoft Root Certificate Authority 20100
+111019184142Z
+261019185142Z0
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 20110
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+TlP0X
+R!s4Z
+Washington1
+Redmond1
+Microsoft Corporation1.0,
+%Microsoft Windows Production PCA 2011
+,fkyqtXgNEiSt+KC56DbUfddvf0lsd1sBf/t2m2M45b8=0Z
+ http://www.microsoft.com/windows0
+\ZjO`
+&-HQ:
+20191207054930.46Z0
+Washington1
+Redmond1
+Microsoft Corporation1)0'
+ Microsoft Operations Puerto Rico1&0$
+Thales TSS ESN:F528-3777-8A761%0#
+Microsoft Time-Stamp Service
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+190906204116Z
+201204204116Z0
+Washington1
+Redmond1
+Microsoft Corporation1)0'
+ Microsoft Operations Puerto Rico1&0$
+Thales TSS ESN:F528-3777-8A761%0#
+Microsoft Time-Stamp Service0
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicTimStaPCA_2010-07-01.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicTimStaPCA_2010-07-01.crt0
+8Rb<(a
+"WR/d
+Washington1
+Redmond1
+Microsoft Corporation1200
+)Microsoft Root Certificate Authority 20100
+100701213655Z
+250701214655Z0|1
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 20100
+|hK,_
+$`2X`F
+O0M0K
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+N0L0J
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+1http://www.microsoft.com/PKI/docs/CPS/default.htm0@
+oK0D$"<
+z.9Wv
+r~akow
+Washington1
+Redmond1
+Microsoft Corporation1)0'
+ Microsoft Operations Puerto Rico1&0$
+Thales TSS ESN:F528-3777-8A761%0#
+Microsoft Time-Stamp Service
+Washington1
+Redmond1
+Microsoft Corporation1)0'
+ Microsoft Operations Puerto Rico1'0%
+nCipher NTS ESN:4DE9-0C5E-3E091+0)
+"Microsoft Time Source Master Clock0
+20191206192841Z
+20191207192841Z0t0:
+1,0*0
+1(0&0
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 2010
+f0E#o
+Washington1
+Redmond1
+Microsoft Corporation1&0$
+Microsoft Time-Stamp PCA 2010
+FkB@f
+===UNICODE===
+MofResource
+ScsiMiniPort
+RESNAME
+MOFDATA
+MOFRESOURCE
+VS_VERSION_INFO
+StringFileInfo
+040904B0
+CompanyName
+Avago Technologies
+FileDescription
+MEGASAS RAID Controller Driver for Windows
+FileVersion
+7.710.10.00
+InternalName
+megasas35.sys
+LegalCopyright
+Copyright 
+ Avago Technologies2017
+OriginalFilename
+megasas35.sys
+ProductName
+MEGASAS RAID Controller Driver for Windows
+ProductVersion
+7.710.10.00
+VarFileInfo
+Translation
+SubC
+"Microsoft Window
+SubC
+Legal_Policy_Statement

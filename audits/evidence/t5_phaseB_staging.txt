@@ -1,0 +1,43 @@
+=== t5 PHASE-B STAGING RECORD (agent t5, 2026-10-23) ===
+
+STATUS: STAGED ONLY - NEVER EXECUTED by agent t5 (Phase-A directive: stage, never execute).
+
+Trigger for staging: the companion static audit vpnva.md documents a corruption-capable
+lifetime path (section 5.1):
+  - IOCTL 0x22200A maps the caller MDL into system VA via MmMapLockedPagesSpecifyCache
+    (only check: MdlFlags & 5), parks the IRP at ctx+0x48 (cancel routine FUN_1400038c0),
+  - the receive-pump timer (ctx+0xD0, FUN_140005280, armed via METHOD_NEITHER 0x222027)
+    then drains user-owned bytes from the mapped VA into NdisMIndicateReceiveNetBufferLists,
+  - "Cancel path FUN_1400038c0 -> FUN_140003320 tears down, but the parked IRP + stale
+    mapping lifetimes are the usual race window."
+
+Staged artifacts (host copies in audits/dynamic_evidence/, staged for the guest t5_work/):
+  - t5_phaseB.ps1 : per-step ladder runner (B0 gate -> B1 race -> B2 stale -> B3 soak);
+                    one vmrun invocation PER STEP, evidence pulled immediately after each.
+  - t5_phaseB.cs  : the race PoC (pre-flush logging before every kernel call).
+                    COMPILE-VERIFIED on the host with .NET Framework64 v4.0.30319 csc
+                    (exit 0). NOT compiled in-guest (VM exited before in-guest staging).
+  - Per-step evidence lands as guest t5_work\t5_phaseB_<step>.txt (pull after each step).
+
+Execution conditions (orchestrator):
+  1. SOLO phase (a successful race bugchecks the VM) - never paired with other agents.
+  2. The B0 gate REQUIRES a working miniport instantiation. Phase A could NOT instantiate
+     the miniport in this VM (NdisMAddDevice -> STATUS_UNSUCCESSFUL / CM_PROB 31 - see
+     vpnva.dynamic.md "Deployment-gate findings"). Resolve that gate first (genuine Cisco
+     installer run in an interactive session, or an ndis.sys-symbol kernel-debug trace of
+     the AddDevice failure); otherwise the ladder aborts at B0 and is meaningless.
+  3. After any step that kills the guest: orchestrator restores the snapshot.
+  4. Prohibition honored in staging: no destructive IOCTL was ever SENT in phase A; the
+     ladder below is the only place these race steps exist.
+
+Step semantics:
+  B0 (safe) : open \\.\VPNVA RW; 0x22201C (24-B state query); 0x222004 {count=8,size=8}.
+              Any failure -> abort with the observed Win32 error ("miniport not
+              instantiated or DACL denies").
+  B1 (race) : 5 cycles: park 0x22200A (fresh 0x8000 B ring) -> 0x222027 pump ->
+              immediate CancelIoEx (<10 ms) -> reap. Maximizes the cancel/pump race.
+  B2 (stale): park -> pump -> unpin ring + drop reference + GC.Collect +
+              GC.WaitForPendingFinalizers + 64 MB allocation pressure (force page reuse)
+              -> second pump -> cancel. Probes whether the driver dereferences the mapped
+              VA after the user-page lifetime ends (stale-mapping read).
+  B3 (soak) : 30 rapid park/pump/cancel cycles.

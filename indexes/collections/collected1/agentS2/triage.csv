@@ -1,0 +1,8 @@
+﻿"Driver","Reach","Device","Symlink","SDDL","Apis","Path"
+"libusb0_8058F2AF.sys","DEFAULT-ADMIN","\Device\libusb0","\DosDevices\libusb0-","","IoAllocateMdl, IoCreateDevice, IoCreateSymbolicLink, IoDeleteDevice, IoRegisterDeviceInterface, MmMapLockedPagesSpecifyCache, RtlInitUnicodeString","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\libusb0_8058F2AF.sys"
+"libusb0_AA7D75A4.sys","DEFAULT-ADMIN","\Device\libusb0","\DosDevices\libusb0-","","IoAllocateMdl, IoCreateDevice, IoCreateSymbolicLink, IoDeleteDevice, IoRegisterDeviceInterface, MmMapLockedPagesSpecifyCache, RtlInitUnicodeString","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\libusb0_AA7D75A4.sys"
+"libusbK_1DF66FF2.sys","NO-DEVICE","","\DosDevices\libusb0-","","RtlInitUnicodeString","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\libusbK_1DF66FF2.sys"
+"libusbK_6265AE9A.sys","NO-DEVICE","","\DosDevices\libusb0-","","RtlInitUnicodeString","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\libusbK_6265AE9A.sys"
+"MOZAUSBDriver_8AAC3D7C.sys","NO-DEVICE","","","","","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\MOZAUSBDriver_8AAC3D7C.sys"
+"MOZAWindowsDriver_06676A68.sys","NO-DEVICE","","","","","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\MOZAWindowsDriver_06676A68.sys"
+"MOZAWindowsDriver_3331E368.sys","NO-DEVICE","","","","","C:\Users\27175\Desktop\driver_candidates\_collected1\agentS2\new\MOZAWindowsDriver_3331E368.sys"

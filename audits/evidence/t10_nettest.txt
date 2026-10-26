@@ -1,0 +1,25 @@
+
+
+ComputerName            : 192.168.121.1
+RemoteAddress           : 192.168.121.1
+RemotePort              : 50001
+NameResolutionResults   : 192.168.121.1
+MatchingIPsecRules      : 
+NetworkIsolationContext : Internet
+InterfaceAlias          : Ethernet (Kernel Debugger)
+SourceAddress           : 192.168.121.129
+NetRoute (NextHop)      : 0.0.0.0
+PingSucceeded           : False
+PingReplyDetails (RTT)  : 0 ms
+TcpTestSucceeded        : False
+
+
+
+
+Pinging 192.168.121.1 with 32 bytes of data:
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.121.1:
+    Packets: Sent = 2, Received = 0, Lost = 2 (100% loss),
+

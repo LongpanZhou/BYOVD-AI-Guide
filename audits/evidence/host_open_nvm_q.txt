@@ -1,0 +1,1 @@
+CreateFileW(\Device\NvModuleTracker, acc=0x00000000) -> FAIL lastErr=3 (T)

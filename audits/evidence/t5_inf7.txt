@@ -1,0 +1,61 @@
+=== t5 inf7 2026-10-23T17:54:50.0258114-07:00 ===
+--- service states now ---
+  NetSetupSvc STATE              : 4  RUNNING
+  netman STATE              : 4  RUNNING
+--- clear CONFIGFLAG_FAILEDINSTALL (0x80000) ---
+  ConfigFlags=0
+--- pnputil /restart-device (attempt 1 with services running) ---
+  Microsoft PnP Utility
+  
+  Restarting device:         ROOT\VPNVA\0000
+  Device restarted successfully.
+  
+--- checks: after restart 1 ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+  ProblemCode = 31
+--- disable + enable cycle ---
+  Microsoft PnP Utility
+  
+  Disabling device:          ROOT\VPNVA\0000
+  Device disabled successfully.
+  
+  Microsoft PnP Utility
+  
+  Enabling device:          ROOT\VPNVA\0000
+  Device enabled successfully.
+  
+--- checks: after disable/enable cycle ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+  ProblemCode = 31
+--- scan-devices ---
+  Microsoft PnP Utility
+  
+  Scanning for device hardware changes.
+  Scan complete.
+  
+--- checks: after scan ---
+CM_Locate_DevNodeW(ROOT\VPNVA\0000) -> CR=0x0 devnode=0x1
+CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0x1F (dec 31)
+  devstat exit=0
+NtOpenDirectoryObject(\Device) OK; entries=334; matches('VPNVA')=0; endStatus=0x8000001A
+
+  qobj \\Device VPNVA matched=False
+CreateFileW(\\.\VPNVA, acc=0xC0000000) -> FAIL lastErr=2 (T)
+  open \\.\VPNVA RW exit=1
+  ProblemCode = 31
+--- netcfg tree (VPNVA connection search) ---
+  (search done)

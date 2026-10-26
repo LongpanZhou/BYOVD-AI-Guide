@@ -1,0 +1,66 @@
+agentS5 — Cooler Master / Lian Li / Thermaltake / DeepCool / Kingston / ADATA-XPG
+Cap applied: 500 MiB (524,288,000 bytes). Official vendor domains only. Nothing executed or installed.
+
+COUNTS
+  Packages downloaded : 5
+  Packages extracted  : 5
+  .sys files seen     : 14 (12 Cooler Master PE drivers + 2 Thermaltake firmware blobs named .sys)
+  Unique PE drivers   : 8
+  NEW                 : 6
+  EXISTING            : 0
+  KNOWNBAD            : 1  (WinRing0.sys)
+  DUPLICATE           : 4
+  AV-skipped          : 1  (WinRing0x64.sys — Defender blocked read/hash; not collected)
+  Failures            : 2  (Kingston Cloudflare 403; XPG no Windows vendor installer)
+
+PER VENDOR
+  Cooler Master (MasterPlus+)
+    URL   : https://coolermaster.egnyte.com/dd/J3FzMxaWXr
+    Size  : 366,120,507 B (349.2 MiB)
+    Type  : FULL UTILITY (Inno Setup 6.1.0 in SFX zip) — allowed by cap update
+    .sys  : 12 files / 8 unique — WinRing0.sys, WinRing0x64.sys, CMUAC.sys x4 variants, CMTAC.sys x2 variants
+    Result: NEW 6 (4x CMUAC C-Media USB audio, 2x CMTAC Cooler Master MHGS audio), KNOWNBAD 1 (WinRing0),
+            DUPLICATE 4, AV-skip 1 (WinRing0x64). No RGB IOCTL control driver was present; both NEW families
+            are PnP audio devnode drivers (lower priority for kernel mem-write primitives).
+    Note  : No driver-only package published by Cooler Master; full utility used.
+
+  Lian Li (L-Connect 3)
+    Latest: v2.1.29 = 1,515,066,872 B (1.41 GiB) — SKIPPED over cap
+    Used  : https://lianli-update.oss-cn-beijing.aliyuncs.com/L3_CX/L-Connect_3_V1.7.4_X64.ZIP
+    Size  : 109,271,660 B (104.2 MiB)
+    Type  : FULL UTILITY (zip -> NSIS -> Electron app-64.7z)
+    .sys  : 0 — no kernel driver in payload (HID-only build)
+    Result: NO-SYS-FOUND
+
+  Thermaltake (TT RGB Plus)
+    Latest: 3.10 = 740,426,574 B (706 MiB), 3.09 = 691,554,331 B (660 MiB) — SKIPPED over cap
+    Used  : https://file.thermaltake.com/file/software/TTRGBPLUS_Setup_219_x64.zip
+    Size  : 162,195,532 B (154.7 MiB)
+    Type  : FULL UTILITY (zip -> NSIS)
+    .sys  : 2 files, both firmware images ("idisplay TT021/TT039", not PE) — quarantined as .bin, not drivers
+    Result: NO-DRIVER-FOUND
+
+  DeepCool (DeepCreative / Digital)
+    URL   : https://deepcool.io/downloads/DeepCool-1.2.14-setup.exe — 509,638,120 B (486.0 MiB), FULL UTILITY
+    URL   : https://repo-sg.deepcool.com/deepcool-digitalSetup1.1.7.exe — 68,981,032 B (65.8 MiB), FULL UTILITY
+    .sys  : 0 in both (Electron/HID only)
+    Result: NO-SYS-FOUND
+
+  Kingston (FURY CTRL)
+    URL   : https://media.kingston.com/kingston/support/downloads/FURYCTRL_Installer_2.0.66.0.zip
+    Result: FAILED — Cloudflare challenge (HTTP 403, Cf-Mitigated: challenge) on HEAD/GET and curl; not downloaded.
+
+  ADATA / XPG (PRIME)
+    Landing: https://prime.xpg.com/
+    Result: NO-SMALL-PACKAGE — Windows button redirects to Microsoft Store stub (get.microsoft.com), no vendor-hosted
+            Windows installer; only macOS PKG (327.1 MiB) exists. No Windows driver obtainable from vendor domain.
+
+DRIVER-ONLY AVAILABILITY
+  None of the six vendors publishes a standalone driver-only (INF/SYS/CAT) download. All artifacts are full utilities;
+  Cooler Master and DeepCool full packages fall under the new 500 MiB cap. Lian Li and Thermaltake latest builds are
+  over cap, so their older official builds (1.7.4 / 2.19) were used.
+
+DEDUPE
+  Filter : _collected5\tools\filter_new_drivers.ps1
+  Output : new\ (6 files, all NEW, none in existing_hashes.txt or known_bad_hashes.txt — re-verified)
+  Manifest: reports\manifest.csv

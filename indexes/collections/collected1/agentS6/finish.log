@@ -1,0 +1,19 @@
+﻿2026-10-24 21:14:50 waiting for downloads
+2026-10-24 21:14:50   DeepCool-1.2.14-setup.exe: 509,638,120 / 509,638,120 bytes
+2026-10-24 21:14:50   Installer_MasterPlus_v1.9.6.zip: 366,120,507 / 366,120,507 bytes
+2026-10-24 21:14:50 both downloads complete
+2026-10-24 21:14:50 harvesting Installer_MasterPlus_v1.9.6.zip (349.2 MB)
+2026-10-24 21:14:51   RESULT CoolerMaster.MasterPlus drivers=0
+2026-10-24 21:14:51   NO-DRIVER
+2026-10-24 21:14:51 harvesting DeepCool-1.2.14-setup.exe (486.0 MB)
+2026-10-24 21:15:00   RESULT DeepCool.Digital drivers=0
+2026-10-24 21:15:00   NO-DRIVER
+2026-10-24 21:15:00 running dedupe filter
+2026-10-24 21:15:00   Source: C:\Users\27175\Desktop\driver_candidates\_collected1\agentS6\staging
+2026-10-24 21:15:00   New: 0
+2026-10-24 21:15:00   Existing: 0
+2026-10-24 21:15:00   KnownBad: 0
+2026-10-24 21:15:00   Duplicate: 0
+2026-10-24 21:15:00   Skipped: 0
+2026-10-24 21:15:00   Manifest: C:\Users\27175\Desktop\driver_candidates\_collected1\agentS6\reports\manifest.csv
+2026-10-24 21:15:00 done; new .sys = 0

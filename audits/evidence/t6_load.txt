@@ -1,0 +1,56 @@
+=== t6 load 2026-10-23T18:56:07.9400451-07:00 ===
+--- step 2: hash guest copy in t6_work ---
+  t6_work hash : 20C53E79AE686FDCABCE253350345B7EF8E0B2EEB4C7B54C53DD9FD97F4C4F80
+  expected     : 20C53E79AE686FDCABCE253350345B7EF8E0B2EEB4C7B54C53DD9FD97F4C4F80
+  MATCH        : True
+--- step 2b: copy to C:\Windows\System32\drivers + re-verify ---
+  drivers hash : 20C53E79AE686FDCABCE253350345B7EF8E0B2EEB4C7B54C53DD9FD97F4C4F80
+  MATCH        : True
+  size         : 131656
+--- step 3: sc create t6_nvhda ---
+  [SC] CreateService SUCCESS
+--- step 3b: sc start t6_nvhda ---
+  
+  SERVICE_NAME: t6_nvhda 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+          PID                : 0
+          FLAGS              : 
+--- step 3c: sc query t6_nvhda ---
+  
+  SERVICE_NAME: t6_nvhda 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+--- step 3d: driverquery verify ---
+  "t6_nvhda","t6_nvhda","t6_nvhda","Kernel ","Manual","Running","OK","TRUE","FALSE","45,056","40,960","0","2/19/2024 2:44:23 AM","\??\C:\Windows\System32\drivers\nvhda64v.sys","4,096"
+--- step 3e: System event log (last 10, service/driver entries) ---
+  [10/23/2026 6:56:08 PM] id=7045 prov=Service Control Manager lvl=4
+      A service was installed in the system. |  | Service Name:  t6_nvhda | Service File Name:  C:\Windows\System32\drivers\nvhda64v.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+  [10/23/2026 6:55:22 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+      The system time has changed to ‎2026‎-‎10‎-‎24T01:55:22.763000000Z from ‎2026‎-‎10‎-‎24T01:47:54.140219100Z. |  | Change Reason: An application or system component changed the time. | Process: '\Device\HarddiskVolume3\Program Files\VMware\VMware Tools\vmtoolsd.exe' (PID 2896).
+  [10/23/2026 6:55:22 PM] id=24 prov=Microsoft-Windows-Kernel-General lvl=4
+      The time zone information was refreshed with exit reason 0. Current time zone bias is 420.
+  [10/23/2026 6:36:52 PM] id=1 prov=Microsoft-Windows-Kernel-General lvl=4
+      The system time has changed to ‎2026‎-‎10‎-‎24T01:36:52.074000000Z from ‎2026‎-‎10‎-‎23T19:55:49.025191700Z. |  | Change Reason: An application or system component changed the time. | Process: '\Device\HarddiskVolume3\Program Files\VMware\VMware Tools\vmtoolsd.exe' (PID 2896).
+  [10/23/2026 6:36:52 PM] id=24 prov=Microsoft-Windows-Kernel-General lvl=4
+      The time zone information was refreshed with exit reason 0. Current time zone bias is 420.
+  [10/23/2026 12:51:45 PM] id=4107 prov=Display lvl=4
+      A caller specified the SDC_FORCE_MODE_ENUMERATION flag in a call to the SetDisplayConfig() API
+  [10/23/2026 12:45:49 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+  [10/23/2026 12:43:04 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+  [10/23/2026 12:43:04 PM] id=10016 prov=Microsoft-Windows-DistributedCOM lvl=3
+      The machine-default permission settings do not grant Local Activation permission for the COM Server application with CLSID  | {F87B28F1-DA9A-4F35-8EC0-800EFCF26B83} |  and APPID  | {0868DC9B-D9A2-4F64-9362-133CEA201299} |  to the user NT AUTHORITY\NETWORK SERVICE SID (S-1-5-20) from address LocalHost (Using LRPC) running in the application container Unavailable SID (Unavailable). This security permission can be modified using the Component Services administrative tool.
+  [10/23/2026 12:42:58 PM] id=1 prov=Microsoft-Windows-Power-Troubleshooter lvl=4
+      The system has returned from a low power state. |  | Sleep Time: ‎2026‎-‎10‎-‎23T18:57:27.700642700Z | Wake Time: ‎2026‎-‎10‎-‎23T19:42:57.325780700Z |  | Wake Source: Power Button

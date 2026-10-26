@@ -1,0 +1,3 @@
+Vendor	Product	URL	File	Bytes	SHA256	Cap	Status
+Cooler Master	MasterPlus+ 1.9.6	https://coolermaster.egnyte.com/dd/J3FzMxaWXr	Installer_MasterPlus_v1.9.6.zip	366120507	821BD692BA9446A1048C4B2F5A705C7280398DA48B7FAF7E72BCA7D5F1767675	524288000	DOWNLOADED/EXTRACTED
+DeepCool	Digital (DeepCreative) 1.2.14	https://deepcool.io/downloads/DeepCool-1.2.14-setup.exe	DeepCool-1.2.14-setup.exe	509638120	E28A0362931D3EC225757B4A172FEF219D955BC62617C0F364C555103E6F440F	524288000	DOWNLOADED/EXTRACTED (no .sys bundled)

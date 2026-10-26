@@ -1,0 +1,34 @@
+﻿1	CorsairGamingAudio64	Corsair Memory, Inc.	Valid	C:\Windows\System32\DriverStore\FileRepository\corsairgamingaudio.inf_amd64_05fbf83af68e4a90\amd64\CorsairGamingAudio64.sys
+1	RzCommon	Razer Inc	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_4607a75a1490cb3e\RzCommon.sys
+1	RzCommon	Razer Inc	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_93a1aca39a1d10ec\RzCommon.sys
+1	RzCommon	Razer Inc	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_3bc891c4f462075a\RzCommon.sys
+1	RzCommon	Razer Inc	Valid	C:\Windows\System32\DriverStore\FileRepository\rzcommonu.inf_amd64_9fcd3ad2d67f7a0a\RzCommon.sys
+2	rtwlanu	Realtek Semiconductor Corporation                           	Valid	C:\Windows\System32\DriverStore\FileRepository\netrtwlanu.inf_amd64_6bcf3fa57a2e080a\rtwlanu.sys
+2	vmnet	Broadcom Inc.	Valid	C:\Windows\System32\DriverStore\FileRepository\netbridge.inf_amd64_361a9866b19d71ea\vmnet.sys
+2	ni1045tr	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\ni1045tr.inf_amd64_c8a81cc62916bf69\ni1045tr.sys
+2	nicmmk	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nicmmk.inf_amd64_55b4397d58b97c89\nicmmk.sys
+2	nicntdrk	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nicntdrk.inf_amd64_d631847935623274\nicntdrk.sys
+2	nimxik	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nimxik.inf_amd64_5d719630f59be498\nimxik.sys
+2	nipxicidk	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nipxicidk.inf_amd64_c6e176dac3400448\nipxicidk.sys
+2	nipxiethernet	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nipxiethernet.inf_amd64_835abef6415095cd\nipxiethernet.sys
+2	nipxim2	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nipxim2.inf_amd64_2475f6e27414f604\nipxim2.sys
+2	niriomtk	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\niriomtk.inf_amd64_dfc8842db3edad92\niriomtk.sys
+2	NiRioSrvk	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\niriosrv.inf_amd64_3663f22d0bbf943e\NiRioSrvk.sys
+2	nismbus	National Instruments Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nismbus.inf_amd64_97440985c4eef398\nismbus.sys
+2	VBoxUSB	Oracle and/or its affiliates	Valid	C:\Windows\System32\DriverStore\FileRepository\vboxusb.inf_amd64_6389ef9a2a816fc1\VBoxUSB.sys
+4	PawnIO	namazso	Valid	C:\Windows\System32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+4	nvhda64v	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvhda.inf_amd64_d3e6b4e4a8e37d92\nvhda64v.sys
+4	NvModuleTracker	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_ca50795c529eb5c0\NvModuleTracker.sys
+4	NvModuleTracker	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+4	NvModuleTracker	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_97c1f6d07bf18811\NvModuleTracker.sys
+4	nvvad64v	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvvad.inf_amd64_3328072030df5d56\nvvad64v.sys
+4	tap0901	The OpenVPN Project	Valid	C:\Windows\System32\DriverStore\FileRepository\oemvista.inf_amd64_6d4bec28a2ef0cdf\tap0901.sys
+4	AppleKmdfFilter	Apple Inc.	Valid	C:\Windows\System32\DriverStore\FileRepository\appleusb.inf_amd64_58854158183af679\AppleKmdfFilter.sys
+4	AppleLowerFilter	Apple Inc.	Valid	C:\Windows\System32\DriverStore\FileRepository\appleusb.inf_amd64_58854158183af679\AppleLowerFilter.sys
+4	nationalinstrumentsblan	Belcarra Technologies 2005	Valid	C:\Windows\System32\DriverStore\FileRepository\nationalinstruments.inf_amd64_59a79ee8ab76937f\amd64\nationalinstrumentsblan.sys
+4	ausbtmc	IVI Foundation	Valid	C:\Windows\System32\DriverStore\FileRepository\ausbtmc.inf_amd64_cb428e1310c01373\amd64\ausbtmc.sys
+4	nvpcf	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvpcf.inf_amd64_69c6215d2d3e853b\nvpcf.sys
+4	nvpciflt	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvpciflt.sys
+4	nvswcfilter64	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvswcfilter.inf_amd64_6ae41752025e82b3\nvswcfilter64.sys
+4	UcmCxUcsiNvppc	NVIDIA Corporation	Valid	C:\Windows\System32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+4	vbaudio_vmvaio64_win10	Windows (R) Win 7 DDK provider	Valid	C:\Windows\System32\DriverStore\FileRepository\vbvmvaio64_win10.inf_amd64_ef043bc1a7a2d7fb\vbaudio_vmvaio64_win10.sys

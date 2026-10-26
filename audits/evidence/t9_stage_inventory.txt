@@ -1,0 +1,58 @@
+t9 EVIDENCE — Phase 1 stage inventory (host-side, 2026-10-24)
+
+Stage dir: C:\Users\27175\Desktop\driver_candidates\_vm_batch2\t9_vbox\stage\
+
+== Binaries + packages (from C:\Program Files\Oracle\VirtualBox\, read-only copy) ==
+stage\inf\adp\VBoxNetAdp6.sys   254,664 B  SHA-256 4E619BB6370F4BC4BE52F43D6C43F3A86E3E2CE7BB04BAADFF17D3B731F18F3F
+stage\inf\adp\VBoxNetAdp6.inf    3,396 B  SHA-256 68FCA318C6F63B1D46F3A75AD62AEDF1977D135411D82E850F09A6E6E7E8765D
+stage\inf\adp\VBoxNetAdp6.cat   11,893 B  SHA-256 A27FFE3F719B5F87C694B273AF7E5796CF93A495CD195AFF25E44E24FECF8E1B
+stage\inf\lwf\VBoxNetLwf.sys    265,536 B  SHA-256 CD3AF3B853C27626FCFC85997FEEAD0A48E56D618E2129F62FE1B96A203A44C7
+stage\inf\lwf\VBoxNetLwf.inf     4,113 B  SHA-256 DBCC2C6F3DC2A68EABC698D2D7D94837E9F79711DD13B414299E20C00C016779
+stage\inf\lwf\VBoxNetLwf.cat    11,993 B  SHA-256 E308CFC6EDF3B6E969A115EEB111D0FEFE0BE93E00856AB1280459DD83A9F93F
+stage\inf\sup\VBoxSup.sys     1,064,064 B  SHA-256 73FA8B463EE9A95930D98DA3F9DD0637E63F06E8CD510BCAA285D91E4DCAE2C7
+stage\inf\sup\VBoxSup.inf       3,289 B  SHA-256 B24D35B010526A896DDD4108F10E235054593D79F5939A2D484DA12517D351A0
+stage\inf\sup\VBoxSup.cat      11,785 B  SHA-256 DD54BDD004785DC8E0B0824F49B6EC0665AC0D4623162C3D9DD636EC11DD3A25
+
+All six .sys/.cat files: Authenticode Valid, signer "Microsoft Windows Hardware
+Compatibility Publisher" (WHQL production signatures - t2's package-signature gate
+should NOT trigger for these; t5-class layer gates still possible).
+
+== INF facts harvested ==
+- VBoxNetAdp6.inf: class Net {4d36e972-e325-11ce-bfc1-08002be10318}; service name
+  VBoxNetAdp (SPSVCINST_ASSOCSERVICE, StartType=3 demand); model hwid sun_VBoxNetAdp;
+  NCF_VIRTUAL; *NdisDeviceType=1 (ENDPOINT); DriverVer 01/15/2024, 7.0.14.11095 (r161095).
+- VBoxNetLwf.inf: class NetService {4d36e974-e325-11ce-bfc1-08002be10318}; service name
+  VBoxNetLwf (StartType=1 SYSTEM_START); FilterType=0x2; FilterRunType=2 (OPTIONAL);
+  NetCfgInstanceId {7af6b074-048d-4444-bfce-1ecc8bc5cb76}; FilterMediaTypes=ethernet.
+- VBoxSup.inf: legacy KernelService package (DriverPackageType=KernelService); PnP
+  [Manufacturer] hardware-install sections are commented out in the shipped INF
+  (Oracle's own note: root\VBoxSup install "does not actually work"); StartType=1 auto.
+  => guest plan uses sc create (t7 recipe), NOT the INF, for VBoxSup.
+
+== Scripts (ASCII-only, PS 5.1 parse-checked OK) ==
+t9_stage.ps1          SHA-verify pushed files (9 expected hashes embedded) + sc create/start t9_vboxsup
+t9_install_adp.ps1    pnputil add-driver + t3-recipe devnode seed + restart + forensics
+t9_install_lwf.ps1    netcfg -l inf -c s -i VBoxNetLwf + state + forensics
+t9_discover.ps1       qobj/netcfg/adapters/driverquery/registry inventory
+t9_lwf_fuzz.ps1       DACL + opens (admin+restricted) + spot ioctls + structured sweeps
+t9_adp_probe.ps1      adp negative-surface pack + VBoxDrv/VBoxDrvU DACL pulls (read-only)
+t9_cleanup.ps1        netcfg -u + devnode removal (marker-gated) + package deletion + sc delete
+t9_verify.ps1         final state verification
+t9_poc.cs / t9_poc.exe  host-compiled PoC (qobj/open/ntopen/dacl/daclnt/ioctl/sweep/rsweep/mkdev/devstat)
+MISSION.md            ordered runbook + expected outcomes + abort points
+t9_phaseB_STAGED.txt  STAGED marker (pool-corruption phase - never executed)
+
+== Static analysis artifacts (host) ==
+stage\out\ghidra_import.log       VMMR0.r0 import+analysis (exit 0, 51 s)
+stage\out\ghidra_dumpcallees.log  targeted decomp run 1 (IntNetR0 roots, exit 0)
+stage\out\ghidra_dumpcallees2.log targeted decomp run 2 (trunk delivery, exit 0)
+stage\out\decomp\*.c              IntNetR0 plane decompilation (35 fns)
+stage\out\decomp2\*.c             trunk-delivery plane decompilation (9 fns)
+stage\out\vmmr0_exports.txt       VMMR0.r0 export dump (1,988 exports)
+stage\out\parse_vmmr0_symtab.ps1  symtab parser (partial; .edata route used instead)
+stage\out\t9_host_smoke.txt       PoC host smoke test (qobj; object-dir enumeration only)
+
+== Host smoke test result ==
+t9_poc.exe qobj '\Device' 'VBox|adp|lwf' at medium IL -> st=0xC0000022 (object-dir ACL
+denies medium-IL on the host) - exe functional, failure path clean. No host driver or
+device was touched by this agent.

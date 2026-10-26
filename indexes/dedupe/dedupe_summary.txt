@@ -1,0 +1,4 @@
+Existing unique hashes: 925 tracked (7 exported-set hashes held local-only)
+Known-bad hashes (LOLDrivers): 5833
+Overlap existing/known-bad: 10
+Index: C:\Users\27175\Desktop\driver_candidates\indexes\dedupe\existing_hashes.txt

@@ -1,0 +1,263 @@
+21:58:10 
+21:58:10 ************* Preparing the environment for Debugger Extensions Gallery repositories **************
+21:58:10    ExtensionRepository : Implicit
+21:58:10    UseExperimentalFeatureForNugetShare : true
+21:58:10    AllowNugetExeUpdate : true
+21:58:10    NonInteractiveNuget : true
+21:58:10    AllowNugetMSCredentialProviderInstall : true
+21:58:10    AllowParallelInitializationOfLocalRepositories : true
+21:58:10 
+21:58:10    EnableRedirectToV8JsProvider : false
+21:58:10 
+21:58:10    -- Configuring repositories
+21:58:10       ----> Repository : LocalInstalled, Enabled: true
+21:58:10       ----> Repository : UserExtensions, Enabled: true
+21:58:10 
+21:58:10 >>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+21:58:10 
+21:58:10 ************* Waiting for Debugger Extensions Gallery to Initialize **************
+21:58:10 
+21:58:10 >>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.187 seconds
+21:58:10    ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+21:58:10    ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+21:58:10 
+21:58:10 Microsoft (R) Windows Debugger Version 10.0.26100.3916 AMD64
+21:58:10 Copyright (c) Microsoft Corporation. All rights reserved.
+21:58:10 
+21:58:10 Using NET for debugging
+21:58:10 Opened WinSock 2.0
+21:58:10 Kernel Debug Target Status: [no_debuggee]; Retries: [0] times in last [7] seconds.
+21:58:10 Waiting to reconnect...
+21:58:11 Connected to target 192.168.121.129 on port 50001 on local IP 192.168.121.1.
+21:58:11 You can get the target MAC address by running .kdtargetmac command.
+21:58:11 Connected to Windows 10 19041 x64 target at (Fri Oct 23 21:58:11.284 2026 (UTC - 4:00)), ptr64 TRUE
+21:58:11 Kernel Debugger connection established.
+21:58:11 
+21:58:11 ************* Path validation summary **************
+21:58:11 Response                         Time (ms)     Location
+21:58:11 Deferred                                       SRV*C:\Symbols*https://msdl.microsoft.com/download/symbols
+21:58:11 Symbol search path is: SRV*C:\Symbols*https://msdl.microsoft.com/download/symbols
+21:58:11 Executable search path is:
+21:58:11 Windows 10 Kernel Version 19041 MP (2 procs) Free x64
+21:58:11 Product: WinNt, suite: TerminalServer SingleUserTS
+21:58:11 Edition build lab: 19041.1.amd64fre.vb_release.191206-1406
+21:58:11 Kernel base = 0xfffff807`74e00000 PsLoadedModuleList = 0xfffff807`75a2a420
+21:58:11 Debug session time: Fri Oct 23 21:58:11.089 2026 (UTC - 4:00)
+21:58:11 System Uptime: 0 days 16:50:37.054
+21:58:11 Break instruction exception - code 80000003 (first chance)
+21:58:11 *******************************************************************************
+21:58:11 *                                                                             *
+21:58:11 *   You are seeing this message because you pressed either                    *
+21:58:11 *       CTRL+C (if you run console kernel debugger) or,                       *
+21:58:11 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+21:58:11 *   on your debugger machine's keyboard.                                      *
+21:58:11 *                                                                             *
+21:58:11 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+21:58:11 *                                                                             *
+21:58:11 * If you did not intend to break into the debugger, press the "g" key, then   *
+21:58:11 * press the "Enter" key now.  This message might immediately reappear.  If it *
+21:58:11 * does, press "g" and "Enter" again.                                          *
+21:58:11 *                                                                             *
+21:58:11 *******************************************************************************
+21:58:11 nt!DbgBreakPointWithStatus:
+21:58:11 fffff807`75206f80 cc              int     3
+21:58:11 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_1
+21:58:11 0: kd> Windows 10 Kernel Version 19041 MP (2 procs) Free x64
+21:58:11 Product: WinNt, suite: TerminalServer SingleUserTS
+21:58:11 Edition build lab: 19041.1.amd64fre.vb_release.191206-1406
+21:58:11 Kernel base = 0xfffff807`74e00000 PsLoadedModuleList = 0xfffff807`75a2a420
+21:58:11 Debug session time: Fri Oct 23 21:58:11.089 2026 (UTC - 4:00)
+21:58:11 System Uptime: 0 days 16:50:37.054
+21:58:11 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_2
+21:58:11 0: kd> rax=000000000002c501 rbx=ffffc48839bb1050 rcx=0000000000000001
+21:58:11 rdx=00001cf600000000 rsi=fffff80771bdb610 rdi=0000000000000000
+21:58:11 rip=fffff80775206f80 rsp=fffff80778c98878 rbp=0000000000000000
+21:58:11  r8=000000000000018c  r9=ffffc488354e4000 r10=fffff80775206f80
+21:58:11 r11=0000000000000000 r12=fffff80778c98b10 r13=0000000000234bb8
+21:58:11 r14=0000000000000000 r15=0000000000000000
+21:58:11 iopl=0         nv up ei pl nz na pe nc
+21:58:11 cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+21:58:11 nt!DbgBreakPointWithStatus:
+21:58:11 fffff807`75206f80 cc              int     3
+21:58:11 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_3
+21:58:17 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_4
+21:58:25 0: kd> nt!DebugService2+0x5:
+21:58:25 fffff807`75206fd5 cc              int     3
+21:58:25 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_5
+21:58:31 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_6
+21:58:36 1: kd> Browse full module list
+21:58:36 start             end                 module name
+21:58:36 fffff807`89bf0000 fffff807`89c0e000   nvhda64v   (deferred)
+21:58:36 
+21:58:36 Unable to enumerate kernel-mode unloaded modules, HRESULT 0x80004005
+21:58:36 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_7
+21:58:36 1: kd> 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_8
+21:58:36 1: kd> 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_9
+21:58:36 1: kd>      0 e Disable Clear  fffff807`89c00310     0001 (0001) nvhda64v+0x10310
+21:58:36      1 e Disable Clear  fffff807`89c00440     0001 (0001) nvhda64v+0x10440
+21:58:36 
+21:58:36 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_10
+22:01:25 1: kd> Break instruction exception - code 80000003 (first chance)
+22:01:25 *******************************************************************************
+22:01:25 *                                                                             *
+22:01:25 *   You are seeing this message because you pressed either                    *
+22:01:25 *       CTRL+C (if you run console kernel debugger) or,                       *
+22:01:25 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+22:01:25 *   on your debugger machine's keyboard.                                      *
+22:01:25 *                                                                             *
+22:01:25 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+22:01:25 *                                                                             *
+22:01:25 * If you did not intend to break into the debugger, press the "g" key, then   *
+22:01:25 * press the "Enter" key now.  This message might immediately reappear.  If it *
+22:01:25 * does, press "g" and "Enter" again.                                          *
+22:01:25 *                                                                             *
+22:01:25 *******************************************************************************
+22:01:26 nt!DbgBreakPointWithStatus:
+22:01:26 fffff807`75206f80 cc              int     3
+22:01:26 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_11
+22:01:26 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_12
+22:01:26 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_13
+22:01:26 0: kd> Browse full module list
+22:01:26 start             end                 module name
+22:01:26 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_14
+22:01:33 0: kd> start             end                 module name
+22:01:33 fffff807`74e00000 fffff807`75e46000   nt         (pdb symbols)          c:\symbols\ntkrnlmp.pdb\F57E740B088E5056E8AF0772F1CC5BEB1\ntkrnlmp.pdb
+22:01:33 
+22:01:33 Unloaded modules:
+22:01:33 fffff807`89bf0000 fffff807`89c0f000   nvhda64v.sys
+22:01:33 fffff807`89bd0000 fffff807`89bef000   nvhda64v.sys
+22:01:33 fffff807`7d190000 fffff807`7d1ac000   monitor.sys
+22:01:33 fffff807`7d290000 fffff807`7d2bc000   luafv.sys
+22:01:33 fffff807`79bb0000 fffff807`79bc0000   dump_storport.sys
+22:01:33 fffff807`79200000 fffff807`79230000   dump_stornvme.sys
+22:01:33 fffff807`79250000 fffff807`7926e000   dump_dumpfve.sys
+22:01:33 fffff807`7aa30000 fffff807`7aa4d000   dam.sys
+22:01:33 fffff807`78930000 fffff807`78941000   hwpolicy.sys
+22:01:33 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_15
+22:03:44 0: kd>                 ^ Couldn't resolve 'x portcls'
+22:03:44 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_16
+22:03:44 0: kd>                 ^ Couldn't resolve 'x portcls'
+22:03:44 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_17
+22:03:55 0: kd> Bp expression 'nvhda64v+0x10560' could not be resolved, adding deferred bp
+22:03:55 *** Bp expression 'nvhda64v+0x10560' contains symbols not qualified with module name.
+22:03:55 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_18
+22:03:55 0: kd> Bp expression 'nvhda64v+0x10310' could not be resolved, adding deferred bp
+22:03:55 *** Bp expression 'nvhda64v+0x10310' contains symbols not qualified with module name.
+22:03:55 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_19
+22:03:55 0: kd> Bp expression 'nvhda64v+0x10440' could not be resolved, adding deferred bp
+22:03:55 *** Bp expression 'nvhda64v+0x10440' contains symbols not qualified with module name.
+22:03:55 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_20
+22:03:55 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_21
+22:03:55 0: kd>      0 e Disable Clear  fffff807`89c00310     0001 (0001) <Unloaded_nvhda64v.sys>+0x10310
+22:03:55      1 e Disable Clear  fffff807`89c00440     0001 (0001) <Unloaded_nvhda64v.sys>+0x10440
+22:03:55      2 e Disable Clear u                      0001 (0001) (nvhda64v+0x10560)
+22:03:55      3 e Disable Clear u                      0001 (0001) (nvhda64v+0x10310)
+22:03:55      4 e Disable Clear u                      0001 (0001) (nvhda64v+0x10440)
+22:03:55 
+22:03:55 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_22
+22:04:08 0: kd> Break instruction exception - code 80000003 (first chance)
+22:04:08 *******************************************************************************
+22:04:08 *                                                                             *
+22:04:08 *   You are seeing this message because you pressed either                    *
+22:04:08 *       CTRL+C (if you run console kernel debugger) or,                       *
+22:04:08 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+22:04:08 *   on your debugger machine's keyboard.                                      *
+22:04:08 *                                                                             *
+22:04:08 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+22:04:08 *                                                                             *
+22:04:08 * If you did not intend to break into the debugger, press the "g" key, then   *
+22:04:08 * press the "Enter" key now.  This message might immediately reappear.  If it *
+22:04:08 * does, press "g" and "Enter" again.                                          *
+22:04:08 *                                                                             *
+22:04:08 *******************************************************************************
+22:04:08 nt!DbgBreakPointWithStatus:
+22:04:08 fffff807`75206f80 cc              int     3
+22:04:08 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_23
+22:04:08 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_24
+22:04:08 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_25
+22:04:08 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_26
+22:04:16 0: kd> nt!DebugService2+0x5:
+22:04:16 fffff807`75206fd5 cc              int     3
+22:04:16 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_27
+22:04:16 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_28
+22:04:23 1: kd>      2 e Disable Clear  fffff807`89c20560     0001 (0001) nvhda64v+0x10560
+22:04:23      3 e Disable Clear  fffff807`89c20310     0001 (0001) nvhda64v+0x10310
+22:04:23      4 e Disable Clear  fffff807`89c20440     0001 (0001) nvhda64v+0x10440
+22:04:23 
+22:04:23 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_29
+22:04:23 1: kd> *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10560'.
+22:04:23 *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10310'.
+22:04:23 *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10440'.
+22:04:32 nt!DebugService2+0x5:
+22:04:32 fffff807`75206fd5 cc              int     3
+22:04:32 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_30
+22:04:32 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_31
+22:05:02 1: kd> Browse full module list
+22:05:02 start             end                 module name
+22:05:02 fffff807`89c30000 fffff807`89c4e000   nvhda64v   (deferred)
+22:05:02 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_32
+22:05:02 1: kd>      2 e Disable Clear  fffff807`89c40560     0001 (0001) nvhda64v+0x10560
+22:05:02      3 e Disable Clear  fffff807`89c40310     0001 (0001) nvhda64v+0x10310
+22:05:02      4 e Disable Clear  fffff807`89c40440     0001 (0001) nvhda64v+0x10440
+22:05:02 
+22:05:02 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_33
+22:05:10 1: kd> *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10560'.
+22:05:10 *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10310'.
+22:05:10 *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10440'.
+22:06:25 Break instruction exception - code 80000003 (first chance)
+22:06:25 *******************************************************************************
+22:06:25 *                                                                             *
+22:06:25 *   You are seeing this message because you pressed either                    *
+22:06:25 *       CTRL+C (if you run console kernel debugger) or,                       *
+22:06:25 *       CTRL+BREAK (if you run GUI kernel debugger),                          *
+22:06:25 *   on your debugger machine's keyboard.                                      *
+22:06:25 *                                                                             *
+22:06:25 *                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *
+22:06:25 *                                                                             *
+22:06:25 * If you did not intend to break into the debugger, press the "g" key, then   *
+22:06:25 * press the "Enter" key now.  This message might immediately reappear.  If it *
+22:06:25 * does, press "g" and "Enter" again.                                          *
+22:06:25 *                                                                             *
+22:06:25 *******************************************************************************
+22:06:25 nt!DbgBreakPointWithStatus:
+22:06:25 fffff807`75206f80 cc              int     3
+22:06:25 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_34
+22:06:25 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_35
+22:06:25 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_36
+22:06:25 0: kd> Browse full module list
+22:06:25 start             end                 module name
+22:06:25 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_37
+22:15:12 0: kd> 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_38
+22:15:12 0: kd> Bp expression 'nvhda64v+0x10560' could not be resolved, adding deferred bp
+22:15:12 *** Bp expression 'nvhda64v+0x10560' contains symbols not qualified with module name.
+22:15:12 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_39
+22:15:12 0: kd>      0 e Disable Clear u                      0001 (0001) (nvhda64v+0x10560)
+22:15:12 
+22:15:12 0: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_40
+22:15:17 0: kd> nt!DebugService2+0x5:
+22:15:17 fffff807`75206fd5 cc              int     3
+22:15:17 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_41
+22:15:19 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_42
+22:15:23 1: kd> *** Unable to resolve unqualified symbol in Bp expression 'nvhda64v+0x10560'.
+22:15:34 nt!DebugService2+0x5:
+22:15:34 fffff807`75206fd5 cc              int     3
+22:15:34 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_43
+22:15:34 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_44
+22:15:52 1: kd> nvhda64v+0x10560:
+22:15:52 fffff807`89c80560 48895c2408      mov     qword ptr [rsp+8],rbx
+22:15:52 fffff807`89c80565 57              push    rdi
+22:15:52 fffff807`89c80566 4883ec30        sub     rsp,30h
+22:15:52 fffff807`89c8056a 488bfa          mov     rdi,rdx
+22:15:52 fffff807`89c8056d 488bd9          mov     rbx,rcx
+22:15:52 fffff807`89c80570 e88baa0000      call    nvhda64v+0x1b000 (fffff807`89c8b000)
+22:15:52 fffff807`89c80575 4c8d0d84daffff  lea     r9,[nvhda64v+0xe000 (fffff807`89c7e000)]
+22:15:52 fffff807`89c8057c 4c8d057ddaffff  lea     r8,[nvhda64v+0xe000 (fffff807`89c7e000)]
+22:15:52 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_45
+22:15:52 1: kd> Browse full module list
+22:15:52 start             end                 module name
+22:15:52 fffff807`89c70000 fffff807`89c8e000   nvhda64v   (no symbols)
+22:15:52 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_46
+22:16:05 1: kd> 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_47
+22:16:05 1: kd> sx state reset to defaults
+22:16:05 1: kd> COMMAND_COMPLETED_MARKER_d0fbe0dcb1b64b508843bec93f034825_48
+22:16:12 1: kd>

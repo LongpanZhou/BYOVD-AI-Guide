@@ -1,0 +1,38 @@
+=== t5 load 2026-10-23T17:27:13.9687370-07:00 ===
+guest staging SHA256 : 506AB485FE0DA85C6DF6D0B7ABBAD412ACA6A8EB3F575DFC2C81662107054792
+audited SHA256       : 506AB485FE0DA85C6DF6D0B7ABBAD412ACA6A8EB3F575DFC2C81662107054792
+staging hash MATCH
+dst absent: C:\Windows\System32\drivers\vpnva64-6.sys
+dst SHA256 after copy: 506AB485FE0DA85C6DF6D0B7ABBAD412ACA6A8EB3F575DFC2C81662107054792
+dst hash verified OK
+--- sc create t5_vpnva type= kernel start= demand ---
+  [SC] CreateService SUCCESS
+  sc create exit: 0
+--- sc start t5_vpnva (DriverEntry -> NdisMRegisterMiniportDriver only; no devnode yet) ---
+  
+  SERVICE_NAME: t5_vpnva 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+          PID                : 0
+          FLAGS              : 
+  sc start exit: 0
+--- sc query t5_vpnva ---
+  
+  SERVICE_NAME: t5_vpnva 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+--- driverquery /v rows matching vpnva ---
+  "t5_vpnva","t5_vpnva","t5_vpnva","Kernel ","Manual","Running","OK","TRUE","FALSE","8,192","32,768","0","12/14/2021 11:47:57 AM","\??\C:\Windows\System32\drivers\vpnva64-6.sys","4,096"
+--- compile PoC ---
+  csc exit: 0
+  t5_poc.exe compiled OK

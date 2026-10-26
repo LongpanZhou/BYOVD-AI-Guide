@@ -1,0 +1,55 @@
+﻿Windows kernel driver collection - agentR1 (Tier B RGB/peripheral utilities)
+Date: 2026-10-24
+Scope: Corsair iCUE 5, Razer Synapse 4, Logitech G HUB. Official vendor packages only; no installer executed.
+Size cap: 500 MiB per download. Largest file downloaded: 67.09 MB (Logitech G HUB). Nothing skipped for size.
+
+VENDOR / PRODUCT SUMMARY
+--------------------------------------------------------------------------------
+Corsair  | iCUE 5 (5.52.93)
+  URL: https://www3.corsair.com/software/CUE_V5/public/modules/windows/installer/Install%20iCUE.exe
+       (modular payloads: https://www3.corsair.com/software/CUE_V5/public/modules/windows/packages/)
+  Installer: 3.24 MB; Corsair module packages: 11 files, 37.25 MB total
+  .sys found: 21 files (15 unique payloads)
+  NEW: 15   EXISTING: 0   KNOWNBAD: 0   DUPLICATE: 6   SKIPPED: 0
+  Drivers: CorsairGamingAudio32/64 (2.4.2.0), SiUSBXp32/64 (3.3),
+           CorsairVBusDriver32/64 (3.0.88), CorsairVHidDriver32/64 (3.0.88),
+           Scufdriver6 (1.0.96), Scufdriver5 (1.0.100), FPGATEST32/64 (1.0.7.1),
+           CorsairLLAccess32/64 (1.0.82), CorsairLLAccess64 (1.0.74)
+
+Razer   | Synapse 4 (2.6.0.890)
+  URL: https://dl.razerzone.com/drivers/Synapse4/RazerSynapseInstaller.exe
+  Installer: 14.23 MB
+  .sys found: 0   NEW: 0   EXISTING: 0   KNOWNBAD: 0
+  FAILURE: online installer. The official package is a DotNetZip SFX containing only
+  Razer Installer 2.0 (81 files, 27 MB, no .sys). Device packages/drivers are fetched at
+  runtime from manifest3.razerapi.com; unauthenticated manifest probes return 404/403 and
+  the manifest URL is built by the client after discovery. Installer was not executed.
+
+Logitech| G HUB (2026.4.919028)
+  URL: https://download01.logi.com/web/ftp/pub/techsupport/gaming/lghub_installer.exe
+  Installer: 67.09 MB
+  .sys found: 0   NEW: 0   EXISTING: 0   KNOWNBAD: 0
+  FAILURE: online bootstrapper (outer PE -> embedded RCDATA lghub_setup.exe). Only embedded
+  PEs are "Logitech G HUB Install Library", codecs, crashpad and VC++ redistributables; app and
+  driver depots are AES/LZMA-encrypted and downloaded from updates.ghub.logitechg.com, which
+  returns 403 to direct requests. Installer was not executed.
+
+TOTALS
+--------------------------------------------------------------------------------
+Downloaded: 3 vendor installers + 11 Corsair packages (+1 repo index)
+Extracted: 3 installer stubs, 1 Corsair package-manager bootstrap, 8 driver cuepkgs, 2 CDCS cuepkgs
+.sys found: 21
+Unique .sys: 15
+NEW: 15
+EXISTING: 0
+KNOWNBAD: 0
+DUPLICATE: 6
+SKIPPED: 0
+Failures: 2 (Razer Synapse 4 - online-only payload; Logitech G HUB - encrypted online depots)
+
+DEDUPE
+--------------------------------------------------------------------------------
+Filter: _collected5\tools\filter_new_drivers.ps1
+Manifest: agentR1\reports\manifest.csv
+Independent re-check: no hash in agentR1\new overlaps existing_hashes.txt or known_bad_hashes.txt.
+

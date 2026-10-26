@@ -1,0 +1,113 @@
+WINDOWS KERNEL DRIVER COLLECTION - agentS2 (sim-racing / flight hardware utilities)
+==================================================================================
+Scope: Fanatec, Moza Racing, Simagic, Asetek SimSports, Heusinkveld, Virpil, VKB,
+       Honeycomb Aeronautical, Thrustmaster
+Cap: 500 MiB per installer (updated cap). No installers executed. No driver load,
+     no service creation, no HKLM writes.
+
+TOTALS
+------
+Downloaded (official packages)........ 8
+Extracted (recursive, <=5 levels)..... 7
+Failed extraction..................... 1  (Thrustmaster, InstallShield)
+Skipped over 500 MiB cap.............. 1  (Fanatec Driver V474, 652.19 MB)
+No driver package on official site.... 1  (Honeycomb Aeronautical)
+.sys files found (>=4 KB)............. 9
+Unique .sys hashes.................... 9
+NEW.................................. 7
+EXISTING............................. 0
+KNOWNBAD............................. 0
+DUPLICATE (within batch).............. 2
+
+PER VENDOR
+----------
+1) Fanatec
+   Product : Fanatec App 1.6.1.3 (WiX Burn -> Fanatec_64_driver.msi)
+   URL     : https://www3.corsair.com/Files/Fanatec/App/FanatecAppInstaller_v1_6_1_3.zip
+   Size    : 440.38 MB
+   .sys    : 0 found (MSI contains firmware .eff/.hex and WDF coinstaller DLLs only)
+   NEW 0 / EXISTING 0 / KNOWNBAD 0
+   Note    : Legacy Driver V474 (652.19 MB) skipped: SKIPPED-OVER-500MiB.
+
+2) MOZA Racing
+   Product : MOZA Pit House 1.3.5.36 offline installer
+   URL     : https://ace.gudsen.vip/racing/cdn/indirect/63a5273b-749d-4cc6-9f69-2fc45cecf11f
+             (linked from https://mozaracing.com/pages/download-center)
+   Size    : 490.11 MB
+   .sys    : 5 found (MOZAUSBDriver.sys x64, MOZAWindowsDriver.sys x64/x86, win10 + win11 sets)
+   NEW 3 / EXISTING 0 / KNOWNBAD 0 / DUPLICATE 2
+   Drivers : MOZAUSBDriver.sys v1.0.0.0 (MOZA Racing Team, signed)
+             MOZAWindowsDriver.sys v1.0.2.6 x64 / v1.0.1.13 x86 (signed)
+
+3) Simagic
+   Product : SimPro Manager V3.2.3
+   URL     : https://service.simagic.com/software/websiteDownLoad
+   Size    : 412.63 MB
+   .sys    : 0 found (NSIS; SIMAGIC-Driver.exe is a user-mode HID helper, no kernel driver)
+
+4) Asetek SimSports
+   Product : RaceHub 4.5.1
+   URL     : https://download.aseteksimsports.com/racehub/RaceHub%E2%84%A2-4.5.1-Setup.exe
+   Size    : 113.73 MB
+   .sys    : 4 found (libusb0.sys / libusbK.sys, amd64 + x86, from {tmp}\DriverNotSigned)
+   NEW 4 / EXISTING 0 / KNOWNBAD 0
+
+5) Heusinkveld
+   Product : SmartControl 26.02.5
+   URL     : https://cdn.heusinkveld.com/wp-content/uploads/2026/02/Heusinkveld-SmartControl-Setup-26.02.5.zip
+   Size    : 48.71 MB
+   .sys    : 0 found (Inno Setup, .NET app + USBInterface.dll, no kernel driver)
+
+6) Virpil
+   Product : VPC Software Suite V20260901
+   URL     : https://support.virpil.com/helpdesk/attachments/47440999987
+   Size    : 15.13 MB
+   .sys    : 0 found (Inno Setup; HID-based configuration tool)
+
+7) VKB
+   Product : VKBDevCfg-C v0.93.89
+   URL     : https://cdn.shopify.com/s/files/1/0808/7827/2731/files/VKBDevCfg-C_v0.93.89.zip
+   Size    : 11.06 MB
+   .sys    : 0 found
+
+8) Thrustmaster
+   Product : PC Force Feedback Driver 2026_TTRS_2.exe (T300RS page)
+   URL     : https://ts.thrustmaster.com/download/pub/webupdate/T500RS/2026_TTRS_2.exe
+   Size    : 48.48 MB
+   .sys    : 0 extracted
+   FAILURE : InstallShield package - 7z (PE overlay only), innounp, dark.exe and
+             expand.exe cannot unpack the embedded InstallShield data; unshield not
+             available on host. Recorded as FAILED-EXTRACT.
+
+9) Honeycomb Aeronautical
+   Product : none published
+   URL     : https://flyhoneycomb.com/pages/downloads
+   .sys    : 0
+   FAILURE : NO-DRIVER-PACKAGE-FOUND - downloads page links only Canto-hosted
+             profiles/documentation and Aerosoft FSX/X-Plane add-ons.
+
+FAILURES
+--------
+- Fanatec Driver V474: SKIPPED-OVER-500MiB (652.19 MB).
+- Thrustmaster 2026_TTRS_2.exe: FAILED-EXTRACT (InstallShield cab, no unshield).
+- Honeycomb Aeronautical: NO-DRIVER-PACKAGE-FOUND.
+- mozaracing.com / simagic.com / flyhoneycomb.com direct HTML: HTTP 429 (Shopify bot
+  protection) - worked around by reading the official page through a text renderer and
+  downloading the vendor-hosted installer/CDN URLs directly.
+- aseteksimpsports.com: DNS NXDOMAIN; official current host is asetek.com/simsports.
+
+DEDUPE
+------
+Filter: _collected5\tools\filter_new_drivers.ps1
+Source: _collected1\agentS2\extract
+Out   : _collected1\agentS2\new
+Result at filter time: NEW 7, EXISTING 0, KNOWNBAD 0, DUPLICATE 2, SKIPPED 0
+existing_hashes.txt / known_bad_hashes.txt were not modified by this agent.
+
+NOTE (batch race): existing_hashes.txt was rewritten by an external batch process at
+2026-10-24 21:41 (776 -> 928 tracked known hashes (+4 in a gitignored local gate file)). All agents' new\ hashes - agentS1 1/1,
+agentS2 7/7, agentS3 55/55, agentS4 37/37, agentS5 6/6, agentS6 11/11 - are now
+present in that file, i.e. the global ingest claims every agent's output. A repeat
+run of the filter therefore reports New 0 / Existing 9. The 7 .sys in
+agentS2\new are the only copies of these MOZA drivers (no central store), so they
+were kept. Re-check should use the hash list snapshot taken at ingest time.

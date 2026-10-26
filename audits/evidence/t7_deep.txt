@@ -1,0 +1,80 @@
+t7_deep 2026-10-23T22:17:52.4258266-07:00
+=== admin: input-variation matrix on success codes (bounded: in<=64, out<=0x1000) ===
+t7_poc start 2026-10-23T22:17:52.4518281-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=0 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.4578467-07:00
+t7_poc start 2026-10-23T22:17:52.4778305-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.4838576-07:00
+t7_poc start 2026-10-23T22:17:52.5038301-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=64 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.5117184-07:00
+t7_poc start 2026-10-23T22:17:52.5317939-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=64 out=0x1000 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.5378039-07:00
+t7_poc start 2026-10-23T22:17:52.5598689-07:00
+ioctl \\.\VMCIDev code=0x81032024 in=0 out=0x40 -> st=0xC0000023 ret=0
+t7_poc end 2026-10-23T22:17:52.5658708-07:00
+t7_poc start 2026-10-23T22:17:52.5838526-07:00
+ioctl \\.\VMCIDev code=0x81032024 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.5899039-07:00
+t7_poc start 2026-10-23T22:17:52.6099265-07:00
+ioctl \\.\VMCIDev code=0x81032024 in=64 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.6159361-07:00
+t7_poc start 2026-10-23T22:17:52.6356152-07:00
+ioctl \\.\VMCIDev code=0x81032024 in=64 out=0x1000 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.6418345-07:00
+t7_poc start 2026-10-23T22:17:52.6598771-07:00
+ioctl \\.\VMCIDev code=0x81032054 in=0 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 6df5117f [DATA]
+t7_poc end 2026-10-23T22:17:52.6659108-07:00
+t7_poc start 2026-10-23T22:17:52.6877464-07:00
+ioctl \\.\VMCIDev code=0x81032054 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 6df5117f [DATA]
+t7_poc end 2026-10-23T22:17:52.6957566-07:00
+t7_poc start 2026-10-23T22:17:52.7256433-07:00
+ioctl \\.\VMCIDev code=0x81032054 in=64 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 6df5117f [DATA]
+t7_poc end 2026-10-23T22:17:52.7321850-07:00
+t7_poc start 2026-10-23T22:17:52.7517574-07:00
+ioctl \\.\VMCIDev code=0x81032054 in=64 out=0x1000 -> st=0x00000000 ret=4
+   out[0..4] = 6df5117f [DATA]
+t7_poc end 2026-10-23T22:17:52.7597556-07:00
+=== restricted-token (runas /trustlevel:0x20000) on success codes ===
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt ioctl \\.\VMCIDev 81032004 10 40
+t7_poc start 2026-10-23T22:17:52.8679319-07:00
+ioctl \\.\VMCIDev code=0x81032004 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:52.8760003-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt ioctl \\.\VMCIDev 81032024 10 40
+t7_poc start 2026-10-23T22:17:53.8945580-07:00
+ioctl \\.\VMCIDev code=0x81032024 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 00000b00 [DATA]
+t7_poc end 2026-10-23T22:17:53.9021111-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt ioctl \\.\VMCIDev 81032054 10 40
+t7_poc start 2026-10-23T22:17:54.9080166-07:00
+ioctl \\.\VMCIDev code=0x81032054 in=16 out=0x40 -> st=0x00000000 ret=4
+   out[0..4] = 6df5117f [DATA]
+t7_poc end 2026-10-23T22:17:54.9160145-07:00
+
+=== restricted-token: 2 of the denied band (confirm denial is not admin-only artifact) ===
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt ioctl \\.\VMCIDev 81032008 10 40
+t7_poc start 2026-10-23T22:17:55.9159691-07:00
+ioctl \\.\VMCIDev code=0x81032008 in=16 out=0x40 -> st=0xC0000022 ret=0
+t7_poc end 2026-10-23T22:17:55.9220370-07:00
+
+runas: C:\Users\vmdebug\Desktop\t7_work\t7_poc.exe C:\Users\vmdebug\Desktop\t7_work\t7_restr.txt ioctl \\.\VMCIDev 8103201c 10 40
+t7_poc start 2026-10-23T22:17:56.9265604-07:00
+ioctl \\.\VMCIDev code=0x8103201C in=16 out=0x40 -> st=0xC0000022 ret=0
+t7_poc end 2026-10-23T22:17:56.9335801-07:00
+
+=== end t7_deep ===

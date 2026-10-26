@@ -1,0 +1,73 @@
+Driver collection summary - agentR2 (Tier A RGB/fan vendors)
+===========================================================
+Date: 2026-10-24
+Hard cap applied: every package must be <= 250 MB (262,144,000 bytes).
+Installers were never executed; extraction only (7z / innounp / dark.exe available).
+
+Per-vendor results
+------------------
+Vendor          Product                   URL                                                                    Installer size            .sys found  NEW  EXISTING  KNOWNBAD  Outcome
+Cooler Master   MasterPlus+               https://www.coolermaster.com/en-global/masterplus.html                   366,120,507 B (349.2 MiB)  0           0    0         0         SKIPPED-OVER-250MB
+Lian Li         L-Connect 3 v2.1.29       https://lian-li.com/l-connect3/                                        1,515,066,872 B (1444.9 MiB) 0           0    0         0         SKIPPED-OVER-250MB
+Thermaltake     TT RGB PLUS 3.1.0         https://ttrgbplus.thermaltake.com/                                     740,426,574 B (706.1 MiB)  0           0    0         0         SKIPPED-OVER-250MB
+Kingston        FURY CTRL 2.0.66.0        https://www.kingston.com/en/gaming/fury-ctrl                           403 / Cloudflare challenge 0           0    0         0         FAILED (blocked)
+ADATA / XPG     XPG PRIME 1.4.12          https://prime.xpg.com/                                                 404 on official zip       0           0    0         0         FAILED (dead link / Store-only)
+Sabrent         Rocket Control Panel 2.99 https://sabrent.com/products/sb-rkt4p-1tb                             10,506,078 B (10.0 MiB)     0           0    0         0         COLLECTED - no kernel driver
+DeepCool        DeepCool Digital 1.2.14   https://www.deepcool.com/downloadpage/                                 509,638,120 B (486.0 MiB)  0           0    0         0         SKIPPED-OVER-250MB
+Phanteks        NexLinq 1.5.0.1           https://phanteks.com/nexlinq/                                          60,884,276 B (58.1 MiB)     0           0    0         0         COLLECTED - no kernel driver
+Montech         HyperFlow Digital 1.0.1.5 https://www.montechpc.com/hyperflow-digital-360                        7,655,980 B (7.3 MiB)       0           0    0         0         COLLECTED - no kernel driver
+
+Totals
+------
+Vendors in scope          : 9
+Packages downloaded       : 3   (Sabrent 10.5 MB, Phanteks 60.9 MB, Montech 7.7 MB)
+Packages skipped >250 MB  : 4   (Cooler Master, Lian Li, Thermaltake, DeepCool)
+Vendors failed/blocked    : 2   (Kingston, ADATA/XPG)
+Installer bytes on disk   : 79,046,334 B (75.4 MiB) - all <= 250 MB
+.sys files found          : 0
+Unique .sys (post-dedupe) : 0
+NEW                       : 0
+EXISTING                  : 0
+KNOWNBAD                  : 0
+DUPLICATE                 : 0
+SKIPPED (<4 KB)           : 0
+
+Dedupe gate
+-----------
+filter_new_drivers.ps1 run on ...\agentR2\extract
+Output: New 0 / Existing 0 / KnownBad 0 / Duplicate 0 / Skipped 0
+...\agentR2\new contains no files. existing_hashes.txt and known_bad_hashes.txt untouched.
+
+Per-package extraction notes
+---------------------------
+Sabrent-Rocket-Control-Panel_299.zip  (zip) -> "Sabrent Rocket Control Panel.exe"
+  7z: PE, not NSIS/Inno (innounp: "not an Inno Setup installation").
+  Binary carries no ".sys", "\\.\", CreateFile, DeviceIoControl or Driver strings:
+  pure user-mode NVMe utility. 0 .sys.
+
+Phanteks_NexLinq_Software.zip (zip) -> Phanteks_Setup_1.5.0.1.exe (NSIS-3, LZMA)
+  7z x -> 69 files / 179,236,780 B. .NET/WebView2 app (PhanteksNexLinq.exe,
+  LibPhanteks.dll, HWiNFO64.dll). No .sys, no .inf, no .cat. 0 .sys.
+
+Montech_HyperFlowDigital.zip (zip) -> "HyperFlow Digital setup 1.0.1.5.exe"
+  innounp 2.70.1 -> 33 files / 8,183,720 B. Delphi app (DeviceDriver.exe, XYUI.dll,
+  api-ms-win-core-sysinfo shims). No .sys / .inf / .cat; DeviceDriver.exe has no
+  driver-service strings. 0 .sys.
+
+Failures (explicit)
+-------------------
+1. Cooler Master MasterPlus+ - official package 366,120,507 B > 250 MB cap. Not downloaded.
+2. Lian Li L-Connect 3 - official package 1,515,066,872 B > 250 MB cap. Not downloaded.
+3. Thermaltake TT RGB PLUS 3.1.0 - official package 740,426,574 B > 250 MB cap. Not downloaded.
+4. DeepCool DeepCool Digital 1.2.14 - official package 509,638,120 B > 250 MB cap. Not downloaded.
+5. Kingston FURY CTRL - HTTP 403 + Cloudflare managed challenge on media.kingston.com and
+   www.kingston.com; captcha/anti-bot wall, not bypassed.
+6. ADATA/XPG PRIME - official download shortlink resolves to
+   https://prime.xpg.com/software/XPG_PRIME_V1.4.12_SETUP.zip which returns HTTP 404
+   (also 404 for 1.3.9 / alternate casing). Only other official Windows channel is the
+   Microsoft Store stub, which is not an extractable driver package.
+
+Conclusion
+----------
+No new Windows kernel drivers were obtained from this vendor set under the 250 MB cap.
+The three packages that could be collected are user-mode applications with no .sys payload.

@@ -1,0 +1,74 @@
+Batch: agentS4 (virtual display/audio + capture utilities)
+Collected: 2026-10-24
+All URLs are official vendor / official GitHub release endpoints. No third-party mirrors.
+
+[OK] Virtual Audio Cable (Eugene Muzychenko) - VAC 4.71 trial
+     https://software.muzychenko.net/trials/vac471.exe
+     page: https://vac.muzychenko.net/en/download.htm
+     1,011,192 bytes
+
+[OK] Parsec - Parsec Virtual Display Driver 0.45.0.0
+     https://builds.parsec.app/vdd/parsec-vdd-0.45.0.0.exe
+     page: https://github.com/nomi-san/parsec-vdd
+     517,256 bytes
+
+[OK] Duet Display - Duet for Windows (latestWindows)
+     https://updates.duetdisplay.com/latestWindows
+     page: https://www.duetdisplay.com/
+     179,361,248 bytes
+
+[OK] SuperDisplay - SuperDisplay Installer 1.1.10
+     https://superdisplay.app/download/SuperDisplay_Installer_v1.1.10.exe
+     page: https://superdisplay.app/
+     29,446,384 bytes
+
+[OK] iDisplay - iDisplay Desktop 3.1.2
+     https://www.getidisplay.com/downloads/iDisplayWin.exe
+     page: https://www.getidisplay.com/
+     12,816,760 bytes
+
+[FAIL] Air Display (Avatron)
+     https://www.avatron.com/  -> DNS NXDOMAIN (vendor site offline; no official download reachable)
+     0 bytes
+
+[OK] TwomonUSB (Easy&Light) - Twomon SE
+     https://www.easynlight.com/el-library/eldownload.php?product=EL_Display_Hub
+     page: https://www.easynlight.com/twomonse
+     188,065,936 bytes
+
+[OK] IddSampleDriver (roshkins) - 0.1.1
+     https://github.com/roshkins/IddSampleDriver/releases/download/0.1.1/IddSampleDriver.zip
+     page: https://github.com/roshkins/IddSampleDriver
+     63,420 bytes
+
+[OK] Virtual Display Driver (VirtualDrivers/MikeTheTech) - 25.7.23
+     https://github.com/VirtualDrivers/Virtual-Display-Driver/releases/download/25.7.23/VDD.Control.25.7.23.zip
+     https://github.com/VirtualDrivers/Virtual-Display-Driver/releases/download/25.7.23/VirtualDisplayDriver-x86.Driver.Only.zip
+     https://github.com/VirtualDrivers/Virtual-Display-Driver/releases/download/25.7.23/VirtualAudioDriver-x86.Driver.Only.zip
+     71,225,903 + 132,118 + 51,004 bytes
+
+[OK] AVerMedia - Live Gamer HD (C985) driver 3.3.x.52
+     https://storage.avermedia.com/web_release_www/C985/C985_driver_v3.3.x.52_20160219.zip
+     page: https://www.avermedia.com/support/download
+     86,682,218 bytes
+
+[OK] AVerMedia - ExtremeCap U3 (CV710) driver 1.0.x.33
+     https://storage.avermedia.com/web_release_www/CV710/CV710_driver_v1.0.x.33_20160219.zip
+     53,727,424 bytes
+
+[OK] AVerMedia - Live Gamer EXTREME (GC550) driver 3.0.x.79
+     https://storage.avermedia.com/web_release_www/GC550/GC550_driver_v3.0.x.79_20160120.zip
+     5,067,487 bytes
+
+[SKIP-REGISTRATION] Magewell - Pro Capture / USB Capture Windows driver
+     page: https://www.magewell.com/downloads/pro-capture
+     Windows driver download is gated behind a mandatory registration form (registration modal);
+     no direct URL exposed. Only Linux driver and firmware are ungated.
+
+[OK] Blackmagic Design - Desktop Video 15.3.1 (Windows)
+     page: https://www.blackmagicdesign.com/support/family/desktop-video
+     download resolved via official support API (POST /api/register/us/download/<id>) to
+     https://sw.blackmagicdesign.com/DesktopVideo/v15.3.1/... (signed, time-limited URL);
+     saved as Blackmagic_Desktop_Video_Windows_15.3.1.zip
+     507,288,860 bytes (483.8 MiB)
+     NOTE: Desktop Video 16.4/16.3/16.2/16.1/16.0 were 555-566 MB and skipped over the 500 MiB cap.

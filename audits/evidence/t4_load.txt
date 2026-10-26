@@ -1,0 +1,35 @@
+=== t4 copy+load 2026-10-23T16:51:17.4117129-07:00 ===
+no pre-existing silabser service - using service name t4_silabser
+--- step 2: copy + hash ---
+  guest src hash:  9393781CF3FD66C9EA21380EC8EC1AFFA6D84EB27C7EAEB14064BD90D32F27B2
+  expected        : 9393781CF3FD66C9EA21380EC8EC1AFFA6D84EB27C7EAEB14064BD90D32F27B2
+  src match: True
+  dst  hash: 9393781CF3FD66C9EA21380EC8EC1AFFA6D84EB27C7EAEB14064BD90D32F27B2
+  copy match: True
+--- step 3: service ---
+  sc create t4_silabser type= kernel start= demand binPath= C:\Windows\System32\drivers\silabser.sys
+    [SC] CreateService SUCCESS
+  sc start t4_silabser
+    
+    SERVICE_NAME: t4_silabser 
+            TYPE               : 1  KERNEL_DRIVER  
+            STATE              : 4  RUNNING 
+                                    (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+            WIN32_EXIT_CODE    : 0  (0x0)
+            SERVICE_EXIT_CODE  : 0  (0x0)
+            CHECKPOINT         : 0x0
+            WAIT_HINT          : 0x0
+            PID                : 0
+            FLAGS              : 
+  sc query t4_silabser
+    
+    SERVICE_NAME: t4_silabser 
+            TYPE               : 1  KERNEL_DRIVER  
+            STATE              : 4  RUNNING 
+                                    (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+            WIN32_EXIT_CODE    : 0  (0x0)
+            SERVICE_EXIT_CODE  : 0  (0x0)
+            CHECKPOINT         : 0x0
+            WAIT_HINT          : 0x0
+--- driverquery /v verify ---
+    "t4_silabser","t4_silabser","t4_silabser","Kernel ","Manual","Running","OK","TRUE","FALSE","24,576","45,056","0","9/27/2017 10:57:24 AM","\??\C:\Windows\System32\drivers\silabser.sys","4,096"

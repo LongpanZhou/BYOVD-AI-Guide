@@ -1,0 +1,6 @@
+key                     1.2.3.4
+debugtype               NET
+hostip                  192.168.121.1
+port                    50001
+dhcp                    Yes
+The operation completed successfully.

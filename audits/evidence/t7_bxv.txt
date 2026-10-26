@@ -1,0 +1,57 @@
+t7_bxv 2026-10-23T22:19:20.9976369-07:00
+recompile poc
+
+compile exit=0
+=== guest bxvbda.sys SHA-256 (expect FEB27714...DAC45) ===
+FEB2771428706126FEA1CC9A50EBE3CF4F8E8FB6FCB3CA19996497CA44FDAC45
+=== sc create t7_bxv ===
+[SC] CreateService SUCCESS
+
+=== sc start t7_bxv ===
+
+SERVICE_NAME: t7_bxv 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+        PID                : 0
+        FLAGS              : 
+
+=== enum key pre-check ===
+ROOT\T7BXV key present: False
+=== CM_Create_DevNodeW ROOT\T7BXV\0000 ===
+t7_poc start 2026-10-23T22:19:21.4278878-07:00
+mkdev ROOT\T7BXV\0000 parent=HTREE\ROOT\0 CR=0 dn=0x2 status=0x1802001 problem=0 (statCR=0x0)
+t7_poc end 2026-10-23T22:19:21.4357887-07:00
+=== seed enum key ===
+seeded: t7_bxv / ROOT\T7BXV
+=== pnputil /restart-device ===
+Microsoft PnP Utility
+
+Restarting device:         ROOT\T7BXV\0000
+Device restarted successfully.
+
+
+=== devnode status after restart ===
+t7_poc start 2026-10-23T22:19:21.5120502-07:00
+devstat ROOT\T7BXV\0000 dn=0x1 CR=0x0 status=0x1802401 problem=10
+t7_poc end 2026-10-23T22:19:21.5196989-07:00
+=== interface {2AF67184-48d3-4e8e-a3ff-969eff740ed2} in DeviceClasses ===
+  ABSENT (AddDevice did not register interface or failed earlier)
+=== open probes on \\?\ROOT#T7BXV#0000#{2af67184-48d3-4e8e-a3ff-969eff740ed2} ===
+t7_poc start 2026-10-23T22:19:21.5616333-07:00
+open \\?\ROOT#T7BXV#0000#{2af67184-48d3-4e8e-a3ff-969eff740ed2} acc=0xC0000000 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:19:21.5676271-07:00
+t7_poc start 2026-10-23T22:19:21.5980592-07:00
+open \\?\ROOT#T7BXV#0000#{2af67184-48d3-4e8e-a3ff-969eff740ed2} acc=0x120089 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:19:21.6056048-07:00
+t7_poc start 2026-10-23T22:19:21.6300123-07:00
+open \\?\ROOT#T7BXV#0000#{2af67184-48d3-4e8e-a3ff-969eff740ed2} acc=0x0 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:19:21.6340084-07:00
+=== conditional deep step (only if open succeeded) ===
+NET open failed: Exception calling "Open" with "3" argument(s): "Could not find file '\\?\ROOT#T7BXV#0000#{2af67184-48d3-4e8e-a3ff-969eff740ed2}'."
+--- interface NOT openable -> no probes dispatched (gate documented) ---
+=== end t7_bxv ===

@@ -1,0 +1,501 @@
+     sto: {Stage Driver Package: exit(0x00000000)} 13:39:52.639
+     sto: {Stage Driver Package: C:\Windows\WinSxS\x86_dual_ntprint.inf_31bf3856ad364e35_10.0.19041.6456_none_fdae53084678caba\ntprint.inf} 13:39:52.639
+!    sto:      Driver package already imported as 'ntprint.inf' (C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf).
+     sto: {Stage Driver Package: exit(0x00000000)} 13:39:52.643
+     sto: {Stage Driver Package: C:\Windows\WinSxS\x86_dual_prnms003.inf_31bf3856ad364e35_10.0.19041.6456_none_2f2703793f49d340\prnms003.inf} 13:39:52.643
+!    sto:      Driver package already imported as 'prnms003.inf' (C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf).
+     sto: {Stage Driver Package: exit(0x00000000)} 13:39:52.645
+<<<  Section end 2026/10/21 13:39:52.645
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Install Driver Updates]
+>>>  Section start 2026/10/21 13:39:52.651
+      cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+     sto: Image State        = Specialized
+     sto: Image Architecture = amd64
+     sto: Image OS Version   = 10.0.19045
+     sto: Image Product Type = WinNT
+     sto: Transaction        = CbsDriversAndPrimitives
+     sto: Driver Updates     = 24
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\dc1-controller.inf_amd64_5f5a4694d0b5b341\dc1-controller.inf} 13:39:52.692
+     sto:      Driver Package = dc1-controller.inf_amd64_5f5a4694d0b5b341
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\dc1-controller.inf_amd64_5f5a4694d0b5b341\dc1-controller.inf} 13:39:52.692
+     idb:           Driver package 'dc1-controller.inf_amd64_5f5a4694d0b5b341' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.694
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.694
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xusb22.inf_amd64_51b746a2b2ed948e\xusb22.inf} 13:39:52.694
+     sto:      Driver Package = xusb22.inf_amd64_51b746a2b2ed948e
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xusb22.inf_amd64_51b746a2b2ed948e\xusb22.inf} 13:39:52.694
+     idb:           Driver package 'xusb22.inf_amd64_51b746a2b2ed948e' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.694
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.697
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\oposdrv.inf_amd64_9090a824ce0d0e68\oposdrv.inf} 13:39:52.697
+     sto:      Driver Package = oposdrv.inf_amd64_9090a824ce0d0e68
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\oposdrv.inf_amd64_9090a824ce0d0e68\oposdrv.inf} 13:39:52.697
+     idb:           Driver package 'oposdrv.inf_amd64_9090a824ce0d0e68' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.698
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.698
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_a2dp.inf_amd64_b2e16a3e473a4a6a\microsoft_bluetooth_a2dp.inf} 13:39:52.698
+     sto:      Driver Package = microsoft_bluetooth_a2dp.inf_amd64_b2e16a3e473a4a6a
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_a2dp.inf_amd64_b2e16a3e473a4a6a\microsoft_bluetooth_a2dp.inf} 13:39:52.698
+     idb:           Driver package 'microsoft_bluetooth_a2dp.inf_amd64_b2e16a3e473a4a6a' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.698
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.698
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_avrcptransport.inf_amd64_3654b1e927c93743\microsoft_bluetooth_avrcptransport.inf} 13:39:52.700
+     sto:      Driver Package = microsoft_bluetooth_avrcptransport.inf_amd64_3654b1e927c93743
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_avrcptransport.inf_amd64_3654b1e927c93743\microsoft_bluetooth_avrcptransport.inf} 13:39:52.700
+     idb:           Driver package 'microsoft_bluetooth_avrcptransport.inf_amd64_3654b1e927c93743' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.700
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.700
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\btampm.inf_amd64_5ac4d73ded7041d4\btampm.inf} 13:39:52.700
+     sto:      Driver Package = btampm.inf_amd64_5ac4d73ded7041d4
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\btampm.inf_amd64_5ac4d73ded7041d4\btampm.inf} 13:39:52.702
+     idb:           Driver package 'btampm.inf_amd64_5ac4d73ded7041d4' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.702
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.702
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_hfp.inf_amd64_9ff3bab41e6dcf05\microsoft_bluetooth_hfp.inf} 13:39:52.702
+     sto:      Driver Package = microsoft_bluetooth_hfp.inf_amd64_9ff3bab41e6dcf05
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_hfp.inf_amd64_9ff3bab41e6dcf05\microsoft_bluetooth_hfp.inf} 13:39:52.704
+     idb:           Driver package 'microsoft_bluetooth_hfp.inf_amd64_9ff3bab41e6dcf05' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.704
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.704
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_a2dp_snk.inf_amd64_213eeba98cc6f2f4\microsoft_bluetooth_a2dp_snk.inf} 13:39:52.704
+     sto:      Driver Package = microsoft_bluetooth_a2dp_snk.inf_amd64_213eeba98cc6f2f4
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_a2dp_snk.inf_amd64_213eeba98cc6f2f4\microsoft_bluetooth_a2dp_snk.inf} 13:39:52.704
+     idb:           Driver package 'microsoft_bluetooth_a2dp_snk.inf_amd64_213eeba98cc6f2f4' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.707
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.707
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_a2dp_src.inf_amd64_0bdbb11733d87f9a\microsoft_bluetooth_a2dp_src.inf} 13:39:52.707
+     sto:      Driver Package = microsoft_bluetooth_a2dp_src.inf_amd64_0bdbb11733d87f9a
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_a2dp_src.inf_amd64_0bdbb11733d87f9a\microsoft_bluetooth_a2dp_src.inf} 13:39:52.707
+     idb:           Driver package 'microsoft_bluetooth_a2dp_src.inf_amd64_0bdbb11733d87f9a' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.707
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.707
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_hfp_ag.inf_amd64_d2736f1d9bc815e1\microsoft_bluetooth_hfp_ag.inf} 13:39:52.709
+     sto:      Driver Package = microsoft_bluetooth_hfp_ag.inf_amd64_d2736f1d9bc815e1
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_hfp_ag.inf_amd64_d2736f1d9bc815e1\microsoft_bluetooth_hfp_ag.inf} 13:39:52.709
+     idb:           Driver package 'microsoft_bluetooth_hfp_ag.inf_amd64_d2736f1d9bc815e1' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.709
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.709
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_hfp_hf.inf_amd64_0c00f8f3a465c9a4\microsoft_bluetooth_hfp_hf.inf} 13:39:52.709
+     sto:      Driver Package = microsoft_bluetooth_hfp_hf.inf_amd64_0c00f8f3a465c9a4
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\microsoft_bluetooth_hfp_hf.inf_amd64_0c00f8f3a465c9a4\microsoft_bluetooth_hfp_hf.inf} 13:39:52.711
+     idb:           Driver package 'microsoft_bluetooth_hfp_hf.inf_amd64_0c00f8f3a465c9a4' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.711
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.711
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xboxgip.inf_amd64_cb88427933a363bb\xboxgip.inf} 13:39:52.711
+     sto:      Driver Package = xboxgip.inf_amd64_cb88427933a363bb
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xboxgip.inf_amd64_cb88427933a363bb\xboxgip.inf} 13:39:52.713
+     idb:           Driver package 'xboxgip.inf_amd64_cb88427933a363bb' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.713
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.713
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xboxgipsynthetic.inf_amd64_9aa94bcf077169a1\xboxgipsynthetic.inf} 13:39:52.715
+     sto:      Driver Package = xboxgipsynthetic.inf_amd64_9aa94bcf077169a1
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xboxgipsynthetic.inf_amd64_9aa94bcf077169a1\xboxgipsynthetic.inf} 13:39:52.715
+     idb:           Driver package 'xboxgipsynthetic.inf_amd64_9aa94bcf077169a1' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.715
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.715
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xinputhid.inf_amd64_f3c38a4683540971\xinputhid.inf} 13:39:52.717
+     sto:      Driver Package = xinputhid.inf_amd64_f3c38a4683540971
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\xinputhid.inf_amd64_f3c38a4683540971\xinputhid.inf} 13:39:52.717
+     idb:           Driver package 'xinputhid.inf_amd64_f3c38a4683540971' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.717
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.717
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vdrvroot.inf_amd64_5dbe5e81fafe4636\vdrvroot.inf} 13:39:52.717
+     sto:      Driver Package = vdrvroot.inf_amd64_5dbe5e81fafe4636
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vdrvroot.inf_amd64_5dbe5e81fafe4636\vdrvroot.inf} 13:39:52.719
+     idb:           Driver package 'vdrvroot.inf_amd64_5dbe5e81fafe4636' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.719
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.719
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vhdmp.inf_amd64_1638928d8b5df498\vhdmp.inf} 13:39:52.719
+     sto:      Driver Package = vhdmp.inf_amd64_1638928d8b5df498
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vhdmp.inf_amd64_1638928d8b5df498\vhdmp.inf} 13:39:52.719
+     idb:           Driver package 'vhdmp.inf_amd64_1638928d8b5df498' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.721
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.721
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\kdnic.inf_amd64_6649425cdcae9b5f\kdnic.inf} 13:39:52.721
+     sto:      Driver Package = kdnic.inf_amd64_6649425cdcae9b5f
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\kdnic.inf_amd64_6649425cdcae9b5f\kdnic.inf} 13:39:52.721
+     idb:           Driver package 'kdnic.inf_amd64_6649425cdcae9b5f' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.721
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.723
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ndisuio.inf_amd64_6096fd74a67ccd5d\ndisuio.inf} 13:39:52.723
+     sto:      Driver Package = ndisuio.inf_amd64_6096fd74a67ccd5d
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ndisuio.inf_amd64_6096fd74a67ccd5d\ndisuio.inf} 13:39:52.723
+     idb:           Driver package 'ndisuio.inf_amd64_6096fd74a67ccd5d' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.723
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.723
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\npsvctrig.inf_amd64_b98e9a5325075265\npsvctrig.inf} 13:39:52.723
+     sto:      Driver Package = npsvctrig.inf_amd64_b98e9a5325075265
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\npsvctrig.inf_amd64_b98e9a5325075265\npsvctrig.inf} 13:39:52.725
+     idb:           Driver package 'npsvctrig.inf_amd64_b98e9a5325075265' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.725
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.725
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicdisplay.inf_amd64_19e58b6267591a82\basicdisplay.inf} 13:39:52.725
+     sto:      Driver Package = basicdisplay.inf_amd64_19e58b6267591a82
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicdisplay.inf_amd64_19e58b6267591a82\basicdisplay.inf} 13:39:52.725
+     idb:           Driver package 'basicdisplay.inf_amd64_19e58b6267591a82' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicrender.inf_amd64_eebb5a8467eb88ec\basicrender.inf} 13:39:52.727
+     sto:      Driver Package = basicrender.inf_amd64_eebb5a8467eb88ec
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\basicrender.inf_amd64_eebb5a8467eb88ec\basicrender.inf} 13:39:52.727
+     idb:           Driver package 'basicrender.inf_amd64_eebb5a8467eb88ec' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.727
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\display.inf_amd64_35d5534e5de21a4b\display.inf} 13:39:52.729
+     sto:      Driver Package = display.inf_amd64_35d5534e5de21a4b
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\display.inf_amd64_35d5534e5de21a4b\display.inf} 13:39:52.729
+     idb:           Driver package 'display.inf_amd64_35d5534e5de21a4b' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.729
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf} 13:39:52.730
+     sto:      Driver Package = ntprint.inf_x86_20ea026aadec8898
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf} 13:39:52.730
+     idb:           Driver package 'ntprint.inf_amd64_20ea026aadec8898' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+     sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf} 13:39:52.732
+     sto:      Driver Package = prnms003.inf_x86_60589e1e769a15c6
+     idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf} 13:39:52.732
+     idb:           Driver package 'prnms003.inf_amd64_fe878017f474877a' is already active.
+     idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.732
+     sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.732
+     sto: Driver update 'dc1-controller.inf' is already reflected.
+     sto: Driver update 'xusb22.inf' is already reflected.
+     sto: Driver update 'oposdrv.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_a2dp.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_avrcptransport.inf' is already reflected.
+     sto: Driver update 'btampm.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_hfp.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_a2dp_snk.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_a2dp_src.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_hfp_ag.inf' is already reflected.
+     sto: Driver update 'microsoft_bluetooth_hfp_hf.inf' is already reflected.
+     sto: Driver update 'xboxgip.inf' is already reflected.
+     sto: Driver update 'xboxgipsynthetic.inf' is already reflected.
+     sto: Driver update 'xinputhid.inf' is already reflected.
+     sto: Driver update 'vdrvroot.inf' is already reflected.
+     sto: Driver update 'vhdmp.inf' is already reflected.
+     sto: Driver update 'kdnic.inf' is already reflected.
+     sto: Driver update 'ndisuio.inf' is already reflected.
+     sto: Driver update 'npsvctrig.inf' is already reflected.
+     sto: Driver update 'basicdisplay.inf' is already reflected.
+     sto: Driver update 'basicrender.inf' is already reflected.
+     sto: Driver update 'display.inf' is already reflected.
+     sto: Skipping non-native x86 driver package 'ntprint.inf' on amd64.
+     sto: Skipping non-native x86 driver package 'prnms003.inf' on amd64.
+<<<  Section end 2026/10/21 13:39:52.790
+<<<  [Exit status: SUCCESS]
+
+
+[Boot Session: 2026/10/21 13:40:22.500]
+
+>>>  [Enable Device Install]
+>>>  Section start 2026/10/21 13:40:40.455
+      cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+     ump: DeviceInstall service is not started.
+<<<  Section end 2026/10/21 13:40:40.459
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Enable Device Install]
+>>>  Section start 2026/10/21 13:40:40.683
+      cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+     ump: DeviceInstall service is not disabled.
+     ump: DeviceInstall service is not started.
+<<<  Section end 2026/10/21 13:40:40.685
+<<<  [Exit status: SUCCESS]
+
+
+[Boot Session: 2026/10/22 23:52:49.743]
+
+>>>  [Delete Device - ROOT\T4SILABSER\0000]
+>>>  Section start 2026/10/23 16:57:19.557
+      cmd: "C:\Windows\system32\pnputil.exe" /remove-device ROOT\T4SILABSER\0000
+     dvi: Query-and-Remove succeeded
+<<<  Section end 2026/10/23 16:57:19.567
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Delete Device - ROOT\T4SILABSER2\0000]
+>>>  Section start 2026/10/23 16:57:19.585
+      cmd: "C:\Windows\system32\pnputil.exe" /remove-device ROOT\T4SILABSER2\0000
+     dvi: Query-and-Remove succeeded
+<<<  Section end 2026/10/23 16:57:19.591
+<<<  [Exit status: SUCCESS]
+
+
+[Boot Session: 2026/10/23 17:09:13.500]
+
+>>>  [Delete Device - ROOT\T5VPNVA\0000]
+>>>  Section start 2026/10/23 17:35:45.988
+      cmd: "C:\Windows\system32\pnputil.exe" /remove-device ROOT\T5VPNVA\0000
+     dvi: Query-and-Remove succeeded
+<<<  Section end 2026/10/23 17:35:45.996
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Delete Device - ROOT\T5VPNVA2\0000]
+>>>  Section start 2026/10/23 17:35:46.014
+      cmd: "C:\Windows\system32\pnputil.exe" /remove-device ROOT\T5VPNVA2\0000
+     dvi: Query-and-Remove succeeded
+<<<  Section end 2026/10/23 17:35:46.020
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Driver Install (DrvSetupInstallDriver) - C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf]
+>>>  Section start 2026/10/23 17:35:46.036
+      cmd: "C:\Windows\system32\pnputil.exe" /add-driver C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf /install
+     dvs: Flags: 0x00000000
+     dvs: {Driver Setup Import Driver Package: C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf} 17:35:46.038
+     sto:      {Copy Driver Package: C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf} 17:35:46.066
+     sto:           Driver Package = C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf
+     sto:           Flags          = 0x00000007
+     sto:           Destination    = C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}
+     sto:           Copying driver package files to 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}'.
+     flq:           {FILE_QUEUE_COMMIT} 17:35:46.070
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t5_work\vpnva64-6.sys' to 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva64-6.sys'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t5_work\vpnva-6.cat' to 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva-6.cat'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf' to 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva-6.inf'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 17:35:46.074
+     sto:      {Copy Driver Package: exit(0x00000000)} 17:35:46.076
+     ump:      Import flags: 0x00000000
+     pol:      {Driver package policy check} 17:35:46.122
+     pol:      {Driver package policy check - exit(0x00000000)} 17:35:46.122
+     sto:      {Stage Driver Package: C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva-6.inf} 17:35:46.122
+     inf:           {Query Configurability: C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva-6.inf} 17:35:46.126
+     inf:                Driver package 'vpnva-6.inf' is configurable.
+     inf:           {Query Configurability: exit(0x00000000)} 17:35:46.128
+     flq:           {FILE_QUEUE_COMMIT} 17:35:46.128
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva64-6.sys' to 'C:\Windows\System32\DriverStore\Temp\{4924d9c9-ae3c-8c4b-b9e0-0491fa5a24c6}\vpnva64-6.sys'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva-6.cat' to 'C:\Windows\System32\DriverStore\Temp\{4924d9c9-ae3c-8c4b-b9e0-0491fa5a24c6}\vpnva-6.cat'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{b742cca3-3003-0b40-ad10-51f59c2c7cca}\vpnva-6.inf' to 'C:\Windows\System32\DriverStore\Temp\{4924d9c9-ae3c-8c4b-b9e0-0491fa5a24c6}\vpnva-6.inf'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 17:35:46.138
+     sto:           {DRIVERSTORE IMPORT VALIDATE} 17:35:46.138
+     sig:                Driver package catalog is valid.
+     sig:                {_VERIFY_FILE_SIGNATURE} 17:35:46.152
+     sig:                     Key      = vpnva-6.inf
+     sig:                     FilePath = C:\Windows\System32\DriverStore\Temp\{4924d9c9-ae3c-8c4b-b9e0-0491fa5a24c6}\vpnva-6.inf
+     sig:                     Catalog  = C:\Windows\System32\DriverStore\Temp\{4924d9c9-ae3c-8c4b-b9e0-0491fa5a24c6}\vpnva-6.cat
+     sig:                     Success: File is signed in catalog.
+     sig:                {_VERIFY_FILE_SIGNATURE exit(0x00000000)} 17:35:46.156
+     sto:           {DRIVERSTORE IMPORT VALIDATE: exit(0x00000000)} 17:35:46.158
+     sig:           Signer Score  = 0x0D000005 (WHQL)
+     sig:           Signer Name   = Microsoft Windows Hardware Compatibility Publisher
+     sig:           Submission ID = 30099520_14214309209410389_1152921505694525383
+     sto:           {Core Driver Package Import: vpnva-6.inf_amd64_b390894cbdbd8e01} 17:35:46.160
+     sto:                {DRIVERSTORE IMPORT BEGIN} 17:35:46.160
+     sto:                {DRIVERSTORE IMPORT BEGIN: exit(0x00000000)} 17:35:46.160
+     cpy:                {Copy Directory: C:\Windows\System32\DriverStore\Temp\{4924d9c9-ae3c-8c4b-b9e0-0491fa5a24c6}} 17:35:46.160
+     cpy:                     Target Path = C:\Windows\System32\DriverStore\FileRepository\vpnva-6.inf_amd64_b390894cbdbd8e01
+     cpy:                {Copy Directory: exit(0x00000000)} 17:35:46.162
+     idb:                {Register Driver Package: C:\Windows\System32\DriverStore\FileRepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf} 17:35:46.162
+     idb:                     Created driver package object 'vpnva-6.inf_amd64_b390894cbdbd8e01' in DRIVERS database node.
+     idb:                     Created driver INF file object 'oem9.inf' in DRIVERS database node.
+     idb:                     Registered driver package 'vpnva-6.inf_amd64_b390894cbdbd8e01' with 'oem9.inf'.
+     idb:                {Register Driver Package: exit(0x00000000)} 17:35:46.166
+     idb:                {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf} 17:35:46.166
+     idb:                     Activating driver package 'vpnva-6.inf_amd64_b390894cbdbd8e01'.
+     cpy:                     Published 'vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf' to 'oem9.inf'.
+     idb:                     Indexed 2 device IDs for 'vpnva-6.inf_amd64_b390894cbdbd8e01'.
+     sto:                     Flushed driver database node 'DRIVERS'. Time = 16 ms
+     sto:                     Flushed driver database node 'SYSTEM'. Time = 0 ms
+     idb:                {Publish Driver Package: exit(0x00000000)} 17:35:46.174
+     sto:                {DRIVERSTORE IMPORT END} 17:35:46.176
+!    dvi:                     Unable to flush all driver package files to disk. Time = 0 ms, Error = 0x00000005
+     sig:                     Installed catalog 'vpnva-6.cat' as 'oem9.cat'.
+     sto:                {DRIVERSTORE IMPORT END: exit(0x00000000)} 17:35:46.186
+     sto:           {Core Driver Package Import: exit(0x00000000)} 17:35:46.186
+     sto:      {Stage Driver Package: exit(0x00000000)} 17:35:46.186
+     dvs: {Driver Setup Import Driver Package - exit (0x00000000)} 17:35:46.214
+!    dvs: Unable to find any matching devices.
+<<<  Section end 2026/10/23 17:35:46.220
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Device Install (Hardware initiated) - ROOT\VPNVA\0000]
+>>>  Section start 2026/10/23 17:35:46.334
+     utl: {Select Drivers - ROOT\VPNVA\0000} 17:35:46.338
+     utl: {Select Drivers - exit(0x00000000} 17:35:46.342
+!    dvi: No compatible drivers found.
+<<<  Section end 2026/10/23 17:35:46.344
+<<<  [Exit status: FAILURE(0xe0000228)]
+
+
+>>>  [Device Install (UpdateDriverForPlugAndPlayDevices) - VPNVA]
+>>>  Section start 2026/10/23 17:41:35.788
+      cmd: "C:\Users\vmdebug\Desktop\t5_work\t5_poc.exe" C:\Users\vmdebug\Desktop\t5_work\t5_inf4.txt instdev VPNVA C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf
+     ndv: INF path: C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf
+     ndv: Install flags: 0x00000001
+     ndv: {Update Device Driver - ROOT\VPNVA\0000}
+     ndv:      Search options: 0x00000080
+     ndv:      Searching single INF 'C:\Users\vmdebug\Desktop\t5_work\vpnva-6.inf'
+     dvi:      {Build Driver List} 17:41:35.798
+     dvi:           Searching for hardware ID(s):
+     dvi:                vpnva
+     dvi:           Created Driver Node:
+     dvi:                HardwareID   - vpnva
+     dvi:                InfName      - c:\users\vmdebug\desktop\t5_work\vpnva-6.inf
+     dvi:                DevDesc      - Cisco AnyConnect Virtual Miniport Adapter for Windows x64
+     dvi:                Section      - Cisco.ndi.NTamd64
+     dvi:                Rank         - 0x00ff0000
+     dvi:                Signer Score - WHQL
+     dvi:                DrvDate      - 12/14/2021
+     dvi:                Version      - 4.10.5040.0
+     dvi:      {Build Driver List - exit(0x00000000)} 17:41:35.824
+     dvi:      {DIF_SELECTBESTCOMPATDRV} 17:41:35.825
+     dvi:           Default installer: Enter 17:41:35.825
+     dvi:                {Select Best Driver}
+     dvi:                     Class GUID of device changed to: {4d36e972-e325-11ce-bfc1-08002be10318}.
+     dvi:                     Selected Driver:
+     dvi:                          Description - Cisco AnyConnect Virtual Miniport Adapter for Windows x64
+     dvi:                          InfFile     - c:\users\vmdebug\desktop\t5_work\vpnva-6.inf
+     dvi:                          Section     - Cisco.ndi.NTamd64
+     dvi:                {Select Best Driver - exit(0x00000000)}
+     dvi:           Default installer: Exit
+     dvi:      {DIF_SELECTBESTCOMPATDRV - exit(0x00000000)} 17:41:35.828
+     ndv:      Force Installing Driver:
+     ndv:           Inf Name       - vpnva-6.inf
+     ndv:           Driver Date    - 12/14/2021
+     ndv:           Driver Version - 4.10.5040.0
+     ndv:      Driver package 'C:\Windows\System32\DriverStore\FileRepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf' is already imported.
+     sto:      {Setup Import Driver Package: c:\users\vmdebug\desktop\t5_work\vpnva-6.inf} 17:41:35.830
+     sto:           Driver package already imported as 'oem9.inf'.
+     sto:      {Setup Import Driver Package - exit (0x00000000)} 17:41:35.832
+     dvi:      Searching for hardware ID(s):
+     dvi:           vpnva
+     dvi:      Class GUID of device changed to: {4d36e972-e325-11ce-bfc1-08002be10318}.
+     ump:      {Plug and Play Service: Device Install for ROOT\VPNVA\0000}
+     dvi:           {Core Device Install} 17:41:35.877
+     dvi:                {Configure Device - ROOT\VPNVA\0000} 17:41:35.878
+     dvi:                     Device Status: 0x01802401 [0x1f - 0xc0000001]
+     dvi:                     Config Flags: 0x00000000
+     dvi:                     Parent Device: HTREE\ROOT\0
+     sto:                     {Configure Driver Package: C:\Windows\System32\DriverStore\FileRepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf}
+     sto:                          Source Filter  = vpnva
+     inf:                          Class GUID     = {4d36e972-e325-11ce-bfc1-08002be10318}
+     inf:                          Class Options  = Configurable
+     inf:                          {Configure Driver: Cisco AnyConnect Virtual Miniport Adapter for Windows x64}
+     inf:                               Section Name = Cisco.ndi.NTamd64
+     inf:                               {Add Service: vpnva}
+     inf:                                    Start Type    = 3
+     inf:                                    Service Type  = 1
+     inf:                                    Error Control = 1
+     inf:                                    Image Path    = \SystemRoot\System32\drivers\vpnva64-6.sys
+     inf:                                    Display Name  = Cisco AnyConnect Virtual Miniport Adapter for Windows x64
+     inf:                                    Group         = NDIS
+     inf:                                    Created new service 'vpnva'.
+     inf:                               {Add Service: exit(0x00000000)}
+     inf:                               Hardware Id  = vpnva
+     inf:                               {Configure Driver Configuration: Cisco.ndi.NTamd64}
+     inf:                                    Service Name  = vpnva
+     inf:                                    Config Flags  = 0x00000000
+     inf:                               {Configure Driver Configuration: exit(0x00000000)}
+     inf:                          {Configure Driver: exit(0x00000000)}
+     flq:                          {FILE_QUEUE_COMMIT} 17:41:35.892
+     flq:                               Copying 'C:\Windows\System32\DriverStore\FileRepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva64-6.sys' to 'C:\Windows\System32\drivers\vpnva64-6.sys'.
+     cpy:                               Existing file 'C:\Windows\System32\drivers\vpnva64-6.sys' remains unchanged.
+     flq:                          {FILE_QUEUE_COMMIT - exit(0x00000000)} 17:41:35.898
+     sto:                     {Configure Driver Package: exit(0x00000000)}
+     dvi:                     Install Device: Configuring device. 17:41:35.899
+     dvi:                          Configuration: oem9.inf:vpnva,Cisco.ndi.NTamd64
+     dvi:                     Install Device: Configuring device completed. 17:41:35.902
+     dvi:                     Device Status: 0x01802401 [0x1f - 0xc0000001]
+     dvi:                     Install Device: Starting device 'ROOT\VPNVA\0000'. 17:41:35.903
+     dvi:                     Install Device: Starting device completed. 17:41:35.906
+!    dvi:                     Device pending start: Device has problem: 0x38 (CM_PROB_NEED_CLASS_CONFIG), problem status: 0xc0000001.
+     dvi:                {Configure Device - exit(0x00000000)} 17:41:35.906
+     dvi:           {Core Device Install - exit(0x00000000)} 17:41:35.907
+     dvi:           Waiting for device post-install to complete. 17:41:35.908
+!!!  dvi:           Timed out waiting for device post-install to complete. 17:45:20.909
+!    dvi:           Unable to configure device, falling back to standard device installation.
+     dvi:           Searching for hardware ID(s):
+     dvi:                vpnva
+     dvi:           Class GUID of device changed to: {4d36e972-e325-11ce-bfc1-08002be10318}.
+     ndv:           {Core Device Install} 17:45:20.938
+     dvi:                {Install Device - ROOT\VPNVA\0000} 17:45:20.939
+     dvi:                     Device Status: 0x01802401 [0x38 - 0xc0000001]
+     dvi:                     Config Flags: 0x00080000
+     dvi:                     Parent Device: HTREE\ROOT\0
+     dvi:                     {DIF_ALLOW_INSTALL} 17:45:20.942
+     dvi:                          Default installer: Enter 17:45:20.942
+     dvi:                          Default installer: Exit
+     dvi:                     {DIF_ALLOW_INSTALL - exit(0xe000020e)} 17:45:20.943
+     dvi:                     {DIF_INSTALLDEVICEFILES} 17:45:20.945
+     dvi:                          Default installer: Enter 17:45:20.945
+     dvi:                          Default installer: Exit
+     dvi:                     {DIF_INSTALLDEVICEFILES - exit(0x00000000)} 17:45:20.946
+     dvi:                     {_SCAN_FILE_QUEUE} 17:45:20.947
+     flq:                          File 'C:\Windows\system32\DRIVERS\vpnva64-6.sys' pruned from copy.
+     dvi:                     {_SCAN_FILE_QUEUE - exit(0x00000000)} 17:45:20.965
+     flq:                     {FILE_QUEUE_COMMIT} 17:45:20.967
+     flq:                     {FILE_QUEUE_COMMIT - exit(0x00000000)} 17:45:20.967
+     dvi:                     {DIF_REGISTER_COINSTALLERS} 17:45:20.968
+     dvi:                          Reset Device: Resetting device configuration. 17:45:20.969
+     dvi:                          Reset Device: Resetting device configuration completed. 17:45:20.969
+     dvi:                          Default installer: Enter 17:45:20.970
+     inf:                               {Install from INF Section - Cisco.ndi.NTamd64.CoInstallers} 17:45:20.971
+     inf:                                    Flags         - 0x001001ee
+     inf:                               {Install from INF Section - exit(0x00000000)} 17:45:20.972
+     dvi:                          Default installer: Exit
+     dvi:                     {DIF_REGISTER_COINSTALLERS - exit(0x00000000)} 17:45:20.972
+     dvi:                     {DIF_INSTALLINTERFACES} 17:45:20.972
+     dvi:                          Default installer: Enter 17:45:20.973
+     dvi:                          Default installer: Exit
+     dvi:                     {DIF_INSTALLINTERFACES - exit(0x00000000)} 17:45:20.974
+     dvi:                     {DIF_INSTALLDEVICE} 17:45:20.974
+     dvi:                          Default installer: Enter 17:45:20.974
+     dvi:                               {Install DEVICE}
+     inf:                                    {Install from INF Section - Cisco.ndi.NTamd64} 17:45:20.975
+     inf:                                         Flags         - 0x00000001
+     inf:                                    {Install from INF Section - exit(0x00000000)} 17:45:20.977
+     inf:                                    {Install from INF Section - Cisco.ndi.NTamd64} 17:45:20.977
+     inf:                                         Flags         - 0x001005ee
+     inf:                                    {Install from INF Section - exit(0x00000000)} 17:45:20.977
+     dvi:                                    {Writing Device Properties}
+     dvi:                                         Strong Name=oem9.inf:573bd3b1d858e0ac:Cisco.ndi.NTamd64:4.10.5040.0:vpnva
+     dvi:                                    {Writing Device Properties - Complete}
+     inf:                                    AddService=vpnva,2,vpnva.Service.NTamd64  (vpnva-6.inf line 56)
+     dvi:                                    Add Service: Modified existing service 'vpnva'.
+     inf:                                    {Install from INF Section - vpnva.Service.NTamd64} 17:45:20.985
+     inf:                                         Flags         - 0x00100004
+     inf:                                    {Install from INF Section - exit(0x00000000)} 17:45:20.985
+     dvi:                               {Install DEVICE exit (0x00000000)}
+     sto:                               {Configure Driver Package: c:\windows\system32\driverstore\filerepository\vpnva-6.inf_amd64_b390894cbdbd8e01\vpnva-6.inf}
+     sto:                                    Source Filter  = Cisco.ndi.NTamd64
+     sto:                                    Target Filter  = ROOT\VPNVA\0000
+     inf:                                    Class GUID     = {4d36e972-e325-11ce-bfc1-08002be10318}
+     inf:                                    Class Options  = Configurable
+     inf:                                    {Configure Driver: Cisco AnyConnect Virtual Miniport Adapter for Windows x64}
+     inf:                                         Section Name = Cisco.ndi.NTamd64
+     inf:                                         {Configure Device: ROOT\VPNVA\0000}
+     inf:                                         {Configure Device: exit(0x00000000)}
+     inf:                                    {Configure Driver: exit(0x00000000)}
+     sto:                               {Configure Driver Package: exit(0x00000000)}
+     dvi:                               Install Device: Configuring device class. 17:45:20.992
+     dvi:                               Install Device: Configuring device class completed. 17:45:20.992
+     dvi:                               Device Status: 0x01802401 [0x38 - 0xc0000001]
+     dvi:                               Install Device: Starting device 'ROOT\VPNVA\0000'. 17:45:20.993
+     dvi:                               Install Device: Starting device completed. 17:45:20.996
+!    dvi:                               Device pending start: Device has problem: 0x38 (CM_PROB_NEED_CLASS_CONFIG), problem status: 0xc0000001.
+     dvi:                          Default installer: Exit
+     dvi:                     {DIF_INSTALLDEVICE - exit(0x00000000)} 17:45:20.997
+     dvi:                     Device Status: 0x01802401 [0x38]
+     dvi:                     {DIF_NEWDEVICEWIZARD_FINISHINSTALL} 17:45:20.998
+     dvi:                          Default installer: Enter 17:45:20.998
+     dvi:                          Default installer: Exit
+     dvi:                     {DIF_NEWDEVICEWIZARD_FINISHINSTALL - exit(0xe000020e)} 17:45:20.999
+     dvi:                {Install Device - exit(0x00000000)} 17:45:21.000
+     dvi:           {Core Device Install - exit(0x00000000)} 17:45:21.000
+     dvi:           Waiting for device post-install to complete. 17:45:21.001
+!!!  dvi:           Timed out waiting for device post-install to complete. 17:49:06.001
+     ump:      {Plug and Play Service: Device Install exit(00000000)}
+     ndv: {Update Device Driver - exit(00000000)}
+     ndv: {Install Related Drivers} 17:49:06.006
+     ndv: {Install Related Drivers: exit(0x00000000)} 17:49:06.028
+<<<  Section end 2026/10/23 17:49:06.030
+<<<  [Exit status: SUCCESS]
+
+EXITCODE=0 

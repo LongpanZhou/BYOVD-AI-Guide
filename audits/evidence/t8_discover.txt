@@ -1,0 +1,102 @@
+t8_discover 2026-10-23T23:47:04.5579193-07:00
+--- qobj \Device (amd|psp) ---
+t8_poc start 2026-10-23T23:47:04.5839470-07:00
+  poc exit=-1073741819
+--- qobj \DosDevices (amd|psp) ---
+t8_poc start 2026-10-23T23:47:05.3300756-07:00
+--- qobj \GLOBAL?? (amd|psp) ---
+t8_poc start 2026-10-23T23:47:05.9601381-07:00
+qobj \GLOBAL?? open st=0xC0000022
+t8_poc end 2026-10-23T23:47:05.9661257-07:00
+--- qobj \?? (amd|psp) ---
+t8_poc start 2026-10-23T23:47:05.9877691-07:00
+--- qobj \Device (amdp|pspt catch-all) ---
+t8_poc start 2026-10-23T23:47:06.5757740-07:00
+--- open probes \\.\amdpsp (admin) ---
+t8_poc start 2026-10-23T23:47:07.1336805-07:00
+open \\.\amdpsp acc=0xC0000000 share=0x3 -> FAIL err=2
+t8_poc end 2026-10-23T23:47:07.1377038-07:00
+t8_poc start 2026-10-23T23:47:07.1578642-07:00
+open \\.\amdpsp acc=0x12019F share=0x3 -> FAIL err=2
+t8_poc end 2026-10-23T23:47:07.1639053-07:00
+t8_poc start 2026-10-23T23:47:07.1838543-07:00
+open \\.\amdpsp acc=0x0 share=0x3 -> FAIL err=2
+t8_poc end 2026-10-23T23:47:07.1898501-07:00
+--- NT-path opens ---
+t8_poc start 2026-10-23T23:47:07.2098556-07:00
+open \Device\amdpsp (nt) st=0xC0000034
+t8_poc end 2026-10-23T23:47:07.2138490-07:00
+--- DACL pulls (resolves Everyone-SDDL question) ---
+t8_poc start 2026-10-23T23:47:07.2359434-07:00
+open \\.\amdpsp acc=0x20000 -> FAIL err=2
+t8_poc end 2026-10-23T23:47:07.2399593-07:00
+t8_poc start 2026-10-23T23:47:07.2600803-07:00
+open \Device\amdpsp (nt) acc=0x20000 -> st=0xC0000034
+t8_poc end 2026-10-23T23:47:07.2660726-07:00
+--- driverquery rows (amdpsp / t8_amdpsp) ---
+  t8_amdpsp    t8_amdpsp              t8_amdpsp              Kernel        Manual     Running    OK         TRUE        FALSE        4,096             32,768      0          3/6/2020 1:04:04 PM    \??\C:\Users\vmdebug\Desktop\t8_work\amdpsp.sys  4,096      
+--- device interface GUID {D41D854A-3877-4471-A889-B0D551B1125B} in registry ---
+  interface key NOT present
+--- setupapi.dev.log tail (60 lines) ---
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.729
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf} 13:39:52.730
+       sto:      Driver Package = ntprint.inf_x86_20ea026aadec8898
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\ntprint.inf_x86_20ea026aadec8898\ntprint.inf} 13:39:52.730
+       idb:           Driver package 'ntprint.inf_amd64_20ea026aadec8898' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.730
+       sto: {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf} 13:39:52.732
+       sto:      Driver Package = prnms003.inf_x86_60589e1e769a15c6
+       idb:      {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\prnms003.inf_x86_60589e1e769a15c6\prnms003.inf} 13:39:52.732
+       idb:           Driver package 'prnms003.inf_amd64_fe878017f474877a' is already active.
+       idb:      {Publish Driver Package: exit(0x00000000)} 13:39:52.732
+       sto: {Publish Driver Package: exit(0x00000000)} 13:39:52.732
+       sto: Driver update 'dc1-controller.inf' is already reflected.
+       sto: Driver update 'xusb22.inf' is already reflected.
+       sto: Driver update 'oposdrv.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_a2dp.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_avrcptransport.inf' is already reflected.
+       sto: Driver update 'btampm.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_hfp.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_a2dp_snk.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_a2dp_src.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_hfp_ag.inf' is already reflected.
+       sto: Driver update 'microsoft_bluetooth_hfp_hf.inf' is already reflected.
+       sto: Driver update 'xboxgip.inf' is already reflected.
+       sto: Driver update 'xboxgipsynthetic.inf' is already reflected.
+       sto: Driver update 'xinputhid.inf' is already reflected.
+       sto: Driver update 'vdrvroot.inf' is already reflected.
+       sto: Driver update 'vhdmp.inf' is already reflected.
+       sto: Driver update 'kdnic.inf' is already reflected.
+       sto: Driver update 'ndisuio.inf' is already reflected.
+       sto: Driver update 'npsvctrig.inf' is already reflected.
+       sto: Driver update 'basicdisplay.inf' is already reflected.
+       sto: Driver update 'basicrender.inf' is already reflected.
+       sto: Driver update 'display.inf' is already reflected.
+       sto: Skipping non-native x86 driver package 'ntprint.inf' on amd64.
+       sto: Skipping non-native x86 driver package 'prnms003.inf' on amd64.
+  <<<  Section end 2026/10/21 13:39:52.790
+  <<<  [Exit status: SUCCESS]
+  
+  
+  [Boot Session: 2026/10/21 13:40:22.500]
+  
+  >>>  [Enable Device Install]
+  >>>  Section start 2026/10/21 13:40:40.455
+        cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+       ump: DeviceInstall service is not started.
+  <<<  Section end 2026/10/21 13:40:40.459
+  <<<  [Exit status: SUCCESS]
+  
+  
+  >>>  [Enable Device Install]
+  >>>  Section start 2026/10/21 13:40:40.683
+        cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+       ump: DeviceInstall service is not disabled.
+       ump: DeviceInstall service is not started.
+  <<<  Section end 2026/10/21 13:40:40.685
+  <<<  [Exit status: SUCCESS]
+  
+--- event log System 7000/7026 tail (last 15 min) ---
+  (no 7000/7026 events: No events were found that match the specified selection criteria.)

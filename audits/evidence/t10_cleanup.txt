@@ -1,0 +1,65 @@
+=== t10_cleanup 2026-10-24T00:57:44.9379028-07:00 ===
+--- sc stop ---
+  [SC] ControlService FAILED 1052:
+  
+  The requested control is not valid for this service.
+  
+  stop exit=1052
+--- sc delete ---
+  [SC] DeleteService SUCCESS
+  delete exit=0
+--- sc query (expect 1060 absent) ---
+  
+  SERVICE_NAME: t10_iastrv 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 4  RUNNING 
+                                  (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+          WIN32_EXIT_CODE    : 0  (0x0)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+--- delete pushed files (keep t10_work dir + *.txt logs) ---
+  removed: iaStorV.sys
+  removed: t10_poc.exe
+  removed: t10_poc.cs
+  removed: t10_load.ps1
+  removed: t10_discover.ps1
+  removed: t10_dacl.ps1
+  removed: t10_open_unpriv.ps1
+  removed: t10_battery.ps1
+  removed: t10_sweep.ps1
+  removed: t10_cleanup.ps1
+  removed: t10_kd_dispatch.ps1
+--- driverquery verify (expect no t10 rows) ---
+  RESIDUAL: t10_iastrv   t10_iastrv             t10_iastrv             Kernel        Disabled   Running    OK         FALSE       FALSE        0                 364,544     0          4/11/2011 11:48:16 AM  \??\C:\Users\vmdebug\Desktop\t10_work\iaStorV.sy 8,192      
+--- qobj residual check ---
+--- retained files ---
+  iaStorV.sys
+  MISSION.md
+  t10_alive.txt
+  t10_cleanup.txt
+  t10_dbgsettings.txt
+  t10_devices.txt
+  t10_devnode.ps1
+  t10_discover.txt
+  t10_dn2.ps1
+  t10_dn2chk.txt
+  t10_dn3.ps1
+  t10_dn3.txt
+  t10_dn_create.txt
+  t10_dn_seed.txt
+  t10_dn_status.txt
+  t10_hashcheck.txt
+  t10_ipconfig.txt
+  t10_load.txt
+  t10_nettest.txt
+  t10_phaseB_STAGED.txt
+  t10_poll1.txt
+  t10_probe.ps1
+  t10_probe.txt
+  t10_restart2.txt
+  t10_setupapi_iastrv.txt
+  t10_state.txt
+  t10_trigger.ps1
+  t10_verify.ps1
+  t10_verify.txt

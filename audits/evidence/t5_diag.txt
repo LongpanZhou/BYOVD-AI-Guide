@@ -1,0 +1,99 @@
+=== t5 diag 2026-10-23T17:31:02.8947901-07:00 ===
+--- devnode properties: ROOT\T5VPNVA\0000 ---
+  DEVPKEY_Device_ProblemCode = 31 (type UInt32)
+  DEVPKEY_Device_ProblemStatus = 3221225524 (type NTStatus)
+  DEVPKEY_Device_HasProblem = True (type Boolean)
+  DEVPKEY_Device_Driver =  (type Empty)
+  DEVPKEY_Device_DriverInfPath =  (type Empty)
+  DEVPKEY_Device_DriverProvider =  (type Empty)
+  DEVPKEY_Device_Service = t5_vpnva (type String)
+  DEVPKEY_Device_ClassGuid =  (type Empty)
+  DEVPKEY_Device_Class =  (type Empty)
+  DEVPKEY_Device_ConfigFlags = 0 (type UInt32)
+  DEVPKEY_Device_IsPresent = True (type Boolean)
+  DEVPKEY_Device_Manufacturer =  (type Empty)
+  DEVPKEY_Device_HardwareIds = System.String[] (type StringList)
+  enum-key values:
+    Capabilities = 0
+    ConfigFlags = 0
+    Class = Net
+    ClassGUID = {4d36e972-e325-11ce-bfc1-08002be10318}
+    DeviceDesc = t5 Cisco VPN VA
+    Service = t5_vpnva
+    HardwareID = ROOT\T5VPNVA
+    ContainerID = {00000000-0000-0000-FFFF-FFFFFFFFFFFF}
+--- devnode properties: ROOT\T5VPNVA2\0000 ---
+  DEVPKEY_Device_ProblemCode = 31 (type UInt32)
+  DEVPKEY_Device_ProblemStatus = 3221225524 (type NTStatus)
+  DEVPKEY_Device_HasProblem = True (type Boolean)
+  DEVPKEY_Device_Driver =  (type Empty)
+  DEVPKEY_Device_DriverInfPath =  (type Empty)
+  DEVPKEY_Device_DriverProvider =  (type Empty)
+  DEVPKEY_Device_Service = t5_vpnva (type String)
+  DEVPKEY_Device_ClassGuid =  (type Empty)
+  DEVPKEY_Device_Class =  (type Empty)
+  DEVPKEY_Device_ConfigFlags = 0 (type UInt32)
+  DEVPKEY_Device_IsPresent = True (type Boolean)
+  DEVPKEY_Device_Manufacturer =  (type Empty)
+  DEVPKEY_Device_HardwareIds = System.String[] (type StringList)
+  enum-key values:
+    Capabilities = 0
+    ConfigFlags = 0
+    Class = System
+    ClassGUID = {4d36e97d-e325-11ce-bfc1-08002be10318}
+    DeviceDesc = t5 Cisco VPN VA (System class)
+    Service = t5_vpnva
+    HardwareID = ROOT\T5VPNVA2
+    ContainerID = {00000000-0000-0000-FFFF-FFFFFFFFFFFF}
+--- pnputil /enum-devices (T5VPNVA context) ---
+  Driver Name:                machine.inf
+  
+  Instance ID:                ROOT\T5VPNVA\0000
+  Device Description:         t5 Cisco VPN VA
+  Class Name:                 Unknown
+  Class GUID:                 Unknown
+  Manufacturer Name:          Unknown
+  Status:                     Problem
+  Problem Code:               31 (0x1F) [CM_PROB_FAILED_ADD]
+  Problem Status:             0xC0000034
+  
+  Instance ID:                PCI\VEN_15AD&DEV_07F0&SUBSYS_07F015AD&REV_00\4&3b50545d&0&00B8
+  Device Description:         Standard NVM Express Controller
+  Class Name:                 SCSIAdapter
+  Class GUID:                 {4d36e97b-e325-11ce-bfc1-08002be10318}
+  Manufacturer Name:          Standard NVM Express Controller
+  Status:                     Started
+  ---
+  Driver Name:                oem8.inf
+  
+  Instance ID:                ROOT\T5VPNVA2\0000
+  Device Description:         t5 Cisco VPN VA (System class)
+  Class Name:                 Unknown
+  Class GUID:                 Unknown
+  Manufacturer Name:          Unknown
+  Status:                     Problem
+  Problem Code:               31 (0x1F) [CM_PROB_FAILED_ADD]
+  Problem Status:             0xC0000034
+  
+  Instance ID:                ACPI\PNP0100\4&1bd7f811&0
+  Device Description:         System timer
+  Class Name:                 System
+  Class GUID:                 {4d36e97d-e325-11ce-bfc1-08002be10318}
+  Manufacturer Name:          (Standard system devices)
+  Status:                     Stopped
+  ---
+--- System event log (events since 17:27:00 local) ---
+  [10/23/2026 5:27:32 PM] id=7040 prov=Service Control Manager lvl=4
+      The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+  [10/23/2026 5:27:14 PM] id=7045 prov=Service Control Manager lvl=4
+      A service was installed in the system. |  | Service Name:  t5_vpnva | Service File Name:  C:\Windows\System32\drivers\vpnva64-6.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+--- sc query t5_vpnva / driverquery ---
+  
+  SERVICE_NAME: t5_vpnva 
+          TYPE               : 1  KERNEL_DRIVER  
+          STATE              : 1  STOPPED 
+          WIN32_EXIT_CODE    : 31  (0x1f)
+          SERVICE_EXIT_CODE  : 0  (0x0)
+          CHECKPOINT         : 0x0
+          WAIT_HINT          : 0x0
+  "t5_vpnva","t5_vpnva","t5_vpnva","Kernel ","Manual","Stopped","OK","FALSE","FALSE","8,192","32,768","0","12/14/2021 11:47:57 AM","\??\C:\Windows\System32\drivers\vpnva64-6.sys","4,096"

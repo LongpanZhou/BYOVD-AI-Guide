@@ -1,0 +1,222 @@
+t9_adp_probe 2026-10-24T01:43:13.3030324-07:00
+--- step 1: qobj \Device filter adp|VBox|Host|NetAdp ---
+t9_poc start 2026-10-24T01:43:13.3293316-07:00
+qobj: begin dir=\Device filter=adp|VBox|Host
+qobj: attrs built, opening
+qobj: open st=0x00000000
+qobj: iter 1 st=0x00000000 ret=96
+qobj: buf[0..95]=1000120000000000e0bf5b00000000000c000e0000000000f2bf5b000000000000000000000000000000000000000000000000000000000000000000000000003000300030003000300030003700650000004400650076006900630065000000
+qobj: e0 nlen=16 nptr=0x5BBFE0 tlen=12 tptr=0x5BBFF2
+qobj: e1 nlen=0 nptr=0x0 tlen=0 tptr=0x0
+qobj: e2 nlen=48 nptr=0x65003700300030 tlen=0 tptr=0x6500630069
+t9_poc.exe : 
+At C:\Users\vmdebug\Desktop\t9_work\t9_adp_probe.ps1:9 char:6
++ Log (& "$work\t9_poc.exe" $out qobj '\Device' 'adp|VBox|Host' 2>&1 |  ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Unhandled Exception: System.AccessViolationException: Attempted to read or write protected 
+memory. This is often an indication that other memory is corrupt.
+   at System.Buffer.__Memmove(Byte* dest, Byte* src, UInt64 len)
+   at System.Buffer._Memmove(Byte* dest, Byte* src, UInt64 len)
+   at System.Buffer.Memmove(Byte* dest, Byte* src, UInt64 len)
+   at System.String.CtorCharPtrStartLength(Char* ptr, Int32 startIndex, Int32 length)
+   at System.Runtime.InteropServices.Marshal.PtrToStringUni(IntPtr ptr, Int32 len)
+   at T9.USAt(IntPtr baseP, Int32 off, String& s)
+   at T9.CmdQobj(String dir, String filter)
+   at T9.Main(String[] args)
+
+--- step 2: open probes of plausible names (expect all FILE_NOT_FOUND / no device) ---
+t9_poc start 2026-10-24T01:43:14.0938159-07:00
+open \\.\VBoxNetAdp6 acc=0x12019F share=0x3 -> FAIL err=2
+t9_poc end 2026-10-24T01:43:14.0988514-07:00
+
+t9_poc start 2026-10-24T01:43:14.1215632-07:00
+open \\.\VBoxNetAdp acc=0x12019F share=0x3 -> FAIL err=2
+t9_poc end 2026-10-24T01:43:14.1270806-07:00
+
+t9_poc start 2026-10-24T01:43:14.1466642-07:00
+open \\.\VirtualBox\HostInterfaceNetworking-VirtualBox Host-Only Ethernet Adapter acc=0x12019F share=0x3 -> FAIL err=3
+t9_poc end 2026-10-24T01:43:14.1517073-07:00
+
+--- step 3: NDIS miniport enumeration details ---
+
+
+MacAddress                                       : 0A-00-27-00-00-18
+Status                                           : Up
+LinkSpeed                                        : 1 Gbps
+MediaType                                        : 802.3
+PhysicalMediaType                                : 802.3
+AdminStatus                                      : Up
+MediaConnectionState                             : Connected
+DriverInformation                                : Driver Date 2024-01-15 Version 7.0.14.11095 
+                                                   NDIS 6.0
+DriverFileName                                   : VBoxNetAdp6.sys
+NdisVersion                                      : 6.0
+ifOperStatus                                     : Up
+ifAlias                                          : Ethernet
+InterfaceAlias                                   : Ethernet
+ifIndex                                          : 24
+ifDesc                                           : VirtualBox Host-Only Ethernet Adapter
+ifName                                           : ethernet_32773
+DriverVersion                                    : 7.0.14.11095
+LinkLayerAddress                                 : 0A-00-27-00-00-18
+Caption                                          : 
+Description                                      : 
+ElementName                                      : 
+InstanceID                                       : {BDC167B6-57F0-4CBA-9574-740C75C2BEDC}
+CommunicationStatus                              : 
+DetailedStatus                                   : 
+HealthState                                      : 
+InstallDate                                      : 
+Name                                             : Ethernet
+OperatingStatus                                  : 
+OperationalStatus                                : 
+PrimaryStatus                                    : 
+StatusDescriptions                               : 
+AvailableRequestedStates                         : 
+EnabledDefault                                   : 2
+EnabledState                                     : 5
+OtherEnabledState                                : 
+RequestedState                                   : 12
+TimeOfLastStateChange                            : 
+TransitioningToState                             : 12
+AdditionalAvailability                           : 
+Availability                                     : 
+CreationClassName                                : MSFT_NetAdapter
+DeviceID                                         : {BDC167B6-57F0-4CBA-9574-740C75C2BEDC}
+ErrorCleared                                     : 
+ErrorDescription                                 : 
+IdentifyingDescriptions                          : 
+LastErrorCode                                    : 
+MaxQuiesceTime                                   : 
+OtherIdentifyingInfo                             : 
+PowerManagementCapabilities                      : 
+PowerManagementSupported                         : 
+PowerOnHours                                     : 
+StatusInfo                                       : 
+SystemCreationClassName                          : CIM_NetworkPort
+SystemName                                       : DESKTOP-S76BGQM
+TotalPowerOnHours                                : 
+MaxSpeed                                         : 
+OtherPortType                                    : 
+PortType                                         : 
+RequestedSpeed                                   : 
+Speed                                            : 1000000000
+UsageRestriction                                 : 
+ActiveMaximumTransmissionUnit                    : 1500
+AutoSense                                        : 
+FullDuplex                                       : True
+LinkTechnology                                   : 
+NetworkAddresses                                 : {0A0027000018}
+OtherLinkTechnology                              : 
+OtherNetworkPortType                             : 
+PermanentAddress                                 : 0A0027000018
+PortNumber                                       : 0
+SupportedMaximumTransmissionUnit                 : 
+AdminLocked                                      : False
+ComponentID                                      : sun_VBoxNetAdp
+ConnectorPresent                                 : False
+DeviceName                                       : \Device\{BDC167B6-57F0-4CBA-9574-740C75C2BEDC}
+DeviceWakeUpEnable                               : False
+DriverDate                                       : 2024-01-15
+DriverDateData                                   : 133497504000000000
+DriverDescription                                : VirtualBox Host-Only Ethernet Adapter
+DriverMajorNdisVersion                           : 6
+DriverMinorNdisVersion                           : 0
+DriverName                                       : \SystemRoot\System32\drivers\VBoxNetAdp6.sys
+DriverProvider                                   : Oracle Corporation
+DriverVersionString                              : 7.0.14.11095
+EndPointInterface                                : True
+HardwareInterface                                : False
+Hidden                                           : False
+HigherLayerInterfaceIndices                      : {25}
+IMFilter                                         : False
+InterfaceAdminStatus                             : 1
+InterfaceDescription                             : VirtualBox Host-Only Ethernet Adapter
+InterfaceGuid                                    : {BDC167B6-57F0-4CBA-9574-740C75C2BEDC}
+InterfaceIndex                                   : 24
+InterfaceName                                    : ethernet_32773
+InterfaceOperationalStatus                       : 1
+InterfaceType                                    : 6
+iSCSIInterface                                   : False
+LowerLayerInterfaceIndices                       : 
+MajorDriverVersion                               : 1
+MediaConnectState                                : 1
+MediaDuplexState                                 : 2
+MinorDriverVersion                               : 0
+MtuSize                                          : 1500
+NdisMedium                                       : 0
+NdisPhysicalMedium                               : 14
+NetLuid                                          : 1689399699963904
+NetLuidIndex                                     : 32773
+NotUserRemovable                                 : False
+OperationalStatusDownDefaultPortNotAuthenticated : False
+OperationalStatusDownInterfacePaused             : False
+OperationalStatusDownLowPowerState               : False
+OperationalStatusDownMediaDisconnected           : False
+PnPDeviceID                                      : ROOT\SUN_VBOXNETADP\0000
+PromiscuousMode                                  : False
+ReceiveLinkSpeed                                 : 1000000000
+State                                            : 2
+TransmitLinkSpeed                                : 1000000000
+Virtual                                          : True
+VlanID                                           : 
+WdmInterface                                     : True
+PSComputerName                                   : 
+CimClass                                         : ROOT/StandardCimv2:MSFT_NetAdapter
+CimInstanceProperties                            : {Caption, Description, ElementName, 
+                                                   InstanceID...}
+CimSystemProperties                              : Microsoft.Management.Infrastructure.CimSystemPr
+                                                   operties
+
+
+
+
+--- registry miniport instances ---
+
+--- step 4: devnode + service state ---
+
+
+InstanceId         : ROOT\SUN_VBOXNETADP\0000
+Status             : OK
+Class              : Net
+Problem            : CM_PROB_NONE
+ProblemDescription : 
+Service            : VBoxNetAdp
+
+
+
+
+
+SERVICE_NAME: VBoxNetAdp 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+t9_poc start 2026-10-24T01:43:16.3418275-07:00
+devstat ROOT\SUN_VBOXNETADP\0000 dn=0x1 CR=0x0 status=0x180200B problem=0
+t9_poc end 2026-10-24T01:43:16.3478606-07:00
+
+--- step 5: supdrv device surface (kernel client of \Device\VBoxDrv - read-only checks) ---
+t9_poc start 2026-10-24T01:43:16.3682140-07:00
+daclnt \Device\VBoxDrv NtCreateFile st=0xE986F15C
+t9_poc end 2026-10-24T01:43:16.3732587-07:00
+
+t9_poc start 2026-10-24T01:43:16.3936898-07:00
+ntopen \Device\VBoxDrv acc=0x12019F -> st=0xE986F15C
+t9_poc end 2026-10-24T01:43:16.3993098-07:00
+
+t9_poc start 2026-10-24T01:43:16.4189452-07:00
+dacl \Device\VBoxDrvU SDDL=O:BAG:SYD:(A;;0x1201bf;;;WD)(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;RC)
+t9_poc end 2026-10-24T01:43:16.4255970-07:00
+
+t9_poc start 2026-10-24T01:43:16.4465636-07:00
+ntopen \Device\VBoxDrvU acc=0x12019F -> st=0x00000000
+t9_poc end 2026-10-24T01:43:16.4521612-07:00
+

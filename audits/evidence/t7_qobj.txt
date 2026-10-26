@@ -1,0 +1,82 @@
+t7_qobj 2026-10-23T22:08:24.0100227-07:00
+compiling t7_poc.cs ...
+
+compile exit=0 exe=True
+t7_poc start 2026-10-23T22:08:24.3100453-07:00
+\Device -> VMCIGuestDev [Device]
+\Device -> vmci [Device]
+t7_poc start 2026-10-23T22:08:26.0376631-07:00
+qobj \GLOBAL?? open st=0xC0000022
+t7_poc end 2026-10-23T22:08:26.0456932-07:00
+t7_poc start 2026-10-23T22:08:26.0740289-07:00
+=== open probes (admin token) ===
+t7_poc start 2026-10-23T22:08:27.2179221-07:00
+open \\.\VMCIDev acc=0xC0000000 share=0x3 -> OK handle=0x2AC
+t7_poc end 2026-10-23T22:08:27.2239238-07:00
+t7_poc start 2026-10-23T22:08:27.2496565-07:00
+open \\.\VMCIDev acc=0x120089 share=0x3 -> OK handle=0x29C
+t7_poc end 2026-10-23T22:08:27.2557185-07:00
+t7_poc start 2026-10-23T22:08:27.2775795-07:00
+open \\.\VMCIDev acc=0x0 share=0x3 -> OK handle=0x29C
+t7_poc end 2026-10-23T22:08:27.2840923-07:00
+t7_poc start 2026-10-23T22:08:27.3077752-07:00
+open \\.\VMCIGuestDev acc=0xC0000000 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:08:27.3138127-07:00
+t7_poc start 2026-10-23T22:08:27.3359881-07:00
+open \\.\VMCIGuestDev acc=0x120089 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:08:27.3440486-07:00
+t7_poc start 2026-10-23T22:08:27.3656890-07:00
+open \\.\VMCIGuestDev acc=0x0 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:08:27.3718342-07:00
+t7_poc start 2026-10-23T22:08:27.3944732-07:00
+open \\.\VMCIHostDev acc=0xC0000000 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:08:27.4000459-07:00
+t7_poc start 2026-10-23T22:08:27.4277955-07:00
+open \\.\VMCIHostDev acc=0x120089 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:08:27.4338704-07:00
+t7_poc start 2026-10-23T22:08:27.4576336-07:00
+open \\.\VMCIHostDev acc=0x0 share=0x3 -> FAIL err=2
+t7_poc end 2026-10-23T22:08:27.4637112-07:00
+t7_poc start 2026-10-23T22:08:27.4959563-07:00
+open \\.\vmci acc=0xC0000000 share=0x3 -> OK handle=0x29C
+t7_poc end 2026-10-23T22:08:27.5020270-07:00
+t7_poc start 2026-10-23T22:08:27.5258223-07:00
+open \\.\vmci acc=0x120089 share=0x3 -> OK handle=0x2B8
+t7_poc end 2026-10-23T22:08:27.5339589-07:00
+t7_poc start 2026-10-23T22:08:27.5536935-07:00
+open \\.\vmci acc=0x0 share=0x3 -> OK handle=0x29C
+t7_poc end 2026-10-23T22:08:27.5603338-07:00
+=== NT-path opens (direct device names) ===
+t7_poc start 2026-10-23T22:08:27.5799967-07:00
+ntopen \Device\VMCIHostDev acc=0x12019F -> st=0xC0000034
+t7_poc end 2026-10-23T22:08:27.5875904-07:00
+t7_poc start 2026-10-23T22:08:27.6077581-07:00
+ntopen \Device\VMCIGuestDev acc=0x12019F -> st=0x00000000
+t7_poc end 2026-10-23T22:08:27.6138440-07:00
+t7_poc start 2026-10-23T22:08:27.6340599-07:00
+ntopen \Device\vmci acc=0x12019F -> st=0x00000000
+t7_poc end 2026-10-23T22:08:27.6416022-07:00
+t7_poc start 2026-10-23T22:08:27.6618704-07:00
+ntopen \Device\VMCIDev acc=0x12019F -> st=0xC0000034
+t7_poc end 2026-10-23T22:08:27.6659040-07:00
+=== DACL pulls (READ_CONTROL) ===
+t7_poc start 2026-10-23T22:08:27.6875861-07:00
+EXCEPTION: EntryPointNotFoundException: Unable to find an entry point named 'GetKernelObjectSecurity' in DLL 'kernel32.dll'.
+t7_poc end 2026-10-23T22:08:27.6977558-07:00
+t7_poc start 2026-10-23T22:08:27.7178970-07:00
+dacl \\.\VMCIGuestDev open err=2 (READ_CONTROL)
+t7_poc end 2026-10-23T22:08:27.7260074-07:00
+t7_poc start 2026-10-23T22:08:27.7476601-07:00
+EXCEPTION: EntryPointNotFoundException: Unable to find an entry point named 'GetKernelObjectSecurity' in DLL 'kernel32.dll'.
+t7_poc end 2026-10-23T22:08:27.7557241-07:00
+=== wsock AF_VSOCK provider probe ===
+t7_poc start 2026-10-23T22:08:27.7779445-07:00
+wsock WSAStartup rc=0
+wsock socket(AF_VSOCK=34, type=1, proto=0) -> h=0xFFFFFFFFFFFFFFFF lasterr=10041
+wsock socket(AF_VSOCK=34, type=2, proto=0) -> h=0xFFFFFFFFFFFFFFFF lasterr=10047
+wsock socket(AF_VSOCK=34, type=1, proto=2) -> h=0xFFFFFFFFFFFFFFFF lasterr=10043
+wsock socket(AF_VSOCK=34, type=2, proto=2) -> h=0xFFFFFFFFFFFFFFFF lasterr=10047
+wsock socket(AF_VSOCK=34, type=1, proto=5) -> h=0xFFFFFFFFFFFFFFFF lasterr=10043
+wsock socket(AF_VSOCK=34, type=2, proto=5) -> h=0xFFFFFFFFFFFFFFFF lasterr=10047
+t7_poc end 2026-10-23T22:08:27.7879679-07:00
+=== end t7_qobj ===

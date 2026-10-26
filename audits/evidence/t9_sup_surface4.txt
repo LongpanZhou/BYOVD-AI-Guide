@@ -1,0 +1,10 @@
+t9_poc start 2026-10-24T01:14:39.0209237-07:00
+qobj: begin dir=\Device filter=VBox
+qobj: attrs built, opening
+qobj: open st=0x00000000
+qobj: iter 1 st=0x00000000 ret=96
+t9_poc start 2026-10-24T01:15:10.1632793-07:00
+qobj: begin dir=\Device filter=VBox
+qobj: attrs built, opening
+qobj: open st=0x00000000
+qobj: iter 1 st=0x00000000 ret=96

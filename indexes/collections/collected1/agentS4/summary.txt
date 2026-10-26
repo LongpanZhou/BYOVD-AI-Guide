@@ -1,0 +1,53 @@
+BATCH agentS4 - Virtual display/audio + capture utility vendors
+Date: 2026-10-24
+Cap applied: 500 MiB (524,288,000 bytes) per official package
+Safety: installers were treated as archives only. Nothing was executed or installed.
+        No driver was loaded, no service created, no HKLM/HKLM writes, no device install.
+
+RESULT COUNTS
+  Packages downloaded : 14 files (12 vendors), 1,135,457,210 bytes total
+  Vendor trees extracted : 15 (recursive expansion to 5 levels)
+  .sys found (>=4 KB)  : 42 files
+  Unique .sys           : 37
+  NEW                  : 37
+  EXISTING             : 0
+  KNOWNBAD             : 0
+  DUPLICATE (in batch) : 3
+  SKIPPED (<4 KB / 0 B): 2
+  Failures / skips      : 3 (Air Display, Magewell, Desktop Video 16.x over cap)
+
+PER-VENDOR
+Vendor | Product | URL | Installer bytes | .sys found | NEW | EXIST | BAD | Notes
+Virtual Audio Cable (E. Muzychenko) | VAC 4.71 trial | https://software.muzychenko.net/trials/vac471.exe | 1,011,192 | 3 | 3 | 0 | 0 | x64/x86/arm64 vrtaucbl.sys
+Parsec | Parsec VDD 0.45.0.0 | https://builds.parsec.app/vdd/parsec-vdd-0.45.0.0.exe | 517,256 | 0 | 0 | 0 | 0 | IddCx user-mode only (driver/mm.dll); no .sys
+Duet Display | Duet for Windows (latest) | https://updates.duetdisplay.com/latestWindows | 179,361,248 | 2 | 2 | 0 | 0 | only bundled Apple mobile-device drivers (netaapl64.sys, usbaapl64.sys); Duet display component is user-mode
+SuperDisplay | SuperDisplay 1.1.10 | https://superdisplay.app/download/SuperDisplay_Installer_v1.1.10.exe | 29,446,384 | 0 | 0 | 0 | 0 | no kernel .sys in package (Advanced Installer; user-mode components only)
+iDisplay | iDisplay Desktop 3.1.2 | https://www.getidisplay.com/downloads/iDisplayWin.exe | 12,816,760 | 6 | 6 | 0 | 0 | WDDM idisplay,1-4.sys + idisplayfilter,1-2.sys
+Air Display (Avatron) | n/a | https://www.avatron.com/ | 0 | 0 | 0 | 0 | 0 | FAILED: DNS NXDOMAIN, vendor site offline
+TwomonUSB (Easy&Light) | Twomon SE | https://www.easynlight.com/el-library/eldownload.php?product=EL_Display_Hub | 188,065,936 | 4 | 2 | 0 | 0 | EL_Display_vhidbus.sys x64/x86 (2 in-batch duplicates)
+IddSampleDriver | 0.1.1 | https://github.com/roshkins/IddSampleDriver/releases/download/0.1.1/IddSampleDriver.zip | 63,420 | 0 | 0 | 0 | 0 | IddCx user-mode (IddSampleDriver.dll); no .sys
+Virtual Display Driver | 25.7.23 | https://github.com/VirtualDrivers/Virtual-Display-Driver/releases/tag/25.7.23 | 71,409,025 | 2 | 1 | 0 | 0 | VDD is user-mode MttVDD.dll; only VirtualAudioDriver.sys collected (1 duplicate copy)
+AVerMedia | C985 / CV710 / GC550 capture drivers | https://www.avermedia.com/support/download | 145,477,129 | 6 | 6 | 0 | 0 | AVerPL33_x64/x86, avmu364, avmu3, avmu3gc550_x64/x86
+Magewell | Pro Capture / USB Capture | https://www.magewell.com/downloads/pro-capture | 0 | 0 | 0 | 0 | 0 | SKIPPED: Windows driver behind mandatory registration form
+Blackmagic Design | Desktop Video 15.3.1 | https://www.blackmagicdesign.com/support/family/desktop-video | 507,288,860 | 19 | 17 | 0 | 0 | 17 unique (9 x64 + 8 legacy); 2 zero-byte BlackmagicStreaming*.sys skipped
+
+FAILURES / SKIPS (explicit)
+1. Air Display (Avatron): www.avatron.com does not resolve (NXDOMAIN). Vendor download unavailable.
+2. Magewell: Windows driver download requires mandatory registration form; only Linux driver/firmware are ungated. No download attempted.
+3. Blackmagic Desktop Video 16.4/16.3/16.2/16.1/16.0: 555-566 MB, over the 500 MiB cap -> SKIPPED-OVER-500MB. Used official 15.3.1 (507,288,860 bytes = 483.8 MiB).
+4. No .sys produced (not a failure, package contains no kernel driver): Parsec VDD, IddSampleDriver, SuperDisplay, VDD (display part).
+5. Duet Display package ships only Apple's netaapl64.sys / usbaapl64.sys as kernel drivers.
+
+DEDUPE VERIFICATION
+  new\ contains 37 .sys (101 files incl. sibling .inf/.cat).
+  Re-hashed independently: existing_hashes.txt overlap = 0, known_bad_hashes.txt overlap = 0, intra-batch duplicates = 0.
+  existing_hashes.txt and known_bad_hashes.txt were not modified.
+
+SIGNATURE STATUS (new\ .sys)
+  Valid 21, NotSigned 15, UnknownError 1 (per Get-AuthenticodeSignature; no trust policy changes made).
+
+FILES
+  packages\  14 official packages
+  extract\   extracted trees (VAC, ParsecVDD, Duet, SuperDisplay, iDisplay, TwomonSE, IddSampleDriver, VDD_Control, VDD_VDD, VDD_VAD, AVerMedia_C985/CV710/GC550, Blackmagic)
+  new\       37 NEW unique .sys + sibling .inf/.cat
+  reports\   manifest.csv (rich), manifest_filter_raw.csv (raw filter output), summary.txt, urls.txt

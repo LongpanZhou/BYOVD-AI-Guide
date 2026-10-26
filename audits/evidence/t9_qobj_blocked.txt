@@ -1,0 +1,29 @@
+t9 EVIDENCE — qobj technique BLOCKED (PoC limitation, disclosed)
+
+Run t9 (guest, 2026-10-24). Technique: NtQueryDirectoryObject walk of \Device from the
+t9_poc.exe PoC (t7_poc.cs derived). Loop-breaker: BLOCKED after 3 failed attempts
+(1: AV -1073741819 pre-instrumentation; 2: AV after iter-1; 3: instrumented run, same AV)
+plus a 180 s hang-and-kill during the iteration-bug hunt (wedge rule applied, process
+killed in-guest, no guest impact).
+
+Root-cause forensics retained in t9_sup_surface3.txt (infinite enumeration, 539k+ iters
+after the Context parameter was marshalled as ref uint) and t9_sup_surface5.txt (the
+instrumented dump): \Device opens OK from the admin token (st=0x00000000), the first
+query returns st=0 ret=96, but the returned entry array is not a clean 32-byte-stride
+OBJECT_DIRECTORY_INFORMATION array in the .NET marshalling used here (first entry
+{name len 16 -> user VA 0x5F8A90, type len 12 -> user VA 0x5F8AA2}; later entries carry
+string fragments in pointer fields) and dereferencing the string pointers AVs.
+
+Consequence (non-blocking): the PoC's qobj mode is disabled for load-bearing work.
+All t9 load-bearing items are name-based and do NOT require the directory walk:
+- \Device\VBoxNetLwf DACL pull + opens + IOCTL sweeps (by name)
+- VBoxSup device surfaces \Device\VBoxDrv{,U,Stub,ErrorInfo} (by name)
+- negative-surface proof via ntopen-by-name probes + registry DeviceClasses +
+  Get-NetAdapter / netcfg (no qobj dependency)
+Scripts t9_discover/t9_verify keep their qobj lines as best-effort (the child AVs
+fast and the parent script continues; noted inline).
+
+NOTE for the project: t7's "qobj AVs on Win10 \Device parsing" disclosure is the SAME
+failure class (t7_poc.cs lineage); root cause differs from t7's theory (parser guard
+did not change the outcome here) - the returned buffer format itself does not match
+the assumed 32-byte fixed stride in this .NET P/Invoke usage.

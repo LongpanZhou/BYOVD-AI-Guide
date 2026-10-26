@@ -1,0 +1,31 @@
+t7_bxv2 2026-10-23T22:19:51.3076605-07:00
+=== setupapi.dev.log tail for T7BXV (search) ===
+  no T7BXV/t7_bxv/bxvbda mentions in setupapi.dev.log
+=== System event log: t7_bxv / driver-load events (last hour) ===
+evt 10/23/2026 10:19:21 PM id=7045 src=Service Control Manager: A service was installed in the system. |  | Service Name:  t7_bxv | Service File Name:  C:\Windows\System32\drivers\bxvbda.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+=== service state now ===
+
+SERVICE_NAME: t7_bxv 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+=== qobj \Device for any t7/bxv/qlogic objects ===
+t7_poc start 2026-10-23T22:19:51.5962548-07:00
+=== TARGET 4: nvhda64v in-guest probe ===
+--- driverquery nvhda ---
+--- service keys ---
+nvhda64v : key ABSENT
+NVHDA : key ABSENT
+nvvad64v : key ABSENT
+nvvhci : key ABSENT
+--- qobj \Device audio/nv objects ---
+t7_poc start 2026-10-23T22:19:54.5318997-07:00
+--- \GLOBAL?? audio/nv symlinks ---
+t7_poc start 2026-10-23T22:19:55.3700744-07:00
+qobj \GLOBAL?? open st=0xC0000022
+t7_poc end 2026-10-23T22:19:55.3780769-07:00
+=== end t7_bxv2 ===

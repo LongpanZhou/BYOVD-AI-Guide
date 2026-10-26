@@ -1,0 +1,61 @@
+t7_vsock2 2026-10-23T22:31:43.4361427-07:00
+=== FsContext-free getters (in=out=4, exact per static) ===
+t7_poc start 2026-10-23T22:31:43.4619139-07:00
+ioctl \\.\vmci code=0x81032058 in=4 out=0x4 -> st=0x00000000 ret=4
+   out[0..4] = 16000809 [DATA]
+t7_poc end 2026-10-23T22:31:43.4679863-07:00
+t7_poc start 2026-10-23T22:31:43.4898726-07:00
+ioctl \\.\vmci code=0x81032068 in=4 out=0x4 -> st=0x00000000 ret=4
+   out[0..4] = 1c000000 [DATA]
+t7_poc end 2026-10-23T22:31:43.4959099-07:00
+t7_poc start 2026-10-23T22:31:43.5159963-07:00
+ioctl \\.\vmci code=0x8103206C in=4 out=0x4 -> st=0x00000000 ret=4
+   out[0..4] = 6df5117f [DATA]
+t7_poc end 2026-10-23T22:31:43.5236503-07:00
+=== 0x81032074 prop-write: exact in=out=0x2C, sink at +0x10 (attempt 3/3) ===
+t7_poc start 2026-10-23T22:31:43.5458656-07:00
+ioctlsink \\.\vmci code=0x81032074 in=0x2C ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:31:43.5538565-07:00
+=== 0x8103207C buffer-setup shape: in=out=0x48, sink at +0x10 ===
+t7_poc start 2026-10-23T22:31:43.5757776-07:00
+ioctlsink \\.\vmci code=0x8103207C in=0x48 ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:31:43.5818246-07:00
+=== 0x81032098: in=out=0x2C, sink at +0x10 ===
+t7_poc start 2026-10-23T22:31:43.6017377-07:00
+ioctlsink \\.\vmci code=0x81032098 in=0x2C ptrOff=16 dword4=4 -> st=0xC000000D ret=0
+   sink(user buf) = eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee (untouched)
+t7_poc end 2026-10-23T22:31:43.6098735-07:00
+=== 0x8103209C: in=out=0xC ===
+t7_poc start 2026-10-23T22:31:43.6299182-07:00
+ioctl \\.\vmci code=0x8103209C in=12 out=0xC -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.6357268-07:00
+=== 0x81032080: in=out=0xC ===
+t7_poc start 2026-10-23T22:31:43.6556184-07:00
+ioctl \\.\vmci code=0x81032080 in=12 out=0xC -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.6616669-07:00
+=== 0x81032088/94: in=out=0x38 ===
+t7_poc start 2026-10-23T22:31:43.6817112-07:00
+ioctl \\.\vmci code=0x81032088 in=56 out=0x38 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.6880017-07:00
+t7_poc start 2026-10-23T22:31:43.7059016-07:00
+ioctl \\.\vmci code=0x81032094 in=56 out=0x38 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.7119071-07:00
+=== 0x81032064/70: in=out=0x1C ===
+t7_poc start 2026-10-23T22:31:43.7396583-07:00
+ioctl \\.\vmci code=0x81032064 in=28 out=0x1C -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.7456553-07:00
+t7_poc start 2026-10-23T22:31:43.7737771-07:00
+ioctl \\.\vmci code=0x81032070 in=28 out=0x1C -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.7819262-07:00
+=== 0x8103205C: in=out=0x20 ===
+t7_poc start 2026-10-23T22:31:43.8059992-07:00
+ioctl \\.\vmci code=0x8103205C in=32 out=0x20 -> st=0xC000000D ret=0
+t7_poc end 2026-10-23T22:31:43.8136614-07:00
+=== 0x810320C7: in=out=0 ===
+t7_poc start 2026-10-23T22:31:43.8338324-07:00
+ioctl \\.\vmci code=0x810320C7 in=0 out=0x0 -> st=0x80000011 ret=0
+t7_poc end 2026-10-23T22:31:48.8416063-07:00
+=== 0x8103208C (registration, in=out=0x624): NOT SENT (0x624 struct unknown; staged) ===
+=== end t7_vsock2 ===

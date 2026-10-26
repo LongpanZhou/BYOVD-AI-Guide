@@ -1,0 +1,24 @@
+Microsoft PnP Utility
+
+PNPUTIL [/add-driver <...> | /delete-driver <...> |
+         /export-driver <...> | /enum-drivers |
+         /enum-devices [<...>] | /enum-interfaces [<...>] |
+         /disable-device <...> | /enable-device <...> |
+         /restart-device <...> | /remove-device <...> |
+         /scan-devices [<...>] | /?]
+
+Commands:
+
+  /?
+
+    Show usage screen.
+
+  /restart-device <instance ID> [/reboot]
+
+    Restart devices on the system.
+      /reboot - reboot system if needed to complete the operation.
+
+    Examples:
+      Restart device:
+        pnputil /restart-device "USB\VID_045E&PID_00DB\6&870CE29&0&1"
+

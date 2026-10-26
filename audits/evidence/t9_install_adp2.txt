@@ -1,0 +1,163 @@
+t9_install_adp 2026-10-24T01:21:50.0842221-07:00
+--- step 0: sanity ---
+inf present: True
+sys hash: 4E619BB6370F4BC4BE52F43D6C43F3A86E3E2CE7BB04BAADFF17D3B731F18F3F
+inf hash: 68FCA318C6F63B1D46F3A75AD62AEDF1977D135411D82E850F09A6E6E7E8765D
+pre-existing drivers\VBoxNetAdp6.sys: False
+--- step 1: pnputil /add-driver VBoxNetAdp6.inf /install ---
+Microsoft PnP Utility
+
+Adding driver package:  VBoxNetAdp6.inf
+Driver package added successfully. (Already exists in the system)
+Published Name:         oem9.inf
+
+Total driver packages:  1
+Added driver packages:  1
+
+pnputil exit=0
+assigned package: oem9.inf
+--- step 2: devnode presence check (hwid sun_VBoxNetAdp) ---
+
+
+InstanceId         : ROOT\SUN_VBOXNETADP\0000
+Status             : Error
+Class              : 
+Problem            : CM_PROB_NOT_CONFIGURED
+ProblemDescription : 
+
+
+
+
+--- step 3: devnode seeding via t3 recipe IF absent ---
+enum key before mkdev: True
+t9_poc start 2026-10-24T01:21:50.9361289-07:00
+mkdev ROOT\SUN_VBOXNETADP\0000 parent=HTREE\ROOT\0 CR=0x10
+t9_poc end 2026-10-24T01:21:50.9421668-07:00
+
+--- step 3b: seed enum key (AFTER devnode creation; t3 recipe) ---
+enum key existed without HardwareID - id fields seeded (t9-created devnode)
+net class key present: True
+--- step 4: restart device ---
+Microsoft PnP Utility
+
+Restarting device:         ROOT\SUN_VBOXNETADP\0000
+Device restarted successfully.
+
+
+--- step 5: post-restart state ---
+
+
+InstanceId         : ROOT\SUN_VBOXNETADP\0000
+Status             : Error
+Class              : 
+Problem            : CM_PROB_REGISTRY
+ProblemDescription : 
+
+
+
+
+t9_poc start 2026-10-24T01:21:51.7254576-07:00
+devstat ROOT\SUN_VBOXNETADP\0000 dn=0x1 CR=0x0 status=0x1802401 problem=19
+t9_poc end 2026-10-24T01:21:51.7304967-07:00
+
+t9_adp_created.txt marker written (cleanup will remove this devnode)
+--- service state ---
+[SC] EnumQueryServicesStatus:OpenService FAILED 1060:
+
+The specified service does not exist as an installed service.
+
+
+
+--- setupapi.dev.log tail (VBox lines, t5 forensics) ---
+setupapi lines 1093..1194:
+
+>>>  [Enable Device Install]
+>>>  Section start 2026/10/21 13:40:40.683
+      cmd: C:\Windows\winsxs\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.19041.6465_none_7e0fb53c7c8be091\TiWorker.exe -Embedding
+     ump: DeviceInstall service is not disabled.
+     ump: DeviceInstall service is not started.
+<<<  Section end 2026/10/21 13:40:40.685
+<<<  [Exit status: SUCCESS]
+
+
+[Boot Session: 2026/10/23 08:26:02.336]
+
+>>>  [Driver Install (DrvSetupInstallDriver) - C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.inf]
+>>>  Section start 2026/10/24 01:20:21.314
+      cmd: "C:\Windows\system32\pnputil.exe" /add-driver C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.inf /install
+     dvs: Flags: 0x00000000
+     dvs: {Driver Setup Import Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.inf} 01:20:21.314
+     sto:      {Copy Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.inf} 01:20:21.334
+     sto:           Driver Package = C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.inf
+     sto:           Flags          = 0x00000007
+     sto:           Destination    = C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}
+     sto:           Copying driver package files to 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}'.
+     flq:           {FILE_QUEUE_COMMIT} 01:20:21.336
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.sys' to 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.sys'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.cat' to 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.cat'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetAdp6.inf' to 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.inf'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:20:21.342
+     sto:      {Copy Driver Package: exit(0x00000000)} 01:20:21.342
+     ump:      Import flags: 0x00000000
+     pol:      {Driver package policy check} 01:20:21.381
+     pol:      {Driver package policy check - exit(0x00000000)} 01:20:21.381
+     sto:      {Stage Driver Package: C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.inf} 01:20:21.382
+     inf:           {Query Configurability: C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.inf} 01:20:21.384
+     inf:                Driver package 'VBoxNetAdp6.inf' is configurable.
+     inf:           {Query Configurability: exit(0x00000000)} 01:20:21.386
+     flq:           {FILE_QUEUE_COMMIT} 01:20:21.387
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.sys' to 'C:\Windows\System32\DriverStore\Temp\{8f778bfe-e719-5243-8cc1-e0cdabacb257}\VBoxNetAdp6.sys'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.cat' to 'C:\Windows\System32\DriverStore\Temp\{8f778bfe-e719-5243-8cc1-e0cdabacb257}\VBoxNetAdp6.cat'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{01ffed3e-e5cb-c54b-8af0-a09281ff8f52}\VBoxNetAdp6.inf' to 'C:\Windows\System32\DriverStore\Temp\{8f778bfe-e719-5243-8cc1-e0cdabacb257}\VBoxNetAdp6.inf'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:20:21.394
+     sto:           {DRIVERSTORE IMPORT VALIDATE} 01:20:21.395
+     sig:                Driver package catalog is valid.
+     sig:                {_VERIFY_FILE_SIGNATURE} 01:20:21.408
+     sig:                     Key      = VBoxNetAdp6.inf
+     sig:                     FilePath = C:\Windows\System32\DriverStore\Temp\{8f778bfe-e719-5243-8cc1-e0cdabacb257}\VBoxNetAdp6.inf
+     sig:                     Catalog  = C:\Windows\System32\DriverStore\Temp\{8f778bfe-e719-5243-8cc1-e0cdabacb257}\VBoxNetAdp6.cat
+     sig:                     Success: File is signed in catalog.
+     sig:                {_VERIFY_FILE_SIGNATURE exit(0x00000000)} 01:20:21.413
+     sto:           {DRIVERSTORE IMPORT VALIDATE: exit(0x00000000)} 01:20:21.414
+     sig:           Signer Score  = 0x0D000005 (WHQL)
+     sig:           Signer Name   = Microsoft Windows Hardware Compatibility Publisher
+     sig:           Submission ID = 30041490_13562717952827599_1152921505697260923
+     sto:           {Core Driver Package Import: vboxnetadp6.inf_amd64_ee187df79249cd72} 01:20:21.416
+     sto:                {DRIVERSTORE IMPORT BEGIN} 01:20:21.416
+     sto:                {DRIVERSTORE IMPORT BEGIN: exit(0x00000000)} 01:20:21.416
+     cpy:                {Copy Directory: C:\Windows\System32\DriverStore\Temp\{8f778bfe-e719-5243-8cc1-e0cdabacb257}} 01:20:21.417
+     cpy:                     Target Path = C:\Windows\System32\DriverStore\FileRepository\vboxnetadp6.inf_amd64_ee187df79249cd72
+     cpy:                {Copy Directory: exit(0x00000000)} 01:20:21.418
+     idb:                {Register Driver Package: C:\Windows\System32\DriverStore\FileRepository\vboxnetadp6.inf_amd64_ee187df79249cd72\VBoxNetAdp6.inf} 01:20:21.420
+     idb:                     Created driver package object 'vboxnetadp6.inf_amd64_ee187df79249cd72' in DRIVERS database node.
+     idb:                     Created driver INF file object 'oem9.inf' in DRIVERS database node.
+     idb:                     Registered driver package 'vboxnetadp6.inf_amd64_ee187df79249cd72' with 'oem9.inf'.
+     idb:                {Register Driver Package: exit(0x00000000)} 01:20:21.423
+     idb:                {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vboxnetadp6.inf_amd64_ee187df79249cd72\VBoxNetAdp6.inf} 01:20:21.423
+     idb:                     Activating driver package 'vboxnetadp6.inf_amd64_ee187df79249cd72'.
+     cpy:                     Published 'vboxnetadp6.inf_amd64_ee187df79249cd72\vboxnetadp6.inf' to 'oem9.inf'.
+     idb:                     Indexed 2 device IDs for 'vboxnetadp6.inf_amd64_ee187df79249cd72'.
+     sto:                     Flushed driver database node 'DRIVERS'. Time = 0 ms
+     sto:                     Flushed driver database node 'SYSTEM'. Time = 0 ms
+     idb:                {Publish Driver Package: exit(0x00000000)} 01:20:21.431
+     sto:                {DRIVERSTORE IMPORT END} 01:20:21.432
+     dvi:                     Flushed all driver package files to disk. Time = 0 ms
+     sig:                     Installed catalog 'VBoxNetAdp6.cat' as 'oem9.cat'.
+     sto:                {DRIVERSTORE IMPORT END: exit(0x00000000)} 01:20:21.443
+     sto:           {Core Driver Package Import: exit(0x00000000)} 01:20:21.443
+     sto:      {Stage Driver Package: exit(0x00000000)} 01:20:21.444
+     dvs: {Driver Setup Import Driver Package - exit (0x00000000)} 01:20:21.474
+!    dvs: Unable to find any matching devices.
+<<<  Section end 2026/10/24 01:20:21.480
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Device Install (Hardware initiated) - ROOT\SUN_VBOXNETADP\0000]
+>>>  Section start 2026/10/24 01:20:22.281
+     utl: {Select Drivers - ROOT\SUN_VBOXNETADP\0000} 01:20:22.286
+     utl: {Select Drivers - exit(0x00000000} 01:20:22.290
+!    dvi: No compatible drivers found.
+<<<  Section end 2026/10/24 01:20:22.294
+<<<  [Exit status: FAILURE(0xe0000228)]
+
+

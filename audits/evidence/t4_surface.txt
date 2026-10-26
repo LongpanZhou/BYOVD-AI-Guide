@@ -1,0 +1,90 @@
+=== t4 surface observation 2026-10-23T16:52:01.0715171-07:00 ===
+--- devnode status/problem (poc devstat ROOT\T4SILABSER\0000) ---
+  CM_Locate_DevNodeW(ROOT\T4SILABSER\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+--- Get-PnpDevice (T4SILABSER instances) ---
+
+
+Status             : Error
+Class              : 
+FriendlyName       : t4 Silabser CP210x
+InstanceId         : ROOT\T4SILABSER\0000
+Problem            : CM_PROB_FAILED_START
+ProblemDescription : 
+
+
+
+
+(empty above = devnode not visible in PnP)
+--- Get-PnpDeviceProperty (problem keys) ---
+
+InstanceId           KeyName                      Type     Data       
+----------           -------                      ----     ----       
+ROOT\T4SILABSER\0000 DEVPKEY_Device_ProblemCode   UInt32   10         
+ROOT\T4SILABSER\0000 DEVPKEY_Device_ProblemStatus NTStatus 3221225488 
+ROOT\T4SILABSER\0000 DEVPKEY_Device_Service       String   t4_silabser
+ROOT\T4SILABSER\0000 DEVPKEY_Device_Class         Empty               
+ROOT\T4SILABSER\0000 DEVPKEY_Device_HasProblem    Boolean  True       
+
+
+
+--- DeviceClasses {a2a39220-39f4-4b88-aecb-3d86a35dc748} (SILABUSBSERIALBRIDGE) ---
+  child: ##?#ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}
+    DeviceInstance = ROOT\T4SILABSER\0000
+    subkeys: ##?#ROOT#T4SILABSER#0000#{a2a39220-39f4-4b88-aecb-3d86a35dc748}
+    value DeviceInstance = ROOT\T4SILABSER\0000
+--- DeviceClasses {86e0d1e0-8089-11d0-9ce4-08003e301f73} (GUID_DEVINTERFACE_COMPORT) ---
+  child: ##?#ACPI#PNP0501#1#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+    DeviceInstance = ACPI\PNP0501\1
+    subkeys: ##?#ACPI#PNP0501#1#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+    value DeviceInstance = ACPI\PNP0501\1
+  child: ##?#ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+    DeviceInstance = ROOT\T4SILABSER\0000
+    subkeys: ##?#ROOT#T4SILABSER#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+    value DeviceInstance = ROOT\T4SILABSER\0000
+--- SetupDi interface enumeration (authoritative; T4 instances) ---
+  interfaces for a2a39220-39f4-4b88-aecb-3d86a35dc748: count=0
+  interface[0] flags=0x1 ACTIVE=True path=\\?\acpi#pnp0501#1#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
+  interfaces for 86e0d1e0-8089-11d0-9ce4-08003e301f73: count=1
+--- kernel object directory \Device (filter Silabser) ---
+  FATAL IndexOutOfRangeException: Index was outside the bounds of the array.
+--- kernel object directory \GLOBAL?? (filter COM) ---
+  FATAL IndexOutOfRangeException: Index was outside the bounds of the array.
+--- SERIALCOMM DeviceMap ---
+  \Device\Serial0 = COM1
+--- event log: Kernel-PnP/Configuration (T4SILABSER/silabser) ---
+--- event log: System, last 20 min (silabser/T4SILABSER or Error-level) ---
+  [10/23/2026 4:51:17 PM] Service Control Manager id=7045 lvl=Information: A service was installed in the system. |  | Service Name:  t4_silabser | Service File Name:  C:\Windows\System32\drivers\silabser.sys | Service Type:  kernel mode driver | Service Start Type:  demand start | Service Account:  
+--- AddDevice outcome gate: ProblemCode.Data = 10 ---
+AddDevice/devnode problem 10 -> running ONE fallback: ROOT\T4SILABSER2\0000 with HardwareID=USB\VID_10C4&PID_EA60
+--- fallback devnode log ---
+  === t4 devnode 2026-10-23T16:52:02.9354491-07:00 (id=ROOT\T4SILABSER2\0000) ===
+  service binding: t4_silabser
+  enum key clean: HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\ROOT absent
+  poc exe ready
+  --- (b) CM_Create_DevNodeW (devnode first) ---
+    CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+    CM_Create_DevNodeW(ROOT\T4SILABSER\0000, flags=0) -> CR=0x0 devnode=0x2
+    CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+    CM_Locate_DevNodeW(HTREE\ROOT\0) -> CR=0x0 parentDevnode=0x1
+    CM_Create_DevNodeW(ROOT\T4SILABSER2\0000, flags=0) -> CR=0x0 devnode=0x2
+    CM_Get_DevNode_Status(devnode=0x2) -> CR=0x0 status=0x1802001 problem=0x0 (dec 0)
+  --- (c) seeding enum key ---
+    seeded HKLM:\SYSTEM\CurrentControlSet\Enum\ROOT\T4SILABSER2\0000
+      ConfigFlags=0  Class=System  ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+      DeviceDesc=t4 Silabser CP210x (USB HWID fallback)  Service=t4_silabser  HardwareID=USB\VID_10C4&PID_EA60
+  --- (d) pnputil /restart-device ---
+    Microsoft PnP Utility
+    
+    Restarting device:         ROOT\T4SILABSER2\0000
+    Device restarted successfully.
+    
+  --- devnode status after restart ---
+    CM_Locate_DevNodeW(ROOT\T4SILABSER\0000) -> CR=0x0 devnode=0x1
+    CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+    CM_Locate_DevNodeW(ROOT\T4SILABSER2\0000) -> CR=0x0 devnode=0x1
+    CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+--- fallback surface re-check ---
+  CM_Locate_DevNodeW(ROOT\T4SILABSER2\0000) -> CR=0x0 devnode=0x1
+  CM_Get_DevNode_Status(devnode=0x1) -> CR=0x0 status=0x1802401 problem=0xA (dec 10)
+  interfaces for a2a39220-39f4-4b88-aecb-3d86a35dc748: count=0

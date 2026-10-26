@@ -1,0 +1,538 @@
+t9_lwf_start_diag 2026-10-24T01:28:23.2678995-07:00
+--- sc start VBoxNetLwf (full output) ---
+[SC] StartService FAILED 31:
+
+A device attached to the system is not functioning.
+
+
+exit=31
+--- sc query ---
+
+SERVICE_NAME: VBoxNetLwf 
+        TYPE               : 1  KERNEL_DRIVER  
+        STATE              : 1  STOPPED 
+        WIN32_EXIT_CODE    : 31  (0x1f)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+--- sc qc ---
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: VBoxNetLwf
+        TYPE               : 1  KERNEL_DRIVER 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : \??\C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.sys
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : VBoxNetLwf
+        DEPENDENCIES       : 
+        SERVICE_START_NAME : 
+
+--- system event log: last 40 items 7000/7001/7026/7031/7034/7043/7045 ---
+
+
+TimeCreated      : 10/24/2026 1:28:23 AM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The VBoxNetLwf service failed to start due to the following error: 
+                   A device attached to the system is not functioning.
+
+TimeCreated      : 10/24/2026 1:27:51 AM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The VBoxNetLwf service failed to start due to the following error: 
+                   A device attached to the system is not functioning.
+
+TimeCreated      : 10/24/2026 1:27:51 AM
+Id               : 7045
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : A service was installed in the system.
+                   
+                   Service Name:  VBoxNetLwf
+                   Service File Name:  C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.sys
+                   Service Type:  kernel mode driver
+                   Service Start Type:  demand start
+                   Service Account:  
+
+TimeCreated      : 10/24/2026 1:23:31 AM
+Id               : 7045
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : A service was installed in the system.
+                   
+                   Service Name:  VirtualBox NDIS 6.0 Miniport Service
+                   Service File Name:  \SystemRoot\System32\drivers\VBoxNetAdp6.sys
+                   Service Type:  kernel mode driver
+                   Service Start Type:  demand start
+                   Service Account:  
+
+TimeCreated      : 10/24/2026 1:05:39 AM
+Id               : 7045
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : A service was installed in the system.
+                   
+                   Service Name:  t9_vboxsup
+                   Service File Name:  C:\Users\vmdebug\Desktop\t9_work\VBoxSup.sys
+                   Service Type:  kernel mode driver
+                   Service Start Type:  demand start
+                   Service Account:  
+
+TimeCreated      : 10/22/2026 8:19:08 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 8:19:07 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 8:19:05 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/22/2026 7:58:20 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 7:58:20 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 7:58:17 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/22/2026 7:55:11 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 7:55:10 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 7:55:08 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/22/2026 7:45:47 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 7:45:46 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 7:45:44 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/22/2026 8:51:25 AM
+Id               : 7045
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : A service was installed in the system.
+                   
+                   Service Name:  Driver
+                   Service File Name:  C:\Windows\System32\drivers\Driver.sys
+                   Service Type:  kernel mode driver
+                   Service Start Type:  demand start
+                   Service Account:  
+
+TimeCreated      : 10/22/2026 8:49:19 AM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 8:49:19 AM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 8:49:17 AM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/22/2026 8:41:21 AM
+Id               : 7045
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : A service was installed in the system.
+                   
+                   Service Name:  Driver
+                   Service File Name:  C:\Users\vmdebug\Desktop\Driver.sys
+                   Service Type:  kernel mode driver
+                   Service Start Type:  demand start
+                   Service Account:  
+
+TimeCreated      : 10/22/2026 8:31:20 AM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 8:31:19 AM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 8:31:17 AM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/22/2026 8:07:04 AM
+Id               : 7045
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : A service was installed in the system.
+                   
+                   Service Name:  Driver
+                   Service File Name:  C:\Windows\System32\drivers\Driver.sys
+                   Service Type:  kernel mode driver
+                   Service Start Type:  demand start
+                   Service Account:  
+
+TimeCreated      : 10/22/2026 8:02:06 AM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/22/2026 8:02:05 AM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/22/2026 8:02:03 AM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/21/2026 4:20:28 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/21/2026 4:20:28 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/21/2026 4:20:26 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/21/2026 4:17:14 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/21/2026 4:17:13 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/21/2026 4:17:10 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/21/2026 4:03:47 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/21/2026 4:03:46 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+TimeCreated      : 10/21/2026 4:03:44 PM
+Id               : 7000
+ProviderName     : Service Control Manager
+LevelDisplayName : Error
+Message          : The luafv service failed to start due to the following error: 
+                   This driver has been blocked from loading
+
+TimeCreated      : 10/21/2026 3:53:40 PM
+Id               : 7026
+ProviderName     : Service Control Manager
+LevelDisplayName : Information
+Message          : The following boot-start or system-start driver(s) did not load: 
+                   dam
+
+TimeCreated      : 10/21/2026 3:53:40 PM
+Id               : 7001
+ProviderName     : Microsoft-Windows-Winlogon
+LevelDisplayName : Information
+Message          : User Logon Notification for Customer Experience Improvement Program
+
+
+
+
+--- setupapi.dev.log tail around VBoxNetLwf install (200 lines) ---
+     inf:                               {Configure Driver Configuration: exit(0x00000000)}
+     inf:                          {Configure Driver: exit(0x00000000)}
+     flq:                          {FILE_QUEUE_COMMIT} 01:23:31.434
+     flq:                               Copying 'C:\Windows\System32\DriverStore\FileRepository\vboxnetadp6.inf_amd64_ee187df79249cd72\VBoxNetAdp6.sys' to 'C:\Windows\System32\drivers\VBoxNetAdp6.sys'.
+     flq:                          {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:23:31.438
+     dvi:                          Existing files modified, may need to restart related services.
+     sto:                     {Configure Driver Package: exit(0x00000bc3)}
+     dvi:                     Restart required for any devices using this driver.
+     dvi:                     Install Device: Configuring device. 01:23:31.439
+     dvi:                          Configuration: oem9.inf:sun_VBoxNetAdp,*
+     dvi:                     Install Device: Configuring device completed. 01:23:31.442
+     dvi:                     Device Status: 0x01802401 [0x13 - 0xc0000034]
+     dvi:                     {Restarting Devices} 01:23:31.442
+     dvi:                          Start: ROOT\SUN_VBOXNETADP\0000
+!    dvi:                          Device 'ROOT\SUN_VBOXNETADP\0000' pending start: Device has problem: 0x38 (CM_PROB_NEED_CLASS_CONFIG), problem status: 0x00000000.
+     dvi:                     {Restarting Devices exit} 01:23:31.453
+     dvi:                {Configure Device - exit(0x00000000)} 01:23:31.454
+     dvi:           {Core Device Install - exit(0x00000000)} 01:23:31.454
+     dvi:           Waiting for device post-install to complete. 01:23:31.456
+     dvi:           Device post-install completed. 01:23:31.603
+     dvi:           Device Status: 0x0180200b
+     ump:      {Plug and Play Service: Device Install exit(00000000)}
+     dvs:      {Install Related Drivers} 01:23:31.654
+     dvs:      {Install Related Drivers: exit(0x00000000)} 01:23:31.655
+     dvs: {Driver Setup Update Device - exit(0x00000000)} 01:23:31.655
+<<<  Section end 2026/10/24 01:23:31.656
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [SetupCopyOEMInf - C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf]
+>>>  Section start 2026/10/24 01:25:26.111
+      cmd: "C:\Windows\system32\netcfg.exe" -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     inf: Copy style: 0x00000000
+     sto: {Setup Import Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf} 01:25:26.112
+     inf:      Provider: Oracle Corporation
+     inf:      Class GUID: {4D36E974-E325-11CE-BFC1-08002BE10318}
+     inf:      Driver Version: 01/15/2024,7.0.14.11095
+     inf:      Catalog File: VBoxNetLwf.cat
+     sto:      {Copy Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf} 01:25:26.117
+     sto:           Driver Package = C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf
+     sto:           Flags          = 0x00000007
+     sto:           Destination    = C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}
+     sto:           Copying driver package files to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}'.
+     flq:           {FILE_QUEUE_COMMIT} 01:25:26.118
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.cat' to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.cat'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf' to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf'.
+     flq:                Copying 'C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.sys' to 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.sys'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:25:26.124
+     sto:      {Copy Driver Package: exit(0x00000000)} 01:25:26.124
+     ump:      Import flags: 0x00000000
+     pol:      {Driver package policy check} 01:25:26.130
+     pol:      {Driver package policy check - exit(0x00000000)} 01:25:26.130
+     sto:      {Stage Driver Package: C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf} 01:25:26.130
+     inf:           {Query Configurability: C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf} 01:25:26.132
+     inf:                Driver package 'VBoxNetLwf.inf' is configurable.
+     inf:           {Query Configurability: exit(0x00000000)} 01:25:26.133
+     flq:           {FILE_QUEUE_COMMIT} 01:25:26.135
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.cat' to 'C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.cat'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.inf' to 'C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.inf'.
+     flq:                Copying 'C:\Users\vmdebug\AppData\Local\Temp\{8453e8a5-0eb5-a54c-aec7-b486b9ee7738}\VBoxNetLwf.sys' to 'C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.sys'.
+     flq:           {FILE_QUEUE_COMMIT - exit(0x00000000)} 01:25:26.143
+     sto:           {DRIVERSTORE IMPORT VALIDATE} 01:25:26.143
+     sig:                Driver package catalog is valid.
+     sig:                {_VERIFY_FILE_SIGNATURE} 01:25:26.156
+     sig:                     Key      = VBoxNetLwf.inf
+     sig:                     FilePath = C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.inf
+     sig:                     Catalog  = C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}\VBoxNetLwf.cat
+     sig:                     Success: File is signed in catalog.
+     sig:                {_VERIFY_FILE_SIGNATURE exit(0x00000000)} 01:25:26.161
+     sto:           {DRIVERSTORE IMPORT VALIDATE: exit(0x00000000)} 01:25:26.163
+     sig:           Signer Score  = 0x0D000005 (WHQL)
+     sig:           Signer Name   = Microsoft Windows Hardware Compatibility Publisher
+     sig:           Submission ID = 30041490_13562717952827599_1152921505697260923
+     sto:           {Core Driver Package Import: vboxnetlwf.inf_amd64_c5e1a8904c87a072} 01:25:26.165
+     sto:                {DRIVERSTORE IMPORT BEGIN} 01:25:26.165
+     sto:                {DRIVERSTORE IMPORT BEGIN: exit(0x00000000)} 01:25:26.165
+     cpy:                {Copy Directory: C:\Windows\System32\DriverStore\Temp\{f8580a6c-551f-2b4a-b3c7-c297b76f1c65}} 01:25:26.165
+     cpy:                     Target Path = C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072
+     cpy:                {Copy Directory: exit(0x00000000)} 01:25:26.167
+     idb:                {Register Driver Package: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\VBoxNetLwf.inf} 01:25:26.168
+     idb:                     Created driver package object 'vboxnetlwf.inf_amd64_c5e1a8904c87a072' in DRIVERS database node.
+     idb:                     Created driver INF file object 'oem10.inf' in DRIVERS database node.
+     idb:                     Registered driver package 'vboxnetlwf.inf_amd64_c5e1a8904c87a072' with 'oem10.inf'.
+     idb:                {Register Driver Package: exit(0x00000000)} 01:25:26.170
+     idb:                {Publish Driver Package: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\VBoxNetLwf.inf} 01:25:26.171
+     idb:                     Activating driver package 'vboxnetlwf.inf_amd64_c5e1a8904c87a072'.
+     cpy:                     Published 'vboxnetlwf.inf_amd64_c5e1a8904c87a072\vboxnetlwf.inf' to 'oem10.inf'.
+     idb:                     Indexed 2 device IDs for 'vboxnetlwf.inf_amd64_c5e1a8904c87a072'.
+     sto:                     Flushed driver database node 'DRIVERS'. Time = 15 ms
+     sto:                     Flushed driver database node 'SYSTEM'. Time = 0 ms
+     idb:                {Publish Driver Package: exit(0x00000000)} 01:25:26.176
+     sto:                {DRIVERSTORE IMPORT END} 01:25:26.177
+     dvi:                     Flushed all driver package files to disk. Time = 0 ms
+     sig:                     Installed catalog 'VBoxNetLwf.cat' as 'oem10.cat'.
+     sto:                {DRIVERSTORE IMPORT END: exit(0x00000000)} 01:25:26.184
+     sto:           {Core Driver Package Import: exit(0x00000000)} 01:25:26.185
+     sto:      {Stage Driver Package: exit(0x00000000)} 01:25:26.185
+     sto: {Setup Import Driver Package - exit (0x00000000)} 01:25:26.214
+     inf: Driver Store Path: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\VBoxNetLwf.inf
+     inf: Published Inf Path: C:\Windows\INF\oem10.inf
+<<<  Section end 2026/10/24 01:25:26.216
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Install network driver - VBoxNetLwf]
+>>>  Section start 2026/10/24 01:25:26.266
+      cmd: "C:\Windows\system32\netcfg.exe" -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     dvi: Installing new driver
+     dvi: {Create Device} 01:25:26.269
+     dvi:      {Create Device - VBoxNetLwf}
+     dvi:           Class GUID  - {4d36e974-e325-11ce-bfc1-08002be10318}
+     dvi:           Description - <none>
+     dvi:           Flags       - 0x00000001
+     dvi:           Created device 'ROOT\VBOXNETLWF\0000'
+     dvi:      {Create Device - exit(0x00000000)}
+     dvi: {Create Device - exit(0x00000000)} 01:25:26.270
+     dvi: {Build Driver List} 01:25:26.271
+     dvi:      Searching for hardware ID(s):
+     dvi:           vboxnetlwf
+     dvi: {Build Driver List - exit(0x00000000)} 01:25:26.370
+     dvi: {Select Best Driver}
+!    dvi:      Selecting driver failed(0xe0000228)
+     dvi: {Select Best Driver - exit(0xe0000228)}
+<<<  Section end 2026/10/24 01:25:26.381
+<<<  [Exit status: FAILURE(0x800f0203)]
+
+
+>>>  [SetupCopyOEMInf - C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf]
+>>>  Section start 2026/10/24 01:26:35.685
+      cmd: "C:\Windows\system32\netcfg.exe" -v -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     inf: Copy style: 0x00000000
+!    inf: Driver package is already in driver store
+     sto: {Setup Import Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf} 01:26:35.687
+     sto:      Driver package already imported as 'oem10.inf'.
+     sto: {Setup Import Driver Package - exit (0x00000000)} 01:26:35.689
+     inf: Driver Store Path: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\vboxnetlwf.inf
+     inf: Published Inf Path: C:\Windows\INF\oem10.inf
+<<<  Section end 2026/10/24 01:26:35.691
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Install network driver - VBoxNetLwf]
+>>>  Section start 2026/10/24 01:26:35.737
+      cmd: "C:\Windows\system32\netcfg.exe" -v -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     dvi: Installing new driver
+     dvi: {Create Device} 01:26:35.738
+     dvi:      {Create Device - VBoxNetLwf}
+     dvi:           Class GUID  - {4d36e974-e325-11ce-bfc1-08002be10318}
+     dvi:           Description - <none>
+     dvi:           Flags       - 0x00000001
+     dvi:           Created device 'ROOT\VBOXNETLWF\0000'
+     dvi:      {Create Device - exit(0x00000000)}
+     dvi: {Create Device - exit(0x00000000)} 01:26:35.739
+     dvi: {Build Driver List} 01:26:35.739
+     dvi:      Searching for hardware ID(s):
+     dvi:           vboxnetlwf
+     dvi: {Build Driver List - exit(0x00000000)} 01:26:35.796
+     dvi: {Select Best Driver}
+!    dvi:      Selecting driver failed(0xe0000228)
+     dvi: {Select Best Driver - exit(0xe0000228)}
+<<<  Section end 2026/10/24 01:26:35.800
+<<<  [Exit status: FAILURE(0x800f0203)]
+
+
+>>>  [SetupCopyOEMInf - C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf]
+>>>  Section start 2026/10/24 01:27:50.472
+      cmd: "C:\Windows\system32\netcfg.exe" -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     inf: Copy style: 0x00000000
+!    inf: Driver package is already in driver store
+     sto: {Setup Import Driver Package: C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf} 01:27:50.474
+     sto:      Driver package already imported as 'oem10.inf'.
+     sto: {Setup Import Driver Package - exit (0x00000000)} 01:27:50.476
+     inf: Driver Store Path: C:\Windows\System32\DriverStore\FileRepository\vboxnetlwf.inf_amd64_c5e1a8904c87a072\vboxnetlwf.inf
+     inf: Published Inf Path: C:\Windows\INF\oem10.inf
+<<<  Section end 2026/10/24 01:27:50.478
+<<<  [Exit status: SUCCESS]
+
+
+>>>  [Install network driver - VBoxNetLwf]
+>>>  Section start 2026/10/24 01:27:50.525
+      cmd: "C:\Windows\system32\netcfg.exe" -l C:\Users\vmdebug\Desktop\t9_work\VBoxNetLwf.inf -c s -i VBoxNetLwf
+     dvi: Installing new driver
+     dvi: {Create Device} 01:27:50.526
+     dvi:      {Create Device - VBoxNetLwf}
+     dvi:           Class GUID  - {4d36e974-e325-11ce-bfc1-08002be10318}
+     dvi:           Description - <none>
+     dvi:           Flags       - 0x00000001
+     dvi:           Created device 'ROOT\VBOXNETLWF\0000'
+     dvi:      {Create Device - exit(0x00000000)}
+     dvi: {Create Device - exit(0x00000000)} 01:27:50.528
+     dvi: {Build Driver List} 01:27:50.529
+     dvi:      Searching for hardware ID(s):
+     dvi:           vboxnetlwf
+     dvi: {Build Driver List - exit(0x00000000)} 01:27:50.591
+     dvi: {Select Best Driver}
+!    dvi:      Selecting driver failed(0xe0000228)
+     dvi: {Select Best Driver - exit(0xe0000228)}
+<<<  Section end 2026/10/24 01:27:50.596
+<<<  [Exit status: FAILURE(0x800f0203)]
+
