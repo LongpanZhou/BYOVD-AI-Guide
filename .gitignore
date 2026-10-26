@@ -1,0 +1,15 @@
+﻿# Instructor-branch .gitignore - same defaults as the working repo min
+# mode: ignore scratch, keep the .sys corpus you collect yourself.
+downloads/*
+!downloads/README.md
+!downloads/.gitkeep
+_collected*/**/packages/
+_collected*/**/extract/
+_collected*/**/work/
+_collected*/**/manual/
+_collected*/**/staging/
+_scratch/
+*.log
+*.tmp
+Thumbs.db
+desktop.ini
