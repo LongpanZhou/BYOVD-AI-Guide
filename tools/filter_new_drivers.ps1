@@ -34,6 +34,12 @@ function Load-Set([string]$path) {
 
 $existingSet = Load-Set $Existing
 $knownBadSet = Load-Set $KnownBad
+if ($knownBadSet.Count -eq 0) {
+  Write-Output "KNOWN-BAD LIST EMPTY: $KnownBad"
+  Write-Output "Refusing to run the dedupe gate without a blocklist."
+  Write-Output "known_bad_hashes.txt is missing or empty - refresh it from the live LOLDrivers feed per guides/00_quickstart.md section 2 (see tools/README.md)."
+  exit 2
+}
 $localGate = Join-Path $PSScriptRoot '..\indexes\dedupe\exported_hashes_local.txt'
 if (Test-Path -LiteralPath $localGate) { foreach ($h in (Load-Set $localGate)) { [void]$knownBadSet.Add($h) } }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
