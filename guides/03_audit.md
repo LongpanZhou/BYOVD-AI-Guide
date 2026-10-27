@@ -20,7 +20,7 @@ testing only confirms it. Every driver in `drivers/` gets exactly one canonical 
 | Architecture     | PE32+ x64 |
 | Company/version  | `<vendor>, <version>` |
 | Signature status | Valid / invalid; signer chain; on MS blocklist? |
-| Method           | `<Ghidra headless>` (primary), `<IDA>`, or `REA` (optional) |
+| Method           | `<Ghidra headless>` (primary) or `REA` (optional) |
 | Reach tier       | R1 unprivileged / R2 local admin / R3 driver context |
 | Setup required   | none / service / devnode / hardware / composition |
 | Write quality    | W0..W3 / W3P |

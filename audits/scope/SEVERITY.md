@@ -27,11 +27,11 @@ The question is:
 | Level | Meaning | Required conditions | Example |
 |---|---|---|---|
 | **MW1 — CRITICAL** | Arbitrary or fully controlled **kernel memory write**, usable now with your access. | `R1`/`R2` + `W1` + `Setup: none` + loadable. | Admin-open write-what-where; unprivileged arbitrary pool write. |
-| **MW2 — HIGH** | Real kernel memory write, but constrained: fixed/limited target/value, needs a leak, or needs a devnode/composition/hardware you can stage. | `R1`/`R2` + `W2`; or `R3` + `W1`. | `bxvbda` constrained OOB; `rtf64x64` composition; `silabser` CP210x-gated. |
-| **MW3 — MEDIUM** | Physical-memory mapping/write only (PA-based, not arbitrary kernel VA), or a memory write that needs specific hardware you may not have. | `W3P`; or `W2` + `R3` hardware. | `DirectIo64` PA map/clear; `amdpsp` user-mapped PA; `CBULWDM` physmem. |
-| **MW4 — LOW** | Narrow/fixed memory write, unreliable, or requires an unavailable device; mainly DoS/leak. | `W3`; crash-first; no target control. | `nvhda64v` fixed 6-byte OOB; ImDisk fixed-value fill. |
-| **NO-MEMORY-WRITE** | No kernel memory write. Hardware-only writes, info leak, DoS, config control, or no device. | `W0` or `HW-ONLY`. | `ArgusMonitor` (WRMSR/SMBus/EC/MMIO only); `CimFS`; `acsock64`. |
-| **BLOCKED** | A memory write may exist, but the driver is known-bad/blocklisted, unsigned under HVCI, or the component is unobtainable. | Status flag. | `WinRing0`, `RTCore`, unsigned CoreTemp/ThrottleStop. |
+| **MW2 — HIGH** | Real kernel memory write, but constrained: fixed/limited target/value, needs a leak, or needs a devnode/composition/hardware you can stage. | `R1`/`R2` + `W2`; or `R3` + `W1`. | constrained OOB write; composition-gated write; dongle/hardware-gated write. |
+| **MW3 — MEDIUM** | Physical-memory mapping/write only (PA-based, not arbitrary kernel VA), or a memory write that needs specific hardware you may not have. | `W3P`; or `W2` + `R3` hardware. | physical-address map/clear; user-mapped physical memory; fixed physmem window. |
+| **MW4 — LOW** | Narrow/fixed memory write, unreliable, or requires an unavailable device; mainly DoS/leak. | `W3`; crash-first; no target control. | fixed 6-byte OOB; fixed-value fill; write reachable only via crash. |
+| **NO-MEMORY-WRITE** | No kernel memory write. Hardware-only writes, info leak, DoS, config control, or no device. | `W0` or `HW-ONLY`. | hardware-access interface only (WRMSR/SMBus/EC/MMIO); no write sink. |
+| **BLOCKED** | A memory write may exist, but the driver is known-bad/blocklisted, unsigned under HVCI, or the component is unobtainable. | Status flag. | blocklisted driver; unsigned under HVCI; component unobtainable. |
 
 `service` means "create/start a kernel service, but no devnode, hardware, or composition". Rate it
 like `none` unless the service itself is the only gate and the driver cannot be loaded by the

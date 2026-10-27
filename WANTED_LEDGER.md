@@ -4,9 +4,9 @@
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
-> This file is the repo's *wishlist*. Every candidate collected or audited is judged against it.
+> This file is the lab's *wishlist*. Every candidate collected or audited is judged against it.
 > Beginners: edit this file to change what your own hunt targets — the rest of the loop
-> (collect → audit → blocklist-check → verify) stays the same.
+> (collect → blocklist-check → audit → verify) stays the same.
 
 ## Wanted (this hunt's focus)
 

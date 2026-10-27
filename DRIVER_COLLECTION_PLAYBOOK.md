@@ -32,7 +32,7 @@ dead ends, so your first collection run does not have to re-derive them.
 | Rule | Reason |
 |---|---|
 | Never execute a vendor `.exe`/`.msi` | Running it is installation; it writes services, registry, and driver store |
-| Only `7z`, `expand`, `dark.exe`, `innoextract` may run | These are decompressors, not installers |
+| Only `7z`, `expand`, `dark.exe`, `innoextract`, `innounp` may run | These are decompressors, not installers |
 | Delete the installer and extract tree immediately after harvesting | The project keeps only the driver payload, never installers or app trees |
 | Skip installers > 500 MB | Time/bandwidth; almost always Electron app blobs |
 | Do not re-collect known-bad/blocklisted drivers | They are `BLOCKED` references, not audit targets |
@@ -269,7 +269,8 @@ there is no control device to open, and the SDDL is decoration. Check the `Devic
 ### 7.1 Why string-matching SDDLs is wrong (learned the hard way)
 
 The first version of `triage_scan.ps1` flagged a driver as reachable if *any* `D:P(...)` literal
-in the file contained `;;;WD`. That is unsound and produced roughly a **50% false-positive rate**.
+in the file contained `;;;WD`. That is unsound and, in the original run this playbook was
+distilled from, produced roughly a **50% false-positive rate**.
 
 The failure mode: vendors ship a **table of descriptors** (one per OS version, SKU, or code path).
 Most entries are never passed to the create call. ASRock `MsIo64.sys` contains seven SDDLs,
@@ -277,7 +278,7 @@ including `...GRGWGX;;;WD...`, and calls plain `IoCreateDevice` with **no** desc
 all seven strings are dead data. Same for EVGA `driver-x64` (7 dead) and ROCCAT `ScpVBus`
 (1 dead). Ghidra confirmed `refs=0` for every one.
 
-**`triage_scan.ps1` v2 (installed) now does three things v1 did not:**
+**`triage_scan.ps1` (the version shipped on `example`) does three things the first version did not:**
 
 1. **Parses the PE import table** and reports which device-creation API is genuinely imported:
    `IoCreateDevice`, `IoCreateDeviceSecure`, `WdmlibIoCreateDeviceSecure`,
@@ -437,6 +438,7 @@ driver_lab\
 ├── README.md
 ├── WANTED_LEDGER.md
 ├── DRIVER_COLLECTION_PLAYBOOK.md   this file
+├── guides\                        the five step-by-step guides
 ├── drivers\                        your flat .sys corpus (empty at start)
 ├── downloads\                      disposable download/extract scratch
 ├── audits\

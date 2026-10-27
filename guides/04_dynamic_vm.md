@@ -7,6 +7,17 @@
 > Static analysis finds the primitive; you only need dynamic testing to *prove* it. This is where
 > the discipline matters: one driver at a time, snapshot first, and never a live system address.
 
+## 0. Build the VM first
+
+Before any dynamic work, set up the guest the whole method depends on:
+
+- Create a disposable Windows 10/11 VM (VMware Workstation or equivalent). It is a
+  single-purpose target — nothing personal on it.
+- Install the harness tooling: PowerShell 5+ and the .NET SDK (the harness pattern is C#),
+  plus WinDbg for dump analysis.
+- Take one baseline snapshot (e.g. `pre-driver-tests`) **before** any driver is loaded; revert
+  to it before **and** after every test batch.
+
 ## 1. The VM rules of this repo
 
 - One test VM, one snapshot baseline, revert **before and after** every test batch.

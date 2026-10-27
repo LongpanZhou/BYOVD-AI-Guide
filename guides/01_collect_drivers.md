@@ -27,7 +27,7 @@ vendor sweep.
 
 ## 2. The rules
 
-- Only `7-Zip`/`expand`/`dark.exe`/`innoextract` may touch an installer — those are unpackers.
+- Only `7-Zip`/`expand`/`dark.exe`/`innoextract`/`innounp` may touch an installer — those are unpackers.
   `innoextract` is not tracked in the repo; download it separately.
 - Skip installers > 500 MB (Electron/launcher blobs).
 - Delete the installer and the extract tree immediately after harvesting; keep only `.sys`.
