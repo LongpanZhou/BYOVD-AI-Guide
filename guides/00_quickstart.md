@@ -33,13 +33,13 @@ Two rules that make the loop work:
 - **`STATUS.md` is the only live queue.** Every other document links to it instead of copying.
 - **Everything flat.** Drivers never get subfolders; the manifest's `Batch` column carries provenance.
 
-The scripts live on the `main` branch (this repo's `guide` branch ships instructions only).
-Copy them into your `tools/` folder instead of reinventing them:
+The scripts are in `tools/` on this branch. The `main` branch ships instructions only and
+fetches them from here — copy them into your `tools/` folder instead of reinventing them:
 
-- [`tools/harvest.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/main/tools/harvest.ps1) — archive extraction
-- [`tools/triage_scan.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/main/tools/triage_scan.ps1) — peeks inside a driver
-- [`tools/rebuild_manifest.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/main/tools/rebuild_manifest.ps1) — regenerates the manifest
-- [`tools/filter_new_drivers.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/main/tools/filter_new_drivers.ps1) — the mandatory dedupe gate
+- [`tools/harvest.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/example/tools/harvest.ps1) — archive extraction
+- [`tools/triage_scan.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/example/tools/triage_scan.ps1) — peeks inside a driver
+- [`tools/rebuild_manifest.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/example/tools/rebuild_manifest.ps1) — regenerates the manifest
+- [`tools/filter_new_drivers.ps1`](https://github.com/LongpanZhou/BYOVD-AI-Guide/blob/example/tools/filter_new_drivers.ps1) — the mandatory dedupe gate
 
 Download 7-Zip. WiX `dark.exe` and `innoextract` are optional and go in `tools/`.
 
@@ -62,4 +62,4 @@ tools/rebuild_manifest.ps1
 ```
 
 Then cross-check every hash in `indexes/dedupe/known_bad_hashes.txt` (see
-[`02_audit.md`](02_audit.md)).
+[`02_blocklist_check.md`](02_blocklist_check.md)).

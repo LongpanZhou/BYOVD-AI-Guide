@@ -58,7 +58,7 @@ then assemble the verdict row into `audits/STATUS.md`.
 
 - `tools/triage_scan.ps1` — quick pass for suspicious imports (`MmMapIoSpace`, `MmCopyMemory`,
   `PsGetVersion`, `ObReferenceObjectByHandle`) before you commit to a full audit.
-- `guides/03_blocklist_check.md` — the two-list check that stops you re-auditing anything that
+- `guides/02_blocklist_check.md` — the two-list check that stops you re-auditing anything that
   LOLDrivers or the Microsoft blocklist has already catalogued.
 - Copy the per-driver skeleton above into a new file per driver; one file per driver,
   always. Update `STATUS.md` *after* writing the report, not before.
