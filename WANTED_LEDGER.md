@@ -8,7 +8,7 @@
 > Beginners: edit this file to change what your own hunt targets — the rest of the loop
 > (collect → audit → blocklist-check → verify) stays the same.
 
-## Wanted (this repo's current focus)
+## Wanted (this hunt's focus)
 
 **Kernel memory write (`mem W`)** — a driver in the corpus that, after reaching a caller-controlled
 code path, causes (or lets a user-mode attacker produce) a write:
@@ -46,10 +46,10 @@ When you copy the repo for your own hunt, edit this file only:
 3. Update `PROJECT_GOAL.md` with one sentence so the canonical goal and this ledger never disagree.
 4. Update `audits/STATUS.md`'s header line ("Scope: …") to quote your new target class.
 
-## Current state for this repo
+## Current state
 
 - Request: arbitrary **kernel memory write** (mem W), MW1 preferred.
-- Live queue: [audits/STATUS.md](audits/STATUS.md)
+- Live queue: [audits/STATUS.md](audits/STATUS.md) — yours, starts empty
 - Evidence: [audits/evidence/](audits/evidence/) and [poc/dynamic/](poc/dynamic/)
-- 2026-10-25: the verified driver set (three driver families, 7 files) was **exported out** of
-  the repo.
+- Worked example: the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example) branch
+  shows this ledger applied to a completed run (verified finds kept offline).

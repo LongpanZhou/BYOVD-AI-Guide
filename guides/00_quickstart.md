@@ -1,7 +1,7 @@
 # Quickstart — from clone to first audit
 
-This is the 10-minute walkthrough for the `guide` branch. It assumes you already cloned the
-branch (see the README). Run every command from the repo root unless a step says otherwise.
+This is the 10-minute walkthrough for this repo's default branch. It assumes you already cloned
+the repo (see the README). Run every command from the repo root unless a step says otherwise.
 
 ## 1. The tree you start with
 
@@ -15,7 +15,6 @@ driver_lab/
 │   ├── reports/                  # one canonical report per driver
 │   ├── scope/                    # scope, severity, default audit prompt
 │   ├── evidence/                 # dated proof (blocklist checks, logs)
-│   ├── legacy/                   # archived reports
 │   └── projects/                 # analysis state (Ghidra/decomp)
 ├── drivers/                      # flat .sys corpus
 ├── indexes/
@@ -25,9 +24,8 @@ driver_lab/
 │   └── driverstore/              # discovery output
 ├── poc/
 │   ├── dynamic/                  # harness + results/<date>/
-│   ├── historical/               # old PoCs (evidence only)
-│   └── reference/                # calibration drivers only
-├── tools/                        # fetched from main
+│   └── reference/               # calibration drivers only
+├── tools/                        # fetched from example
 └── downloads/                    # gitignored scratch
 ```
 
@@ -39,10 +37,10 @@ Two rules keep the tree clean:
 
 ## 2. Add the tools and the blocklist gate
 
-The scripts and the known-bad hash list are not stored on this branch. Fetch both from `main`:
+The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
 
 ```powershell
-$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/main'
+$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/example'
 $base = "$raw/tools"
 'harvest.ps1','filter_new_drivers.ps1','rebuild_manifest.ps1','triage_scan.ps1' |
   ForEach-Object { Invoke-WebRequest "$base/$_" -OutFile "tools\$_" -UseBasicParsing }
@@ -111,13 +109,13 @@ Expected: `manifest: <N> rows, <N> unique hashes`, and `downloads\` back to just
 
 ## 4. Check the blocklists
 
-Run [guide 03](03_blocklist_check.md) **before** auditing. It downloads LOLDrivers and the
+Run [guide 02](02_blocklist_check.md) **before** auditing. It downloads LOLDrivers and the
 Microsoft blocklist and shows how to compare a candidate's hashes. Results go in
 `audits\evidence\known_vulnerable_check_<yyyy-mm-dd>.md`.
 
 ## 5. Audit, verify, record
 
-1. [Guide 02](02_audit.md) — static audit; write `audits\reports\<driver>.md`.
+1. [Guide 03](03_audit.md) — static audit; write `audits\reports\<driver>.md`.
 2. [Guide 04](04_dynamic_vm.md) — prove the primitive in a disposable VM; log under
    `poc\dynamic\results\<date>\`.
 3. [`audits/STATUS.md`](../audits/STATUS.md) — add or update one verdict row.

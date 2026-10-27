@@ -20,7 +20,7 @@
 
 > [!NOTE]
 > The self-test harness and the `run_<driver>.ps1` wrappers are **not shipped** in this repo.
-> `poc/dynamic/` on `main` contains only the helper scripts (`get_privs.ps1`,
+> `poc/dynamic/` on `example` contains only the helper scripts (`get_privs.ps1`,
 > `grant_lockmem.ps1`, `list_minidumps.ps1`, `ObjList.cs`). Treat the block below as the shape to
 > implement, not something you can run as-is.
 

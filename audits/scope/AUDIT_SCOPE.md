@@ -6,9 +6,6 @@
 
 Canonical goal: [`../../PROJECT_GOAL.md`](../../PROJECT_GOAL.md).
 
-This file supersedes the pre-§17 unprivileged-only wording and the historical per-agent ledgers
-(historical copies are not retained in this repo; see `audits/legacy/README.md`).
-
 **Default agent prompt:** `audits\scope\STATIC_ANALYSIS_AGENT_PROMPT.md` —
 memory-write-only, admin-inclusive, with the MW1–MW4 scale.
 

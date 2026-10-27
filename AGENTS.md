@@ -31,7 +31,7 @@ and no tool binaries; your job is to build the lab and run the method.
 
 1. Read `audits/STATUS.md`; do not duplicate an existing verdict.
 2. Collect with `tools/harvest.ps1`; dedupe with `tools/filter_new_drivers.ps1`.
-3. Blocklist-check against LOLDrivers and the Microsoft list (`guides/03_blocklist_check.md`).
+3. Blocklist-check against LOLDrivers and the Microsoft list (`guides/02_blocklist_check.md`).
 4. Audit statically with the default prompt; write `audits/reports/<driver>.md`.
 5. Prove the primitive only in a snapshotted VM; log under `audits/evidence/`.
 6. Record the verdict in `audits/STATUS.md`.
@@ -43,5 +43,5 @@ and no tool binaries; your job is to build the lab and run the method.
 
 ## Tools
 
-Not shipped on this branch. Fetch the four scripts from `main` when you start collecting; see
+Not shipped on this branch. Fetch the four scripts from `example` when you start collecting; see
 `tools/README.md`.

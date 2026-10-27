@@ -1,13 +1,14 @@
-# BYOVD AI Guide — instruction-only branch
+# BYOVD AI Guide
 
 > [!CAUTION]
 > **AI-written docs.** Every README and guide here was written by an AI agent, so expect
 > mistakes. Verify commands, paths, versions, and hashes before relying on them.
 
-This branch is the **setup and instruction set** for an AI-driven Windows driver research lab.
+This repo is the **setup and instruction set** for an AI-driven Windows driver research lab.
 It contains the folder skeleton, the goal/ledger files, and the method. It contains **no drivers,
 no audit reports, no corpus, and no tool binaries** — the worked example (386 `.sys` files, 257
-reports, scripts) lives on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/main).
+reports, scripts) lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example)
+branch.
 
 > [!WARNING]
 > **Educational use only.** Lab research on a disposable VM. Never run a driver on your real
@@ -29,7 +30,7 @@ reports, scripts) lives on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guid
 ## 1. Clone the lab
 
 ```powershell
-git clone -b guide https://github.com/LongpanZhou/BYOVD-AI-Guide.git driver_lab
+git clone https://github.com/LongpanZhou/BYOVD-AI-Guide.git driver_lab
 cd driver_lab
 ```
 
@@ -62,10 +63,10 @@ Get-ChildItem PROJECT_GOAL.md, WANTED_LEDGER.md, audits\STATUS.md, AGENTS.md
 
 ## 3. Fetch the tools and the blocklist gate
 
-The scripts and the known-bad hash list are not stored on this branch. Fetch both from `main`:
+The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
 
 ```powershell
-$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/main'
+$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/example'
 $base = "$raw/tools"
 'harvest.ps1','filter_new_drivers.ps1','rebuild_manifest.ps1','triage_scan.ps1' |
   ForEach-Object { Invoke-WebRequest "$base/$_" -OutFile "tools\$_" -UseBasicParsing }
@@ -118,12 +119,10 @@ want a different target class — the rest of the loop keys off those two files.
 | Step | Read | You produce |
 |:---:|---|---|
 | 1 | [`guides/01_collect_drivers.md`](guides/01_collect_drivers.md) | `drivers\<name>_<hash8>.sys` + `indexes\collections\collected<N>\manifest.csv` |
-| 2 | [`guides/03_blocklist_check.md`](guides/03_blocklist_check.md) | `audits\evidence\known_vulnerable_check_<date>.md` |
-| 3 | [`guides/02_audit.md`](guides/02_audit.md) | `audits\reports\<driver>.md` |
+| 2 | [`guides/02_blocklist_check.md`](guides/02_blocklist_check.md) | `audits\evidence\known_vulnerable_check_<date>.md` |
+| 3 | [`guides/03_audit.md`](guides/03_audit.md) | `audits\reports\<driver>.md` |
 | 4 | [`guides/04_dynamic_vm.md`](guides/04_dynamic_vm.md) | `poc\dynamic\results\<date>\<driver>_<harness>.log` |
 | 5 | [`audits/STATUS.md`](audits/STATUS.md) | one verdict row |
-
-Step 2 runs **before** step 3; the file numbers follow content type, not execution order.
 
 ## 7. Vocabulary
 
@@ -150,5 +149,5 @@ Full definitions: [`audits/scope/`](audits/scope/).
 ## 9. If a link points at a file you don't have
 
 Some guides mention reports, drivers, or helpers that are not on this branch. Open the same path
-on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/main), or fetch the four scripts in
+on [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example), or fetch the four scripts in
 step 3. Nothing in this branch is a binary.

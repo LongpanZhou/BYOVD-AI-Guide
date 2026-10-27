@@ -1,4 +1,4 @@
-# Project Map — guide branch
+# Project Map
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -6,7 +6,7 @@
 
 One clean tree. Every folder exists on clone; only instruction files and folder READMEs are
 populated. Counts here are **zero by design** — the worked example (386 drivers, 257 reports) is
-on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/main).
+on [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example).
 
 | Path | What it is |
 |---|---|
@@ -14,11 +14,11 @@ on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/main).
 | `PROJECT_GOAL.md` | goal, scope, severity |
 | `WANTED_LEDGER.md` | accepted vulnerability classes |
 | `README.md` | setup |
-| `audits/` | `STATUS.md` template, `reports/`, `evidence/`, `scope/`, `legacy/`, `projects/` |
+| `audits/` | `STATUS.md` template, `reports/`, `evidence/`, `scope/`, `projects/` |
 | `drivers/` | flat corpus (empty at start) |
 | `indexes/` | generated manifest, `dedupe/`, `collections/`, `driverstore/` |
-| `poc/` | `dynamic/`, `historical/`, `reference/` |
-| `tools/` | fetched from `main` (four scripts) |
+| `poc/` | `dynamic/`, `reference/` |
+| `tools/` | fetched from `example` (four scripts) |
 | `downloads/` | gitignored scratch |
 | `guides/` | the five-step method |
 

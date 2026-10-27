@@ -4,10 +4,10 @@
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
-Reference for expanding the `driver_candidates` corpus from vendor utility packages
-**without installing anything** and **without executing vendor binaries**.
-
-Last updated: 2026-10-26 · Corpus: **386 `.sys` files in the repo** (original 94 — this includes local-only `vgk.sys` — `collected2` 135, `collected3` 11, `collected5` 41, `collected1` 106; 387 manifest rows including `vgk.sys`), all flat in `drivers/`. Dedupe index: **925 tracked hashes + 7 exported hashes in a gitignored local gate file**.
+Reference for building **your own** driver corpus from vendor utility packages — **without
+installing anything** and **without executing vendor binaries**. On this branch every count starts
+at zero; the worked example this playbook was distilled from lives on
+[`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example).
 
 **Goal:** find kernel memory-write vulnerabilities. Only memory writes count; hardware-only writes are `HW-ONLY`. Admin-only DACLs are in scope (`R2`). See [`PROJECT_GOAL.md`](PROJECT_GOAL.md).
 
@@ -15,12 +15,15 @@ Last updated: 2026-10-26 · Corpus: **386 `.sys` files in the repo** (original 9
 
 ## 1. Why this document exists
 
-The first corpus (94 drivers) came from `C:\Windows\System32\drivers` on an existing host.
-That source is exhausted — see `audits/STATUS.md` and the historical notes in `audits/legacy/`.
+Two ways to stock `drivers/`:
 
-This document records the second method: pulling drivers out of **vendor utility installers**,
-treating every installer as an archive. It exists so the next collection run does not have to
-re-derive the extraction logic, the vendor yield rates, or the dead ends.
+1. **Your own host** — copy candidates out of `C:\Windows\System32\drivers` (record their hashes
+   so the dedupe gate knows them).
+2. **Vendor utility installers** — treat every installer as an archive and pull the `.sys` files
+   out without running anything.
+
+This document records the second method: the extraction logic, the vendor yield rates, and the
+dead ends, so your first collection run does not have to re-derive them.
 
 ---
 
@@ -49,7 +52,7 @@ Admin-only drivers are `R2` audit targets. Hardware-only writes (MSR/port/PCI/SM
 Rationale: the point is a memory-write primitive, not notoriety. A blocklisted driver is already
 known and is usually blocked from loading; an unstudied utility driver is a better target.
 
-### 2.1 Download hygiene (mandatory, 2026-10-24)
+### 2.1 Download hygiene (mandatory)
 
 `drivers/` contains **only new `.sys` files**. Everything else is temporary.
 
@@ -66,13 +69,12 @@ known and is usually blocked from loading; an unstudied utility driver is a bett
 6. If a driver you expected is missing from `drivers/`, read the filter output before
    re-downloading. Do not keep the installer "just in case".
 
-Current state: all batch scratch trees were deleted on 2026-10-24. The corpus is **386 unique
-`.sys`** in one folder, and the project is under 600 MB, down from ~35 GB.
+Wipe the scratch after every batch: `downloads/` back to just `README.md`, `drivers/` holding
+only `.sys` files plus its `README.md`. Never keep an installer "just in case".
 
-After accepting a batch, update every count copy: `PROJECT_GOAL.md`, `START_HERE.md`,
-`README.md`, `audits/STATUS.md`, `drivers/README.md`, this playbook, and `indexes/README.md`.
-`tools/rebuild_manifest.ps1` updates the manifest; `filter_new_drivers.ps1 -UpdateExisting`
-updates the dedupe index and summary.
+After accepting a batch, keep counts in **one** place: `audits/STATUS.md`, the single live
+status source. `tools/rebuild_manifest.ps1` updates the manifest; `filter_new_drivers.ps1
+-UpdateExisting` updates the dedupe index and summary.
 
 ---
 
@@ -103,7 +105,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "tools\harvest.ps1" `
   -Vendor "<Vendor>" `
   -PackageId "<package-id>" `
   -Out    "downloads\_harvest" `
-  -Index  "indexes\collections\collected6\_index.jsonl"
+  -Index  "indexes\collections\collected<N>\_index.jsonl"
 ```
 
 Add `-NoExpand` when `-Path` is an already-extracted directory (otherwise it will try to
@@ -262,9 +264,9 @@ it depends entirely on the explicit ACEs.
 
 A driver can be "reachable" and still be worthless: if it only implements HID filter callbacks
 there is no control device to open, and the SDDL is decoration. Check the `Device` column in
-`indexes/collections/collected2/master_drivers.csv` before spending time.
+`indexes/collections/collected<N>/master_drivers.csv` before spending time.
 
-### 7.1 Why string-matching SDDLs is wrong (2026-10-24 correction)
+### 7.1 Why string-matching SDDLs is wrong (learned the hard way)
 
 The first version of `triage_scan.ps1` flagged a driver as reachable if *any* `D:P(...)` literal
 in the file contained `;;;WD`. That is unsound and produced roughly a **50% false-positive rate**.
@@ -339,45 +341,23 @@ All are audited; the gate is reflected in the MW severity, not used to discard t
 
 ---
 
-## 8. Current corpus (2026-10-26)
+## 8. Your corpus
 
-Live counts:
+Live counts live in **one** place, generated per batch — do not copy them into other docs:
 
-- `indexes/dedupe/existing_hashes.txt` — **925 tracked** (+7 exported hashes kept in the gitignored local gate)
-- `indexes\collections\collected2\master_drivers.csv` — **135 binaries / 72 families**
-- `indexes\collections\collected3\master_drivers.csv` — **11 binaries**
-- `drivers/` — **41** drivers from `collected5` (R1–R4)
-- `drivers/` — **106** drivers from `collected1` (S1–S6; 117 `.sys` initially, six S5/S6 duplicates removed)
-- **Total in repo: 386 binaries** (verified set export 2026-10-25)
-- Canonical inventory: `indexes\drivers_manifest.csv` — 387 rows: 386 in-repo files + local-only `vgk.sys`
+- `audits/STATUS.md` — your queue and totals
+- `indexes\drivers_manifest.csv` — your inventory, regenerated by `tools/rebuild_manifest.ps1`
+  from `drivers/` on disk after every accepted batch
+- `indexes\dedupe\existing_hashes.txt` — your dedupe gate, updated by
+  `filter_new_drivers.ps1 -UpdateExisting`
 
-`tools/rebuild_manifest.ps1` scans `drivers/` on disk. Run it with your local `vgk.sys` present,
-or its manifest row will disappear.
-
-Historical `collected2` distribution (descriptor-aware v3):
-
-| Reach | Files |
-|---|---|
-| `NO-DEVICE` | 58 |
-| `SDDL-ACTIVE-OPEN` | 46 |
-| `DEFAULT-ADMIN` | 18 |
-| `SDDL-ACTIVE-RESTRICTED` | 11 |
-| `INF-SDDL-OPEN` | 2 |
-| `SDDL-UNPROVEN` | 0 |
-
-Note: the earlier “retracted” list in this section was itself wrong. v3 descriptor validation
-reinstated ASRock `MsIo` v1.3, ROCCAT `ScpVBus`, EVGA permissive descriptors, and the
-NZXT/SteelSeries WDF sets; see the historical reports in `audits/legacy/`.
-
-### Priority queue
-
-The live queue is `audits/STATUS.md`. Do not duplicate it here; it changes as audits land.
+The live audit queue is `audits/STATUS.md`. Do not duplicate it here; it changes as audits land.
 
 ---
 
 ## 9. Adding more drivers — start here
 
-Vendors not yet mined that fit the "obscure" profile:
+Vendors that fit the "obscure" profile and are rarely mined:
 
 - **Cooling / water**: Aquacomputer `aquasuite`, EK `Loop Connect`, Alphacool, Phanteks,
   be quiet!, ARCTIC, Montech, InWin `iWizard`, DeepCool, SilverStone
@@ -407,14 +387,14 @@ winget download -e --id <ID> --download-directory downloads `
 
 # 3. harvest  (auto-handles zip/7z/cab/msi/NSIS/Inno/Burn; flat .sys output)
 powershell -File "tools\harvest.ps1" -Path "downloads\<file>" `
-  -Vendor <Vendor> -PackageId <ID> -Out "downloads\_harvest" -Index "indexes\collections\collected6\_index.jsonl"
+  -Vendor <Vendor> -PackageId <ID> -Out "downloads\_harvest" -Index "indexes\collections\collected<N>\_index.jsonl"
 
 # 4. dedupe (copies only NEW .sys into drivers/)
 powershell -File "tools\filter_new_drivers.ps1" -SourceDir "downloads\_harvest" -OutDir "drivers" `
-  -Manifest "indexes\collections\collected6\manifest.csv" -UpdateExisting
+  -Manifest "indexes\collections\collected<N>\manifest.csv" -UpdateExisting
 
 # 5. rebuild the inventory and delete the scratch
-powershell -File "tools\rebuild_manifest.ps1" -NewBatch collected6
+powershell -File "tools\rebuild_manifest.ps1" -NewBatch collected<N>
 Get-ChildItem downloads -Force |
   Where-Object { $_.Name -notin @('README.md','.gitkeep') } |
   Remove-Item -Recurse -Force
@@ -430,7 +410,7 @@ Inno > 6.0.5 package once detected.
 `_index.jsonl` is append-only, one JSON object per harvested binary, and accumulates across runs.
 
 ```powershell
-$base = 'indexes\collections\collected2'
+$base = 'indexes\collections\collected<N>'
 $rows = Get-Content "$base\_index.jsonl" | ForEach-Object { $_ | ConvertFrom-Json }
 $u    = $rows | Group-Object SHA256 | ForEach-Object { $_.Group[0] }   # dedupe by hash
 $u | ForEach-Object {
@@ -450,33 +430,32 @@ $u | ForEach-Object {
 ## 11. Folder layout
 
 ```
-driver_candidates\
-├── START_HERE.md
+driver_lab\
+├── AGENTS.md
 ├── PROJECT_GOAL.md
 ├── PROJECT_MAP.md
 ├── README.md
-├── VM_ACCESS.md (local, gitignored)
+├── WANTED_LEDGER.md
 ├── DRIVER_COLLECTION_PLAYBOOK.md   this file
-├── drivers\                        386 flat .sys + README.md
+├── drivers\                        your flat .sys corpus (empty at start)
 ├── downloads\                      disposable download/extract scratch
 ├── audits\
 │   ├── README.md
-│   ├── STATUS.md                   single status/queue
+│   ├── STATUS.md                   your single status/queue
 │   ├── scope\                      AUDIT_SCOPE, SEVERITY, agent prompt
-│   ├── reports\                    current per-driver reports
-│   ├── legacy\                     historical reports/ledger/VM batch 2
-│   ├── evidence\                   dynamic evidence logs/scripts
+│   ├── reports\                    your per-driver reports
+│   ├── evidence\                   your evidence logs
 │   └── projects\                   Ghidra/analysis projects
 ├── poc\
-│   ├── historical\                 t4-t7 PoC sources/binaries (t8-t10 in audits/legacy/vm_batch2)
-│   └── reference\                  dbk64.sys calibration driver
+│   ├── dynamic\                    VM-only PoC logs and helpers
+│   └── reference\                  reference PoC material
 ├── indexes\
-│   ├── drivers_manifest.csv        canonical 386-driver inventory
+│   ├── drivers_manifest.csv        your inventory (generated)
 │   ├── dedupe\                     existing/known-bad hashes
 │   ├── collections\                manifests, summaries, URLs
 │   └── driverstore\                DriverStore scan outputs
-└── tools\                          harvest, triage, filter, innoextract
+└── tools\                          harvest, triage, filter (fetched from example)
 ```
 
-No `packages\`, `extract\`, `work\`, `manual\`, or `staging\` directories remain. The installer
+No `packages\`, `extract\`, `work\`, `manual\`, or `staging\` directories. The installer
 and extract tree live in `downloads\` and are deleted immediately after harvest (section 2.1).

@@ -1,9 +1,9 @@
 # tools/
 
-The scripts are **not vendored on this branch**. Fetch them from `main`:
+The scripts are **not vendored on this branch**. Fetch them from `example`:
 
 ```powershell
-$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/main'
+$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/example'
 $base = "$raw/tools"
 'harvest.ps1','filter_new_drivers.ps1','rebuild_manifest.ps1','triage_scan.ps1' |
   ForEach-Object { Invoke-WebRequest "$base/$_" -OutFile "tools\$_" -UseBasicParsing }
