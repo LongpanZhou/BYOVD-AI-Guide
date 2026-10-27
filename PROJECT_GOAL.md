@@ -1,4 +1,4 @@
-# Project Goal — Set Up and Run Your Own Hunt
+# Project Goal - Set Up and Run Your Own Hunt
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -6,7 +6,7 @@
 
 > [!NOTE]
 > This branch ships **instructions only**: the folder skeleton, the ledgers, and the method. Your
-> lab starts at zero — no drivers, no reports, no verdicts. The worked example (a full corpus and
+> lab starts at zero - no drivers, no reports, no verdicts. The worked example (a full corpus and
 > its results) lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example)
 > branch.
 
@@ -15,14 +15,14 @@
 Set up your own lab and run your own hunt for **kernel memory-write vulnerabilities** in Windows
 drivers. The division of labor:
 
-- **You provide the drivers** — download vendor utility packages and harvest the `.sys` files
+- **You provide the drivers** - download vendor utility packages and harvest the `.sys` files
   (or start from your own host's drivers).
-- **You drive, the AI executes** — you ask an AI agent to run each step of the loop:
-  collect → blocklist-check → audit → dynamic-verify → record.
-- **The lab accumulates your verdicts** — one report and one `audits/STATUS.md` row per driver,
+- **You drive, the AI executes** - you ask an AI agent to run each step of the loop:
+  collect -> blocklist-check -> audit -> dynamic-verify -> record.
+- **The lab accumulates your verdicts** - one report and one `audits/STATUS.md` row per driver,
   in your own copy of this structure.
 
-The target class lives in [`WANTED_LEDGER.md`](WANTED_LEDGER.md) — edit it to re-target the hunt.
+The target class lives in [`WANTED_LEDGER.md`](WANTED_LEDGER.md) - edit it to re-target the hunt.
 The single question for every driver is:
 
 > Can this driver be made to write kernel memory, from the access I have?
@@ -31,8 +31,8 @@ The single question for every driver is:
 
 | Axis | Values |
 |---|---|
-| **Reach** | `R1` unprivileged / authenticated user · `R2` local administrator (**in scope**) · `R3` devnode / hardware / composition |
-| **Setup** | `none` · `service` · `devnode` · `hardware` · `composition` — a severity field, **not** a disqualifier |
+| **Reach** | `R1` unprivileged / authenticated user ; `R2` local administrator (**in scope**) ; `R3` devnode / hardware / composition |
+| **Setup** | `none` ; `service` ; `devnode` ; `hardware` ; `composition` - a severity field, **not** a disqualifier |
 | **Memory write** | arbitrary write, OOB/pool overflow, write-what-where, physical-memory write, MDL mapping, kernel-VA corruption |
 | **Out of scope** | input injection, RGB/config control, DoS-only, info-leak-only, hardware-only writes |
 | **Corpus payload** | `.sys` only. No installers, `.inf`/`.cat`, app trees, or screenshots in `drivers/`. |
@@ -59,14 +59,14 @@ Use [`audits/scope/SEVERITY.md`](audits/scope/SEVERITY.md):
 | [`PROJECT_MAP.md`](PROJECT_MAP.md) | Folder/file map |
 | [`PROJECT_GOAL.md`](PROJECT_GOAL.md) | This file; single statement of the goal |
 | [`audits/README.md`](audits/README.md) | Audits tree layout |
-| [`audits/STATUS.md`](audits/STATUS.md) | **Single live status and queue** — yours, starts empty |
+| [`audits/STATUS.md`](audits/STATUS.md) | **Single live status and queue** - yours, starts empty |
 | [`audits/scope/AUDIT_SCOPE.md`](audits/scope/AUDIT_SCOPE.md) | Reach tiers, setup field, what counts |
-| [`audits/scope/SEVERITY.md`](audits/scope/SEVERITY.md) | MW1–MW4 scale; `HW-ONLY` exclusion |
+| [`audits/scope/SEVERITY.md`](audits/scope/SEVERITY.md) | MW1-MW4 scale; `HW-ONLY` exclusion |
 | [`audits/scope/STATIC_ANALYSIS_AGENT_PROMPT.md`](audits/scope/STATIC_ANALYSIS_AGENT_PROMPT.md) | Default prompt for every summoned audit agent |
 | [`DRIVER_COLLECTION_PLAYBOOK.md`](DRIVER_COLLECTION_PLAYBOOK.md) | How to download/harvest more drivers |
 | [`downloads/README.md`](downloads/README.md) | Future-download quick-start |
 
-## End state — what your lab looks like after the loop runs
+## End state - what your lab looks like after the loop runs
 
 Everything below starts **empty** on this branch and fills up as you run each step:
 
@@ -76,7 +76,7 @@ Everything below starts **empty** on this branch and fills up as you run each st
 | `indexes/` | your manifest, dedupe hashes, batch metadata | collect step |
 | `audits/evidence/` | blocklist checks, dump triage | blocklist / dynamic steps |
 | `audits/reports/` | one canonical report per driver | audit step |
-| `audits/STATUS.md` | one verdict row per driver — **the single live queue** | record step |
+| `audits/STATUS.md` | one verdict row per driver - **the single live queue** | record step |
 | `poc/dynamic/` | VM-only PoC logs | dynamic step |
 
 **The single live status/queue source is [`audits/STATUS.md`](audits/STATUS.md).** Do not copy the
@@ -91,4 +91,4 @@ queue into other docs.
 - **Download hygiene:** extract in `downloads/`; run
   `tools/filter_new_drivers.ps1 -OutDir drivers -UpdateExisting` to copy only deduped `.sys` into
   `drivers/` and update the gate; delete the installer, extract tree, and every non-driver payload
-  before the batch is accepted. See `DRIVER_COLLECTION_PLAYBOOK.md` §2.1 and `downloads/README.md`.
+  before the batch is accepted. See `DRIVER_COLLECTION_PLAYBOOK.md` section 2.1 and `downloads/README.md`.

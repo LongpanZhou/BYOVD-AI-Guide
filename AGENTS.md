@@ -1,4 +1,4 @@
-# AGENTS.md — instructions for AI agents
+# AGENTS.md - instructions for AI agents
 
 You are working in an instruction-only BYOVD research lab. This branch has no corpus, no reports,
 and no tool binaries; your job is to build the lab and run the method.

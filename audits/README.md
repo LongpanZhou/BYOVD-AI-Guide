@@ -1,8 +1,8 @@
-# audits/ — analysis
+# audits/ - analysis
 
 | Path | What goes here |
 |---|---|
-| `STATUS.md` | live verdict queue — the single source of truth |
+| `STATUS.md` | live verdict queue - the single source of truth |
 | `reports/` | one canonical `<driver>.md` per driver |
 | `evidence/` | dated blocklist checks, harness logs, dump triage |
 | `scope/` | reach tiers, severity scale, default audit prompt |

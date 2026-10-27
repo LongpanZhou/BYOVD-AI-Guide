@@ -1,4 +1,4 @@
-# Quickstart — from clone to first audit
+# Quickstart - from clone to first audit
 
 This is the 10-minute walkthrough for this repo's default branch. It assumes you already cloned
 the repo (see the README). Run every command from the repo root unless a step says otherwise.
@@ -7,26 +7,26 @@ the repo (see the README). Run every command from the repo root unless a step sa
 
 ```text
 driver_lab/
-├── AGENTS.md                     # AI operating instructions
-├── PROJECT_GOAL.md               # the hunt goal — edit to re-target
-├── WANTED_LEDGER.md              # what counts as a find
-├── audits/
-│   ├── STATUS.md                 # empty verdict queue
-│   ├── reports/                  # one canonical report per driver
-│   ├── scope/                    # scope, severity, default audit prompt
-│   ├── evidence/                 # dated proof (blocklist checks, logs)
-│   └── projects/                 # analysis state (decomp)
-├── drivers/                      # flat .sys corpus
-├── indexes/
-│   ├── drivers_manifest.csv      # generated inventory
-│   ├── dedupe/                   # hash gate + known-bad list
-│   ├── collections/              # per-batch provenance
-│   └── driverstore/              # discovery output
-├── poc/
-│   ├── dynamic/                  # harness + results/<date>/
-│   └── reference/               # calibration drivers only
-├── tools/                        # fetched from example
-└── downloads/                    # gitignored scratch
+|-- AGENTS.md                     # AI operating instructions
+|-- PROJECT_GOAL.md               # the hunt goal - edit to re-target
+|-- WANTED_LEDGER.md              # what counts as a find
+|-- audits/
+|   |-- STATUS.md                 # empty verdict queue
+|   |-- reports/                  # one canonical report per driver
+|   |-- scope/                    # scope, severity, default audit prompt
+|   |-- evidence/                 # dated proof (blocklist checks, logs)
+|   \-- projects/                 # analysis state (decomp)
+|-- drivers/                      # flat .sys corpus
+|-- indexes/
+|   |-- drivers_manifest.csv      # generated inventory
+|   |-- dedupe/                   # hash gate + known-bad list
+|   |-- collections/              # per-batch provenance
+|   \-- driverstore/              # discovery output
+|-- poc/
+|   |-- dynamic/                  # harness + results/<date>/
+|   \-- reference/               # calibration drivers only
+|-- tools/                        # fetched from example
+\-- downloads/                    # gitignored scratch
 ```
 
 Two rules keep the tree clean:
@@ -37,10 +37,10 @@ Two rules keep the tree clean:
 
 ## 2. Add the tools and the blocklist gate
 
-Collection needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` §3):
+Collection needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` section 3):
 **7-Zip** at `C:\Program Files\7-Zip\7z.exe`, **innoextract**
-([constexpr.org/innoextract](https://constexpr.org/innoextract/) → `tools\innoextract\innoextract.exe`,
-Inno Setup ≤ 6.0.5), and **innounp** for Inno Setup > 6.0.5
+([constexpr.org/innoextract](https://constexpr.org/innoextract/) -> `tools\innoextract\innoextract.exe`,
+Inno Setup <= 6.0.5), and **innounp** for Inno Setup > 6.0.5
 (`winget install JurgenRathlev.innounp`).
 
 The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
@@ -82,7 +82,7 @@ winget download -e --id Elgato.EpocCam --download-directory . `
 ```
 
 `winget download` fetches the vendor package **without installing or executing it**. The file it
-writes is an archive or installer — harvest it, never run it:
+writes is an archive or installer - harvest it, never run it:
 
 ```powershell
 ..\tools\harvest.ps1 -Path .\<downloaded-file> -Vendor Elgato -PackageId Elgato.EpocCam `
@@ -91,8 +91,10 @@ writes is an archive or installer — harvest it, never run it:
 
 Expected output: one `DRIVER <name> <bytes> <sig> <reach>` line per accepted `.sys`, then
 `RESULT Elgato.EpocCam drivers=2`. The `_index.jsonl` file is created automatically.
+From batch 2 on, point `-Index` (and `-Manifest` with `rebuild_manifest.ps1 -NewBatch`) at
+`collected2`, `collected3`, ... so provenance stays per batch.
 
-Dedupe into the corpus — never copy by hand:
+Dedupe into the corpus - never copy by hand:
 
 ```powershell
 ..\tools\filter_new_drivers.ps1 -SourceDir .\_harvest -OutDir ..\drivers `
@@ -121,15 +123,16 @@ Microsoft blocklist and shows how to compare a candidate's hashes. Results go in
 
 ## 5. Audit, verify, record
 
-1. [Guide 03](03_audit.md) — static audit; write `audits\reports\<driver>.md`.
-2. [Guide 04](04_dynamic_vm.md) — prove the primitive in a disposable VM; log under
+1. [Guide 03](03_audit.md) - static audit; write `audits\reports\<driver>.md`.
+2. [Guide 04](04_dynamic_vm.md) - prove the primitive in a disposable VM; log under
    `poc\dynamic\results\<date>\`.
-3. [`audits/STATUS.md`](../audits/STATUS.md) — add or update one verdict row.
+3. [`audits/STATUS.md`](../audits/STATUS.md) - add or update one verdict row.
 
 ## 6. What "done" looks like
 
 - `drivers\` contains `<name>_<hash8>.sys` files, flat.
 - `indexes\collections\collected1\manifest.csv` lists every accepted file with its SHA-256.
 - `audits\reports\` has one canonical report for the driver.
-- `audits\STATUS.md` has one row for that report.
+- `audits\STATUS.md` has one row for that report, and the `Last updated:` line above the
+  corpus table is re-stamped with today's date.
 - `downloads\` is empty except `README.md`.

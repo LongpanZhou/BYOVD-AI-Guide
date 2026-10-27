@@ -1,4 +1,4 @@
-# indexes/ — generated state
+# indexes/ - generated state
 
 Every number quoted in a README comes from here. If the two disagree, this folder wins.
 

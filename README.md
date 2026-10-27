@@ -2,7 +2,7 @@
 
 This repo is the **setup and instruction set** for an AI-driven Windows driver research lab.
 It contains the folder skeleton, the goal/ledger files, and the method. It contains **no drivers,
-no audit reports, no corpus, and no tool binaries** — the worked example (386 `.sys` files, 257
+no audit reports, no corpus, and no tool binaries** - the worked example (386 `.sys` files, 257
 reports, scripts) lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example)
 branch.
 
@@ -10,7 +10,7 @@ branch.
 
 | Path | Purpose |
 |---|---|
-| `AGENTS.md` | operating instructions for an AI agent — start here if an AI is doing the work |
+| `AGENTS.md` | operating instructions for an AI agent - start here if an AI is doing the work |
 | `PROJECT_GOAL.md` | the canonical goal; edit this to re-target the hunt |
 | `WANTED_LEDGER.md` | what counts as a find |
 | `PROJECT_MAP.md` | folder map for this branch |
@@ -55,15 +55,15 @@ Get-ChildItem PROJECT_GOAL.md, WANTED_LEDGER.md, audits\STATUS.md, AGENTS.md
 
 ## 3. Fetch the tools and the blocklist gate
 
-Collection also needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` §3):
+Collection also needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` section 3):
 
-- **7-Zip** at `C:\Program Files\7-Zip\7z.exe` — the primary extractor; its path is hardcoded
+- **7-Zip** at `C:\Program Files\7-Zip\7z.exe` - the primary extractor; its path is hardcoded
   in `harvest.ps1`
-- **innoextract** (Inno Setup ≤ 6.0.5) — download from
+- **innoextract** (Inno Setup <= 6.0.5) - download from
   [constexpr.org/innoextract](https://constexpr.org/innoextract/), drop at
   `tools\innoextract\innoextract.exe`
-- **innounp** (Inno Setup > 6.0.5) — `winget install JurgenRathlev.innounp`
-- Optional: **WiX 3.14** → install `dark.exe` at `tools\wix\` only if a package needs
+- **innounp** (Inno Setup > 6.0.5) - `winget install JurgenRathlev.innounp`
+- Optional: **WiX 3.14** -> install `dark.exe` at `tools\wix\` only if a package needs
   Burn/MSI decompilation.
 
 The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
@@ -79,7 +79,7 @@ Get-ChildItem tools\*.ps1, indexes\dedupe\known_bad_hashes.txt | Select-Object N
 ```
 
 Expected: four `.ps1` files, plus `known_bad_hashes.txt` at roughly 380 KB (5,833 hashes). The
-filter **refuses to run without it** — a lab with no blocklist would happily accept known-bad
+filter **refuses to run without it** - a lab with no blocklist would happily accept known-bad
 drivers.
 
 ## 4. Verify the tools
@@ -115,7 +115,7 @@ Open the folder in OpenCode (or another agent) and start with:
 
 `AGENTS.md` carries the hard rules: scope, where to write, what never to run on the host, and how
 to keep `audits/STATUS.md` current. Edit `PROJECT_GOAL.md` and `WANTED_LEDGER.md` first if you
-want a different target class — the rest of the loop keys off those two files.
+want a different target class - the rest of the loop keys off those two files.
 
 ## 6. The loop
 
@@ -132,11 +132,11 @@ want a different target class — the rest of the loop keys off those two files.
 | Term | Meaning |
 |---|---|
 | `R1` | unprivileged / authenticated user |
-| `R2` | local administrator — **in scope** |
+| `R2` | local administrator - **in scope** |
 | `R3` | devnode / hardware / composition |
-| `W0`–`W3P` | write quality (`W3P` = physical-memory only) |
-| `MW1`–`MW4` | severity, highest to lowest |
-| `HW-ONLY` | MSR / port / PCI / SMBus / EC / MMIO — does not count as a memory write |
+| `W0`-`W3P` | write quality (`W3P` = physical-memory only) |
+| `MW1`-`MW4` | severity, highest to lowest |
+| `HW-ONLY` | MSR / port / PCI / SMBus / EC / MMIO - does not count as a memory write |
 
 Full definitions: [`audits/scope/`](audits/scope/).
 

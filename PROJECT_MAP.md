@@ -5,12 +5,12 @@
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
 One clean tree. Every folder exists on clone; only instruction files and folder READMEs are
-populated. Counts here are **zero by design** — the worked example (386 drivers, 257 reports) is
+populated. Counts here are **zero by design** - the worked example (386 drivers, 257 reports) is
 on [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example).
 
 | Path | What it is |
 |---|---|
-| `AGENTS.md` | AI operating instructions — the reading order |
+| `AGENTS.md` | AI operating instructions - the reading order |
 | `PROJECT_GOAL.md` | goal, scope, severity |
 | `WANTED_LEDGER.md` | accepted vulnerability classes |
 | `README.md` | setup |

@@ -1,4 +1,4 @@
-# Collecting drivers — the hunt
+# Collecting drivers - the hunt
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -22,16 +22,16 @@ Signed, exploitable kernel drivers ship with the software people actually instal
 | SDKs / redistributables | Windows driver SDK samples, vendor SDKs, "driver only" cab |
 
 Windows also keeps every driver it has loaded in `C:\Windows\System32\drivers` (and per-machine
-`DriverStore\FileRepository`) — a good first batch is harvesting candidates from there before the
+`DriverStore\FileRepository`) - a good first batch is harvesting candidates from there before the
 vendor sweep.
 
 ## 2. The rules
 
-- Only `7-Zip`/`expand`/`dark.exe`/`innoextract`/`innounp` may touch an installer — those are unpackers.
+- Only `7-Zip`/`expand`/`dark.exe`/`innoextract`/`innounp` may touch an installer - those are unpackers.
   `innoextract` is not tracked in the repo; download it separately.
 - Skip installers > 500 MB (Electron/launcher blobs).
 - Delete the installer and the extract tree immediately after harvesting; keep only `.sys`.
-- Never collect a driver you already hashed — dedupe against `indexes/dedupe/existing_hashes.txt`.
+- Never collect a driver you already hashed - dedupe against `indexes/dedupe/existing_hashes.txt`.
 - Never load anything you collected on your daily host. Dynamic testing happens only in a
   disposable VM snapshot.
 
@@ -52,7 +52,7 @@ winget download -e --id Elgato.EpocCam --download-directory . `
 
 > [!NOTE]
 > The example is Elgato EpocCam: a small package whose two drivers are **not** on the blocklist.
-> MSI Afterburner also yields drivers, but they are the blocklisted RTCore family — a good
+> MSI Afterburner also yields drivers, but they are the blocklisted RTCore family - a good
 > negative test for the gate, not a first batch.
 
 > [!TIP]
@@ -66,7 +66,11 @@ extractors, checks every extracted `.sys` against the dedupe index, and writes a
 line per accepted driver. Expected output is one `DRIVER ...` line per accepted `.sys`, then
 `RESULT Elgato.EpocCam drivers=2`.
 
-Dedupe into the corpus with the mandatory gate — never copy by hand:
+Size guardrails: `harvest.ps1` ignores `.sys` stubs under 1 KB, and the dedupe gate skips
+anything under 4 KB - genuine drivers are always much larger, so treat tiny `.sys` hits as
+install-packaging noise rather than investing in them.
+
+Dedupe into the corpus with the mandatory gate - never copy by hand:
 
 ```powershell
 cd ..   # back to the repo root
@@ -89,16 +93,18 @@ prompt, the verdicts in `STATUS.md`) keys off that file.
 
 Everything about *which* drivers you chase is data in `indexes/`, never code:
 
-- **Vendor list** — edit `downloads/README.md` (the quickstart) plus one
+- **Vendor list** - edit `downloads/README.md` (the quickstart) plus one
   `indexes/collections/collected<NEW_N>/README.md` with the URLs and download commands you used.
-- **Corpus manifest** — `indexes/drivers_manifest.csv` is regenerated from `drivers/`; the
+- **Corpus manifest** - `indexes/drivers_manifest.csv` is regenerated from `drivers/`; the
   `Batch` column is how you slice the corpus later.
-- **Known-bad list** — `indexes/dedupe/known_bad_hashes.txt` is a plain SHA-256-per-line
-  text file that seeds your gate (auto-skip already known/exploited hashes). Refresh it from
-  the live lists the way [`02_blocklist_check.md`](02_blocklist_check.md) shows — the tools own
-  the gate file, so never edit it by hand.
-- **Severity/scope rules** — `audits/scope/SEVERITY.md` and `AUDIT_SCOPE.md` define what counts
+- **Known-bad list** - `indexes/dedupe/known_bad_hashes.txt` is a plain SHA-256-per-line
+  text file that seeds your gate (auto-skip already known/exploited hashes). Setup fetches it;
+  no repo tool rewrites it. To refresh: re-derive a SHA-256-per-line file from the live
+  LOLDrivers / Microsoft exports (see [`02_blocklist_check.md`](02_blocklist_check.md)) and
+  replace the file - never tweak individual hashes by hand, and keep the dated raw lists in
+  `audits/evidence/`.
+- **Severity/scope rules** - `audits/scope/SEVERITY.md` and `AUDIT_SCOPE.md` define what counts
   as a memory write; copy then customize them to your own hunt focus (e.g. include EVTs for
   physical drive writes).
-- **STATUS** — `audits/STATUS.md`, one row per driver/battery. This is the file the agent
+- **STATUS** - `audits/STATUS.md`, one row per driver/battery. This is the file the agent
   reads before every audit so nothing is duplicated.

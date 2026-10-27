@@ -15,7 +15,7 @@ Invoke-WebRequest "$raw/indexes/dedupe/known_bad_hashes.txt" `
 
 | Script | Purpose |
 |---|---|
-| `harvest.ps1` | extract `.sys` from installers — never executes them |
+| `harvest.ps1` | extract `.sys` from installers - never executes them |
 | `filter_new_drivers.ps1` | mandatory dedupe gate; the only writer into `drivers/` |
 | `rebuild_manifest.ps1` | rebuild `indexes/drivers_manifest.csv` |
 | `triage_scan.ps1` | PE import / device / SDDL / reach scan |

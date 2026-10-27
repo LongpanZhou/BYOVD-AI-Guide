@@ -1,4 +1,4 @@
-# Dynamic testing — only inside a disposable VM, only against your own pages
+# Dynamic testing - only inside a disposable VM, only against your own pages
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -12,7 +12,7 @@
 Before any dynamic work, set up the guest the whole method depends on:
 
 - Create a disposable Windows 10/11 VM (VMware Workstation or equivalent). It is a
-  single-purpose target — nothing personal on it.
+  single-purpose target - nothing personal on it.
 - Install the harness tooling: PowerShell 5+ and the .NET SDK (the harness pattern is C#),
   plus WinDbg for dump analysis.
 - Take one baseline snapshot (e.g. `pre-driver-tests`) **before** any driver is loaded; revert
@@ -31,30 +31,30 @@ Before any dynamic work, set up the guest the whole method depends on:
 
 > [!NOTE]
 > The self-test harness and the `run_<driver>.ps1` wrappers are **not shipped** in this repo.
-> `poc/dynamic/` on `example` contains only the helper scripts (`get_privs.ps1`,
-> `grant_lockmem.ps1`, `list_minidumps.ps1`, `ObjList.cs`). Treat the block below as the shape to
+> `poc/dynamic/` on `example` contains only that script set plus a folder README
+> (`get_privs.ps1`, `grant_lockmem.ps1`, `list_minidumps.ps1`, `ObjList.cs`). Treat the block below as the shape to
 > implement, not something you can run as-is.
 
 ```text
 ControlledIoctlSelfTest.exe
-├── allocate 3 PFNs            (SeLockMemoryPrivilege needed)
-├── map two via the driver's own IOCTL  (or per-driver config)
-├── fill page A with a pattern, zero-fill page B ── the two pages are *yours*
-├── poke the driver:           "copy PA(A) -> mappedVA(B)"
-└── verify:  pattern seen in B?  write primitive confirmed → finding recorded
+|-- allocate 3 PFNs            (SeLockMemoryPrivilege needed)
+|-- map two via the driver's own IOCTL  (or per-driver config)
+|-- fill page A with a pattern, zero-fill page B -- the two pages are *yours*
+|-- poke the driver:           "copy PA(A) -> mappedVA(B)"
+\-- verify:  pattern seen in B?  write primitive confirmed -> finding recorded
 ```
 
-Each driver gets a tiny `.ps1` wrapper (`run_<driver>.ps1`) that: create service → start →
-harness → stop → delete service → revert snapshot; the wrapper writes a log under
+Each driver gets a tiny `.ps1` wrapper (`run_<driver>.ps1`) that: create service -> start ->
+harness -> stop -> delete service -> revert snapshot; the wrapper writes a log under
 `poc/dynamic/results/` so every claim in `audits/evidence/` has a file backing it.
 
 ## 3. What can go wrong, and the countermeasure
 
 | Failure | Try this |
 |---|---|
-| `MapUserPhysicalPages` not permitted | use the driver's own PA→user mapping IOCTL as the mapper (fewer assumptions) |
+| `MapUserPhysicalPages` not permitted | use the driver's own PA->user mapping IOCTL as the mapper (fewer assumptions) |
 | Device open fails with error 2 (`ERROR_FILE_NOT_FOUND`) | the C# `CreateFileW` P/Invoke *must* set `CharSet.Unicode`, or the path is sent as garbage bytes |
-| Harness bugcheck | do NOT assume the driver is malicious — check the dump; crashes are often the harness's own bug (e.g. a field-order mistake in the request struct) |
+| Harness bugcheck | do NOT assume the driver is malicious - check the dump; crashes are often the harness's own bug (e.g. a field-order mistake in the request struct) |
 | Driver loads but no device | verify the object-manager namespace and the service actually reported RUNNING |
 
 Pull the guest dump out (`C:\Windows\MEMORY.DMP`) and analyze it with WinDbg (`!analyze -v`).

@@ -1,4 +1,4 @@
-# Audit Scope — canonical (2026-10-24)
+# Audit Scope - canonical (2026-10-24)
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -6,8 +6,8 @@
 
 Canonical goal: [`../../PROJECT_GOAL.md`](../../PROJECT_GOAL.md).
 
-**Default agent prompt:** `audits\scope\STATIC_ANALYSIS_AGENT_PROMPT.md` —
-memory-write-only, admin-inclusive, with the MW1–MW4 scale.
+**Default agent prompt:** `audits\scope\STATIC_ANALYSIS_AGENT_PROMPT.md` -
+memory-write-only, admin-inclusive, with the MW1-MW4 scale.
 
 ## Objective
 
@@ -35,7 +35,7 @@ Every report must state `Setup required: none | service | devnode | hardware | c
 
 **Architecture rule:** a non-loadable build (i386 on x64, ARM64 on x64, IA-64, Alpha AXP,
 PowerPC) is `BLOCKED (architecture)` even if a group report records a sibling's static primitive.
-Do not count it as MW1–MW4 or NO-MEMORY-WRITE in the aggregate register.
+Do not count it as MW1-MW4 or NO-MEMORY-WRITE in the aggregate register.
 
 ## What counts
 
@@ -65,7 +65,7 @@ Use `audits\scope\SEVERITY.md`. The scale is memory-write-only:
 ## Report requirements
 
 - File, SHA-256, analysis date, static-only method.
-- Entry → device/interface → effective DACL → dispatch → IOCTL table → access checks → primitive → verdict.
+- Entry -> device/interface -> effective DACL -> dispatch -> IOCTL table -> access checks -> primitive -> verdict.
 - `Reach: unprivileged | authenticated user | local administrator | devnode/hardware`.
 - `Setup required: none | service | devnode | hardware | composition`.
 - `Write quality: W1 | W2 | W3 | W3P | W0` (`W3P` = physical-memory/PA-only).

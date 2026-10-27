@@ -1,4 +1,4 @@
-# poc/ — VM-only harnesses
+# poc/ - VM-only harnesses
 
 | Path | What goes here |
 |---|---|
