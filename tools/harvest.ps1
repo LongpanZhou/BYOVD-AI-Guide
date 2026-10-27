@@ -18,9 +18,9 @@ $inno   = Join-Path $tools 'innoextract\innoextract.exe'
 $triage = Join-Path $tools 'triage_scan.ps1'
 if (-not $Out)   { $Out   = Join-Path $projectRoot 'downloads\_harvest' }
 if (-not $Work)  { $Work  = Join-Path $projectRoot 'downloads\_hx' }
-if (-not $Index) { $Index = Join-Path $projectRoot 'indexes\collections\collected6\_index.jsonl' }
-if (-not (Test-Path $inno))   { $inno   = Join-Path $env:TEMP "opencode\tools_inno\bin\innoextract.exe" }
-if (-not (Test-Path $triage)) { $triage = 'C:\Users\27175\AppData\Local\Temp\opencode\triage_scan.ps1' }
+if (-not $Index) { $Index = Join-Path $projectRoot 'indexes\collections\collected1\_index.jsonl' }
+if (-not (Test-Path $inno))   { Write-Warning "innoextract not found at $inno — Inno Setup <= 6.0.5 packages cannot be extracted this run (see DRIVER_COLLECTION_PLAYBOOK.md §3)." }
+if (-not (Test-Path $triage)) { Write-Warning "triage_scan.ps1 not found at $triage — triage columns will be skipped." }
 $index  = $Index
 
 New-Item -ItemType Directory -Force -Path $Out, $Work, (Split-Path -Parent $index) | Out-Null

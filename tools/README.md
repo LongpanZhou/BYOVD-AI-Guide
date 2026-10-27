@@ -22,17 +22,17 @@ Prerequisite: **7-Zip** at `C:\Program Files\7-Zip\7z.exe`. Optional: WiX in `to
 # 1. download into ..\downloads\
 # 2. harvest
 .\harvest.ps1 -Path ..\downloads\<installer> -Vendor <Vendor> -PackageId <ID> `
-  -Out ..\downloads\_harvest -Index ..\indexes\collections\collected6\_index.jsonl
+  -Out ..\downloads\_harvest -Index ..\indexes\collections\collected<N>\_index.jsonl
 
 # 3. dedupe into the corpus
 .\filter_new_drivers.ps1 -SourceDir ..\downloads\_harvest -OutDir ..\drivers `
-  -Manifest ..\indexes\collections\collected6\manifest.csv `
+  -Manifest ..\indexes\collections\collected<N>\manifest.csv `
   -Existing ..\indexes\dedupe\existing_hashes.txt `
   -KnownBad ..\indexes\dedupe\known_bad_hashes.txt `
   -UpdateExisting
 
 # 4. rebuild the manifest
-.\rebuild_manifest.ps1 -NewBatch collected6
+.\rebuild_manifest.ps1 -NewBatch collected<N>
 ```
 
 WiX `dark.exe` is not retained. Re-install WiX into `tools/wix/` only while unpacking a Burn/MSI
