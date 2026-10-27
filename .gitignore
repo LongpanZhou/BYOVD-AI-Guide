@@ -2,11 +2,6 @@
 downloads/*
 !downloads/README.md
 !downloads/.gitkeep
-_collected*/**/packages/
-_collected*/**/extract/
-_collected*/**/work/
-_collected*/**/manual/
-_collected*/**/staging/
 _scratch/
 *.log
 !poc/dynamic/results/**

@@ -27,7 +27,7 @@ driver_lab/
 |   |-- collections/              # per-batch provenance
 |   \-- driverstore/              # discovery output
 |-- poc/
-|   |-- dynamic/                  # harness + results/<date>/
+|   |-- dynamic/                  # results/<date>/ (harness is your own)
 |   \-- reference/               # calibration drivers only
 |-- tools/                        # fetched from example
 \-- downloads/                    # gitignored scratch
@@ -118,7 +118,7 @@ Get-ChildItem downloads -Force |
 ```
 
 Expected: `manifest: <N> rows, <N> unique hashes`, and `downloads\` back to just `README.md`
-(plus the hidden `.gitkeep`)..
+(plus the hidden `.gitkeep`).
 
 ## 4. Check the blocklists
 

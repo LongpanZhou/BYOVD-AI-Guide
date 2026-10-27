@@ -107,5 +107,5 @@ Everything about *which* drivers you chase is data in `indexes/`, never code:
 - **Severity/scope rules** - `audits/scope/SEVERITY.md` and `AUDIT_SCOPE.md` define what counts
   as a memory write; copy then customize them to your own hunt focus (e.g. include EVTs for
   physical drive writes).
-- **STATUS** - `audits/STATUS.md`, one row per driver/battery. This is the file the agent
+- **STATUS** - `audits/STATUS.md`, one row per driver. This is the file the agent
   reads before every audit so nothing is duplicated.
