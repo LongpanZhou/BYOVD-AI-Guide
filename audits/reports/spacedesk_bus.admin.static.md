@@ -1,4 +1,4 @@
-﻿# spacedeskDriverBus.sys - admin-reach static memory-write audit
+# spacedeskDriverBus.sys - admin-reach static memory-write audit
 
 | Field | Value |
 |---|---|

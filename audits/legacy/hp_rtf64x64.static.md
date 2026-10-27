@@ -1,4 +1,4 @@
-﻿# Static audit - `rtf64x64_DFB5842C.sys` (HP / Realtek NDIS LWF, 3.15.1128.2025)
+# Static audit - `rtf64x64_DFB5842C.sys` (HP / Realtek NDIS LWF, 3.15.1128.2025)
 
 | | |
 |---|---|
