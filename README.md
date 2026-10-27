@@ -39,15 +39,9 @@ Invoke-WebRequest "$raw/indexes/dedupe/known_bad_hashes.txt" `
   -OutFile "indexes\dedupe\known_bad_hashes.txt" -UseBasicParsing
 ```
 
-Three extractors are also needed on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md`):
-
-- **7-Zip** at `C:\Program Files\7-Zip\7z.exe` - the primary extractor, path hardcoded in
-  `harvest.ps1`
-- **innoextract** (Inno Setup <= 6.0.5) from
-  [constexpr.org/innoextract](https://constexpr.org/innoextract/), drop at
-  `tools\innoextract\innoextract.exe`
-- **innounp** (Inno Setup > 6.0.5) - `winget install JurgenRathlev.innounp`
-- Optional: **WiX 3.14** `dark.exe` at `tools\wix\`, only for Burn/MSI packages
+Install the extractors the tools need (7-Zip, innoextract, and for Inno > 6.0.5 innounp) -
+full list, paths, and a WiX option in [`DRIVER_COLLECTION_PLAYBOOK.md`](DRIVER_COLLECTION_PLAYBOOK.md)
+section 3.
 
 Verify:
 

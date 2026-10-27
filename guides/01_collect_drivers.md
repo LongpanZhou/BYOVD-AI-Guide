@@ -93,8 +93,9 @@ prompt, the verdicts in `STATUS.md`) keys off that file.
 
 Everything about *which* drivers you chase is data in `indexes/`, never code:
 
-- **Vendor list** - edit `downloads/README.md` (the quickstart) plus one
-  `indexes/collections/collected<NEW_N>/README.md` with the URLs and download commands you used.
+- **Vendor list** - pick targets from the category menu in section 1 above plus the playbook's
+  rare-mined vendor list (section 9); record the URLs and download commands you actually used in
+  one `indexes/collections/collected<NEW_N>/urls.txt`.
 - **Corpus manifest** - `indexes/drivers_manifest.csv` is regenerated from `drivers/`; the
   `Batch` column is how you slice the corpus later.
 - **Known-bad list** - `indexes/dedupe/known_bad_hashes.txt` is a plain SHA-256-per-line

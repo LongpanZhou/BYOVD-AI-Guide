@@ -67,7 +67,8 @@ The original run used the `mcp-windbg` MCP server for this; any WinDbg setup wor
 Static or dynamic, every finding ends in the same format per driver before it is merged:
 
 ```
-Verdict: MW1 | reach=R2 setup=none write=W1 load=signed
+MW1 - reach=R2 setup=none write=W1 load=signed
 ```
 
-The one-line "why" lives in `audits/STATUS.md`.
+The one-line "why" lives in `audits/STATUS.md`. The exact format is defined in
+[`audits/scope/SEVERITY.md`](../audits/scope/SEVERITY.md).

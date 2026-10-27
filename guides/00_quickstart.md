@@ -117,7 +117,8 @@ Get-ChildItem downloads -Force |
   Remove-Item -Recurse -Force
 ```
 
-Expected: `manifest: <N> rows, <N> unique hashes`, and `downloads\` back to just `README.md`.
+Expected: `manifest: <N> rows, <N> unique hashes`, and `downloads\` back to just `README.md`
+(plus the hidden `.gitkeep`)..
 
 ## 4. Check the blocklists
 
@@ -139,4 +140,4 @@ Microsoft blocklist and shows how to compare a candidate's hashes. Results go in
 - `audits\reports\` has one canonical report for the driver.
 - `audits\STATUS.md` has one row for that report, and the `Last updated:` line above the
   corpus table is re-stamped with today's date.
-- `downloads\` is empty except `README.md`.
+- `downloads\` is empty except `README.md` (and the hidden `.gitkeep`).

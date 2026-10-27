@@ -70,7 +70,8 @@ known and is usually blocked from loading; an unstudied utility driver is a bett
 6. If a driver you expected is missing from `drivers/`, read the filter output before
    re-downloading. Do not keep the installer "just in case".
 
-Wipe the scratch after every batch: `downloads/` back to just `README.md`, `drivers/` holding
+Wipe the scratch after every batch: `downloads/` back to just `README.md` (plus the hidden
+`.gitkeep`), `drivers/` holding
 only `.sys` files plus its `README.md`. Never keep an installer "just in case".
 
 After accepting a batch, keep counts in **one** place: `audits/STATUS.md`, the single live
