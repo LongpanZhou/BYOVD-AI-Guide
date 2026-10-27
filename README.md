@@ -1,18 +1,10 @@
 # BYOVD AI Guide
 
-> [!CAUTION]
-> **AI-written docs.** Every README and guide here was written by an AI agent, so expect
-> mistakes. Verify commands, paths, versions, and hashes before relying on them.
-
 This repo is the **setup and instruction set** for an AI-driven Windows driver research lab.
 It contains the folder skeleton, the goal/ledger files, and the method. It contains **no drivers,
 no audit reports, no corpus, and no tool binaries** — the worked example (386 `.sys` files, 257
 reports, scripts) lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example)
 branch.
-
-> [!WARNING]
-> **Educational use only.** Lab research on a disposable VM. Never run a driver on your real
-> machine. Never touch systems you don't own.
 
 ## What you get
 
