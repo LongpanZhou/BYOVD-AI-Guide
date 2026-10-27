@@ -1,8 +1,7 @@
 # BYOVD AI Guide
 
-Start your own AI-driven Windows-driver (BYOVD) hunt here. The worked example (386 drivers,
-257 reports) lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example)
-branch - the original run's snapshot, so its wording may not match the current docs.
+Start your own AI-driven Windows-driver (BYOVD) hunt here. The original run (outdated setup)
+lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example) branch.
 
 ## Setup
 
