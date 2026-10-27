@@ -17,7 +17,7 @@ $KnownBad = [IO.Path]::GetFullPath($KnownBad)
 if (-not (Test-Path -LiteralPath $KnownBad)) {
   Write-Output "KNOWN-BAD LIST MISSING: $KnownBad"
   Write-Output "Refusing to run the dedupe gate without a blocklist."
-  Write-Output "Fetch indexes/dedupe/known_bad_hashes.txt from the example branch (see tools/README.md)."
+  Write-Output "known_bad_hashes.txt is missing or empty - refresh it from the live LOLDrivers feed per guides/00_quickstart.md section 2 (see tools/README.md)."
   exit 2
 }
 
