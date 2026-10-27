@@ -25,9 +25,9 @@ Invoke-WebRequest https://aka.ms/VulnerableDriverBlockList -OutFile downloads\bl
 Expand-Archive downloads\blocklist.zip downloads\blocklist_extract\
 ```
 
-Run these from the repo root; everything lands in the gitignored `downloads\` scratch. Keep
-only the dated check itself in `audits/evidence/` (section 4) - the raw downloads are wiped
-with the batch cleanup.
+Run these from the repo root; everything lands in the gitignored `downloads\` scratch, which the
+batch cleanup wipes - **after** copying the JSON/XML you want to keep as dated evidence into
+`audits/evidence/` (section 4). The batch-cleanup whitelist lives in guides 00 and the playbook.
 
 The XML is nested one level down:
 `downloads\blocklist_extract\VulnerableDriverBlockList\DriverPolicy_Enforced.xml`.

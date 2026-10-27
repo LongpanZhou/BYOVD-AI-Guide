@@ -31,9 +31,9 @@ Before any dynamic work, set up the guest the whole method depends on:
 
 > [!NOTE]
 > The self-test harness and the `run_<driver>.ps1` wrappers are **not shipped** in this repo.
-> `poc/dynamic/` on `example` contains only that script set plus a folder README
-> (`get_privs.ps1`, `grant_lockmem.ps1`, `list_minidumps.ps1`, `ObjList.cs`). Treat the block below as the shape to
-> implement, not something you can run as-is.
+> `poc/dynamic/` on `example` contains only that script set (`get_privs.ps1`,
+> `grant_lockmem.ps1`, `list_minidumps.ps1`, `ObjList.cs`) - plus a `poc/README.md` one level up.
+> Treat the block below as the shape to implement, not something you can run as-is.
 
 ```text
 ControlledIoctlSelfTest.exe
