@@ -48,15 +48,17 @@ collection and at every new batch**:
 
 ```powershell
 Invoke-WebRequest https://www.loldrivers.io/api/drivers.json -OutFile downloads\loldrivers.json
-(Get-Content downloads\loldrivers.json -Raw | ConvertFrom-Json).sha256 |
-  Where-Object { $_ } | Sort-Object -Unique |
-  Set-Content indexes\dedupe\known_bad_hashes.txt
+Select-String -Path downloads\loldrivers.json -AllMatches -Pattern '"sha256"\s*:\s*"([0-9a-fA-F]{64})"' |
+  ForEach-Object { $_.Matches } | ForEach-Object { $_.Groups[1].Value.ToLower() } |
+  Sort-Object -Unique | Set-Content indexes\dedupe\known_bad_hashes.txt
 ```
 
-The count grows every day - never expect a fixed number. Microsoft's Deny rules match
-`Authentihash` values rather than flat SHA-256; that two-list check happens per driver in
-[guide 02](02_blocklist_check.md), likewise against the freshly-downloaded XML. Keep the dated
-raw lists in `audits/evidence/` (guide 02 section 4).
+The regex extraction runs on stock Windows PowerShell 5.1 and PowerShell 7 alike - do NOT
+replace it with `ConvertFrom-Json`, which crashes on 5.1 against the feed's case-duplicate
+`INIT`/`init` keys. The count grows every day - never expect a fixed number. Microsoft's Deny
+rules match `Authentihash` values rather than flat SHA-256; that two-list check happens per
+driver in [guide 02](02_blocklist_check.md), likewise against the freshly-downloaded XML. Keep
+the dated raw lists in `audits/evidence/` (guide 02 section 4).
 
 Collection also needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` section 3):
 **7-Zip** at `C:\Program Files\7-Zip\7z.exe`, **innoextract**
