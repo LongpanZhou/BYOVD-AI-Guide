@@ -1,4 +1,4 @@
-﻿# Skeleton .gitignore - ignore scratch, keep the .sys corpus you collect yourself.
+# Skeleton .gitignore - ignore scratch, keep the .sys corpus you collect yourself.
 downloads/*
 !downloads/README.md
 !downloads/.gitkeep

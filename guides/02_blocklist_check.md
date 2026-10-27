@@ -70,5 +70,5 @@ Keep the raw comparison as a dated evidence file (see below).
 
 Do the list check **on the day** you pull a new corpus, and keep the raw JSON/XML as dated
 evidence in `audits/evidence/` (the gate file `indexes/dedupe/known_bad_hashes.txt` is
-refreshed by re-deriving it - see guides/01 §5). Re-derive from the live sources whenever a new
+refreshed by re-deriving it - see guides/01 section 5). Re-derive from the live sources whenever a new
 audit preview starts; stale lists are the most common cause of "nothing to do" hunts.
