@@ -4,7 +4,9 @@ This repo is the **setup and instruction set** for an AI-driven Windows driver r
 It contains the folder skeleton, the goal/ledger files, and the method. It contains **no drivers,
 no audit reports, no corpus, and no tool binaries** - the worked example (386 `.sys` files, 257
 reports, scripts) lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example)
-branch.
+branch. Note that `example` is a snapshot of the **original run's** setup: counts, wording, and
+some file names there may not match the current docs on `main` - treat it as a reference, not the
+manual.
 
 ## What you get
 
@@ -116,6 +118,21 @@ Open the folder in OpenCode (or another agent) and start with:
 `AGENTS.md` carries the hard rules: scope, where to write, what never to run on the host, and how
 to keep `audits/STATUS.md` current. Edit `PROJECT_GOAL.md` and `WANTED_LEDGER.md` first if you
 want a different target class - the rest of the loop keys off those two files.
+
+### Example session
+
+You name the target; the agent runs the machinery. A first harvest looks like:
+
+> **You:** Harvest as many RGB vendor drivers as you can this batch.
+> **Agent:** proposes the package list from `guides/01_collect_drivers.md` and the playbook, then
+> for each package: hash-verified `winget download`, `tools\harvest.ps1` (extract only), the one
+> gate pass (`tools\filter_new_drivers.ps1 ... -UpdateExisting`), provenance in
+> `indexes\collections\collected1\`, and the `downloads\` wipe.
+> **Agent reports back:** one `DRIVER <name> <bytes> <sig> <reach>` line per accepted `.sys`,
+> `RESULT <id> drivers=N`, and an updated corpus table in `audits/STATUS.md`.
+> **You:** audit `nzxt_cam` statically next.
+> **Agent:** blocklist check, REA audit, canonical report in `audits/reports/`, verdict row in
+> `audits/STATUS.md`.
 
 ## 6. The loop
 
