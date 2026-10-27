@@ -3,10 +3,6 @@
 Start your own AI-driven Windows-driver (BYOVD) hunt here. The original run (outdated setup)
 lives on the [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example) branch.
 
-> [!IMPORTANT]
-> **Total API cost for a full run is around $20 USD** - pay-per-token usage, not a subscription.
-> Small targets and short batches cost proportionally less.
-
 ## Setup
 
 ```powershell
