@@ -44,5 +44,7 @@ and no tool binaries; your job is to build the lab and run the method.
 
 ## Tools
 
-Not shipped on this branch. Fetch the four scripts from `example` when you start collecting; see
-`tools/README.md`.
+The four scripts ship in `tools\` on this branch; `indexes/dedupe/known_bad_hashes.txt` ships as
+the seed gate. Refresh the gate from the live LOLDrivers feed **at every new batch** (see
+`guides/00_quickstart.md` section 2) - the sources update daily. Microsoft Deny-rule matching
+(`Authentihash`) happens per driver at blocklist-check time (guides/02).

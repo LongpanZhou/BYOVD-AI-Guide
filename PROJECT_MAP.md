@@ -18,7 +18,7 @@ on [`example`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/example).
 | `drivers/` | flat corpus (empty at start) |
 | `indexes/` | generated manifest, `dedupe/`, `collections/`, `driverstore/` |
 | `poc/` | `dynamic/`, `reference/` |
-| `tools/` | fetched from `example` (four scripts) |
+| `tools/` | shipped scripts (four) + seed blocklist gate |
 | `downloads/` | gitignored scratch |
 | `guides/` | the five-step method |
 

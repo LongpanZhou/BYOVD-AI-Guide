@@ -13,12 +13,12 @@ cd driver_lab
 
 Open the folder in your AI agent (OpenCode, Claude, ...) and run this chat:
 
-> **You:** Read `AGENTS.md`, then `guides/00_quickstart.md`. Set up my lab: fetch the four tools
-> and the blocklist gate from the `example` branch, tell me which extractors I still need, run
-> all verification, and wait for my target.
+> **You:** Read `AGENTS.md`, then `guides/00_quickstart.md`. Set up my lab: refresh the blocklist
+> gate from the live LOLDrivers feed, tell me which extractors I still need, run all
+> verification, and wait for my target.
 >
-> **Agent:** Done - tools fetched, gate verified (5,833 hashes), `manifest: 0 rows, 0 unique
-> hashes`. Waiting for target.
+> **Agent:** Done - gate refreshed from today's feed, tools verified, `manifest: 0 rows, 0
+> unique hashes`. Extractors you still need: none right now. Waiting for target.
 >
 > **You:** Harvest as many RGB vendor drivers as you can this batch.
 >

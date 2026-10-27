@@ -1,21 +1,43 @@
 # tools/
 
-The scripts are **not vendored on this branch**. Fetch them from `example`:
+The four scripts ship on this branch. `known_bad_hashes.txt` (via `indexes/dedupe/`) is a
+**seed** blocklist gate - refresh it from the live LOLDrivers feed before the first collection
+and at every new batch (one command in `guides/00_quickstart.md` section 2). The filter refuses
+to run on an empty gate.
+
+| Path | What it is |
+|---|---|
+| `harvest.ps1` | Installer/tree -> `.sys` harvester + fingerprint writer |
+| `triage_scan.ps1` | PE import, device, SDDL, reach scanner - positional usage: `.\triage_scan.ps1 <file.sys>` |
+| `filter_new_drivers.ps1` | Mandatory dedupe gate |
+| `rebuild_manifest.ps1` | Rebuild `indexes/drivers_manifest.csv` from `drivers/` |
+| `innoextract/` (local only) | Inno Setup <= 6.0.5 extractor; not tracked in this repo |
+| `innounp` (on `PATH`) | Inno Setup 6.1+ extractor; `winget install JurgenRathlev.innounp` |
+| `vm/never_sleep.bat` | VM power/sleep helper |
+
+## Download workflow
+
+Prerequisite: **7-Zip** at `C:\Program Files\7-Zip\7z.exe`. Optional: WiX in `tools/wix/`.
 
 ```powershell
-$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/example'
-$base = "$raw/tools"
-'harvest.ps1','filter_new_drivers.ps1','rebuild_manifest.ps1','triage_scan.ps1' |
-  ForEach-Object { Invoke-WebRequest "$base/$_" -OutFile "tools\$_" -UseBasicParsing }
-Invoke-WebRequest "$raw/indexes/dedupe/known_bad_hashes.txt" `
-  -OutFile "indexes\dedupe\known_bad_hashes.txt" -UseBasicParsing
+# 1. download into ..\downloads\
+# 2. harvest
+.\harvest.ps1 -Path ..\downloads\<installer> -Vendor <Vendor> -PackageId <ID> `
+  -Out ..\downloads\_harvest -Index ..\indexes\collections\collected<N>\_index.jsonl
+
+# 3. dedupe into the corpus
+.\filter_new_drivers.ps1 -SourceDir ..\downloads\_harvest -OutDir ..\drivers `
+  -Manifest ..\indexes\collections\collected<N>\manifest.csv `
+  -Existing ..\indexes\dedupe\existing_hashes.txt `
+  -KnownBad ..\indexes\dedupe\known_bad_hashes.txt `
+  -UpdateExisting
+
+# 4. rebuild the manifest
+.\rebuild_manifest.ps1 -NewBatch collected<N>
 ```
 
-`filter_new_drivers.ps1` **refuses to run** if `indexes/dedupe/known_bad_hashes.txt` is missing.
+WiX `dark.exe` is not retained. Re-install WiX into `tools/wix/` only while unpacking a Burn/MSI
+package, then delete it after the batch is accepted.
 
-| Script | Purpose |
-|---|---|
-| `harvest.ps1` | extract `.sys` from installers - never executes them |
-| `filter_new_drivers.ps1` | mandatory dedupe gate; the only writer into `drivers/` |
-| `rebuild_manifest.ps1` | rebuild `indexes/drivers_manifest.csv` |
-| `triage_scan.ps1` | PE import / device / SDDL / reach scan |
+Full method: [`../DRIVER_COLLECTION_PLAYBOOK.md`](../DRIVER_COLLECTION_PLAYBOOK.md).
+Future-download quick-start: [`../downloads/README.md`](../downloads/README.md).

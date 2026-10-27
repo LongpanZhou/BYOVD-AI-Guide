@@ -285,7 +285,7 @@ including `...GRGWGX;;;WD...`, and calls plain `IoCreateDevice` with **no** desc
 all seven strings are dead data. Same for EVGA `driver-x64` (7 dead) and ROCCAT `ScpVBus`
 (1 dead). Ghidra confirmed `refs=0` for every one.
 
-**`triage_scan.ps1` (the version shipped on `example`) does three things the first version did not:**
+**`triage_scan.ps1` (the shipped script) does three things the first version did not:**
 
 1. **Parses the PE import table** and reports which device-creation API is genuinely imported:
    `IoCreateDevice`, `IoCreateDeviceSecure`, `WdmlibIoCreateDeviceSecure`,
@@ -465,7 +465,7 @@ driver_lab\
 |   |-- dedupe\                     existing/known-bad hashes
 |   |-- collections\                manifests, summaries, URLs
 |   \-- driverstore\                DriverStore scan outputs
-\-- tools\                          harvest, triage, filter (fetched from example)
+\-- tools\                          harvest, triage, filter (shipped)
 ```
 
 No `packages\`, `extract\`, `work\`, `manual\`, or `staging\` directories. The installer

@@ -29,7 +29,7 @@ driver_lab/
 |-- poc/
 |   |-- dynamic/                  # results/<date>/ (harness is your own)
 |   \-- reference/               # calibration drivers only
-|-- tools/                        # fetched from example
+|-- tools/                        # shipped scripts + seed blocklist gate
 \-- downloads/                    # gitignored scratch
 ```
 
@@ -39,28 +39,30 @@ Two rules keep the tree clean:
 - **Everything flat.** Drivers never get subfolders; the manifest's `Batch` column carries
   provenance.
 
-## 2. Add the tools and the blocklist gate
+## 2. Refresh the blocklist gate (keep it live)
 
-Collection needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` section 3):
+The four tool scripts ship on this branch (`tools\`). The blocklist gate in
+`indexes/dedupe/known_bad_hashes.txt` ships as a **seed** (5,833 LOLDrivers hashes at publish
+time) - LOLDrivers adds drivers daily, so refresh the gate from the live feed **before the first
+collection and at every new batch**:
+
+```powershell
+Invoke-WebRequest https://www.loldrivers.io/api/drivers.json -OutFile downloads\loldrivers.json
+(Get-Content downloads\loldrivers.json -Raw | ConvertFrom-Json).sha256 |
+  Where-Object { $_ } | Sort-Object -Unique |
+  Set-Content indexes\dedupe\known_bad_hashes.txt
+```
+
+The count grows every day - never expect a fixed number. Microsoft's Deny rules match
+`Authentihash` values rather than flat SHA-256; that two-list check happens per driver in
+[guide 02](02_blocklist_check.md), likewise against the freshly-downloaded XML. Keep the dated
+raw lists in `audits/evidence/` (guide 02 section 4).
+
+Collection also needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` section 3):
 **7-Zip** at `C:\Program Files\7-Zip\7z.exe`, **innoextract**
 ([constexpr.org/innoextract](https://constexpr.org/innoextract/) -> `tools\innoextract\innoextract.exe`,
 Inno Setup <= 6.0.5), and **innounp** for Inno Setup > 6.0.5
 (`winget install JurgenRathlev.innounp`).
-
-The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
-
-```powershell
-$raw  = 'https://raw.githubusercontent.com/LongpanZhou/BYOVD-AI-Guide/example'
-$base = "$raw/tools"
-'harvest.ps1','filter_new_drivers.ps1','rebuild_manifest.ps1','triage_scan.ps1' |
-  ForEach-Object { Invoke-WebRequest "$base/$_" -OutFile "tools\$_" -UseBasicParsing }
-Invoke-WebRequest "$raw/indexes/dedupe/known_bad_hashes.txt" `
-  -OutFile "indexes\dedupe\known_bad_hashes.txt" -UseBasicParsing
-Get-ChildItem tools\*.ps1, indexes\dedupe\known_bad_hashes.txt | Select-Object Name,Length
-```
-
-Expected: four `.ps1` files and `known_bad_hashes.txt` (~380 KB, 5,833 hashes). The filter refuses
-to run without the list, because otherwise it cannot block known-bad drivers.
 
 Verify the toolchain:
 
@@ -69,6 +71,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\rebuild_manifest.ps1
 ```
 
 Expected: `manifest: 0 rows, 0 unique hashes`, and `indexes\drivers_manifest.csv` now exists.
+The filter refuses to run on an empty gate - after the refresh above it is populated again.
 
 > [!TIP]
 > If PowerShell says **"running scripts is disabled on this system"**, use the
