@@ -7,9 +7,6 @@ This is the `example` branch: the worked example - full corpus, audit reports, a
 > [!TIP]
 > API cost for a full run is roughly **$20 USD** - pay-per-token usage, not a plan/subscription price.
 
-> [!IMPORTANT]
-> This method found real vulnerable drivers - but they're kept **offline**, not in this repo. If you fork, do the same.
-
 ## Start here
 
 | | |
