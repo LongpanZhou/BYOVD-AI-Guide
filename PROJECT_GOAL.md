@@ -88,7 +88,8 @@ queue into other docs.
 - No driver load, service creation, or registry writes.
 - Dynamic work only in the snapshotted VM, never the host.
 - No exploit code or PoC in reports; PoCs live in `poc/`.
-- **Download hygiene:** extract in `downloads/`; run
-  `tools/filter_new_drivers.ps1 -OutDir drivers -UpdateExisting` to copy only deduped `.sys` into
+- **Download hygiene:** extract in `downloads/`; run the mandatory gate
+  `tools/filter_new_drivers.ps1 -SourceDir downloads/_harvest -OutDir drivers -Manifest indexes/collections/collected<N>/manifest.csv -UpdateExisting`
+  to copy only deduped `.sys` into
   `drivers/` and update the gate; delete the installer, extract tree, and every non-driver payload
   before the batch is accepted. See `DRIVER_COLLECTION_PLAYBOOK.md` section 2.1 and `downloads/README.md`.

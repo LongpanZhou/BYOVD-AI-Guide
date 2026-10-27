@@ -45,8 +45,8 @@ Quick hash lookup after downloading both lists:
 
 ```powershell
 $hash = (Get-FileHash drivers\<file>.sys -Algorithm SHA256).Hash
-Select-String -Path loldrivers.json -Pattern $hash -SimpleMatch
-Select-String -Path blocklist_extract\*\DriverPolicy_Enforced.xml -Pattern $hash -SimpleMatch
+Select-String -Path downloads\loldrivers.json -Pattern $hash -SimpleMatch
+Select-String -Path downloads\blocklist_extract\*\DriverPolicy_Enforced.xml -Pattern $hash -SimpleMatch
 ```
 
 ## 2. What the results mean for your hunt
@@ -69,6 +69,6 @@ Keep the raw comparison as a dated evidence file (see below).
 ## 4. How to keep your own hunt current
 
 Do the list check **on the day** you pull a new corpus, and keep the raw JSON/XML as dated
-evidence in `audits/evidence/` (the gate file `indexes/dedupe/known_bad_hashes.txt` is updated
-only by the tools). Re-derive from the live sources whenever a new audit
-preview starts; stale lists are the most common cause of "nothing to do" hunts.
+evidence in `audits/evidence/` (the gate file `indexes/dedupe/known_bad_hashes.txt` is
+refreshed by re-deriving it - see guides/01 §5). Re-derive from the live sources whenever a new
+audit preview starts; stale lists are the most common cause of "nothing to do" hunts.

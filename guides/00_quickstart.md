@@ -10,6 +10,10 @@ driver_lab/
 |-- AGENTS.md                     # AI operating instructions
 |-- PROJECT_GOAL.md               # the hunt goal - edit to re-target
 |-- WANTED_LEDGER.md              # what counts as a find
+|-- PROJECT_MAP.md                # folder map
+|-- DRIVER_COLLECTION_PLAYBOOK.md # how to build your corpus
+|-- README.md                     # setup
+|-- guides/                       # the five step-by-step guides
 |-- audits/
 |   |-- STATUS.md                 # empty verdict queue
 |   |-- reports/                  # one canonical report per driver
