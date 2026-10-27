@@ -37,6 +37,12 @@ Two rules keep the tree clean:
 
 ## 2. Add the tools and the blocklist gate
 
+Collection needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` §3):
+**7-Zip** at `C:\Program Files\7-Zip\7z.exe`, **innoextract**
+([constexpr.org/innoextract](https://constexpr.org/innoextract/) → `tools\innoextract\innoextract.exe`,
+Inno Setup ≤ 6.0.5), and **innounp** for Inno Setup > 6.0.5
+(`winget install JurgenRathlev.innounp`).
+
 The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
 
 ```powershell

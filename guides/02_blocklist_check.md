@@ -60,10 +60,11 @@ Keep the raw comparison as a dated evidence file (see below).
 
 - Absence from the blocklist does **not** mean a driver is safe, merely uncatalogued.
 - Presence is a strong *signalling* problem, not a proof of damage.
-- Both lists update constantly — an "exact-build not on list" result is only valid on the date you pulled the data. Date-stamp every check like this repo does: `audits/evidence/known_vulnerable_check_<yyyy-mm-dd>.md`.
+- Both lists update constantly — an "exact-build not on list" result is only valid on the date you pulled the data. Date-stamp every check: `audits/evidence/known_vulnerable_check_<yyyy-mm-dd>.md`.
 
 ## 4. How to keep your own hunt current
 
-Do the list check **on the day** you pull a new corpus, and copy the JSON/XML into `indexes/dedupe/`
-alongside a README with the retrieval dates. Re-derive from the live sources whenever a new audit
+Do the list check **on the day** you pull a new corpus, and keep the raw JSON/XML as dated
+evidence in `audits/evidence/` (the gate file `indexes/dedupe/known_bad_hashes.txt` is updated
+only by the tools). Re-derive from the live sources whenever a new audit
 preview starts; stale lists are the most common cause of "nothing to do" hunts.

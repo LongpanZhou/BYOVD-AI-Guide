@@ -153,8 +153,8 @@ downloaded file
    `harvest.ps1` does this automatically.
 4. **`.sys` extension case varies.** `kinonivd.Sys`, `PP.SC0710.X64.SYS`. Match
    case-insensitively (`-Filter *.sys` is case-insensitive in PowerShell; raw string matching is not).
-5. **Signed ≠ safe to run.** Every binary in this corpus verifies `Valid`. Signature status
-   says nothing about the DACL or the IOCTL surface.
+5. **Signed ≠ safe to run.** In the original worked example every binary verified `Valid`;
+   signature status says nothing about the DACL or the IOCTL surface.
 
 ---
 

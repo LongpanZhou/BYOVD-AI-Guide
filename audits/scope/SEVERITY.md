@@ -4,8 +4,6 @@
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
-This replaces the old `WRITE-CRITICAL / WRITE-HIGH / WRITE-MEDIUM / NO-WRITE` scale.
-
 **Only kernel memory writes count.** Hardware-only writes — MSR, port I/O, PCI config,
 SMBus/EC, fixed-window MMIO — are **not** memory writes and are flagged `HW-ONLY`. They matter
 only if they can be chained into a memory write.
@@ -56,17 +54,6 @@ Modifiers:
 - A device **not present** caps at MW3.
 - Unsigned / HVCI-blocked is `BLOCKED`, but the static primitive can still be MW1/MW2.
 
-## Old → new reclassification
-
-| Old verdict | New treatment |
-|---|---|
-| `WRITE-CRITICAL` | **MW1** only if no setup/hardware gate. Hardware-gated arbitrary writes (`silabser`, CP210x) become **MW2**. |
-| `WRITE-HIGH` | **MW1** if admin-ready and arbitrary; **MW2** if constrained or gated. |
-| `WRITE-MEDIUM` | **MW2/MW3** only if an actual memory write exists. Hardware-only writes become **NO-MEMORY-WRITE (HW-ONLY)**. |
-| `NO-WRITE` because “admin-only” | **Not no-write.** Re-audit under R2; if the IOCTL path writes memory, it can be MW1/MW2. |
-| `NO-WRITE` because no primitive/invariant | Remains **NO-MEMORY-WRITE**. |
-| Blocklisted / known-bad | **BLOCKED** regardless of primitive. |
-
 ## `HW-ONLY` flag
 
 Use for drivers whose only write capability is:
@@ -86,22 +73,6 @@ A build that cannot load on the target architecture is **`BLOCKED (architecture)
 what a group/family report says about a sibling build. The static primitive may still be recorded
 for reference, but the non-loadable build is not counted as MW1–MW4 or NO-MEMORY-WRITE in the
 aggregate register. This applies to i386 on x64, ARM64 on x64, IA-64, Alpha AXP, and PowerPC.
-
-## Reclassification queue
-
-These were downgraded or stopped under the old rule and must be re-read with R2 — **except**
-known-bad/blocklisted images, which stay `BLOCKED`:
-
-- `iocbios2` — old NO-WRITE because of `SeSinglePrivilegeCheck`; admin can hold the privilege.
-- EVGA `driver-x86`, `SMI_IO`, `NTIOLib`, `iocbios2` — old “blocked by DACL”; admin can open.
-- **BLOCKED; do not re-audit:** EVGA `driver-x64_33DA2CE2`, `MSIO32_C7D4943D`,
-  `MSIO64_525D9B51`, `amifldrv64_5F487829`, `MsIo64_CFCF32F5`, `RTCore*`, and any hash in
-  `indexes/dedupe/known_bad_hashes.txt`.
-- `HWMonitor cpuz`, `SIV`, `CBULWDM`, `pcidaqlib`, `usbdaqlib` — admin + physical-memory mapping
-  (`W3P`).
-- `Sandboxie SbieDrv`, `ImDisk`, `ThrottleStop LowLevel`, `CoreTemp ALSysIO` — admin/unsigned
-  memory paths.
-- `Prolific plser`, `iDisplay filter`, `Spacedesk Audio` — open or devnode R1/R3 surfaces.
 
 ## Report fields
 

@@ -11,7 +11,7 @@ the payload, hash it, move on."
 
 Signed, exploitable kernel drivers ship with the software people actually install:
 
-| Category | Vendors/packages in this corpus |
+| Category | Vendors/packages worth mining |
 |---|---|
 | Motherboard/perf tuning | MSI `Afterburner`, ASUS AI Suite, Gigabyte, Intel XTU |
 | Hardware monitors | CPU-Z, HWiNFO, GPU-Z, AIDA64, HWMonitor, ThrottleStop |
@@ -22,8 +22,8 @@ Signed, exploitable kernel drivers ship with the software people actually instal
 | SDKs / redistributables | Windows driver SDK samples, vendor SDKs, "driver only" cab |
 
 Windows also keeps every driver it has loaded in `C:\Windows\System32\drivers` (and per-machine
-`DriverStore\FileRepository`) — that is where corpus #1 came from (94 images) before the vendor
-sweep.
+`DriverStore\FileRepository`) — a good first batch is harvesting candidates from there before the
+vendor sweep.
 
 ## 2. The rules
 

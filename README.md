@@ -63,6 +63,15 @@ Get-ChildItem PROJECT_GOAL.md, WANTED_LEDGER.md, audits\STATUS.md, AGENTS.md
 
 ## 3. Fetch the tools and the blocklist gate
 
+Collection also needs three extractors on the host (details in `DRIVER_COLLECTION_PLAYBOOK.md` §3):
+
+- **7-Zip** at `C:\Program Files\7-Zip\7z.exe` — the only extractor that touches installers (path
+  is hardcoded in `harvest.ps1`)
+- **innoextract** (Inno Setup ≤ 6.0.5) — download from
+  [constexpr.org/innoextract](https://constexpr.org/innoextract/), drop at
+  `tools\innoextract\innoextract.exe`
+- **innounp** (Inno Setup > 6.0.5) — `winget install JurgenRathlev.innounp`
+
 The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
 
 ```powershell

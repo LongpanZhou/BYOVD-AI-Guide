@@ -43,11 +43,11 @@ harness → stop → delete service → revert snapshot; the wrapper writes a lo
 |---|---|
 | `MapUserPhysicalPages` not permitted | use the driver's own PA→user mapping IOCTL as the mapper (fewer assumptions) |
 | Device open fails with error 2 (`ERROR_FILE_NOT_FOUND`) | the C# `CreateFileW` P/Invoke *must* set `CharSet.Unicode`, or the path is sent as garbage bytes |
-| Harness bugcheck | do NOT assume the driver is malicious — check the dump; in this repo two crashes were the harness's own field-order bug |
+| Harness bugcheck | do NOT assume the driver is malicious — check the dump; crashes are often the harness's own bug (e.g. a field-order mistake in the request struct) |
 | Driver loads but no device | verify the object-manager namespace and the service actually reported RUNNING |
 
-Pull the guest dump out (`C:\Windows\MEMORY.DMP`) and analyze it with WinDbg; this repo uses
-the `mcp-windbg` MCP server to run `!analyze -v` against the dump.
+Pull the guest dump out (`C:\Windows\MEMORY.DMP`) and analyze it with WinDbg (`!analyze -v`).
+The original run used the `mcp-windbg` MCP server for this; any WinDbg setup works.
 
 ## 4. Recording
 
