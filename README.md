@@ -30,6 +30,12 @@ Open the folder in your AI agent (OpenCode, Claude, ...) and run this chat:
 >
 > **Agent:** Blocklist check per driver, REA audit, one canonical report each in
 > `audits/reports/`, verdict rows in `audits/STATUS.md`.
+>
+> **You:** Next, fuzz the candidates on my VM.
+>
+> **Agent:** Snapshot taken, each candidate loaded and exercised in the disposable VM only
+> (pattern from `guides/04_dynamic_vm.md`), proof logs in `poc/dynamic/results/<date>/`,
+> verdicts finalized in `audits/STATUS.md`.
 
 After that, keep naming targets; the agent runs the loop (collect -> blocklist check -> audit ->
 dynamic proof in a VM -> verdict). Every detail of each step is in the five `guides/`.
