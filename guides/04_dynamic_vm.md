@@ -1,4 +1,4 @@
-# Dynamic testing — only inside a disposable VM, only against your own pages
+# Dynamic testing - only inside a disposable VM, only against your own pages
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -26,24 +26,24 @@
 
 ```text
 ControlledIoctlSelfTest.exe
-├── allocate 3 PFNs            (SeLockMemoryPrivilege needed)
-├── map two via the driver's own IOCTL  (or per-driver config)
-├── fill page A with a pattern, zero-fill page B ── the two pages are *yours*
-├── poke the driver:           "copy PA(A) -> mappedVA(B)"
-└── verify:  pattern seen in B?  write primitive confirmed → finding recorded
+|-- allocate 3 PFNs            (SeLockMemoryPrivilege needed)
+|-- map two via the driver's own IOCTL  (or per-driver config)
+|-- fill page A with a pattern, zero-fill page B -- the two pages are *yours*
+|-- poke the driver:           "copy PA(A) -> mappedVA(B)"
+\-- verify:  pattern seen in B?  write primitive confirmed -> finding recorded
 ```
 
-Each driver gets a tiny `.ps1` wrapper (`run_<driver>.ps1`) that: create service → start →
-harness → stop → delete service → revert snapshot; the wrapper writes a log under
+Each driver gets a tiny `.ps1` wrapper (`run_<driver>.ps1`) that: create service -> start ->
+harness -> stop -> delete service -> revert snapshot; the wrapper writes a log under
 `poc/dynamic/results/` so every claim in `audits/evidence/` has a file backing it.
 
 ## 3. What can go wrong, and the countermeasure
 
 | Failure | Try this |
 |---|---|
-| `MapUserPhysicalPages` not permitted | use the driver's own PA→user mapping IOCTL as the mapper (fewer assumptions) |
+| `MapUserPhysicalPages` not permitted | use the driver's own PA->user mapping IOCTL as the mapper (fewer assumptions) |
 | Device open fails with error 2 (`ERROR_FILE_NOT_FOUND`) | the C# `CreateFileW` P/Invoke *must* set `CharSet.Unicode`, or the path is sent as garbage bytes |
-| Harness bugcheck | do NOT assume the driver is malicious — check the dump; in this repo two crashes were the harness's own field-order bug |
+| Harness bugcheck | do NOT assume the driver is malicious - check the dump; in this repo two crashes were the harness's own field-order bug |
 | Driver loads but no device | verify the object-manager namespace and the service actually reported RUNNING |
 
 Pull the guest dump out (`C:\Windows\MEMORY.DMP`) and analyze it with WinDbg; this repo uses

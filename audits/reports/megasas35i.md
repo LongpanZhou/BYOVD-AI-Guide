@@ -25,18 +25,18 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Caller-controlled kernel address or mapping | None. The `Mm`, `Probe` and `\Device\` sweeps are empty. No section, `MmCopyMemory` or PhysicalMemory references | `ev_dd04b409…` (Mm, empty), `ev_da578080…` (Probe, empty), `ev_33564784…` (`\Device\`, empty) |
-| IO_CONTROL routing | Dispatch `FUN_140001430` on Function: `case 2` calls `FUN_140009ec0(adapter, SRB, 3)`. `case 8` (flush) allocates a 0x600-byte frame | `ev_0d522e9d…` |
-| Buffer length, minimum (`DataTransferLength`, SRB+0x10) | Checked `>= 0xbc` before any buffer access. On failure: SRB status 6, ReturnCode 1 | `ev_45d9b317…` (`FUN_140009ec0`) |
-| Special ControlCodes | `0x001b0780` returns `0x1b0701`. `0x80727474` goes to `FUN_140009ae0` (not reviewed) | `ev_45d9b317…` |
-| Signature and ControlCode gate | `LSILOGIC` at buffer+4. ControlCode family `F001` or `F002`. Anything else goes to the fallback `FUN_140009760` (not reviewed) | `ev_45d9b317…` |
-| Fixed copy, sub-code `0xF0010100` / `0xF0010200` | 0x70 bytes to buf+0xbc. Guarded by `DataTransferLength >= 300` (ends at 0x12c, correct) | `ev_45d9b317…` |
-| Fixed store, sub-code `0xF0020300` | 4 bytes at buf+0xbc, guarded by `>= 0xc0` (correct) | `ev_45d9b317…` |
-| **Sub-code `0xF0020C00` (mode byte buf+0x38 = 0)** | Guard is `DataTransferLength > 199` (minimum 200). Writes at buf+0xc0, 0xc4, 0xc8 (4 bytes) and buf+0xcc (1 byte). The last written byte is index 204, so a buffer of 200-204 bytes is overrun by up to 5 bytes. **In-file out-of-bounds write** | `ev_45d9b317…` |
-| **Sub-code `0xF0020B00`, mode 0 (buf+0x38 = 0)** | Guard is `DataTransferLength > 199`. Then `FUN_14000cdb0(buf+0xbc, adapter+0x4170 structure, 0x80)` writes 0x80 bytes, ending at buf+0x13c (index 316). A buffer of 200-315 bytes is overrun by up to 116 bytes. The source is adapter-internal data, not the caller's. **In-file out-of-bounds write** | `ev_45d9b317…` |
-| **Sub-code `0xF0020B00`, mode 1 (buf+0x38 = 1)** | Walks an adapter-internal node list (`adapter+0x4158/0x4168`). Copies each node's own payload to buf+0xc4 + offset. The copy extent is capped by the caller-supplied `buf+0xbc`, not by `DataTransferLength`. Node lengths are adapter-supplied. Copies can run past the caller's buffer when the node data is larger than `DataTransferLength - 0xc4` | `ev_45d9b317…` |
-| Output count `buf+0xbc` in mode 1 | Read as the remaining-space limit. Not checked against `DataTransferLength` | `ev_45d9b317…` |
-| Fixed-length fallbacks | Not reviewed (see Open items) | — |
+| Caller-controlled kernel address or mapping | None. The `Mm`, `Probe` and `\Device\` sweeps are empty. No section, `MmCopyMemory` or PhysicalMemory references | `ev_dd04b409...` (Mm, empty), `ev_da578080...` (Probe, empty), `ev_33564784...` (`\Device\`, empty) |
+| IO_CONTROL routing | Dispatch `FUN_140001430` on Function: `case 2` calls `FUN_140009ec0(adapter, SRB, 3)`. `case 8` (flush) allocates a 0x600-byte frame | `ev_0d522e9d...` |
+| Buffer length, minimum (`DataTransferLength`, SRB+0x10) | Checked `>= 0xbc` before any buffer access. On failure: SRB status 6, ReturnCode 1 | `ev_45d9b317...` (`FUN_140009ec0`) |
+| Special ControlCodes | `0x001b0780` returns `0x1b0701`. `0x80727474` goes to `FUN_140009ae0` (not reviewed) | `ev_45d9b317...` |
+| Signature and ControlCode gate | `LSILOGIC` at buffer+4. ControlCode family `F001` or `F002`. Anything else goes to the fallback `FUN_140009760` (not reviewed) | `ev_45d9b317...` |
+| Fixed copy, sub-code `0xF0010100` / `0xF0010200` | 0x70 bytes to buf+0xbc. Guarded by `DataTransferLength >= 300` (ends at 0x12c, correct) | `ev_45d9b317...` |
+| Fixed store, sub-code `0xF0020300` | 4 bytes at buf+0xbc, guarded by `>= 0xc0` (correct) | `ev_45d9b317...` |
+| **Sub-code `0xF0020C00` (mode byte buf+0x38 = 0)** | Guard is `DataTransferLength > 199` (minimum 200). Writes at buf+0xc0, 0xc4, 0xc8 (4 bytes) and buf+0xcc (1 byte). The last written byte is index 204, so a buffer of 200-204 bytes is overrun by up to 5 bytes. **In-file out-of-bounds write** | `ev_45d9b317...` |
+| **Sub-code `0xF0020B00`, mode 0 (buf+0x38 = 0)** | Guard is `DataTransferLength > 199`. Then `FUN_14000cdb0(buf+0xbc, adapter+0x4170 structure, 0x80)` writes 0x80 bytes, ending at buf+0x13c (index 316). A buffer of 200-315 bytes is overrun by up to 116 bytes. The source is adapter-internal data, not the caller's. **In-file out-of-bounds write** | `ev_45d9b317...` |
+| **Sub-code `0xF0020B00`, mode 1 (buf+0x38 = 1)** | Walks an adapter-internal node list (`adapter+0x4158/0x4168`). Copies each node's own payload to buf+0xc4 + offset. The copy extent is capped by the caller-supplied `buf+0xbc`, not by `DataTransferLength`. Node lengths are adapter-supplied. Copies can run past the caller's buffer when the node data is larger than `DataTransferLength - 0xc4` | `ev_45d9b317...` |
+| Output count `buf+0xbc` in mode 1 | Read as the remaining-space limit. Not checked against `DataTransferLength` | `ev_45d9b317...` |
+| Fixed-length fallbacks | Not reviewed (see Open items) | - |
 
 ## Verdict rationale
 
@@ -71,7 +71,7 @@ The writes need the admin-gated port device. They can only overrun a kernel buff
 
 ## Evidence (REA, retained IDs)
 
-Standard sweeps (`open_binary` digest `83c982fc…`):
+Standard sweeps (`open_binary` digest `83c982fc...`):
 - `StorPort` (case-sensitive): `ev_56208bdca13f0a9f2e7eacbea0c8ca1e08076d68e0cf2a7c7e72ec0b34acb46b` (15 externals and thunks)
 - `Mm` (case-sensitive): `ev_dd04b40fffce06175a8277fdd6a2e0ae5576da9c6e58c9fe142e8bb312ddca20` (empty)
 - `Io` (case-sensitive): `ev_9ae37205f1fc1ee7aa9f29a8b97a96e3d731653c224cea0fe8c84bc2f4f4dfb6` (empty)

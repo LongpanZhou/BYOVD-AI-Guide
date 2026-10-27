@@ -9,7 +9,7 @@
 | Method | static, Ghidra 12.1.4 headless decompile dump (59/59 functions; dump `ghidra_dump\out\imdisk.txt`, `=== DONE functions=59`). Analysis date 2026-10-24 |
 | Reach tier | local administrator (assumed). The device DACL is not determined statically, and no memory-write primitive was found, so the tier is informational only. |
 | Setup required | none (driver load). No hardware or devnode dependency appears in the driver code. |
-| Verdict | **MW4 — LOW** (reach=R2 setup=none write=W3 load=signed). One kernel-mode fixed-value write (0xF6 memory-disk fill) into a driver-allocated user-range base on memory disks above 4 GiB. Fixed value, crash-first, cannot reach kernel VA; MW4 per SEVERITY.md. |
+| Verdict | **MW4 - LOW** (reach=R2 setup=none write=W3 load=signed). One kernel-mode fixed-value write (0xF6 memory-disk fill) into a driver-allocated user-range base on memory disks above 4 GiB. Fixed value, crash-first, cannot reach kernel VA; MW4 per SEVERITY.md. |
 | Write quality | W3 |
 | Severity | MW4 |
 
@@ -80,14 +80,14 @@ Lines 1191, 1196-1199 and 1234-1235 admit six codes and reject everything else w
 | 4 | `ZwMapViewOfSection` | 4739, FUN_14000B000 | proxy shared-memory mode (type 0x300) | section opened by fixed name (4427, 4444) | mapping into the current process; BaseAddress chosen by MM | NO-WRITE |
 | 5 | `ZwOpenSection` | 4444, FUN_14000B000 | proxy mode, flag 0x3000 | fixed name `\Device\NamedPipe\ImDskSvc` (line 4427). Not `\Device\PhysicalMemory`. | section handle only | NO-WRITE |
 | 6 | `ZwAllocateVirtualMemory` | 651, FUN_140001B30 (resize); 4619, 4772, FUN_14000B000 (create); base stored at 663 and 5081 | IOCTL 0x7C0D0 (resize) and memory-disk create | size from request (64-bit). Size below 1 is rejected (617). | base is a user-range address. Resize copies `min(old DiskLen, new size)` (661). | NO-WRITE |
-| 7 | memory-disk fill, `memset(…, 0xF6, count)` | 5205-5206, FUN_14000C720 → FUN_140005D00 (memset at 3947) | IOCTL 0x7C018 and 0x7C02C, queued to the worker FUN_140001B30 (598-599) | 64-bit start and end checked against DiskLen in the dispatch (1369-1377) | destination `base + low32(start)`; count `bpt + low32(end) − low32(start)` (5205-5206). See the overrun note below. | **NO-WRITE for kernel VA.** CPL0 fixed-value overrun into user-range VA, crash-first. |
+| 7 | memory-disk fill, `memset(..., 0xF6, count)` | 5205-5206, FUN_14000C720 -> FUN_140005D00 (memset at 3947) | IOCTL 0x7C018 and 0x7C02C, queued to the worker FUN_140001B30 (598-599) | 64-bit start and end checked against DiskLen in the dispatch (1369-1377) | destination `base + low32(start)`; count `bpt + low32(end) - low32(start)` (5205-5206). See the overrun note below. | **NO-WRITE for kernel VA.** CPL0 fixed-value overrun into user-range VA, crash-first. |
 | 8 | `memmove` | 213, FUN_140001230 (ImDiskSafeReadFile) | image load into a memory disk (FUN_140001490 at 343) | read chunk at most 0x800000 bytes. Copy length is the IoStatus.Information value (at most the chunk). | destination `ext+0x70`, the user-range base | NO-WRITE |
 | 9 | `memmove` | 829, 850, FUN_140002090 | read path, file and proxy | pool block allocated before the read call at 809, sized from the request | NO-WRITE |
 | 10 | `memmove` | 923, 951, FUN_140002330 | memory-disk read copy (923) and IRP buffer copy (951) | DiskLen check before the call (2282 path) | base + ByteOffset to MDL VA; length is the IRP length | NO-WRITE |
 | 11 | `memmove` | 1608, 1675, 1779, FUN_140002840 | IOCTL output strings (0x4D0000, 0x4D0008, 0x4D000C) and per-disk parameters (0x83722008) | output length compared first (1600-1606 and 1668-1673, and the 0x83722008 minimum) | METHOD_BUFFERED SystemBuffer | NO-WRITE |
 | 12 | `memset` | 1294, FUN_140002840 | pool object | constant 0x324 | NO-WRITE |
 | 13 | `memset` | 2196, FUN_140003C70 | QUERY_INFORMATION output | length is the IRP length (lVar2+8) | NO-WRITE |
-| 14 | `memmove` | 2493, FUN_140004270 | IRP forward for codes 0x8372E01C and 0x8372E020 on disks with flag +0x68 (call at 2048) | guard `3 < InputBufferLength` (2046) makes `length − 4` non-negative; source and destination both inside SystemBuffer | NO-WRITE |
+| 14 | `memmove` | 2493, FUN_140004270 | IRP forward for codes 0x8372E01C and 0x8372E020 on disks with flag +0x68 (call at 2048) | guard `3 < InputBufferLength` (2046) makes `length - 4` non-negative; source and destination both inside SystemBuffer | NO-WRITE |
 | 15 | `memmove` | 2784, 2785, 2863, 2866, 2888, 2895, FUN_140004850 | proxy request builder and reply | pool sized `param_5 + param_7`. `param_7` comes from a ushort (FUN_14000D400 at 5661) and `param_5` is 0x18 or 8, so the sum cannot wrap. | NO-WRITE. Reply-side bounds partly checked (section 6). |
 | 16 | `memmove` | 3028, FUN_140004D80 | proxy reply into the caller buffer | reply length must be at most the requested length (3026-3027); pipe mode 3048-3051 | NO-WRITE. The peer supplies content only, not an address or length beyond the request. |
 | 17 | `memmove` | 3130, 3204, FUN_140005100 | proxy request builder | pool `param_5*0x10 + 0x10`; copy `param_5*0x10` (same value) | NO-WRITE |
@@ -123,7 +123,7 @@ Every code below is METHOD_BUFFERED (`code & 3 == 0`). The device checks are the
 | 0x8372E004 | CREATE (1688, 1694; core FUN_14000B000 at 4205) | size and name from request | memory-backed disk allocates a user-range base (4619, 4772). File-backed disk opens the image file in caller context. No kernel-VA write. | device open (DACL not determined) | NO-WRITE |
 | 0x8372E010 | 1954-1965 | SE_TCB for user callers (1965) | returns a kernel FILE_OBJECT pointer (8 bytes) | SE_TCB (1965) | NO-WRITE (information only) |
 | 0x8372E018 | REMOVE (FUN_140002750) | open count below 1 | none | device open | NO-WRITE |
-| 0x7C018 / 0x7C02C | dispatch 1345-1411; worker FUN_140001B30 (598-599) → FUN_14000C720 | write-protect check (ext+0xF4), 64-bit start and end against DiskLen (1369-1377) | memory-disk fill (memset 0xF6, section 2.2); file or pool write (NtWriteFile at 5189) | device open | NO-WRITE for kernel VA (2.2) |
+| 0x7C018 / 0x7C02C | dispatch 1345-1411; worker FUN_140001B30 (598-599) -> FUN_14000C720 | write-protect check (ext+0xF4), 64-bit start and end against DiskLen (1369-1377) | memory-disk fill (memset 0xF6, section 2.2); file or pool write (NtWriteFile at 5189) | device open | NO-WRITE for kernel VA (2.2) |
 | 0x7C0D0 | worker 607-617 and 651-663; dispatch 1455-1456 | size from request; below 1 rejected | new user-range base; copy `min(old DiskLen, new size)` | device open | NO-WRITE |
 | 0x2D9404 | worker 676; dispatch 1480 | InputBufferLength at least 0x1C (per the earlier pass) | pool block sized `count << 4` from the request; copy from request offset `*(uint*)(req+0x14)`. Whether that source range is within InputBufferLength was not verified. | device open | NO-WRITE (possible read beyond input, information only) |
 | 0x4D0000 / 0x4D0008 / 0x4D000C | dispatch 1588 and following | output length checked | user output strings | device open | NO-WRITE |
@@ -134,7 +134,7 @@ Every code below is METHOD_BUFFERED (`code & 3 == 0`). The device checks are the
 
 ## 4. Verdict
 
-- **MW4 — LOW** (reach=R2 setup=none write=W3 load=signed). Kernel-mode memory write that is fixed-value and narrow, so W3. The SEVERITY.md matrix gives R2/W3 = MW4, and a crash-first primitive is capped at MW4.
+- **MW4 - LOW** (reach=R2 setup=none write=W3 load=signed). Kernel-mode memory write that is fixed-value and narrow, so W3. The SEVERITY.md matrix gives R2/W3 = MW4, and a crash-first primitive is capped at MW4.
 - Basis: no traced path writes to a kernel address chosen by input, whether through IRP, IOCTL, proxy reply or file data. Every copy destination is a driver pool block sized from the same bounded length, a user-range base, or an MDL mapping of a caller buffer.
 - The one memory write is the memory-disk fill (row 7, section 2.2): a CPL0 write of 0xF6 into a driver-allocated user-range base on memory disks above 4 GiB. It cannot reach kernel VA and is crash-first.
 - The device DACL is not determined. The reach tier is local administrator as assumed; it does not change the MW4 rating, because the write is fixed and narrow.

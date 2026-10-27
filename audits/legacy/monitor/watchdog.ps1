@@ -1,4 +1,4 @@
-# Watchdog v2 — agent liveness with process-level attribution
+# Watchdog v2 - agent liveness with process-level attribution
 # Cycle (every 5 min): ledger staleness per agent + java/analysis-process enumeration
 # with command-line attribution (which .sys each is analyzing) + CPU deltas.
 # Exits (wakes orchestrator) on: ledger staleness > per-agent threshold,

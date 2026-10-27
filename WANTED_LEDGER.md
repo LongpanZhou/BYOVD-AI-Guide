@@ -1,16 +1,16 @@
-# WANTED ledger — the vulnerabilities this hunt is after
+# WANTED ledger - the vulnerabilities this hunt is after
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
 > This file is the repo's *wishlist*. Every candidate collected or audited is judged against it.
-> Beginners: edit this file to change what your own hunt targets — the rest of the loop
-> (collect → audit → blocklist-check → verify) stays the same.
+> Beginners: edit this file to change what your own hunt targets - the rest of the loop
+> (collect -> audit -> blocklist-check -> verify) stays the same.
 
 ## Wanted (this repo's current focus)
 
-**Kernel memory write (`mem W`)** — a driver in the corpus that, after reaching a caller-controlled
+**Kernel memory write (`mem W`)** - a driver in the corpus that, after reaching a caller-controlled
 code path, causes (or lets a user-mode attacker produce) a write:
 
 - **destination reachable from user input** (kernel VA, MDL, buffer+offset, pool chunk), and
@@ -30,7 +30,7 @@ Preferred shape (the MW1 slot):
 
 | Class | Why it's not this hunt |
 |---|---|
-| `HW-ONLY` — MSR / port / PCI config / SMBus / EC / MMIO writes | Not kernel memory policy; record them, but they don't score unless they chain into `mem W` |
+| `HW-ONLY` - MSR / port / PCI config / SMBus / EC / MMIO writes | Not kernel memory policy; record them, but they don't score unless they chain into `mem W` |
 | Read-only primitives (leaks) alone | Useful support for a write chain, not a write themselves |
 | Hardware- or composition-dependent write paths with no user-path entry | Clustered around specific devices; record them in the report, keep them out of the sweep |
 | Logic bugs not leading to kernel memory writes (crash-only, EoP-in-user, etc.) | Different hunt |
@@ -41,10 +41,10 @@ When you copy the repo for your own hunt, edit this file only:
 
 1. Change the "Wanted" block to name your class (chunk-overflow write / UAF write / `exec` primitive
    / registry corruption / etc.).
-2. Adjust or drop the MW1–MW4 ranking rows you don't care about — but keep one shared vocabulary so
+2. Adjust or drop the MW1-MW4 ranking rows you don't care about - but keep one shared vocabulary so
    reports and `STATUS.md` still make sense next to `audits/scope/SEVERITY.md`.
 3. Update `PROJECT_GOAL.md` with one sentence so the canonical goal and this ledger never disagree.
-4. Update `audits/STATUS.md`'s header line ("Scope: …") to quote your new target class.
+4. Update `audits/STATUS.md`'s header line ("Scope: ...") to quote your new target class.
 
 ## Current state for this repo
 

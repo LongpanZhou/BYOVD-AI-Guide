@@ -1,8 +1,8 @@
 # ============================================================================
-# t7_phaseB — STAGED, NOT EXECUTED (2026-10-23, t7 fuzz agent)
-# bxvbda.sys 0x80002024 beyond-BAR escalation ladder — ORCHESTRATOR-GATED, SOLO
+# t7_phaseB - STAGED, NOT EXECUTED (2026-10-23, t7 fuzz agent)
+# bxvbda.sys 0x80002024 beyond-BAR escalation ladder - ORCHESTRATOR-GATED, SOLO
 # ============================================================================
-# Preconditions (B0 gate — ALL must hold, else DO NOT RUN):
+# Preconditions (B0 gate - ALL must hold, else DO NOT RUN):
 #   1. bxvbda.sys (SHA-256 FEB2771428706126FEA1CC9A50EBE3CF4F8E8FB6FCB3CA19996497CA44FDAC45)
 #      loaded as kernel service (t7_bxv or b06bdrv) with a STARTED devnode whose
 #      AddDevice completed (interface {2AF67184-48d3-4e8e-a3ff-969eff740ed2}

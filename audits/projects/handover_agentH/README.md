@@ -1,4 +1,4 @@
-# Agent-H handover — historical analysis artifacts
+# Agent-H handover - historical analysis artifacts
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -6,11 +6,11 @@
 
 This folder contains the Agent-H handover for the MegaRAID/SiS storage drivers:
 
-- `ghidraProj/` — Ghidra project used for the decompilation head start (**local-only; the
+- `ghidraProj/` - Ghidra project used for the decompilation head start (**local-only; the
   database is gitignored**, what's committed here is the scripts/output)
-- `out/` — decompiled output / recon
-- `*.ps1` — certificate, string, and section scanners
-- `*.strings.txt` — per-driver string extracts
+- `out/` - decompiled output / recon
+- `*.ps1` - certificate, string, and section scanners
+- `*.strings.txt` - per-driver string extracts
 
 It is **analysis state**, not a corpus folder and not a report folder. Canonical reports live in
 `../../reports/`; current severity/scope is in `../../scope/SEVERITY.md` and

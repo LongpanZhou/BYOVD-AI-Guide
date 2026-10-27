@@ -2,8 +2,8 @@
 
 | Field | Value |
 |---|---|
-| File(s) | 16 `.sys` files; per-file table in §2 |
-| SHA-256(s) | Full hashes in §2; all 16 re-computed from the files in `drivers/` |
+| File(s) | 16 `.sys` files; per-file table in section 2 |
+| SHA-256(s) | Full hashes in section 2; all 16 re-computed from the files in `drivers/` |
 | Analysis date | 2026-10-25 |
 | Method | Static-only: local Ghidra 12.1.4 headless (auto-analysis + targeted decompilation), `llvm-objdump` and direct PE parsing. No load, execution, install, service creation, or registry access. **REA was not used** because four REA audits were already active; no REA evidence IDs. |
 | Reach tier | **R3** (hardware + PortCls devnode). The private interface is intended for the vendor's user-mode ASIO component, so **R1 is likely once the headset is attached**; R2 administrator is guaranteed if the inherited DACL is tighter. |
@@ -15,7 +15,7 @@
 
 ## 1. Verdict
 
-**MW3 — reach=R3 setup=hardware write=W2 load=signed.**
+**MW3 - reach=R3 setup=hardware write=W2 load=signed.**
 
 The family is not a pure PortCls adapter with no user surface. `DriverEntry` overrides four major functions after `PcInitializeAdapterDriver`, including **`IRP_MJ_DEVICE_CONTROL`**, and `AddDevice` registers two private device interfaces (`CMASIOPrivateInterface`, `CMEnumPrivateInterface`). The device-control handler implements a 23-code private IOCTL protocol.
 
@@ -83,7 +83,7 @@ The only gate in the driver is a **file-name comparison**, not an authorization 
 - `0x1402e6901`: `lea rcx, unicode(\CMASIOPrivateInterface)`
 - `0x1402e6908`: `add rdx, 0x58` (`FileObject->FileName`)
 - `0x1402e690f`: `RtlCompareUnicodeString(..., CaseInsensitive=1)`
-- `0x1402e6917`: mismatch → `PcDispatchIrp`; match → custom IOCTL switch
+- `0x1402e6917`: mismatch -> `PcDispatchIrp`; match -> custom IOCTL switch
 
 There is no `SeAccessCheck`, no `SeSinglePrivilegeCheck`, no `ProbeForWrite`, and no caller-identity test. Any principal that can open the CMASIO device interface and set that file name reaches the IOCTL surface. The vendor's ASIO component is a user-mode consumer of the same interface, so a functional install must permit the interactive user; the exact DACL still depends on the INF/PortCls version. **R1 is likely with the headset attached; R2 administrator is guaranteed and in scope.**
 
@@ -104,30 +104,30 @@ Device type `0x1d` is `FILE_DEVICE_SOUND`; `0x22` is `FILE_DEVICE_UNKNOWN`. Acce
 | IOCTL | Type/func/access/method | Length checks in handler | Kernel action |
 |---|---|---|---|
 | `0x223c04` | 0x22 / 0xF01 / 0 / 0 | **none**; reads `*(int*)SystemBuffer` without checking `InputBufferLength` or NULL | Calls the HAL active-set method with a `bool`, then releases; accepted **without** the CMASIO file-name gate. Null-deref DoS if no buffer. |
-| `0x1da020` | 0x1d / 0x808 / 2 / 0 | input ≥ 4; output ≥ 8 for second call | vtable `+0x78` with the input dword; then vtable `+0x80` with `SystemBuffer` (8-byte getter) |
-| `0x1da01c` | 0x1d / 0x807 / 2 / 0 | input ≥ 4 | vtable `+0x70` with the input dword |
+| `0x1da020` | 0x1d / 0x808 / 2 / 0 | input >= 4; output >= 8 for second call | vtable `+0x78` with the input dword; then vtable `+0x80` with `SystemBuffer` (8-byte getter) |
+| `0x1da01c` | 0x1d / 0x807 / 2 / 0 | input >= 4 | vtable `+0x70` with the input dword |
 | `0x1da014` | 0x1d / 0x805 / 2 / 0 | input == 8 (x64) or == 4 (WOW64) | vtable `+0x48` with 8-byte buffer / local 4-byte value |
 | `0x1da040` | 0x1d / 0x810 / 2 / 0 | input == 8 (x64) or == 4 (WOW64) | vtable `+0xb8` with 8-byte buffer / local 4-byte value |
-| `0x1da02c` | 0x1d / 0x80b / 2 / 0 | input ≥ 4 | vtable `+0x90` with `SystemBuffer` |
-| `0x1da030` | 0x1d / 0x80c / 2 / 0 | input ≥ 4 | vtable `+0x98` with `SystemBuffer` |
+| `0x1da02c` | 0x1d / 0x80b / 2 / 0 | input >= 4 | vtable `+0x90` with `SystemBuffer` |
+| `0x1da030` | 0x1d / 0x80c / 2 / 0 | input >= 4 | vtable `+0x98` with `SystemBuffer` |
 | `0x1da03c` | 0x1d / 0x80f / 2 / 0 | none; requires input == 0 or buffer == NULL | vtable `+0xb0` with `FileObject` |
 | `0x1da044` | 0x1d / 0x811 / 2 / 0 | requires input == 0 or buffer == NULL | vtable `+0xc0` with the IRP |
 | `0x1da04c` | 0x1d / 0x813 / 2 / 0 | requires input == 0 or buffer == NULL | vtable `+0x50` with `FileObject` |
-| `0x1da050` | 0x1d / 0x814 / 2 / 0 | input ≥ 4 | vtable `+0xc8`, then `+0xd0` with `SystemBuffer` |
-| `0x1da054` | 0x1d / 0x815 / 2 / 0 | input ≥ 4 | vtable `+0xd0` with `SystemBuffer` |
+| `0x1da050` | 0x1d / 0x814 / 2 / 0 | input >= 4 | vtable `+0xc8`, then `+0xd0` with `SystemBuffer` |
+| `0x1da054` | 0x1d / 0x815 / 2 / 0 | input >= 4 | vtable `+0xd0` with `SystemBuffer` |
 | `0x1d6000` | 0x1d / 0x1800 / 1 / 0 | none | vtable `+0x30` with `SystemBuffer`, `&OutputBufferLength` |
 | `0x1d6004` | 0x1d / 0x1801 / 1 / 0 | none | vtable `+0x38` with `SystemBuffer`, output length |
 | `0x1d600c` | 0x1d / 0x1803 / 1 / 0 | none | vtable `+0x60` with `SystemBuffer`, `&OutputBufferLength` |
 | `0x1d6010` | 0x1d / 0x1804 / 1 / 0 | none | vtable `+0x68` with `SystemBuffer`, `&OutputBufferLength` |
-| `0x1d6018` | 0x1d / 0x1806 / 1 / 0 | output == 0 → `0x80000005`, Information=4; output < 4 → `0xC0000023`; else | vtable `+0x58` with `SystemBuffer`; Information=4 |
-| `0x1d6024` | 0x1d / 0x1809 / 1 / 0 | output ≥ 8 | vtable `+0x80` with `SystemBuffer` |
-| `0x1d6028` | 0x1d / 0x180a / 1 / 0 | output ≥ 4 | vtable `+0x88` with `SystemBuffer`; Information=output length |
-| `0x1d6034` | 0x1d / 0x180d / 1 / 0 | output ≥ 0x10 | vtable `+0xa0` (currently a stub returning 0); Information=output length |
-| `0x1d6058` | 0x1d / 0x1816 / 1 / 0 | output ≥ 4 | vtable `+0xd8` (sets flag bit `0x200` in a state structure); Information=4 |
+| `0x1d6018` | 0x1d / 0x1806 / 1 / 0 | output == 0 -> `0x80000005`, Information=4; output < 4 -> `0xC0000023`; else | vtable `+0x58` with `SystemBuffer`; Information=4 |
+| `0x1d6024` | 0x1d / 0x1809 / 1 / 0 | output >= 8 | vtable `+0x80` with `SystemBuffer` |
+| `0x1d6028` | 0x1d / 0x180a / 1 / 0 | output >= 4 | vtable `+0x88` with `SystemBuffer`; Information=output length |
+| `0x1d6034` | 0x1d / 0x180d / 1 / 0 | output >= 0x10 | vtable `+0xa0` (currently a stub returning 0); Information=output length |
+| `0x1d6058` | 0x1d / 0x1816 / 1 / 0 | output >= 4 | vtable `+0xd8` (sets flag bit `0x200` in a state structure); Information=4 |
 | `0x1de008` | 0x1d / 0x802 / 3 / 0 | none | vtable `+0x40` with `SystemBuffer`, `OutputBufferLength` |
 | **`0x1de038`** | **0x1d / 0x80e / 3 / 0** | **input != 0 and SystemBuffer != NULL only**; no 32-byte requirement | **vtable `+0xa8` writes 32 bytes to `SystemBuffer` (x64) or to a `OutputBufferLength*2` pool block (WOW64)** |
 
-The HAL interface vtable used by `FUN_1402e6850` is based at `0x140145898` in V9; slot `+0xa8` is stored at `0x140145940` and contains `0x1402eec60`. The same slot/helper relationship is present in all 14 x64 builds (§2 addresses); the slot's base qword in each build is the QueryInterface thunk (`0x140124bd0` in V9).
+The HAL interface vtable used by `FUN_1402e6850` is based at `0x140145898` in V9; slot `+0xa8` is stored at `0x140145940` and contains `0x1402eec60`. The same slot/helper relationship is present in all 14 x64 builds (section 2 addresses); the slot's base qword in each build is the QueryInterface thunk (`0x140124bd0` in V9).
 
 ## 5. Access-control audit
 
@@ -151,9 +151,9 @@ The two interfaces are registered on the same FDO that the vendor's user-mode AS
 1. Caller opens the CMASIO device interface and sends `DeviceIoControl(0x1de038, inLen=L_in, outLen=L_out)`. The handler's file-name gate at `0x1402e6901` must match `\CMASIOPrivateInterface`.
 2. `FUN_1402e6850` at `0x1402e6d9c` checks only `L_in != 0` and `SystemBuffer != NULL`.
 3. `IoIs32bitProcess` at `0x1402e6db0` selects the path.
-4. **x64 path** (`0x1402e6e7f`–`0x1402e6ea1`): calls vtable `+0xa8` with `(this, FileObject, SystemBuffer, SystemBuffer, &L_out)`. `SystemBuffer` is the METHOD_BUFFERED allocation of size `max(L_in, L_out)`.
-5. **WOW64 path** (`0x1402e6dc1`–`0x1402e6e33`): `ExAllocatePoolWithTag(NonPagedPool, L_out*2, 'adap')`, sets `L_out *= 2`, calls vtable `+0xa8` with the pool block, then copies `L_out>>3` dwords from the pool block to `SystemBuffer`.
-6. Vtable slot `+0xa8` is `0x1402eec60` (V9; per-build addresses in §2). At `0x1402eec6b`–`0x1402eec7f` it executes:
+4. **x64 path** (`0x1402e6e7f`-`0x1402e6ea1`): calls vtable `+0xa8` with `(this, FileObject, SystemBuffer, SystemBuffer, &L_out)`. `SystemBuffer` is the METHOD_BUFFERED allocation of size `max(L_in, L_out)`.
+5. **WOW64 path** (`0x1402e6dc1`-`0x1402e6e33`): `ExAllocatePoolWithTag(NonPagedPool, L_out*2, 'adap')`, sets `L_out *= 2`, calls vtable `+0xa8` with the pool block, then copies `L_out>>3` dwords from the pool block to `SystemBuffer`.
+6. Vtable slot `+0xa8` is `0x1402eec60` (V9; per-build addresses in section 2). At `0x1402eec6b`-`0x1402eec7f` it executes:
    - `movups 0x98(%rcx), %xmm0; movups %xmm0, (%r9)`
    - `movups 0xa8(%rcx), %xmm1; movups %xmm1, 0x10(%r9)`
    - i.e. a **32-byte unconditional write** to the fourth argument (`r9`), with no length argument and no check.
@@ -185,7 +185,7 @@ For the x64 path, after the helper returns, `FUN_1402e6850` sets `IRP->IoStatus.
 | Path | Result |
 |---|---|
 | `MmMapIoSpace`, `MmGetPhysicalAddress`, `MmCopyMemory`, `ZwMapViewOfSection`, `ZwOpenSection`, `MmProbeAndLockPages` | **Not imported / not present** in any of the 16 images. No physical-memory or user-MDL path. |
-| `MmMapLockedPagesSpecifyCache` | Only in `FUN_1402f94f0` (V9): `ExAllocatePoolWithTag(0x200, size+0x28, 'USbd')` → `IoAllocateMdl(buffer, size+0x28, 0, 1)` → `MmBuildMdlForNonPagedPool` → `MmMapLockedPagesSpecifyCache(mdl, 1 /*KernelMode*/, 1 /*MmCached*/, ...)`. The MDL describes driver-owned nonpaged pool, the allocation and MDL lengths are the same computed value, and no user pointer is passed to `MmProbeAndLockPages`. The old report's conclusion on this path is retained. |
+| `MmMapLockedPagesSpecifyCache` | Only in `FUN_1402f94f0` (V9): `ExAllocatePoolWithTag(0x200, size+0x28, 'USbd')` -> `IoAllocateMdl(buffer, size+0x28, 0, 1)` -> `MmBuildMdlForNonPagedPool` -> `MmMapLockedPagesSpecifyCache(mdl, 1 /*KernelMode*/, 1 /*MmCached*/, ...)`. The MDL describes driver-owned nonpaged pool, the allocation and MDL lengths are the same computed value, and no user pointer is passed to `MmProbeAndLockPages`. The old report's conclusion on this path is retained. |
 | Audio stream size arithmetic | `FUN_1402f94f0` computes `local_d4` from `local_d8 * rate * 0x28 / 1000`; allocation, MDL, and mapped length all use `local_d4+0x28`. A zero bit depth can make `local_d8 == 0` and divide by zero (DoS), but it does not create a caller-chosen destination write. |
 | `IRP_MJ_DEVICE_CONTROL` METHOD_NEITHER | None. All 23 codes are METHOD_BUFFERED; no `IoGetCurrentIrpStackLocation`; no direct user-pointer dereference. |
 | USB internal requests (`IoBuildDeviceIoControlRequest` at `FUN_1402f59f0`, `FUN_1402f6000`) | Buffers come from driver state / the buffered SystemBuffer; no user pointer or caller-chosen kernel address. |
@@ -201,7 +201,7 @@ The CMASIO private IOCTL `0x1de038` gives a **kernel pool OOB write of 32 bytes 
 
 ## 9. Build/family differences
 
-- **14 x64 builds:** identical primitive. The handler constant sequence (`0x1da020`, `0x1da050`, `0x1de008` → `0x1de038`) and the exact 32-byte helper (`0F 10 81 98 00 00 00 33 C0 41 0F 11 01 0F 10 89 A8 00 00 00 41 0F 11 49 10 C3`) are present in all of them. The helper address varies (`0x1402eec60`, `0x1402eecc0`, `0x1402e0b30`, `0x1402e4b10`, `0x1402ed6c0`, `0x1402e5e10`); the slot is `+0xa8` in each vtable.
+- **14 x64 builds:** identical primitive. The handler constant sequence (`0x1da020`, `0x1da050`, `0x1de008` -> `0x1de038`) and the exact 32-byte helper (`0F 10 81 98 00 00 00 33 C0 41 0F 11 01 0F 10 89 A8 00 00 00 41 0F 11 49 10 C3`) are present in all of them. The helper address varies (`0x1402eec60`, `0x1402eecc0`, `0x1402e0b30`, `0x1402e4b10`, `0x1402ed6c0`, `0x1402e5e10`); the slot is `+0xa8` in each vtable.
 - **BLK2025GHS:** older 2024 build; the x64 `F5CF8A1E` has the primitive but lacks the `0x223c04` code. The x86 `E328A8AA` is not loadable on x64.
 - **K20_PRO / K20_TURBO:** newer 2025/2026 builds with extra CUSB channel-conversion/topology units; the `0x1de038` primitive and helper are unchanged.
 - **OUYU002X1WGHS:** separate product name/PDB path (`CM002X1_OUYU_OY_Wireless_Gaming_Device`); same primitive in the x64 `56F0EDDB`; the x86 `A7108D76` is BLOCKED.
@@ -219,4 +219,4 @@ The CMASIO private IOCTL `0x1de038` gives a **kernel pool OOB write of 32 bytes 
 
 ## 11. Historical baseline correction
 
-The prior report `audits/reports/mchose_audio.static.md` concluded **NO-WRITE** for all 14 families. Its “no control device” observation is technically true — the driver never calls `IoCreateDevice` or `IoCreateSymbolicLink` — but it **missed the two `IoRegisterDeviceInterface` interfaces and the custom `IRP_MJ_DEVICE_CONTROL` override**. The prior report also stopped at the MDL path and did not enumerate the private IOCTL protocol. The MDL conclusion (driver-owned pool, KernelMode mapping, no user pointer) is retained. Under the current R2-inclusive, hardware-inclusive scope, the family is **MW3**, not NO-WRITE.
+The prior report `audits/reports/mchose_audio.static.md` concluded **NO-WRITE** for all 14 families. Its "no control device" observation is technically true - the driver never calls `IoCreateDevice` or `IoCreateSymbolicLink` - but it **missed the two `IoRegisterDeviceInterface` interfaces and the custom `IRP_MJ_DEVICE_CONTROL` override**. The prior report also stopped at the MDL path and did not enumerate the private IOCTL protocol. The MDL conclusion (driver-owned pool, KernelMode mapping, no user pointer) is retained. Under the current R2-inclusive, hardware-inclusive scope, the family is **MW3**, not NO-WRITE.

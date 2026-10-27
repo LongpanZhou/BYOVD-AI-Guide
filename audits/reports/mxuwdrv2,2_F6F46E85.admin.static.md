@@ -20,11 +20,11 @@
 
 ## 2 Entry / device / interface / effective DACL
 
-- As in the sibling §2: `IoCreateDevice` at dump 347, interface registration at dump 4527 and 12348, `IoCreateUnprotectedSymbolicLink` at dump 11712. Effective DACL: IoCreateDevice and PnP interface defaults.
+- As in the sibling section 2: `IoCreateDevice` at dump 347, interface registration at dump 4527 and 12348, `IoCreateUnprotectedSymbolicLink` at dump 11712. Effective DACL: IoCreateDevice and PnP interface defaults.
 
 ## 3 Dispatch and IOCTL table
 
-- As in the sibling §3: serial family 0x1B0004-0x1B009C (dump 6355-6516 in this build) and 0x222080 (dump 6520-6523, forwarded through the guarded dispatch pointer). Serial handlers not read (see the sibling §8).
+- As in the sibling section 3: serial family 0x1B0004-0x1B009C (dump 6355-6516 in this build) and 0x222080 (dump 6520-6523, forwarded through the guarded dispatch pointer). Serial handlers not read (see the sibling section 8).
 
 ## 4 Access-control audit
 
@@ -32,7 +32,7 @@
 
 ## 5 Memory-write trace
 
-- As in the sibling §5: no copy or mapping primitive imported; the read cases do not write to caller buffers; serial handlers not read.
+- As in the sibling section 5: no copy or mapping primitive imported; the read cases do not write to caller buffers; serial handlers not read.
 
 ## 6 Most dangerous exposed capability
 
@@ -44,5 +44,5 @@
 
 ## 8 Limitations
 
-- As in `mxuwdrv2,1_AAFCCE25` §8: the serial handlers and the runtime-resolved APIs were not read.
+- As in `mxuwdrv2,1_AAFCCE25` section 8: the serial handlers and the runtime-resolved APIs were not read.
 - No REA session used. No execution, no driver load, no registry writes.

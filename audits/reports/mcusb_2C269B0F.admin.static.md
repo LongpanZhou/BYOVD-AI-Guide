@@ -24,7 +24,7 @@
 
 ## 2 Verdict
 
-**BLOCKED (architecture).** mcusb_2C269B0F.sys is x86 (PE32, i386) and cannot be loaded on x64 Windows. Write quality is not assessed for non-x64 images (see §1 for the static primitive).
+**BLOCKED (architecture).** mcusb_2C269B0F.sys is x86 (PE32, i386) and cannot be loaded on x64 Windows. Write quality is not assessed for non-x64 images (see section 1 for the static primitive).
 
 ## 3 Limitations
 

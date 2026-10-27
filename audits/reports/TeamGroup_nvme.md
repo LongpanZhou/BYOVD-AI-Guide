@@ -1,4 +1,4 @@
-# Audit: TeamGroup `nvme_*.sys` family — current-scope re-audit
+# Audit: TeamGroup `nvme_*.sys` family - current-scope re-audit
 
 | Field | Value |
 |---|---|
@@ -9,7 +9,7 @@
 | Reach tier | `R2` local administrator (storage-device handle) / `R3` hardware (matching NVMe controller) |
 | Setup required | `hardware` (NVMe PCI controller + PnP devnode; the miniport loads only when the controller enumerates) |
 | Write quality | `W2` (constrained target and value) |
-| Verdict | **MW2** — x64 builds `45635E0B`, `A9B48787`, `E4AB6E36`; **BLOCKED** — i386 builds `35B2D3D4`, `77C8809A`, `FFD83A43` |
+| Verdict | **MW2** - x64 builds `45635E0B`, `A9B48787`, `E4AB6E36`; **BLOCKED** - i386 builds `35B2D3D4`, `77C8809A`, `FFD83A43` |
 
 Supersedes `audits\reports\teamgroup_nvme.static.md` (old scope, one build dumped, `NO-WRITE` by policy).
 Reason for re-audit: scope change (admin in scope), all six files verified, i386/x64 split discovered, and the
@@ -36,7 +36,7 @@ loadable members. All six are the same product: `Standard NVMe Storport Miniport
 - StorPort NVMe miniport. `DriverEntry` (`0x14000dd78` in 45635E0B) fills a `HW_INITIALIZATION_DATA` of size
   `0xd0` and calls `StorPortInitialize` once. `DeviceExtensionSize = 0x12f8`, `SrbExtensionSize = 0x11c8`.
 - Imports are the StorPort set (`StorPortInitialize`, `StorPortGetDeviceBase`, `StorPortGetScatterGatherList`,
-  `StorPortGetPhysicalAddress`, `StorPortNotification`, `StorPortRegistryRead`, `StorPortExtendedFunction`, …),
+  `StorPortGetPhysicalAddress`, `StorPortNotification`, `StorPortRegistryRead`, `StorPortExtendedFunction`, ...),
   plus `MmGetPhysicalAddress`. No `IoCreateDevice`, `IoCreateSymbolicLink`, `IoRegisterDeviceInterface`,
   `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmCopyMemory`, `ZwMapViewOfSection`.
 - Registry inputs read at init: `Namespaces`, `MaxTXSize`, `AdQEntries`, `IoQEntries`, `IntCoalescingTime`,
@@ -48,9 +48,9 @@ loadable members. All six are the same product: `Standard NVMe Storport Miniport
 
 | Item | Result |
 |---|---|
-| Device object created by this driver | **None** — no create API imported, no `\Device\` or `\DosDevices\` string in any of the six images |
+| Device object created by this driver | **None** - no create API imported, no `\Device\` or `\DosDevices\` string in any of the six images |
 | Symbolic link / device interface | **None** |
-| IRP_MJ_CREATE / DEVICE_CONTROL handler registered | **None** — the driver owns no device object and therefore no DACL |
+| IRP_MJ_CREATE / DEVICE_CONTROL handler registered | **None** - the driver owns no device object and therefore no DACL |
 | Effective DACL | Not supplied by this driver. The only reachable objects are the storage stack's disk/adapter devices (`\\.\PhysicalDriveN`, `\\.\ScsiN`), whose DACL is owned by disk/storport and requires write access for the pass-through IOCTLs |
 | Open gate | Local administrator (write access to the physical drive or SCSI adapter). No driver-side `SeAccessCheck` / `SeSinglePrivilegeCheck` exists |
 | Setup | `hardware` + PnP `devnode`; no software-only load path (miniport bound by the storage INF) |
@@ -70,32 +70,32 @@ driver-owned IOCTL dispatch.
 | `0x02` IO_CONTROL | `0x1400114e4` | `IOCTL_SCSI_MINIPORT` pass-through; parses `SRB_IO_CONTROL` at the start of the IOCTL buffer; checks `DataTransferLength >= buffer->Length(+0x18) + 0x1c`; signature must be `NvmeMini` or `SCSIDISK` |
 | `0x10` RESET_BUS / `0x12`-`0x13` / `0x20` RESET_LUN | `0x1400109b0`, `0x14001126c` | Reset paths; no caller data |
 | `0x17` WMI / `0x24` POWER | `0x140011c98` / in-line | WMI and power; no caller data |
-| `0x01`, `0x05`, `0x11`, `0x14` | — | Not handled (status 6) |
+| `0x01`, `0x05`, `0x11`, `0x14` | - | Not handled (status 6) |
 
 Miniport control codes inside `SRB_IO_CONTROL.ControlCode` (`+0x10`), all reached with
-`IOCTL_SCSI_MINIPORT` (`0x0004D008`, METHOD_BUFFERED, `FILE_READ_ACCESS|FILE_WRITE_ACCESS` ⇒ administrator):
+`IOCTL_SCSI_MINIPORT` (`0x0004D008`, METHOD_BUFFERED, `FILE_READ_ACCESS|FILE_WRITE_ACCESS` => administrator):
 
 | Signature | ControlCode | Handler | Checks | Kernel action |
 |---|---|---|---|---|
 | `NvmeMini` | `0xE0002000` | build `0x140010b74` / submit `0x1400114e4` | `DataTransferLength >= 0x98`; `buffer+0x94 >= 0x98`; per-opcode only `buffer+0x8c` / `buffer+0x94` (caller-owned fields) | Copies the 0x40-byte NVMe command template from `buffer+0x34`, builds PRPs from `buffer+0x98`, submits to the device |
-| `NvmeMini` | `0xE0002004` | `0x14001126c` | — | Controller reset (`StorPortPause` + reset); DoS only |
-| `NvmeMini` | `0xE0002008` | `0x14001010c` | — | Aborts a pending namespace reset; status only |
-| `NvmeMini` | `0xE000200C` | `0x1400101b4` | — | Namespace/format state transition; status only |
+| `NvmeMini` | `0xE0002004` | `0x14001126c` | - | Controller reset (`StorPortPause` + reset); DoS only |
+| `NvmeMini` | `0xE0002008` | `0x14001010c` | - | Aborts a pending namespace reset; status only |
+| `NvmeMini` | `0xE000200C` | `0x1400101b4` | - | Namespace/format state transition; status only |
 | `SCSIDISK` | `0x1B0500` | `0x140010eb0` | `DataTransferLength > 0x33` | Fixed 0x28-byte identity reply |
-| `SCSIDISK` | `0x1B0501` | `0x140010eb0` | `DataTransferLength > 0x22b` | `memset(buffer+0x1c, 0, 0x210)` — inside the checked buffer |
+| `SCSIDISK` | `0x1B0501` | `0x140010eb0` | `DataTransferLength > 0x22b` | `memset(buffer+0x1c, 0, 0x210)` - inside the checked buffer |
 | `SCSIDISK` | `0x1B0502` / `0x1B0503` | `0x140010eb0` | `DataTransferLength > 0x48` / `> 0x3a` | Allocates a driver 0x1000 pool buffer, DMAs identity data there, copies a fixed 0x40/0x2e reply |
-| `SCSIDISK` | `0x1B0504` / `0x1B0505` | `0x140010eb0` | — | Status only |
+| `SCSIDISK` | `0x1B0504` / `0x1B0505` | `0x140010eb0` | - | Status only |
 
 Opcode dispatch inside the `NvmeMini` template (`buffer+0x34` = NVMe command dword 0):
 
 | Opcode | Handler (45635E0B) | Length source used for PRPs | Check that constrains it |
 |---|---|---|---|
-| `0x02` | `0x1400100a0` | `(buffer+0x5e & 0xfff) * 4 + 4` (≤ 0x4000) | `buffer+0x94 >= length + 0x98` |
+| `0x02` | `0x1400100a0` | `(buffer+0x5e & 0xfff) * 4 + 4` (<= 0x4000) | `buffer+0x94 >= length + 0x98` |
 | `0x06` | `0x1400102d4` | fixed `0x1000` | `buffer+0x94 >= 0x1098` |
-| `0x09` | `0x14000fba8` | `((buffer+0x64 & 0xff) + 1) * 0x10` (≤ 0x1000) | `buffer+0x8c >= length` |
+| `0x09` | `0x14000fba8` | `((buffer+0x64 & 0xff) + 1) * 0x10` (<= 0x1000) | `buffer+0x8c >= length` |
 | `0x11` | `0x14001002c` | `buffer+0x5c * 4 + 4` | `buffer+0x8c >= length` |
 | `0x81` / `0x82` | `0x140010334` | `buffer+0x60` (any 32-bit value) | `buffer+0x94 >= length + 0x98` (0x82) / `buffer+0x8c >= length` (0x81) |
-| `0x80` | `0x14000fc0c` → `0x14000f11c` | declared `buffer+0x38` | `<= MaxTXSize` at `adapter+0x338` |
+| `0x80` | `0x14000fc0c` -> `0x14000f11c` | declared `buffer+0x38` | `<= MaxTXSize` at `adapter+0x338` |
 
 **Every "check" in the right-hand column compares the length against another field inside the same caller
 buffer.** Nothing compares the declared span with `Srb->DataTransferLength`, and the only port-level check is
@@ -112,7 +112,7 @@ buffer.** Nothing compares the declared span with `Srb->DataTransferLength`, and
 - Therefore the surface is **R2**. It is not reachable unprivileged, and it is not reachable at all without the
   matching NVMe controller (the miniport never loads).
 - No `SeSinglePrivilegeCheck`, no `SeAccessCheck`, no caller-identity check, no `FILE_WRITE_ACCESS` test inside the
-  miniport — once the handle is open, everything in §3 is available.
+  miniport - once the handle is open, everything in section 3 is available.
 
 ## 5. Memory-write trace
 
@@ -123,7 +123,7 @@ buffer.** Nothing compares the declared span with `Srb->DataTransferLength`, and
   addresses into the SRB extension at `+0x30` (PRP1), `+0x38` (PRP2) and `+0x898` (PRP list), incrementing the
   count at `+0x1098`. The list write is `*puVar5 = pa` in a loop with **no test against `0x1098`/the
   `0x11c8`-byte extension**.
-- **VA→PA `0x140002acc`**: `StorPortGetPhysicalAddress(ext, NULL, va, &len)` normally, `MmGetPhysicalAddress(va)`
+- **VA->PA `0x140002acc`**: `StorPortGetPhysicalAddress(ext, NULL, va, &len)` normally, `MmGetPhysicalAddress(va)`
   when the `dump=1` adapter flag is set. The `Srb = NULL` form is the same one the driver uses for its own
   internal 0x1000 buffers (`0x140002910`), i.e. it is a generic kernel-VA translation, not an SG-list lookup.
 - **Submit path**: the 0x40-byte command at `extension+0x18` carries the caller's command dwords with the
@@ -167,7 +167,7 @@ disk content into the adjacent kernel pool, or an unbounded PRP list for opcode 
 
 ## 7. Verdict
 
-**MW2 — reach=R2 setup=hardware write=W2 load=signed** for the three x64 builds.
+**MW2 - reach=R2 setup=hardware write=W2 load=signed** for the three x64 builds.
 
 - `MW2` because the write is real and admin-reachable, but the target is constrained to the pool pages that
   follow the port driver's IOCTL buffer, the value is device/disk content, and the controller must be present.

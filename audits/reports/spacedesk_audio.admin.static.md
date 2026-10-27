@@ -10,7 +10,7 @@
 | Analysis date | 2026-10-24 |
 | Reach tier | R3 (devnode-installed device). The active INF DACL grants Everyone read, write and execute on the device; not confirmed at runtime. |
 | Setup required | devnode (installed by `spacedeskDriverAudio.inf`; no hardware) |
-| Verdict | **NO-MEMORY-WRITE — reach=R3 setup=devnode write=W0 load=signed** (static). Scale: `audits\scope\SEVERITY.md`. |
+| Verdict | **NO-MEMORY-WRITE - reach=R3 setup=devnode write=W0 load=signed** (static). Scale: `audits\scope\SEVERITY.md`. |
 | Severity | NO-MEMORY-WRITE |
 | Write quality | W0 (no kernel memory write found) |
 
@@ -86,7 +86,7 @@ Other memory-touching code visible in the dump (not on a user path): `FUN_140013
 
 ## 4. Verdict and dynamic confirmation plan
 
-**Verdict: NO-MEMORY-WRITE — reach=R3 setup=devnode write=W0 load=signed (static).**
+**Verdict: NO-MEMORY-WRITE - reach=R3 setup=devnode write=W0 load=signed (static).**
 
 - No kernel memory write with a user-controlled address or length was found in the driver's own code.
 - No memory-mapping, MDL-lock or physical-mapping API is imported or reachable from any handler target.

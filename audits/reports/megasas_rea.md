@@ -25,18 +25,18 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Caller-controlled kernel address or mapping | None. The `Mm`, `Probe` and `\Device\` sweeps are empty. No section, `MmCopyMemory` or PhysicalMemory references | `ev_462cecff…` (Mm, empty), `ev_ae3d0136…` (Probe, empty), `ev_c35434c1…` (`\Device\`, empty) |
-| IO_CONTROL routing | HwBuildIo worker: the gate `FUN_1c0004264` (not reviewed here) runs first. Function 0x02 is handed to `FUN_1c000824c` and returned | `ev_bb984879…` (`FUN_1c00036e4`), `ev_8cd9dc1a…` (`FUN_1c00036a0`) |
-| Buffer length (`DataTransferLength`, SRB+0x10) | Checked `>= 0xbc` before any buffer access. On failure: SRB status 6, ReturnCode 1 | `ev_be857e5e…` (`FUN_1c000824c`) |
-| Signature and ControlCode gate | The 8-byte signature `LSILOGIC` must sit at buffer+4. ControlCode must have high word `F001` or `F002` (mask `0xfffeffff`). Anything else goes to the fallback `FUN_1c00084d0` (not reviewed) | `ev_be857e5e…` |
-| Fixed copy, sub-code `0xF0010100` (at buffer+0x34) | `FUN_1c00026fc(buf+0xbc, "LSILOGIC" constant, 0x70)`. Constant length, guarded by `DataTransferLength > 299`, so the write ends at 0x12c, inside the guard | `ev_be857e5e…` |
-| Fixed copy, sub-code `0xF0010200` | 0x70 bytes from adapter field `param_1+8` to buf+0xbc, same guard | `ev_be857e5e…` |
-| Fixed 4-byte store, sub-code `0xF0020300` | Adapter field `param_1+0x78` stored at buf+0xbc, guarded by `DataTransferLength >= 0xc0` | `ev_be857e5e…` |
-| Caller-length copy (buffer `Length`, buf+0x18) | Not read anywhere in `FUN_1c000824c`. A user-length copy, if one exists, is in the fallback `FUN_1c00084d0` or in `FUN_1c00083dc` (sub-code `0xF0020200`). **Not reviewed** | `ev_be857e5e…` (no +0x18 reference) |
-| HwAdapterControl self-describing write | `FUN_1c0001d60` ControlType 0 writes `*param_3` bytes at `param_3+4` from a fixed 5-entry list. The count is storport-supplied. This callback is not reached from the IOCTL payload | `ev_c01336be…` |
-| Zeroing helper `FUN_1c00026a8` | Fixed 8 bytes at buf+4 on the signature path. `entry` zeroes 0xd0 bytes of the init struct | `ev_be857e5e…`, `ev_aad60378…` |
-| Shared `memset` (`0x1c000aa00`) | Only named mem-helper in the sweep. Callers and length arguments not enumerated | `ev_624bffcc…` (mem sweep) |
-| Copy helpers by name | `copy` sweep empty; the copy call sites are unnamed helpers (see Open items) | `ev_d99fe3f1…` (copy, empty) |
+| Caller-controlled kernel address or mapping | None. The `Mm`, `Probe` and `\Device\` sweeps are empty. No section, `MmCopyMemory` or PhysicalMemory references | `ev_462cecff...` (Mm, empty), `ev_ae3d0136...` (Probe, empty), `ev_c35434c1...` (`\Device\`, empty) |
+| IO_CONTROL routing | HwBuildIo worker: the gate `FUN_1c0004264` (not reviewed here) runs first. Function 0x02 is handed to `FUN_1c000824c` and returned | `ev_bb984879...` (`FUN_1c00036e4`), `ev_8cd9dc1a...` (`FUN_1c00036a0`) |
+| Buffer length (`DataTransferLength`, SRB+0x10) | Checked `>= 0xbc` before any buffer access. On failure: SRB status 6, ReturnCode 1 | `ev_be857e5e...` (`FUN_1c000824c`) |
+| Signature and ControlCode gate | The 8-byte signature `LSILOGIC` must sit at buffer+4. ControlCode must have high word `F001` or `F002` (mask `0xfffeffff`). Anything else goes to the fallback `FUN_1c00084d0` (not reviewed) | `ev_be857e5e...` |
+| Fixed copy, sub-code `0xF0010100` (at buffer+0x34) | `FUN_1c00026fc(buf+0xbc, "LSILOGIC" constant, 0x70)`. Constant length, guarded by `DataTransferLength > 299`, so the write ends at 0x12c, inside the guard | `ev_be857e5e...` |
+| Fixed copy, sub-code `0xF0010200` | 0x70 bytes from adapter field `param_1+8` to buf+0xbc, same guard | `ev_be857e5e...` |
+| Fixed 4-byte store, sub-code `0xF0020300` | Adapter field `param_1+0x78` stored at buf+0xbc, guarded by `DataTransferLength >= 0xc0` | `ev_be857e5e...` |
+| Caller-length copy (buffer `Length`, buf+0x18) | Not read anywhere in `FUN_1c000824c`. A user-length copy, if one exists, is in the fallback `FUN_1c00084d0` or in `FUN_1c00083dc` (sub-code `0xF0020200`). **Not reviewed** | `ev_be857e5e...` (no +0x18 reference) |
+| HwAdapterControl self-describing write | `FUN_1c0001d60` ControlType 0 writes `*param_3` bytes at `param_3+4` from a fixed 5-entry list. The count is storport-supplied. This callback is not reached from the IOCTL payload | `ev_c01336be...` |
+| Zeroing helper `FUN_1c00026a8` | Fixed 8 bytes at buf+4 on the signature path. `entry` zeroes 0xd0 bytes of the init struct | `ev_be857e5e...`, `ev_aad60378...` |
+| Shared `memset` (`0x1c000aa00`) | Only named mem-helper in the sweep. Callers and length arguments not enumerated | `ev_624bffcc...` (mem sweep) |
+| Copy helpers by name | `copy` sweep empty; the copy call sites are unnamed helpers (see Open items) | `ev_d99fe3f1...` (copy, empty) |
 
 ## Verdict rationale
 
@@ -64,7 +64,7 @@
 
 ## Evidence (REA, retained IDs)
 
-Sweeps (`open_binary` digest `9041fdeb…` on every result):
+Sweeps (`open_binary` digest `9041fdeb...` on every result):
 - `Mm` (case-sensitive): `ev_462cecffedfd5926ffba291178d54282af968be4d3437c02538975ff786e45f0` (empty)
 - `Io` (case-sensitive): `ev_9ca5a4241a94d124590c567f9fcd61cf1542b7b90ca3b3c56e79f9e349b7d103` (empty)
 - `Wdf` (case-sensitive): `ev_7226ac01de76e87c47ae0b16f24c1f16a1919d0b288efccf85d90a72b8e2d3e6` (empty)

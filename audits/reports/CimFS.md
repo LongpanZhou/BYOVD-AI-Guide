@@ -13,15 +13,15 @@
 ## Entry surface
 
 - Full filesystem driver: `IoCreateDevice` + `IoRegisterFileSystem` (sites `0x1C0004468` family, `0x1C0019460`, `0x1C0019EC8`).
-- Control device names: `\Device\cimfs` / `\Device\cimfs\control` with link `\DosDevices\CimfsControl` (`STR 1C0011360`–`1C00113B0`).
-- **DACL:** the binary contains exactly one SDDL constant — file RVA `0x10E30` = **`"D:P(A;;GA;;;SY)(A;;GA;;;BA)"`** (SYSTEM + Administrators, protected DACL) — applied through the wdmsec-style wrapper (`FUN_1C0019460`: SDDL→SD conversion then post-creation application to the device object). Unprivileged `CreateFile` on `\\.\CimfsControl` is denied by the object manager before any dispatch.
-- Mount path (`Cimfs::Mount` `FUN_1C0004468`): the driver itself opens the `.cim` image/region files with `IoCreateFile(desiredAccess 0x120089)` under the kernel token (`Cimfs::OpenRegions`) and maps them with `MmMapViewInSystemSpaceEx` — the caller only names the file; the mapping targets disk files, not attacker memory.
+- Control device names: `\Device\cimfs` / `\Device\cimfs\control` with link `\DosDevices\CimfsControl` (`STR 1C0011360`-`1C00113B0`).
+- **DACL:** the binary contains exactly one SDDL constant - file RVA `0x10E30` = **`"D:P(A;;GA;;;SY)(A;;GA;;;BA)"`** (SYSTEM + Administrators, protected DACL) - applied through the wdmsec-style wrapper (`FUN_1C0019460`: SDDL->SD conversion then post-creation application to the device object). Unprivileged `CreateFile` on `\\.\CimfsControl` is denied by the object manager before any dispatch.
+- Mount path (`Cimfs::Mount` `FUN_1C0004468`): the driver itself opens the `.cim` image/region files with `IoCreateFile(desiredAccess 0x120089)` under the kernel token (`Cimfs::OpenRegions`) and maps them with `MmMapViewInSystemSpaceEx` - the caller only names the file; the mapping targets disk files, not attacker memory.
 
 ## Memory-write analysis
 
-- **Probe/lock:** `MmProbeAndLockPages` (site `FUN_1C00071DC`) is used on IRP MDLs in the cached-read path (kernel→user read-back through mapped region views); the MDLs originate from the I/O manager (direct IO) — locked before dispatch.
+- **Probe/lock:** `MmProbeAndLockPages` (site `FUN_1C00071DC`) is used on IRP MDLs in the cached-read path (kernel->user read-back through mapped region views); the MDLs originate from the I/O manager (direct IO) - locked before dispatch.
 - **Section mapping:** `MmMapViewInSystemSpaceEx` targets driver-opened file objects only (no caller handle ingestion path found in the mount/unmount routes).
-- `MmHighestUserAddress` referenced (user VA sanity checks in mapping code — library-style guards).
+- `MmHighestUserAddress` referenced (user VA sanity checks in mapping code - library-style guards).
 - Mount-time header validation (`"Mount failed, invalid fs headers"` path, status `0xC0000032`): structural validation with bounded parser shapes; no fixed-destination/user-length mismatch found.
 - **Not found:** no `MmMapIoSpace`/`MmGetPhysicalAddress`/`ZwOpenSection` user-addressable mapping paths, no METHOD_NEITHER dispatch of its own, no MSR/GDT/IDT patterns, no user-length-driven fills.
 

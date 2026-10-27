@@ -26,9 +26,9 @@ Same code as `usbdaqlib_58D0669F` (see that report). Function headers and call-s
 
 ## 3 Dispatch and IOCTL table
 
-Dispatcher `FUN_000138f8 @ 000138f8` (header 1949): IoControlCode at line 1969; started-state gate at line 1973 (`!= 2` → `0xC0000184`); `0x220000` (line 1983), `0x220004` (line 2001), `0x220008` (line 2006), all other codes → `FUN_00022944` (line 2008) → `FUN_0001f8a0` (line 13146).
+Dispatcher `FUN_000138f8 @ 000138f8` (header 1949): IoControlCode at line 1969; started-state gate at line 1973 (`!= 2` -> `0xC0000184`); `0x220000` (line 1983), `0x220004` (line 2001), `0x220008` (line 2006), all other codes -> `FUN_00022944` (line 2008) -> `FUN_0001f8a0` (line 13146).
 
-`FUN_0001f8a0 @ 0001f8a0` (header 10801). **Traced code:** `0x500024a4` (function 0x929, METHOD_BUFFERED, FILE_ANY_ACCESS): guard at line 10856, call `FUN_00022c38` at line 10857. Other codes (`0x50002408` → `FUN_0001f38c` at line 10850, and the 0x5000xxxx cases from line 10834 onward) were not traced.
+`FUN_0001f8a0 @ 0001f8a0` (header 10801). **Traced code:** `0x500024a4` (function 0x929, METHOD_BUFFERED, FILE_ANY_ACCESS): guard at line 10856, call `FUN_00022c38` at line 10857. Other codes (`0x50002408` -> `FUN_0001f38c` at line 10850, and the 0x5000xxxx cases from line 10834 onward) were not traced.
 
 ## 4 Access-control audit
 

@@ -1,4 +1,4 @@
-# Audit Status and Queue — canonical
+# Audit Status and Queue - canonical
 
 **Last updated:** 2026-10-25
 **Scope:** kernel memory-write only; `R2` local administrator is in scope; setup is a severity
@@ -13,8 +13,8 @@ field, not a disqualifier; hardware-only writes are `HW-ONLY`.
 | Original host corpus | 94 |
 | `collected2` | 135 |
 | `collected3` | 11 |
-| `collected5` (R1–R4) | 41 |
-| `collected1` (S1–S6) | 106 |
+| `collected5` (R1-R4) | 41 |
+| `collected1` (S1-S6) | 106 |
 | **Total known** | **386** |
 
 - Dedupe index: **932 hashes** - 925 tracked in `indexes\dedupe\existing_hashes.txt` + 7 exported-set hashes in a gitignored local gate file
@@ -58,14 +58,14 @@ field, not a disqualifier; hardware-only writes are `HW-ONLY`.
 | CorsairGamingAudio32 i386 | **BLOCKED** (i386; static MW3) | not loadable on x64 | `Corsair_LLAccess32_LLAccess64_old_GamingAudio32.md` |
 | CoreTemp `ALSysIO64Legacy` x64 | **BLOCKED** (static MW2) | R2 / none; unsigned | `CoreTemp_ALSysIO64Legacy.md` |
 | CoreTemp `ALSysIO64` x64 + Legacy x86 | **BLOCKED** (static MW2) | R2 / none; unsigned | `CoreTemp_ALSysIO64_x64_and_Legacy_x86.md` |
-| pcidaqlib ×4 (`4BEC3036`, `4D67C576`, `7519DAC6`, `7CBCD6B0`) | **MW3** (W2 kernel-VA write, R3 hardware cap) | R3 / hardware; signed | `pcidaqlib.md` |
+| pcidaqlib x4 (`4BEC3036`, `4D67C576`, `7519DAC6`, `7CBCD6B0`) | **MW3** (W2 kernel-VA write, R3 hardware cap) | R3 / hardware; signed | `pcidaqlib.md` |
 | FPGATEST x64 + x86 | **BLOCKED** (static MW3, W2) | R3 / hardware; unsigned | `FPGATEST_x64_x86.md` |
 | Scufdriver5/6 | **NO-MEMORY-WRITE** (W0) | R2 / none; signed | `Scuf_SiUSBXp.md` |
 | CBUL32 + CBULWDM | **MW3** | R2 / service or devnode; signed; W3P | `CBUL32_CBULWDM.md` |
-| usbdaqlib x64 ×2 (`58D0669F`, `E4056475`) | **MW3** (provisional) | R3/hardware; W2 fixed-pattern write | `usbdaqlib_58D0669F.admin.static.md`, `usbdaqlib_E4056475.admin.static.md` |
-| usbdaqlib i386 ×2 (`1D53580B`, `9AF9623D`) | **BLOCKED** (i386) | not loadable on x64 | `usbdaqlib_1D53580B.admin.static.md`, `usbdaqlib_9AF9623D.admin.static.md` |
-| usblddaqlib i386 ×2 (`2F015011`, `46990A05`) | **BLOCKED** (i386) | not loadable on x64 | `usblddaqlib_2F015011.admin.static.md`, `usblddaqlib_46990A05.admin.static.md` |
-| usblddaqlib x64 ×2 (`9E26A72E`, `CDEC967D`) | **NO-MEMORY-WRITE** (W0) | signed; no mapping APIs | `Collected1_tail.md` |
+| usbdaqlib x64 x2 (`58D0669F`, `E4056475`) | **MW3** (provisional) | R3/hardware; W2 fixed-pattern write | `usbdaqlib_58D0669F.admin.static.md`, `usbdaqlib_E4056475.admin.static.md` |
+| usbdaqlib i386 x2 (`1D53580B`, `9AF9623D`) | **BLOCKED** (i386) | not loadable on x64 | `usbdaqlib_1D53580B.admin.static.md`, `usbdaqlib_9AF9623D.admin.static.md` |
+| usblddaqlib i386 x2 (`2F015011`, `46990A05`) | **BLOCKED** (i386) | not loadable on x64 | `usblddaqlib_2F015011.admin.static.md`, `usblddaqlib_46990A05.admin.static.md` |
+| usblddaqlib x64 x2 (`9E26A72E`, `CDEC967D`) | **NO-MEMORY-WRITE** (W0) | signed; no mapping APIs | `Collected1_tail.md` |
 | Virtual audio group x64 (`VirtualAudioDriver`, `vrtaucbl` x64, `usbaapl64`, `netaapl64`) | **NO-MEMORY-WRITE** (W0) | R2/R3; see report | `Virtual_audio_group.md` |
 | Virtual audio i386/ARM64 (`vrtaucbl` x86/arm64) | **BLOCKED** (architecture) | not loadable on x64 | `Virtual_audio_group.md` |
 | CoolerMaster `CMUAC` x4 | **BLOCKED** (unsigned; static W0) | R3 / hardware | `CoolerMaster_audio_CPUZ_remaining.md` |
@@ -84,13 +84,13 @@ field, not a disqualifier; hardware-only writes are `HW-ONLY`.
 | SteelSeries `sshid` + `hidkmdf` | **NO-MEMORY-WRITE** (W0); 6 i386 BLOCKED | R1 `\Device\SSengine` (sshid); R3 HID (hidkmdf) | `SteelSeries_HID_core.md` |
 | SteelSeries `msihid` + `sssmbus` | **NO-MEMORY-WRITE** (W0); i386 BLOCKED | R1 open GRGW/GRGWGX | `SteelSeries_MSIHID_SMBUS.md` |
 | SteelSeries `STTub30` x64 (9E1CF7F9, 4D7F2B9D) | **MW3** | R3/hardware; W2 pool zero-fill overflow | `SteelSeries_STTub30_VAD.md` |
-| SteelSeries `ssdevfactory` x64 ×3 | **MW2** | R1 / composition; W2 caller-address store | `SteelSeries_DevFactory_Xusb21.md` |
-| SteelSeries `ssdevfactory` i386 ×2 + `xusb21` i386 ×2 | **BLOCKED** (i386) | not loadable on x64 | `SteelSeries_DevFactory_Xusb21.md` |
+| SteelSeries `ssdevfactory` x64 x3 | **MW2** | R1 / composition; W2 caller-address store | `SteelSeries_DevFactory_Xusb21.md` |
+| SteelSeries `ssdevfactory` i386 x2 + `xusb21` i386 x2 | **BLOCKED** (i386) | not loadable on x64 | `SteelSeries_DevFactory_Xusb21.md` |
 | SteelSeries `xusb21` x64 | **NO-MEMORY-WRITE** (W0) | hardware-gated; default DACL | `SteelSeries_DevFactory_Xusb21.md` |
 | Netac `SMI_IO` 32/64 | **MW2** | R2 / none; W2 stack overflow + W3P PA map | `NZXT_Netac_HyperX_PawnIO.md` |
 | SignalRGB FTDI `ftdibus` x64 (`8C494A63`) | **MW2** | R1/hardware; W2 URB-length pool OOB | `SignalRGB_ROCCAT.md` |
-| TeamGroup `nvme` x64 ×3 (`45635E0B`, `A9B48787`, `E4AB6E36`) | **MW2** | R2/hardware; W2 PRP-builder OOB | `TeamGroup_nvme.md` |
-| TeamGroup `nvme` i386 ×3 (`35B2D3D4`, `77C8809A`, `FFD83A43`) | **BLOCKED** (i386) | not loadable on x64 | `TeamGroup_nvme.md` |
+| TeamGroup `nvme` x64 x3 (`45635E0B`, `A9B48787`, `E4AB6E36`) | **MW2** | R2/hardware; W2 PRP-builder OOB | `TeamGroup_nvme.md` |
+| TeamGroup `nvme` i386 x3 (`35B2D3D4`, `77C8809A`, `FFD83A43`) | **BLOCKED** (i386) | not loadable on x64 | `TeamGroup_nvme.md` |
 | LSI SAS (`lsi_sas`, `lsi_sas2i`, `lsi_sas3i`, `lsi_sss`) | **MW3** | R3/hardware; W2 pool overflow | `LSI_Perc_SAS.md` |
 | `percsas2i` + `percsas3i` | **NO-MEMORY-WRITE** (W0) | R3/hardware; bounded mailbox path | `LSI_Perc_SAS.md` |
 | `megasr` | **MW4** (W3 fixed zero-fill OOB; DCMD resolved W3) | R3/hardware; signed | `megasr.current.md`; appendix `megasr.dcmd.appendix.md` |
@@ -100,23 +100,23 @@ field, not a disqualifier; hardware-only writes are `HW-ONLY`.
 | HyperX `vachpxkd` x64 | **MW3** | R3 / devnode; W2 METHOD_NEITHER 8-byte write | `NZXT_Netac_HyperX_PawnIO.md` |
 | NZXT `SiUSBXp` | **MW3** | R3 / hardware; W2 URB length OOB | `NZXT_Netac_HyperX_PawnIO.md` |
 | ElgatoGC656/GC658 | **MW3** | R3 / hardware; W2 KS output-length pool overflow | `Elgato_capture.admin.static.md` |
-| Elgato BDA x64 ×11 | **NO-MEMORY-WRITE (HW-ONLY)** | R3 / hardware | `Elgato_capture.admin.static.md` |
+| Elgato BDA x64 x11 | **NO-MEMORY-WRITE (HW-ONLY)** | R3 / hardware | `Elgato_capture.admin.static.md` |
 | Elgato virtual camera | **NO-MEMORY-WRITE** | length-checked handlers | `Elgato_capture.admin.static.md` |
 | Elgato `kinonivad`/`kinonivd` | **BLOCKED** (i386) | not loadable on x64 | `Elgato_capture.admin.static.md` |
-| MCHOSE x64 ×14 | **MW3** | R2/hardware; W2 pool OOB + pointer leak | `MCHOSE_audio.md` |
-| MCHOSE i386 ×2 | **BLOCKED** (i386) | not loadable on x64 | `MCHOSE_audio.md` |
+| MCHOSE x64 x14 | **MW3** | R2/hardware; W2 pool OOB + pointer leak | `MCHOSE_audio.md` |
+| MCHOSE i386 x2 | **BLOCKED** (i386) | not loadable on x64 | `MCHOSE_audio.md` |
 | NZXT `SiLib` / `cam_driver_mb`; PawnIO | **NO-MEMORY-WRITE** (HW-ONLY for cam) | see report | `NZXT_Netac_HyperX_PawnIO.md` |
-| SteelSeries `STTub30` i386 ×2 | **BLOCKED** (i386) | not loadable on x64 | `SteelSeries_STTub30_VAD.md` |
+| SteelSeries `STTub30` i386 x2 | **BLOCKED** (i386) | not loadable on x64 | `SteelSeries_STTub30_VAD.md` |
 | SteelSeries Engine/Sonar VADs | **NO-MEMORY-WRITE** | R3/PortCls; see report | `SteelSeries_STTub30_VAD.md` |
 | `ftser2k_6AD3DC79` + `VirtualHID_43774DE0` | **BLOCKED** (i386) | static W0; not loadable on x64 | `collected2_gaps_ftser2k_VirtualHID.md` |
 | Collected3 gaps (5 x64) | **NO-MEMORY-WRITE** (W0) | R2/R3; see report | `collected3_gaps.md` |
 | `dlcdcncm660_0FFDDEF9` + `imdisk_arm64` | **BLOCKED** (ARM64) | not loadable on x64 | `collected3_gaps.md` |
-| DesktopVideoUpdate ×2 | **NO-MEMORY-WRITE** (W0) | R2; legacy build test-signed | `Collected1_tail.md` |
+| DesktopVideoUpdate x2 | **NO-MEMORY-WRITE** (W0) | R2; legacy build test-signed | `Collected1_tail.md` |
 | EL_Display_vhidbus_3242D1DC | **NO-MEMORY-WRITE** (W0) | R2; OOB read only | `Collected1_tail.md` |
 | EL_Display_vhidbus_ECE1CE28 | **BLOCKED** (i386) | not loadable on x64 | `Collected1_tail.md` |
-| usblddaqlib ×2 (x64) | **NO-MEMORY-WRITE** (W0) | signed; no mapping APIs | `Collected1_tail.md` |
-| Moxa `mxuport` ×2, `mxuwdrv2` ×2, Perle `TruePort` | **NO-MEMORY-WRITE** | signed x64; see report | `S3_Moxa_Digi_Perle.md` |
-| Digi/Moxa arch/signing blocked ×7 | **BLOCKED** | ARM64/i386 or signing | `S3_Moxa_Digi_Perle.md` |
+| usblddaqlib x2 (x64) | **NO-MEMORY-WRITE** (W0) | signed; no mapping APIs | `Collected1_tail.md` |
+| Moxa `mxuport` x2, `mxuwdrv2` x2, Perle `TruePort` | **NO-MEMORY-WRITE** | signed x64; see report | `S3_Moxa_Digi_Perle.md` |
+| Digi/Moxa arch/signing blocked x7 | **BLOCKED** | ARM64/i386 or signing | `S3_Moxa_Digi_Perle.md` |
 | Blackmagic capture group | **MW4** (fixed-target W3 only) | R2/hardware; signed primaries | `Blackmagic_capture.md` |
 | iDisplay + Prolific x64 | **NO-MEMORY-WRITE** (W0) | R1/R2; signed | `iDisplay_Prolific.md` |
 | iDisplay + Prolific i386 | **BLOCKED** (i386) | not loadable on x64 | `iDisplay_Prolific.md` |
@@ -127,14 +127,14 @@ field, not a disqualifier; hardware-only writes are `HW-ONLY`.
 | avmu3 / avmu3gc550 i386 | **BLOCKED** (i386) | not loadable on x64 | `AVerMedia_capture.md` |
 | SiUSBXp32/64 | **BLOCKED** (static MW2) | R2 / none; unsigned; pool OOB write | `Scuf_SiUSBXp.md` |
 
-## Collected1 subagent batch — 2026-10-25
+## Collected1 subagent batch - 2026-10-25
 
 **Resolved conflicts:**
 
-1. `MOZAWindowsDriver_06676A68` — **MW4**; `S1_S2_remaining.md` supersedes the earlier per-file MW3.
-2. `mxusbd` x2 — **MW3**; the per-file reports and the R3/hardware W2 matrix are authoritative.
-3. `CMUAC` x4 — **BLOCKED** (unsigned; static W0). `CMTAC_83986D97` x64 — **NO-MEMORY-WRITE**;
-   `CMTAC_F6772F57` — **BLOCKED** (i386).
+1. `MOZAWindowsDriver_06676A68` - **MW4**; `S1_S2_remaining.md` supersedes the earlier per-file MW3.
+2. `mxusbd` x2 - **MW3**; the per-file reports and the R3/hardware W2 matrix are authoritative.
+3. `CMUAC` x4 - **BLOCKED** (unsigned; static W0). `CMTAC_83986D97` x64 - **NO-MEMORY-WRITE**;
+   `CMTAC_F6772F57` - **BLOCKED** (i386).
 4. One CPU-Z x64 build - audit and driver **exported 2026-10-25** with the verified set.
 5. **Known-bad policy:** the six hashes in `known_bad_hashes.txt` are hash-backed. RTCore32
    `1E0A3CF8`/`6F818DAF`, RTCore64 `A4F44E26`, RTCoreMini32/64, and both OHM WinRing0 builds are
@@ -156,10 +156,10 @@ None. Coverage reconciliation v3 is complete: **386/386 accounted (verified sets
 
 - `collected5` - 41/41 (2 exported; HWiNFO/OCCT a separate row).
 - `collected1` - 106/106 (6 exported).
-- `collected2` — 135/135 (current re-audit subset plus historical/blocked dispositions).
-- `collected3` — 11/11.
-- Original corpus — 94/94 (2 user-excluded: `NvModuleTracker`, `vgk`).
-- High-value original re-audits — `silabser`, `bxvbda`, LSI/Perc, `megasr`, and scoped `nvlddmkm`.
+- `collected2` - 135/135 (current re-audit subset plus historical/blocked dispositions).
+- `collected3` - 11/11.
+- Original corpus - 94/94 (2 user-excluded: `NvModuleTracker`, `vgk`).
+- High-value original re-audits - `silabser`, `bxvbda`, LSI/Perc, `megasr`, and scoped `nvlddmkm`.
 
 There is no unassigned audit target. New work should be a re-audit only if a report is challenged
 or a build changes.

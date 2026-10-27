@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `2C6B268486AD0F3BFB82DE0F61D076DF7C334C1C94A0316084713EBDB0C9C518` (matches triage_index.csv row `mlx4_bus`; sha256 recomputed in-session) |
 | Company/Version | Mellanox Technologies (WinOF 5.50 bus driver; PDB `mlx4_bus.pdb`; source tree `MLNX_WinOF-5_50\hw\mlx4\kernel\bus`) |
 | Method | Static-only audit via REA/Ghidra 12.1.4, memory-write scope only. Deep form for the probed user-buffer path; short coverage elsewhere |
-| Verdict | **NO-WRITE (kernel), coverage-limited (~30%)** — no write through a caller-controlled kernel address found; one probe-length mismatch on the user-buffer out-path (writes past the probed user range, DoS-class). Not reviewed: 27 `MmMapIoSpaceEx` BAR sites, 5 `MmMapLockedPagesSpecifyCache` sites, `MmSecureVirtualMemory` sites |
+| Verdict | **NO-WRITE (kernel), coverage-limited (~30%)** - no write through a caller-controlled kernel address found; one probe-length mismatch on the user-buffer out-path (writes past the probed user range, DoS-class). Not reviewed: 27 `MmMapIoSpaceEx` BAR sites, 5 `MmMapLockedPagesSpecifyCache` sites, `MmSecureVirtualMemory` sites |
 | Coverage | Reviewed: `FUN_1400289b8` (bus_verbs out-path), `FUN_1400c17a0` (user-buffer lock/map), `FUN_1400c9bc8` (iobuf build). Not reviewed: device/BAR init, the 27 `MmMapIoSpaceEx` callers, provider callback `*(lVar9+0xca78)` targets, `FUN_140028744` (handle lookup), `FUN_140031474` (allocator), `FUN_1400ca980` (copy helper) |
 
 > **Static-only.** No load, no device open, no IOCTL execution. Addresses are linked VAs (image base `0x140000000`).
@@ -19,7 +19,7 @@
 
 ## Reviewed memory paths
 
-### `FUN_1400289b8` — bus-verbs out-path (`ProbeForWrite`)
+### `FUN_1400289b8` - bus-verbs out-path (`ProbeForWrite`)
 
 - Input: 16-byte request (`local_60`): handle (`*local_60`), user output VA (`*(local_60+4)`), size (`*(uint*)(local_60+2)`, `local_64`).
 - Allocates a kernel buffer of `local_64` bytes (`FUN_140031474`, `bus_verbs.c:277`), calls provider callback `*(lVar9+0xca78)` which may return status 2 (`local_64` reset to needed size) or 0 (success).
@@ -27,11 +27,11 @@
 - Probe-length mismatch: the copy length comes from the provider-written header (`kbuf+3`), while the probe covers only `local_64`. If the header value exceeds `local_64`, the copy writes past the probed user range. The destination is **user** memory; the kernel-side fault or overrun is DoS-class, not a kernel write.
 - Relocation loop after the copy adds `userVA` to pointer fields at `+0x128` / `+0x130` of up to `*(byte*)(user+0xe4)` entries of `0x138` bytes. Those writes land in the same user region and use provider-derived offsets. Same bound caveat.
 
-### `FUN_1400c17a0` — user-buffer lock and map (conditional on `ctx+0xa4`)
+### `FUN_1400c17a0` - user-buffer lock and map (conditional on `ctx+0xa4`)
 
 - If `ctx+0xa4 == 0`: passes the VA through (no lock). Otherwise: `IoAllocateMdl(VA, len)`, `MmProbeAndLockPages(mdl, 1 = UserMode, IoWriteAccess flag from request)`, `MmMapLockedPagesSpecifyCache(mdl, KernelMode, cached, ...)`. The mapping is kernel-side; failure paths unlock and free the MDL.
 
-### `FUN_1400c9bc8` — iobuf construction (`iobuf.c:193`)
+### `FUN_1400c9bc8` - iobuf construction (`iobuf.c:193`)
 
 - `IoAllocateMdl(VA, len)`, `MmProbeAndLockPages(mdl, AccessMode, IoWriteAccess*2)`. Page count `(len + 0xfff + (VA & 0xfff)) >> 12` is computed correctly (shift binds after the additions).
 - Failure path unwinds. No caller-controlled kernel address reaches a write in the reviewed code.
@@ -40,9 +40,9 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Write through caller-controlled kernel address | None found in reviewed paths | `ev_9b56cd09…`, `ev_7f65e52e…`, `ev_dac318fb…` |
-| Probe-length vs copy-length mismatch (user out-path) | **Present.** `ProbeForWrite(userVA, local_64)` vs copy of `*(uint*)(kbuf+3)`. Writes to user memory past the probed range. DoS-class | `ev_9b56cd09…` |
-| MDL lock with caller access mode | `FUN_1400c9bc8`: AccessMode and IoWriteAccess flags come from the caller; not traced further | `ev_dac318fb…` |
+| Write through caller-controlled kernel address | None found in reviewed paths | `ev_9b56cd09...`, `ev_7f65e52e...`, `ev_dac318fb...` |
+| Probe-length vs copy-length mismatch (user out-path) | **Present.** `ProbeForWrite(userVA, local_64)` vs copy of `*(uint*)(kbuf+3)`. Writes to user memory past the probed range. DoS-class | `ev_9b56cd09...` |
+| MDL lock with caller access mode | `FUN_1400c9bc8`: AccessMode and IoWriteAccess flags come from the caller; not traced further | `ev_dac318fb...` |
 | BAR mapping (`MmMapIoSpaceEx`, 27 sites) | Not reviewed. Expected to be hardware-driven (BAR ranges from resource list); caller reachability unknown | import xrefs |
 | `MmSecureVirtualMemory` | Not reviewed | import sweep |
 

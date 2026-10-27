@@ -1,4 +1,4 @@
-# Driver Collection Requirements — Utility / RGB / Fan / Monitoring Batch
+# Driver Collection Requirements - Utility / RGB / Fan / Monitoring Batch
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -6,7 +6,7 @@
 
 ## 1. Mission
 
-Find **new** third-party Windows kernel drivers that are plausible sources of a **kernel memory-write primitive reachable by an unprivileged local user or a local administrator**. Admin-only DACLs are **in scope**; record the reach tier (`unprivileged` / `authenticated user` / `local administrator`). Focus on software-only utility drivers — RGB/lighting control, fan/thermal control, hardware monitoring, CPU-Z replacements, virtual devices, and similar — **not** OEM hardware driver packs.
+Find **new** third-party Windows kernel drivers that are plausible sources of a **kernel memory-write primitive reachable by an unprivileged local user or a local administrator**. Admin-only DACLs are **in scope**; record the reach tier (`unprivileged` / `authenticated user` / `local administrator`). Focus on software-only utility drivers - RGB/lighting control, fan/thermal control, hardware monitoring, CPU-Z replacements, virtual devices, and similar - **not** OEM hardware driver packs.
 
 **Goal:** kernel memory write only. See `..\..\..\PROJECT_GOAL.md`. Hardware-only writes are `HW-ONLY` and do not count unless they chain into a memory write.
 
@@ -17,28 +17,28 @@ A driver is worth collecting when it shows one or more of:
 - Creates a control device at `DriverEntry` (or an auto-installed PnP device) that a standard user **or local administrator** can open.
 - IOCTL path accepts caller-controlled data and writes to kernel memory, maps physical memory, or copies to a caller-influenced kernel address.
 - Permissive security descriptor: `IoCreateDeviceSecure` / `WdmlibIoCreateDeviceSecure` with `Everyone` / `WD` / `GRGWGX`, or a programmatic DACL set via `RtlSetDaclSecurityDescriptor` / `ZwSetSecurityObject` / `ObSetSecurityObjectByPointer`.
-- Dangerous primitives: `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmCopyMemory`, `ZwMapViewOfSection`, `MmGetPhysicalAddress`, arbitrary `memcpy`/write loops. MSR (`wrmsr`), port I/O (`IN`/`OUT`), PCI config, SMBus/EC, and fixed-window MMIO are **collection signals only** — flag them `HW-ONLY` unless they chain into a memory write.
+- Dangerous primitives: `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmCopyMemory`, `ZwMapViewOfSection`, `MmGetPhysicalAddress`, arbitrary `memcpy`/write loops. MSR (`wrmsr`), port I/O (`IN`/`OUT`), PCI config, SMBus/EC, and fixed-window MMIO are **collection signals only** - flag them `HW-ONLY` unless they chain into a memory write.
 - `METHOD_NEITHER` IOCTLs, missing `ProbeForWrite`, missing output-length checks, or caller-supplied pointers/sizes.
 - No hardware dongle or special staging if possible. Devnode-only devices are still collected but ranked lower.
 
 ## 3. Target classes (priority order)
 
-1. **RGB / lighting control** — motherboard, RAM, fan, keyboard, mouse, GPU, case lighting.
-2. **Fan / thermal / watercooling control** — fan curves, pumps, sensors, Aqua Computer/EK/Bitspower/Alphacool-class utilities.
-3. **Hardware monitoring / CPU-Z replacements** — CPU-Z, HWiNFO, HWMonitor, GPU-Z, AIDA64, Core Temp, SIV, Argus, OCCT, PassMark, LibreHardwareMonitor, Open Hardware Monitor, OpenRGB, FanControl.
-4. **Virtual display / virtual audio** — Spacedesk-class, virtual audio cables.
-5. **Security / telemetry / anti-cheat / DRM** — only small vendors; no big-corp agents.
-6. **Other software-only control-device utilities** — docking, USB sharing, phone-link, remote-support, backup/imaging.
+1. **RGB / lighting control** - motherboard, RAM, fan, keyboard, mouse, GPU, case lighting.
+2. **Fan / thermal / watercooling control** - fan curves, pumps, sensors, Aqua Computer/EK/Bitspower/Alphacool-class utilities.
+3. **Hardware monitoring / CPU-Z replacements** - CPU-Z, HWiNFO, HWMonitor, GPU-Z, AIDA64, Core Temp, SIV, Argus, OCCT, PassMark, LibreHardwareMonitor, Open Hardware Monitor, OpenRGB, FanControl.
+4. **Virtual display / virtual audio** - Spacedesk-class, virtual audio cables.
+5. **Security / telemetry / anti-cheat / DRM** - only small vendors; no big-corp agents.
+6. **Other software-only control-device utilities** - docking, USB sharing, phone-link, remote-support, backup/imaging.
 
 ## 4. Vendor priority
 
-### Tier A — small/indie, collect first
+### Tier A - small/indie, collect first
 Cooler Master, Lian Li, Thermaltake, Kingston FURY, ADATA/XPG, Sabrent, DeepCool, Phanteks, Montech, Aquacomputer, EK Water Blocks, Bitspower, Alphacool, Argus Monitor, SIV, Core Temp, ThrottleStop, OCCT, PassMark, LibreHardwareMonitor, Open Hardware Monitor, OpenRGB, FanControl.
 
-### Tier B — mid-size utility, collect if not already present
+### Tier B - mid-size utility, collect if not already present
 Corsair iCUE, Razer Synapse, Logitech G HUB, NZXT CAM (already collected), SteelSeries GG (already collected).
 
-### Tier C — do NOT collect
+### Tier C - do NOT collect
 Dell, HP, Lenovo, Microsoft Surface, Intel, AMD, NVIDIA, Broadcom, Realtek, Qualcomm OEM driver packs; Microsoft inbox drivers. No multi-GB OEM driver packs.
 
 ## 5. Hard exclusions
@@ -46,9 +46,9 @@ Dell, HP, Lenovo, Microsoft Surface, Intel, AMD, NVIDIA, Broadcom, Realtek, Qual
 - **No big OEM driver packs** (Dell/HP/Lenovo/Surface/Intel/AMD/NVIDIA).
 - **No Microsoft inbox drivers.**
 - **No hash in `known_bad_hashes.txt`** (5,833 LOLDrivers hashes).
-- **No hash in `existing_hashes.txt`** (932 already-collected hashes from the original 94, `collected1`–`collected5`, DriverStore scan, host scan).
+- **No hash in `existing_hashes.txt`** (932 already-collected hashes from the original 94, `collected1`-`collected5`, DriverStore scan, host scan).
 - **No duplicate within the batch.**
-- **No third-party driver download sites, torrents, repacks, or “driver packs.”**
+- **No third-party driver download sites, torrents, repacks, or "driver packs."**
 - **No installers > 500 MiB (~524 MB).** If the only official package for a vendor is larger than 500 MiB, skip it and record `SKIPPED-OVER-500MB`.
 
 ## 6. Dedupe gate (mandatory)
@@ -59,8 +59,8 @@ Every extracted `.sys` must pass:
 
 Inputs:
 
-- `indexes\dedupe\existing_hashes.txt` — 932 existing hashes.
-- `indexes\dedupe\known_bad_hashes.txt` — 5,833 LOLDrivers hashes.
+- `indexes\dedupe\existing_hashes.txt` - 932 existing hashes.
+- `indexes\dedupe\known_bad_hashes.txt` - 5,833 LOLDrivers hashes.
 
 The filter copies **only NEW unique** drivers into `drivers/` and records `NEW` / `EXISTING` / `KNOWNBAD` / `DUPLICATE` per file.
 
@@ -70,10 +70,10 @@ The filter copies **only NEW unique** drivers into `drivers/` and records `NEW` 
 - Treat installers as archives:
   - `7z x` for ZIP/CAB/MSI/NSIS/self-extracting EXE.
   - WiX Burn: `dark.exe -x`.
-  - Inno Setup ≤ 6.0.5: `innoextract`.
+  - Inno Setup <= 6.0.5: `innoextract`.
   - Newer Inno Setup: `innounp 2.70.1`.
 - Recursively expand `.zip` / `.cab` / `.msi` / `.exe` / `.7z` up to 5 levels.
-- Collect `.sys` files ≥ 4 KB only. Do not keep `.inf`/`.cat`.
+- Collect `.sys` files >= 4 KB only. Do not keep `.inf`/`.cat`.
 - Never load a driver, create a service, or write to HKLM.
 
 ## 7.1 Download hygiene (mandatory)

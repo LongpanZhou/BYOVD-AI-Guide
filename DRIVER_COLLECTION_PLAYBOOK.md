@@ -7,7 +7,7 @@
 Reference for expanding the `driver_candidates` corpus from vendor utility packages
 **without installing anything** and **without executing vendor binaries**.
 
-Last updated: 2026-10-26 · Corpus: **386 `.sys` files in the repo** (original 94 — this includes local-only `vgk.sys` — `collected2` 135, `collected3` 11, `collected5` 41, `collected1` 106; 387 manifest rows including `vgk.sys`), all flat in `drivers/`. Dedupe index: **925 tracked hashes + 7 exported hashes in a gitignored local gate file**.
+Last updated: 2026-10-26 ; Corpus: **386 `.sys` files in the repo** (original 94 - this includes local-only `vgk.sys` - `collected2` 135, `collected3` 11, `collected5` 41, `collected1` 106; 387 manifest rows including `vgk.sys`), all flat in `drivers/`. Dedupe index: **925 tracked hashes + 7 exported hashes in a gitignored local gate file**.
 
 **Goal:** find kernel memory-write vulnerabilities. Only memory writes count; hardware-only writes are `HW-ONLY`. Admin-only DACLs are in scope (`R2`). See [`PROJECT_GOAL.md`](PROJECT_GOAL.md).
 
@@ -16,7 +16,7 @@ Last updated: 2026-10-26 · Corpus: **386 `.sys` files in the repo** (original 9
 ## 1. Why this document exists
 
 The first corpus (94 drivers) came from `C:\Windows\System32\drivers` on an existing host.
-That source is exhausted — see `audits/STATUS.md` and the historical notes in `audits/legacy/`.
+That source is exhausted - see `audits/STATUS.md` and the historical notes in `audits/legacy/`.
 
 This document records the second method: pulling drivers out of **vendor utility installers**,
 treating every installer as an archive. It exists so the next collection run does not have to
@@ -53,7 +53,7 @@ known and is usually blocked from loading; an unstudied utility driver is a bett
 
 `drivers/` contains **only new `.sys` files**. Everything else is temporary.
 
-1. Download and extract in `downloads/` (gitignored) — never in `drivers/`.
+1. Download and extract in `downloads/` (gitignored) - never in `drivers/`.
 2. Harvest to `downloads\_harvest`, then run `tools\filter_new_drivers.ps1 -UpdateExisting` to
    copy only the deduped `.sys` into `drivers/` (flat) and update the dedupe gate.
 3. Record the URL, original path, SHA-256, signer, and version in
@@ -83,11 +83,11 @@ Everything lives under `tools/`. Prerequisite: **7-Zip** at
 
 | Tool | Purpose |
 |---|---|
-| `harvest.ps1` | Recursive extract → collect `*.sys` → fingerprint → append JSONL |
+| `harvest.ps1` | Recursive extract -> collect `*.sys` -> fingerprint -> append JSONL |
 | `triage_scan.ps1` | Prints devices, symlinks, SDDL strings, imports for a `.sys` |
 | `filter_new_drivers.ps1` | Mandatory dedupe gate; copies only NEW `.sys` |
-| `innoextract\innoextract.exe` | Inno Setup 1.2.10 – **6.0.5 only** |
-| `innounp` (on `PATH`) | Inno Setup **6.1+** — `winget install JurgenRathlev.innounp` |
+| `innoextract\innoextract.exe` | Inno Setup 1.2.10 - **6.0.5 only** |
+| `innounp` (on `PATH`) | Inno Setup **6.1+** - `winget install JurgenRathlev.innounp` |
 
 WiX `dark.exe` (116 MB) is not retained; re-install WiX 3.14 into `tools\wix\` when a new
 Burn/MSI package must be unpacked, then delete it again after the batch is accepted.
@@ -120,20 +120,20 @@ second one.
 
 ```
 downloaded file
-├── .zip / .7z / .msi
-│     └── 7z x <file> -o<dir> -y
-│           └── recurse (max depth 4) over any archives found inside
-├── .exe
-│     ├── 7z x <file> -o<dir> -y
-│     │     ├── produced wixstdba.dll or BootstrapperApplicationData.xml  -> WiX Burn
-│     │     │     └── dark.exe -x <dir2> <file>   (attached container holds the .msi)
-│     │     └── produced >= 10 files  -> NSIS or similar, done
-│     └── produced < 10 files (PE stub only)  -> Inno Setup
-│           └── innoextract.exe -e -d <dir3> -- <file>
-│                 ├── ok                                  -> harvest
-│                 └── "Unexpected setup data version: 6.x" -> UNSUPPORTED, drop it
-└── .cab
-      └── expand.exe <file> -F:* <dir>
+|-- .zip / .7z / .msi
+|     \-- 7z x <file> -o<dir> -y
+|           \-- recurse (max depth 4) over any archives found inside
+|-- .exe
+|     |-- 7z x <file> -o<dir> -y
+|     |     |-- produced wixstdba.dll or BootstrapperApplicationData.xml  -> WiX Burn
+|     |     |     \-- dark.exe -x <dir2> <file>   (attached container holds the .msi)
+|     |     \-- produced >= 10 files  -> NSIS or similar, done
+|     \-- produced < 10 files (PE stub only)  -> Inno Setup
+|           \-- innoextract.exe -e -d <dir3> -- <file>
+|                 |-- ok                                  -> harvest
+|                 \-- "Unexpected setup data version: 6.x" -> UNSUPPORTED, drop it
+\-- .cab
+      \-- expand.exe <file> -F:* <dir>
 ```
 
 ### Known extractor limits (learned the hard way)
@@ -147,11 +147,11 @@ downloaded file
    CPU-Z 3.01 (Inno **6.3.0**).
 3. **`Copy-Item -Recurse` silently truncates at MAX_PATH.** Electron apps keep drivers under
    `resources\app.asar.unpacked\node_modules\...\drivers\x64\`, which blows past 260 chars.
-   NZXT CAM went from 3 drivers to 0 because of this. **Always scan directories in place** —
+   NZXT CAM went from 3 drivers to 0 because of this. **Always scan directories in place** -
    `harvest.ps1` does this automatically.
 4. **`.sys` extension case varies.** `kinonivd.Sys`, `PP.SC0710.X64.SYS`. Match
    case-insensitively (`-Filter *.sys` is case-insensitive in PowerShell; raw string matching is not).
-5. **Signed ≠ safe to run.** Every binary in this corpus verifies `Valid`. Signature status
+5. **Signed != safe to run.** Every binary in this corpus verifies `Valid`. Signature status
    says nothing about the DACL or the IOCTL surface.
 
 ---
@@ -188,7 +188,7 @@ installer before extracting if provenance matters.
 
 - `winget search` with multi-word queries often returns **"No package found"**
   (e.g. "Armoury Crate"). Use a single token.
-- Winget's column parser is fragile — narrow tables collapse to one space and `-split '\s{2,}'`
+- Winget's column parser is fragile - narrow tables collapse to one space and `-split '\s{2,}'`
   silently drops rows. Do not trust an automated parser against `winget search`; resolve IDs
   by eye or via `winget show -e --id`.
 
@@ -197,7 +197,7 @@ installer before extracting if provenance matters.
 ## 6. What actually paid off
 
 Yield is measured in **distinct driver families**, not files. Six version bundles of the same
-six SteelSeries drivers are 52 files but only 6 families — counting files instead of families
+six SteelSeries drivers are 52 files but only 6 families - counting files instead of families
 inflates the corpus several-fold.
 
 | Package | Files | Families | Verdict |
@@ -219,7 +219,7 @@ inflates the corpus several-fold.
 `Crucial Storage Executive`, `OpenRGB`, `Elgato.ControlCenter`, `Dell.DisplayAndPeripheralManager`,
 `Lenovo.DockManager`, `Acer.AutoDetectSerialNumber`.
 
-These ship no kernel driver at all — the utility talks to the device over HID/WMI/SMBus from
+These ship no kernel driver at all - the utility talks to the device over HID/WMI/SMBus from
 user mode. That is the common case for modern RGB/fan software.
 
 ### Failed downloads
@@ -227,9 +227,9 @@ user mode. That is the common case for modern RGB/fan software.
 `Asus.BIOSConfigTool` (404 at CDN), `Asus.DisplayWidgetCenter` (manifest hash mismatch).
 Both are manifest rot, not a tooling problem.
 
-### Inno 6.3 — use `innounp`
+### Inno 6.3 - use `innounp`
 
-`CPUID.CPU-Z` (and the ROG/AORUS/MSI/GBT/ASPHANTOM/TAICHI rebrands — all identical payload),
+`CPUID.CPU-Z` (and the ROG/AORUS/MSI/GBT/ASPHANTOM/TAICHI rebrands - all identical payload),
 `REALiX.HWiNFO`, `FinalWire.AIDA64.*`, `TechPowerUp.GPU-Z`. `innoextract` cannot open these;
 use `innounp` instead. They are **in scope** under the current goal.
 
@@ -246,10 +246,10 @@ INF [Security] / AddReg Security               <- same, class-installed devices
 IoCreateDevice(...) with no SD                <- default SYSTEM+Administrators = NOT reachable
 ```
 
-A permissive SDDL is `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)` — `;;;WD` is **Everyone**.
+A permissive SDDL is `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)` - `;;;WD` is **Everyone**.
 Also qualifying: `;;;BU` (BUILTIN\Users) and `;;;AU` (Authenticated Users).
 
-`D:P(...)` is a **protected** DACL: no inherited ACEs. That does not make it restrictive —
+`D:P(...)` is a **protected** DACL: no inherited ACEs. That does not make it restrictive -
 it depends entirely on the explicit ACEs.
 
 ### Three-tier triage
@@ -271,7 +271,7 @@ in the file contained `;;;WD`. That is unsound and produced roughly a **50% fals
 
 The failure mode: vendors ship a **table of descriptors** (one per OS version, SKU, or code path).
 Most entries are never passed to the create call. ASRock `MsIo64.sys` contains seven SDDLs,
-including `...GRGWGX;;;WD...`, and calls plain `IoCreateDevice` with **no** descriptor at all —
+including `...GRGWGX;;;WD...`, and calls plain `IoCreateDevice` with **no** descriptor at all -
 all seven strings are dead data. Same for EVGA `driver-x64` (7 dead) and ROCCAT `ScpVBus`
 (1 dead). Ghidra confirmed `refs=0` for every one.
 
@@ -283,14 +283,14 @@ all seven strings are dead data. Same for EVGA `driver-x64` (7 dead) and ROCCAT 
    (KMDF drivers only import `WdfVersionBind`, because the WDF API is a statically linked stub).
 2. **Resolves each SDDL literal to a VA** and looks for a real reference. The scan is
    opcode-agnostic: any `disp32` in an executable section whose *next-instruction address + disp*
-   lands exactly on the SDDL VA counts. This catches `lea`, `mov`, and `movups` — the last one
+   lands exactly on the SDDL VA counts. This catches `lea`, `mov`, and `movups` - the last one
    matters because MSVC copies descriptors with SSE, so an `lea`-only scan misses them.
 3. **Reads the sibling `.inf`**, because class-installed devices carry their DACL in
    `[Security]`/`AddReg`, not in the binary.
 
 **Third failure mode, found during the audits (v3):** checking for a code reference *to the
 string text* misses every driver that passes the descriptor indirectly. Vendors build a
-`UNICODE_STRING` whose `Buffer` points at the text and `lea` **the descriptor** — and the
+`UNICODE_STRING` whose `Buffer` points at the text and `lea` **the descriptor** - and the
 descriptor may sit before or after the string. Ghidra's `getReferencesTo(text)` has the same
 blind spot. This produced false negatives on ASRock `MsIo` v1.3, ROCCAT `ScpVBus`, NZXT
 `cam_driver_mb` and the whole SteelSeries WDF set.
@@ -329,7 +329,7 @@ devnode: setup=`devnode`, still auditable. Setup is a severity field, not a disq
 These are independent axes and both matter:
 
 - **Reachable** = the DACL lets a standard user **or local administrator** open the device.
-- **Setup** = `none | service | devnode | hardware | composition` — a severity field, not a
+- **Setup** = `none | service | devnode | hardware | composition` - a severity field, not a
   disqualifier.
 
 A driver that creates its device in `DriverEntry` (`IoCreateDevice*`, `NdisRegisterDeviceEx`)
@@ -343,13 +343,13 @@ All are audited; the gate is reflected in the MW severity, not used to discard t
 
 Live counts:
 
-- `indexes/dedupe/existing_hashes.txt` — **925 tracked** (+7 exported hashes kept in the gitignored local gate)
-- `indexes\collections\collected2\master_drivers.csv` — **135 binaries / 72 families**
-- `indexes\collections\collected3\master_drivers.csv` — **11 binaries**
-- `drivers/` — **41** drivers from `collected5` (R1–R4)
-- `drivers/` — **106** drivers from `collected1` (S1–S6; 117 `.sys` initially, six S5/S6 duplicates removed)
+- `indexes/dedupe/existing_hashes.txt` - **925 tracked** (+7 exported hashes kept in the gitignored local gate)
+- `indexes\collections\collected2\master_drivers.csv` - **135 binaries / 72 families**
+- `indexes\collections\collected3\master_drivers.csv` - **11 binaries**
+- `drivers/` - **41** drivers from `collected5` (R1-R4)
+- `drivers/` - **106** drivers from `collected1` (S1-S6; 117 `.sys` initially, six S5/S6 duplicates removed)
 - **Total in repo: 386 binaries** (verified set export 2026-10-25)
-- Canonical inventory: `indexes\drivers_manifest.csv` — 387 rows: 386 in-repo files + local-only `vgk.sys`
+- Canonical inventory: `indexes\drivers_manifest.csv` - 387 rows: 386 in-repo files + local-only `vgk.sys`
 
 `tools/rebuild_manifest.ps1` scans `drivers/` on disk. Run it with your local `vgk.sys` present,
 or its manifest row will disappear.
@@ -365,7 +365,7 @@ Historical `collected2` distribution (descriptor-aware v3):
 | `INF-SDDL-OPEN` | 2 |
 | `SDDL-UNPROVEN` | 0 |
 
-Note: the earlier “retracted” list in this section was itself wrong. v3 descriptor validation
+Note: the earlier "retracted" list in this section was itself wrong. v3 descriptor validation
 reinstated ASRock `MsIo` v1.3, ROCCAT `ScpVBus`, EVGA permissive descriptors, and the
 NZXT/SteelSeries WDF sets; see the historical reports in `audits/legacy/`.
 
@@ -375,7 +375,7 @@ The live queue is `audits/STATUS.md`. Do not duplicate it here; it changes as au
 
 ---
 
-## 9. Adding more drivers — start here
+## 9. Adding more drivers - start here
 
 Vendors not yet mined that fit the "obscure" profile:
 
@@ -420,7 +420,7 @@ Get-ChildItem downloads -Force |
   Remove-Item -Recurse -Force
 ```
 
-Budget roughly 2–4 minutes per NSIS/MSI package, 1–2 minutes per zip, and 0 seconds per
+Budget roughly 2-4 minutes per NSIS/MSI package, 1-2 minutes per zip, and 0 seconds per
 Inno > 6.0.5 package once detected.
 
 ---
@@ -451,31 +451,31 @@ $u | ForEach-Object {
 
 ```
 driver_candidates\
-├── START_HERE.md
-├── PROJECT_GOAL.md
-├── PROJECT_MAP.md
-├── README.md
-├── VM_ACCESS.md (local, gitignored)
-├── DRIVER_COLLECTION_PLAYBOOK.md   this file
-├── drivers\                        386 flat .sys + README.md
-├── downloads\                      disposable download/extract scratch
-├── audits\
-│   ├── README.md
-│   ├── STATUS.md                   single status/queue
-│   ├── scope\                      AUDIT_SCOPE, SEVERITY, agent prompt
-│   ├── reports\                    current per-driver reports
-│   ├── legacy\                     historical reports/ledger/VM batch 2
-│   ├── evidence\                   dynamic evidence logs/scripts
-│   └── projects\                   Ghidra/analysis projects
-├── poc\
-│   ├── historical\                 t4-t7 PoC sources/binaries (t8-t10 in audits/legacy/vm_batch2)
-│   └── reference\                  dbk64.sys calibration driver
-├── indexes\
-│   ├── drivers_manifest.csv        canonical 386-driver inventory
-│   ├── dedupe\                     existing/known-bad hashes
-│   ├── collections\                manifests, summaries, URLs
-│   └── driverstore\                DriverStore scan outputs
-└── tools\                          harvest, triage, filter, innoextract
+|-- START_HERE.md
+|-- PROJECT_GOAL.md
+|-- PROJECT_MAP.md
+|-- README.md
+|-- VM_ACCESS.md (local, gitignored)
+|-- DRIVER_COLLECTION_PLAYBOOK.md   this file
+|-- drivers\                        386 flat .sys + README.md
+|-- downloads\                      disposable download/extract scratch
+|-- audits\
+|   |-- README.md
+|   |-- STATUS.md                   single status/queue
+|   |-- scope\                      AUDIT_SCOPE, SEVERITY, agent prompt
+|   |-- reports\                    current per-driver reports
+|   |-- legacy\                     historical reports/ledger/VM batch 2
+|   |-- evidence\                   dynamic evidence logs/scripts
+|   \-- projects\                   Ghidra/analysis projects
+|-- poc\
+|   |-- historical\                 t4-t7 PoC sources/binaries (t8-t10 in audits/legacy/vm_batch2)
+|   \-- reference\                  dbk64.sys calibration driver
+|-- indexes\
+|   |-- drivers_manifest.csv        canonical 386-driver inventory
+|   |-- dedupe\                     existing/known-bad hashes
+|   |-- collections\                manifests, summaries, URLs
+|   \-- driverstore\                DriverStore scan outputs
+\-- tools\                          harvest, triage, filter, innoextract
 ```
 
 No `packages\`, `extract\`, `work\`, `manual\`, or `staging\` directories remain. The installer

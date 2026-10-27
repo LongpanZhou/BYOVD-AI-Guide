@@ -1,22 +1,22 @@
-# Audit: NZXT / Netac / HyperX / PawnIO families — kernel memory-write re-audit (current scope)
+# Audit: NZXT / Netac / HyperX / PawnIO families - kernel memory-write re-audit (current scope)
 
 | Field | Value |
 |---|---|
 | File(s) | `cam_driver_mb_A9C246FD.sys`, `SiLib_DD2C9A1D.sys`, `SiUSBXp_A8BE9E3F.sys`, `SMI_IO_32_B198D7E1.sys`, `SMI_IO_64_89A4F4DC.sys`, `vachpxkd_94A275C1.sys`, `vachpxkd_F56EF5B5.sys`, `PawnIO_4383A699.sys` |
-| SHA-256(s) | see §1 (all eight re-hashed and matched against the file names) |
+| SHA-256(s) | see section 1 (all eight re-hashed and matched against the file names) |
 | Analysis date | 2026-10-25 |
-| Method | Static-only: local Ghidra 12.1.4 headless (full decompile of every function in all eight images) + `llvm-objdump` for exact instruction addresses + local PE parsing. No driver loaded, no service created, no registry write, no device opened, no IOCTL issued. No web access. **REA was not used**: four REA audits were already active, so this pass is the offline Ghidra/objdump path recorded in `audits/STATUS.md` §In flight item 7. |
+| Method | Static-only: local Ghidra 12.1.4 headless (full decompile of every function in all eight images) + `llvm-objdump` for exact instruction addresses + local PE parsing. No driver loaded, no service created, no registry write, no device opened, no IOCTL issued. No web access. **REA was not used**: four REA audits were already active, so this pass is the offline Ghidra/objdump path recorded in `audits/STATUS.md` section In flight item 7. |
 | Reach tier | **R2** is the highest tier at which a memory write is reachable (SMI_IO, both builds). R3 for the two gated writes (HyperX `vachpxkd` x64, SiUSBXp). |
 | Setup required | `service` (NZXT CAM driver, SMI_IO), `devnode` (HyperX `vachpxkd`, PawnIO), `hardware` (SiUSBXp/SiLib) |
 | Write quality | **W2** (max; unbounded kernel-stack copy in SMI_IO). Also W2 (HyperX METHOD_NEITHER write-what-where), W2 (SiUSBXp caller-length USB transfer), W3P (SMI_IO physical map), W0 elsewhere. |
-| Verdict | **MW2 — overall.** Netac `SMI_IO` (both builds) exposes an unbounded kernel-stack copy reachable by an administrator-opened handle. Two further **MW3** findings: HyperX `vachpxkd` x64 (unprobed `METHOD_NEITHER` output-pointer write to a caller-chosen address) and NZXT `SiUSBXp` (caller-controlled USB transfer length over a pool-sized system buffer). `cam_driver_mb`, `SiLib`, `PawnIO` are **NO-MEMORY-WRITE**; `vachpxkd` ARM64 is **BLOCKED** (architecture). |
+| Verdict | **MW2 - overall.** Netac `SMI_IO` (both builds) exposes an unbounded kernel-stack copy reachable by an administrator-opened handle. Two further **MW3** findings: HyperX `vachpxkd` x64 (unprobed `METHOD_NEITHER` output-pointer write to a caller-chosen address) and NZXT `SiUSBXp` (caller-controlled USB transfer length over a pool-sized system buffer). `cam_driver_mb`, `SiLib`, `PawnIO` are **NO-MEMORY-WRITE**; `vachpxkd` ARM64 is **BLOCKED** (architecture). |
 
 **Scope note.** This pass re-derives the old verdicts under the current scope (`R2` included, setup a severity
 field, hardware-only writes excluded). The historical reports were used only as pointers to code; every
 verdict below rests on the re-disassembled image. Three historical conclusions changed materially and are
 flagged inline:
 
-1. `cam_driver_mb`'s Everyone SDDL is **live but unusable** — a create-time `SeSinglePrivilegeCheck`
+1. `cam_driver_mb`'s Everyone SDDL is **live but unusable** - a create-time `SeSinglePrivilegeCheck`
    (`SeSystemProfilePrivilege`) gates the open (old report: "openable by Everyone").
 2. `SiUSBXp` **does have an IOCTL surface** (`IRP_MJ_DEVICE_CONTROL` at `+0xE0`), which the old report
    declared "not applicable". That surface contains a caller-controlled transfer length.
@@ -47,16 +47,16 @@ status were **not** validated statically; no image is listed in `indexes/dedupe/
 
 | File | Device / entry | Effective DACL | Open gate | Setup | Reach | Write | Verdict |
 |---|---|---|---|---|---|---|---|
-| `cam_driver_mb` | KMDF control device `\Device\CAMDriverMB` + `\DosDevices\CAMDriverMB` | `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)(A;;GR;;;RC)` — **Everyone GRGW** | **`SeSystemProfilePrivilege` required in EvtFileCreate** (SDDL is neutralised) | service | R2 | W0 | **NO-MEMORY-WRITE (HW-ONLY)** |
+| `cam_driver_mb` | KMDF control device `\Device\CAMDriverMB` + `\DosDevices\CAMDriverMB` | `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)(A;;GR;;;RC)` - **Everyone GRGW** | **`SeSystemProfilePrivilege` required in EvtFileCreate** (SDDL is neutralised) | service | R2 | W0 | **NO-MEMORY-WRITE (HW-ONLY)** |
 | `SiLib` | none (support library; no `IoCreateDevice`) | n/a | n/a | hardware | R3 | W0 | **NO-MEMORY-WRITE** |
-| `SiUSBXp` | unnamed exclusive FDO, device interface, DC at `+0xE0` | none set in binary → default device SD (INF Security not in corpus) | interface handle | hardware | R3 | W2 | **MW3** |
+| `SiUSBXp` | unnamed exclusive FDO, device interface, DC at `+0xE0` | none set in binary -> default device SD (INF Security not in corpus) | interface handle | hardware | R3 | W2 | **MW3** |
 | `SMI_IO_32` | `\Device\SMI_IO` + `\DosDevices\SMI_IO` (`DeviceType 0x8033`) | default device SD (no SDDL, plain `IoCreateDevice`) | admin (R2) | service | R2 | W2 (+W3P) | **MW2** |
 | `SMI_IO_64` | same | same | admin (R2) | service | R2 | W2 (+W3P) | **MW2** |
 | `vachpxkd` ARM64 | PortCls adapter (PnP) | not in package | audio devnode | devnode | R3 | W2 (reference) | **BLOCKED** (ARM64) |
-| `vachpxkd` x64 | PortCls adapter, KS filter; DC via thunk `0x1B690` → `0x1B350` | not in package; PortCls audio default (user-openable by design) | audio devnode + spoofable `audiodg` name check | devnode | R3 | W2 | **MW3** |
+| `vachpxkd` x64 | PortCls adapter, KS filter; DC via thunk `0x1B690` -> `0x1B350` | not in package; PortCls audio default (user-openable by design) | audio devnode + spoofable `audiodg` name check | devnode | R3 | W2 | **MW3** |
 | `PawnIO` | `\Device\PawnIO` + `\DosDevices\PawnIO` (unnamed FDO + symlinks), `DeviceType 0xA1B2` | INF-declared `D:P(A;;GA;;;SY)(A;;GA;;;BA)` (INF not in corpus) + default device SD | admin (R2) | devnode | R2 | W0 | **NO-MEMORY-WRITE** (RSA-gated) |
 
-## 3 NZXT `cam_driver_mb_A9C246FD.sys` — NO-MEMORY-WRITE (HW-ONLY)
+## 3 NZXT `cam_driver_mb_A9C246FD.sys` - NO-MEMORY-WRITE (HW-ONLY)
 
 ### 3.1 Internals
 KMDF driver (Rust, `cam-driver-mb\src\device.rs`), bound through `WdfVersionBind`; all WDF services are
@@ -67,16 +67,16 @@ that reaches `DriverEntry` at `0x18000F000`.
 `DriverEntry` creates a **control device**, not a PnP FDO:
 
 * `0x18000F19A  LEA R8,[0x18000B1E8]`
-  `0x18000F1A4  CALL qword ptr [RAX+0xC8]` → `WdfControlDeviceInitAllocate(driver, &SDDL)`.
+  `0x18000F1A4  CALL qword ptr [RAX+0xC8]` -> `WdfControlDeviceInitAllocate(driver, &SDDL)`.
 * The UNICODE_STRING at `0x18000B1E8` has `Length=0x72`, `MaximumLength=0x74`, `Buffer=0x18000B170`; the
   buffer decodes exactly to `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)(A;;GR;;;RC)`.
-* `0x18000B220` → `\Device\CAMDriverMB` (`WdfDeviceInitAssignName`, table `+0x218`);
-  `0x18000B280` → `\DosDevices\CAMDriverMB` (table `+0x280`); `WdfDeviceCreate` (table `+0x258`).
+* `0x18000B220` -> `\Device\CAMDriverMB` (`WdfDeviceInitAssignName`, table `+0x218`);
+  `0x18000B280` -> `\DosDevices\CAMDriverMB` (table `+0x280`); `WdfDeviceCreate` (table `+0x258`).
 
 So the SDDL requested is real and permissive: **Everyone `GRGW`**, i.e. `GENERIC_READ|GENERIC_WRITE`.
 That is *not* the effective gate, however. `DriverEntry` also installs a file-object config:
 
-* `0x18000F35A  LEA RAX,[0x1800013E0]` → stored as `EvtFileCreate`; `0x18000F3A0  CALL [RAX+0x238]`
+* `0x18000F35A  LEA RAX,[0x1800013E0]` -> stored as `EvtFileCreate`; `0x18000F3A0  CALL [RAX+0x238]`
   (`WdfDeviceInitSetFileObjectConfig`), with `WDF_FILEOBJECT_CONFIG.Size = 0x28`,
   `EvtFileCreate = 0x1800013E0`, `EvtFileClose = EvtFileCleanup = NULL`, `FileObjectClass = 2`,
   `AutoForwardCleanupClose = 4` (packed `0x400000002`).
@@ -108,7 +108,7 @@ Dispatcher `FUN_180002CB0` (12.2 KB, state machine). Range check:
 | `0x80006010` | BUFFERED | READ | `0x180003442` | 4-byte in / 4-byte out |
 | `0x8000A014` | BUFFERED | WRITE | `0x180003845` | 3-byte input, state-gated |
 | `0x8000A018` | BUFFERED | WRITE | `0x1800038D3` | `WdfRequestRetrieveInputBuffer(..., 0x22)`; validates bytes 0, 0x1F, 0x20/0x21, then a 5-entry jump table at `0x18000C268` |
-| other method variants | NEITHER/DIRECT | — | `0x180003C14` | completes with current status, no action |
+| other method variants | NEITHER/DIRECT | - | `0x180003C14` | completes with current status, no action |
 
 Every retrieval is length-checked by KMDF against an explicit minimum
 (`0x180002DED MOV R8D,1`; `0x180003650 MOV R8D,0xB`; `0x18000390E MOV R8D,0x22`;
@@ -117,15 +117,15 @@ Every retrieval is length-checked by KMDF against an explicit minimum
 
 ### 3.4 Write sinks (all hardware or context)
 * **Port I/O**: `OUT 0x2E/0x2F` sequences in `FUN_180001490` and the dispatcher (detection, register
-  programming). Fixed port pair, fixed register sequences, values from the user buffer — hardware write.
+  programming). Fixed port pair, fixed register sequences, values from the user buffer - hardware write.
 * **MMIO**: `MmMapIoSpaceEx(0xFEC40000, 0xC, 0x204)` for the LPC/eSPI window, and per-channel
   `MmMapIoSpaceEx((uint)*puVar37 + iVar21 + (uint)(byte)puVar37[1] * 0x10000, 4, 0x204)`.
   `puVar37 = (&PTR_DAT_18000B680)[uVar36 * 3]`, `iVar21 = *(int *)(&UNK_18000B690 + uVar36*0x18)`.
   The index is **not** user data: the sub-command switch at `0x180002EE7` assigns
-  `uVar20 = CONCAT71(uVar44, n)` with `n ∈ {1,2,3,4}` (case 0 → 4), and `uVar36 = uVar20 & 0xFF`.
+  `uVar20 = CONCAT71(uVar44, n)` with `n in {1,2,3,4}` (case 0 -> 4), and `uVar36 = uVar20 & 0xFF`.
   All five indices are in-table. The MMIO base is therefore chip-table-derived and bounded, not
   caller-chosen.
-* **Device context**: fixed offsets (`+0x28`, `+0x260 + idx*0x10`, …).
+* **Device context**: fixed offsets (`+0x28`, `+0x260 + idx*0x10`, ...).
 
 `HalGetBusDataByOffset` is used read-only for PCI config. No `HalSetBusData*`, no `MmGetPhysicalAddress`,
 no `KeStackAttachProcess`, no `ZwMapViewOfSection`.
@@ -136,16 +136,16 @@ genuinely applied, but `EvtFileCreate` requires `SeSystemProfilePrivilege`, so o
 SYSTEM) can open the device. What is exposed behind that gate is fan/RGB/GPIO/Super-I/O control, not a
 memory write.
 
-## 4 NZXT `SiLib` + `SiUSBXp` — support library plus a hardware-gated pool OOB
+## 4 NZXT `SiLib` + `SiUSBXp` - support library plus a hardware-gated pool OOB
 
-### 4.1 `SiLib_DD2C9A1D.sys` — NO-MEMORY-WRITE
+### 4.1 `SiLib_DD2C9A1D.sys` - NO-MEMORY-WRITE
 Silicon Laboratories "Generic" support library. Complete decompile: 80 functions, all `Generic*`
 (dispatch PnP/power, request queues, idle detection, `IoRegisterDeviceInterface`). It imports no
 `IoCreateDevice`, no `IoCreateSymbolicLink`, no `Mm*` memory API, and owns no device object or IOCTL
 handler of its own. It is a component of `SiUSBXp`; on its own it is inert. **W0, NO-MEMORY-WRITE.**
 
-### 4.2 `SiUSBXp_A8BE9E3F.sys` — device and gate
-`DriverEntry` `0x15008` (PE entry `0x19064` → `FUN_00015008`) installs:
+### 4.2 `SiUSBXp_A8BE9E3F.sys` - device and gate
+`DriverEntry` `0x15008` (PE entry `0x19064` -> `FUN_00015008`) installs:
 
 | Slot | Routine |
 |---|---|
@@ -160,7 +160,7 @@ handler of its own. It is a component of `SiUSBXp`; on its own it is inert. **W0
 | `IRP_MJ_PNP` (`+0x148`) | `FUN_00013BF8` |
 
 `AddDevice` `0x137E8` calls
-`IoCreateDevice(DriverObject, GetSizeofGenericExtension()+0x240, NULL, 0x22, 0x80 /*exclusive*/, 0, …)`:
+`IoCreateDevice(DriverObject, GetSizeofGenericExtension()+0x240, NULL, 0x22, 0x80 /*exclusive*/, 0, ...)`:
 unnamed, no SDDL, `DO_BUFFERED_IO` set (`+0x30 |= 4`) and `DO_DEVICE_INITIALIZING` cleared. User reach is
 the device interface registered by `GenericRegisterInterface(ext, &DAT_00016160)` (interface GUID lives in
 SiLib's generic extension). The literal `\DosDevices\USBINT` is copied into the extension but **never
@@ -174,17 +174,17 @@ package INF overrides it (INF not in corpus). Either way the surface requires th
 
 | IOCTL | Check | Action |
 |---|---|---|
-| `0x222008` | out ≥ 0x12 | copy 0x12 bytes of extension state to `SystemBuffer` |
-| `0x22200C` | out ≥ 9 | copy 9 bytes of extension state |
+| `0x222008` | out >= 0x12 | copy 0x12 bytes of extension state to `SystemBuffer` |
+| `0x22200C` | out >= 9 | copy 9 bytes of extension state |
 | `0x222014` | out > 0x2F | copy 0x30 bytes of extension state |
-| `0x222018` | out ≥ ext->`+0x88` | zero output length, copy `ext->+0x88` bytes (bounded) |
-| **`0x222024`** | **out ≠ 0 only** | **build an URB from the input and submit it; `TransferBuffer = SystemBuffer+8`, `TransferBufferLength = *(u16*)(input+6)`** |
-| **`0x222028`** | **out ≠ 0 only** | same URB pattern; `TransferBuffer = SystemBuffer+8`, length from `input+6` (or a descriptor word) |
-| `0x222080` | out ≠ 0 | queue/read state, length clamped to `min(state, out)` |
-| `0x222084` | out ≠ 0 | **write 4 bytes to `SystemBuffer`** (state dword) |
-| `0x222088` | in ≠ 0 | reset/select from `*SystemBuffer` (reads 8 bytes) and submit a class URB; no system-buffer write |
+| `0x222018` | out >= ext->`+0x88` | zero output length, copy `ext->+0x88` bytes (bounded) |
+| **`0x222024`** | **out != 0 only** | **build an URB from the input and submit it; `TransferBuffer = SystemBuffer+8`, `TransferBufferLength = *(u16*)(input+6)`** |
+| **`0x222028`** | **out != 0 only** | same URB pattern; `TransferBuffer = SystemBuffer+8`, length from `input+6` (or a descriptor word) |
+| `0x222080` | out != 0 | queue/read state, length clamped to `min(state, out)` |
+| `0x222084` | out != 0 | **write 4 bytes to `SystemBuffer`** (state dword) |
+| `0x222088` | in != 0 | reset/select from `*SystemBuffer` (reads 8 bytes) and submit a class URB; no system-buffer write |
 
-### 4.4 Caller-controlled length → pool OOB (W2)
+### 4.4 Caller-controlled length -> pool OOB (W2)
 At `0x222024` the handler reads the URB descriptor from the **input** buffer but the transfer buffer is the
 **output/system** buffer plus 8:
 
@@ -212,14 +212,14 @@ hardware-gated pool OOB: **W2 / MW3**. It is not a caller-chosen kernel destinat
 
 ### 4.5 Secondary
 `0x222084` writes 4 bytes to `SystemBuffer` after checking only `OutputBufferLength != 0`; with
-`InputBufferLength < 4` the allocation can be smaller than 4 bytes (≤3-byte pool overrun). Fixed size,
-fixed value → W3, not the verdict driver. `0x222088` reads 8 bytes after checking only
+`InputBufferLength < 4` the allocation can be smaller than 4 bytes (<=3-byte pool overrun). Fixed size,
+fixed value -> W3, not the verdict driver. `0x222088` reads 8 bytes after checking only
 `InputBufferLength != 0` (OOB read).
 
 ### 4.6 Verdict
-`SiUSBXp`: **MW3 — reach=R3 setup=hardware write=W2**. `SiLib`: **NO-MEMORY-WRITE (W0)**.
+`SiUSBXp`: **MW3 - reach=R3 setup=hardware write=W2**. `SiLib`: **NO-MEMORY-WRITE (W0)**.
 
-## 5 Netac `SMI_IO` (Silicon Motion) — MW2, both builds
+## 5 Netac `SMI_IO` (Silicon Motion) - MW2, both builds
 
 ### 5.1 Device and effective DACL
 Both builds are 16,056 bytes and share the same logic, with the expected x86/x64 differences.
@@ -243,17 +243,17 @@ All METHOD_BUFFERED, `FILE_ANY_ACCESS`.
 
 | IOCTL | x64 handler | x86 handler | Gate | Action |
 |---|---|---|---|---|
-| `0x803320CC` | `FUN_00011600` | `FUN_000114D0` | `in != 0` | `MmMapIoSpace(phys, size, MmNonCached)` → `IoAllocateMdl` → `MmBuildMdlForNonPagedPool` → `MmMapLockedPages(mdl, TRUE)`; user VA returned in the output buffer |
+| `0x803320CC` | `FUN_00011600` | `FUN_000114D0` | `in != 0` | `MmMapIoSpace(phys, size, MmNonCached)` -> `IoAllocateMdl` -> `MmBuildMdlForNonPagedPool` -> `MmMapLockedPages(mdl, TRUE)`; user VA returned in the output buffer |
 | `0x803320D0` | `FUN_00011830` | `FUN_00011720` | `in != 0` | unmap by VA (table lookup) |
-| `0x803320D4` | — | inline | none | **x86 only**: `MmAllocateNonCachedMemory(0x2000)` = zeroed IOPM → `Ke386IoSetAccessProcess` + `Ke386SetIoAccessMap(1, map)` |
-| `0x803320D8` | — | inline | none | **x86 only**: IOPM teardown |
+| `0x803320D4` | - | inline | none | **x86 only**: `MmAllocateNonCachedMemory(0x2000)` = zeroed IOPM -> `Ke386IoSetAccessProcess` + `Ke386SetIoAccessMap(1, map)` |
+| `0x803320D8` | - | inline | none | **x86 only**: IOPM teardown |
 | `0x803320DC` | inline | inline | `in != 0` | port read (byte/word/dword), result written as 4 bytes to `SystemBuffer` |
 | `0x803320E0` | inline | inline | `in != 0` | port write (byte/word/dword) |
 
 `phys` and `size` for `0x803320CC` come straight from the input struct (`{u32 size; u32 pad; u64 phys}`)
 with no `MmGetPhysicalMemoryRanges` check, no window check, no size cap. `MmMapLockedPages(..., TRUE)`
-creates a user-accessible mapping and the VA is copied back. That is arbitrary physical read/write — a
-**W3P** primitive → MW3 on its own.
+creates a user-accessible mapping and the VA is copied back. That is arbitrary physical read/write - a
+**W3P** primitive -> MW3 on its own.
 
 ### 5.3 Primary primitive: unbounded input-length copy onto the kernel stack (W2)
 All four data handlers copy **InputBufferLength** bytes from `SystemBuffer` into a small stack local.
@@ -293,35 +293,35 @@ address and the callee's arguments. The same `memcpy(local, SystemBuffer, InLeng
 codes are usable as the overflow trigger.
 
 Caller controls: length (32-bit, only tested `!= 0`), content (all bytes), destination (fixed stack
-region, then linear). This is a kernel stack buffer overflow — the Sandboxie `SbieDrv` class of finding —
+region, then linear). This is a kernel stack buffer overflow - the Sandboxie `SbieDrv` class of finding -
 so **W2**. Rated on its own it is MW2 at R2. No KASLR leak is needed because the target is the stack, not
 an absolute address; the return-address value is the only address the attacker must know, which is the
 normal stack-overflow caveat.
 
 ### 5.4 Secondary x64 write
 `0x803320DC` does `*SystemBuffer = value` (4 bytes) after checking only `InputBufferLength != 0`. With a
-small output length the system buffer can be 1–3 bytes, giving a ≤3-byte pool overrun. Fixed size and
-driver-derived value → W3.
+small output length the system buffer can be 1-3 bytes, giving a <=3-byte pool overrun. Fixed size and
+driver-derived value -> W3.
 
 ### 5.5 Build differences (material)
 * `0x803320D4/D8` (IOPM grant/revoke) exist only in the **x86** build. They hand the calling process a
-  zeroed 8 KB I/O permission bitmap (all 65,536 ports at CPL3) with no token check — hardware-only, but a
+  zeroed 8 KB I/O permission bitmap (all 65,536 ports at CPL3) with no token check - hardware-only, but a
   strong port-I/O enabler. `HW-ONLY`.
-* x64 has inline `in`/`out` helpers (`FUN_00011010`–`FUN_000110C0`) for `0x803320DC/E0`; x86 uses
+* x64 has inline `in`/`out` helpers (`FUN_00011010`-`FUN_000110C0`) for `0x803320DC/E0`; x86 uses
   `READ_PORT_*`/`WRITE_PORT_*`.
 * Both share the stack overflow and the physical map. There is no other material difference.
 
 ### 5.6 Verdict
-**MW2 — reach=R2 setup=service write=W2 load=signed** (both builds). The physical map alone would be
+**MW2 - reach=R2 setup=service write=W2 load=signed** (both builds). The physical map alone would be
 **MW3/W3P**; the unbounded stack copy raises the file to MW2. The x86 IOPM IOCTLs are HW-ONLY.
 
-## 6 HyperX / HP `vachpxkd` — MW3 (x64); BLOCKED (ARM64)
+## 6 HyperX / HP `vachpxkd` - MW3 (x64); BLOCKED (ARM64)
 
 ### 6.1 Device and DACL
-PortCls/KS virtual audio driver (`"HyperX Virtual Audio Device …"`, `"Virtual Audio Cable"`).
+PortCls/KS virtual audio driver (`"HyperX Virtual Audio Device ..."`, `"Virtual Audio Cable"`).
 
 * `DriverEntry` `FUN_0001B750` @ `0x1B750`: creates a fixed 0xC000 section
-  (`MmCreateSection` → `MmMapViewInSystemSpace`), `PcInitializeAdapterDriver`, then hooks
+  (`MmCreateSection` -> `MmMapViewInSystemSpace`), `PcInitializeAdapterDriver`, then hooks
   `IRP_MJ_CREATE = 0x1B330`, `IRP_MJ_CLOSE = 0x1A7D0`, `IRP_MJ_DEVICE_CONTROL = 0x1B690`.
 * The DC thunk at `0x1B690` tail-jumps to `FUN_0001B350` @ `0x1B350`.
 * No `IoCreateDevice` and no `IoCreateSymbolicLink` import; the adapter FDO is created by
@@ -337,14 +337,14 @@ reach **R3**. This is an inference from the surface type, not an observed DACL.
 
 | IOCTL | Method | Handler | Notes |
 |---|---|---|---|
-| `0x2F0003` | NEITHER | `FUN_00022160`, `FUN_00025A10`, `FUN_0002A8F0` | `IOCTL_KS_PROPERTY`; input `KSPROPERTY` probed with `ProbeForRead` (0x18 bytes, `in ≥ 0x18`) |
+| `0x2F0003` | NEITHER | `FUN_00022160`, `FUN_00025A10`, `FUN_0002A8F0` | `IOCTL_KS_PROPERTY`; input `KSPROPERTY` probed with `ProbeForRead` (0x18 bytes, `in >= 0x18`) |
 | `0x2F001B` | NEITHER | `FUN_000245B0` | `IOCTL_KS_RESET_STATE` |
 | `0x2F4017` | NEITHER | `FUN_00024D80` | `IOCTL_KS_READ_STREAM`; `KsProbeStreamIrp` first |
 | `0x2F8013` | NEITHER | `FUN_00024D80` | `IOCTL_KS_WRITE_STREAM`; `KsProbeStreamIrp` first |
-| other | — | `PcDispatchIrp` | standard PortCls |
+| other | - | `PcDispatchIrp` | standard PortCls |
 
 The audio set `{45FFAAA0-6E1B-11D0-BCF2-444553540000}` (ids 5/0x32) goes to `FUN_00025A10`, which uses
-`FUN_0001B950`/`FUN_0001B9D0` — both probe correctly (`ProbeForRead`/`ProbeForWrite` at `0x1B950`/`0x1B9D0`).
+`FUN_0001B950`/`FUN_0001B9D0` - both probe correctly (`ProbeForRead`/`ProbeForWrite` at `0x1B950`/`0x1B9D0`).
 The stream path runs `KsProbeStreamIrp` first.
 
 ### 6.3 The write: `FUN_00022160` writes to a raw `Irp->UserBuffer`
@@ -372,7 +372,7 @@ There is **no** `ProbeForWrite` on `R14`; the only `ProbeForWrite` in the whole 
 `FUN_0001B9D0`. `Irp->UserBuffer` is the raw `OutputBuffer` argument: in the local `ntoskrnl` artifact,
 `IopXxxControlFile` stores it unmodified for METHOD_NEITHER
 (`0x14060666E MOV RAX,[RSP+0x190]`; `0x140606676 MOV [RSI+0x70],RAX`). The only pre-dispatch clamp in that
-function is applied to the *I/O status block* (`0x140605CA1`–`0x140605CBE`, clamp to `0x7FFFFFFF0000`), and
+function is applied to the *I/O status block* (`0x140605CA1`-`0x140605CBE`, clamp to `0x7FFFFFFF0000`), and
 the only `ProbeForWrite` is on the METHOD_BUFFERED output path (`0x140605CE1`). So a caller-supplied kernel
 address reaches the driver as-is.
 
@@ -381,7 +381,7 @@ probe, no alignment check. Constraints/gates:
 
 * the virtual audio devnode must exist (`Setup = devnode`);
 * a per-adapter flag at `ctx+0x9C2` must be zero (default) and the caller must not be the system process;
-* `OutputBufferLength ≥ 8`;
+* `OutputBufferLength >= 8`;
 * current process image base name must be `audiodg` (checked with `_wcsicmp` after stripping path and
   extension). This is an image-name check, **not** a signer or protected-process check: any local process
   whose executable is named `audiodg.exe` satisfies it. The gate is effectively cosmetic;
@@ -389,7 +389,7 @@ probe, no alignment check. Constraints/gates:
 
 Because the target is an absolute kernel address and the driver exposes no kernel pointer leak on the
 reviewed paths, the write needs a separately obtained KASLR leak. Conservative rating: **W2** (arbitrary
-target, constrained value) at **R3** → **MW3**. If the devnode is treated as already present and a leak is
+target, constrained value) at **R3** -> **MW3**. If the devnode is treated as already present and a leak is
 available, this is a straight MW2-class write-what-where.
 
 ### 6.4 ARM64 build `vachpxkd_94A275C1.sys`
@@ -398,7 +398,7 @@ are present as literals (vendor/audio/`1D58C920`), and the reviewed x64 function
 It cannot load on an x64 host: **BLOCKED (architecture)**, with the same W2 primitive recorded as a
 reference only. It is not counted in the group total.
 
-## 7 PawnIO `PawnIO_4383A699.sys` — NO-MEMORY-WRITE (RSA-gated by design)
+## 7 PawnIO `PawnIO_4383A699.sys` - NO-MEMORY-WRITE (RSA-gated by design)
 
 ### 7.1 Device and DACL
 `AddDevice` `FUN_1400019C0` @ `0x1400019C0`:
@@ -419,7 +419,7 @@ statement is INF-plus-default rather than a fresh observation. Reach **R2**, set
 ### 7.2 IOCTL table (`FUN_140001BD0` @ `0x140001BD0`, all METHOD_BUFFERED)
 | IOCTL | Handler | Gate |
 |---|---|---|
-| `0xA1B22084` | `FUN_140010EA0` → `FUN_140010FE0` | RSA signature over the module; one module per handle |
+| `0xA1B22084` | `FUN_140010EA0` -> `FUN_140010FE0` | RSA signature over the module; one module per handle |
 | `0xA1B22104` | `FUN_140010BA0` | requires a loaded module; interpreter, input and output are the same system buffer |
 | `0xA1B22184` | inline | `OutputBufferLength == 4`; writes version `0x20200` |
 | `IRP_MJ_CREATE`/`CLOSE` | `FUN_140001BD0` | close frees the module |
@@ -438,7 +438,7 @@ The key blobs are in the driver's read-only data; there is no alternate loader, 
 The module body is copied with a bounded helper.
 
 ### 7.4 Host API reachable only from a signed module
-The interpreter exposes `physical_read_*`/`physical_write_*` (1–8 bytes, via `MmGetVirtualForPhysical` or
+The interpreter exposes `physical_read_*`/`physical_write_*` (1-8 bytes, via `MmGetVirtualForPhysical` or
 `MmMapIoSpace`), `io_space_map`, `virtual_read_*`/`virtual_write_*`, `pci_config_read_*`/`pci_config_write_*`
 (`HalSetBusDataByOffset`), `msr_read`/`msr_write` (`rdmsr`/`wrmsr`), and `cr_*`/`dr_*`/`xcr_*`. These are
 real arbitrary physical/PCI/MSR primitives, but they are reachable only by a module carrying a valid PawnIO
@@ -446,27 +446,27 @@ signature. A holder of the vendor signing key (or a legitimately signed module t
 its arguments) would inherit them; an administrator without such a module cannot.
 
 ### 7.5 Verdict
-**NO-MEMORY-WRITE — reach=R2 setup=devnode write=W0 load=signed.** The admin-only DACL is no longer a
+**NO-MEMORY-WRITE - reach=R2 setup=devnode write=W0 load=signed.** The admin-only DACL is no longer a
 barrier under the current scope, but the RSA signature gate is: no unsigned path to the host API exists in
 the image. The conditional capability is recorded here as a design property, not as a finding.
 
-## 8 Family comparison — material differences only
+## 8 Family comparison - material differences only
 
 | Family / build | Interface | Reach | Gate that actually binds | Primitive | Verdict |
 |---|---|---|---|---|---|
 | NZXT `cam_driver_mb` | KMDF control device, Everyone-GRGW SDDL | R2 | `SeSystemProfilePrivilege` in EvtFileCreate | port I/O + table-fixed MMIO | NO-MEMORY-WRITE (HW-ONLY) |
-| NZXT `SiLib` | none | — | — | none | NO-MEMORY-WRITE |
+| NZXT `SiLib` | none | - | - | none | NO-MEMORY-WRITE |
 | NZXT `SiUSBXp` | unnamed FDO + interface, DC `+0xE0` | R3 | physical device | caller 16-bit transfer length over `SystemBuffer+8` | MW3 (W2) |
 | Netac `SMI_IO_64` | `\Device\SMI_IO`, default SD | R2 | admin DACL only | unbounded `REP MOVSB` (4 codes) + arbitrary phys map | **MW2** (W2/W3P) |
 | Netac `SMI_IO_32` | same | R2 | admin DACL only | unbounded `memcpy` (4 codes) + phys map + IOPM | **MW2** (W2/W3P) |
 | HyperX `vachpxkd` x64 | PortCls KS filter (devnode) | R3 | devnode + spoofable `audiodg` name | unprobed `Irp->UserBuffer` 8-byte write | MW3 (W2) |
-| HyperX `vachpxkd` ARM64 | same source | — | not loadable | same reference | BLOCKED (arch) |
+| HyperX `vachpxkd` ARM64 | same source | - | not loadable | same reference | BLOCKED (arch) |
 | PawnIO | `\Device\PawnIO`, admin-only | R2 | RSA signature on modules | physical/PCI/MSR only via signed module | NO-MEMORY-WRITE |
 
 The eight builds do not share code. The only cross-family pattern worth noting is that the two strongest
 surfaces are **old, small, non-WDF WDM drivers** (`SMI_IO` 2016; `SiUSBXp` 2010) whose dispatch routines
 copy or transfer `InputBufferLength`-derived lengths with only a `!= 0` test, while the two modern WDF/PortCls
-drivers (`cam_driver_mb`, `vachpxkd`) use exact-length retrievals and probe their inputs — their weak points
+drivers (`cam_driver_mb`, `vachpxkd`) use exact-length retrievals and probe their inputs - their weak points
 are respectively an over-broad DACL that a create-time privilege check happens to cover, and one handler
 that bypasses the driver's own probe helper.
 
@@ -481,7 +481,7 @@ that bypasses the driver's own probe helper.
    report.
 3. **SMI_IO stack overflow.** The write is unconditional (length/content controlled) and the dispatchers have
    no `/GS` check, but reliable control-flow hijack still depends on the target build's stack layout and on
-   defeating kernel CFG/SMEP after the return. The verdict does not rely on a working chain — the
+   defeating kernel CFG/SMEP after the return. The verdict does not rely on a working chain - the
    out-of-bounds kernel-stack write itself is the finding.
 4. **SiUSBXp.** The OOB is only reachable with a Silicon Labs USB device enumerated on the stack, and the
    write payload comes from the device side. The 16-bit length and the `SystemBuffer+8` placement are
@@ -499,7 +499,7 @@ that bypasses the driver's own probe helper.
 
 ## 10 Overall verdict
 
-**MW2 — reach=R2 setup=service write=W2 load=signed.**
+**MW2 - reach=R2 setup=service write=W2 load=signed.**
 
 The group's strongest reachable kernel memory write is in **Netac `SMI_IO` (both builds)**: four
 `METHOD_BUFFERED` IOCTLs copy the caller-supplied `InputBufferLength` into an 8-byte kernel-stack local with
@@ -508,10 +508,10 @@ physical range read/write into the caller (`W3P`). Under the current scope the d
 not block the requester, so this is no longer a "blocked by DACL" reference.
 
 Two **MW3** primitives sit below it:
-* **HyperX `vachpxkd` x64** — an unprobed `METHOD_NEITHER` output write (`0x222A4`) to `Irp->UserBuffer`,
+* **HyperX `vachpxkd` x64** - an unprobed `METHOD_NEITHER` output write (`0x222A4`) to `Irp->UserBuffer`,
   i.e. an arbitrary-address 8-byte write of a constrained value, behind a devnode and a spoofable image-name
   check; the ARM64 sibling is BLOCKED.
-* **NZXT `SiUSBXp`** — a caller-controlled 16-bit URB transfer length over `SystemBuffer+8`, giving a
+* **NZXT `SiUSBXp`** - a caller-controlled 16-bit URB transfer length over `SystemBuffer+8`, giving a
   hardware-gated pool OOB via the USB host controller.
 
 The remaining four files are **NO-MEMORY-WRITE**: `cam_driver_mb` is HW-ONLY behind a

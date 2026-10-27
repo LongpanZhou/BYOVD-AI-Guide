@@ -25,7 +25,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 ## 2 Entry / device / interface / effective DACL
 
 - `IoCreateDevice(DriverObject, 0x250, 0, DeviceType 0x22, DeviceCharacteristics 0x80, Exclusive 0, &device)` at dump 108. The characteristics value 0x80 does not include FILE_DEVICE_SECURE_OPEN (0x100), so no per-open security check is applied to this device.
-- `IoRegisterDeviceInterface(…, &DAT_000161B0, 0, …)` at dump 156. The GUID at DAT_000161B0 is not decoded in this pass.
+- `IoRegisterDeviceInterface(..., &DAT_000161B0, 0, ...)` at dump 156. The GUID at DAT_000161B0 is not decoded in this pass.
 - No SDDL or `ZwSetSecurityObject`. Effective DACL: IoCreateDevice default.
 
 ## 3 Dispatch and IOCTL table

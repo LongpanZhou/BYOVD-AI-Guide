@@ -1,4 +1,4 @@
-# Documentation Consistency Review — 2026-10-24
+# Documentation Consistency Review - 2026-10-24
 
 **Reviewer:** independent documentation/consistency pass (read-only)
 **Scope:** all canonical Markdown, area READMEs, scope docs, index READMEs, and the three collection scripts
@@ -51,18 +51,18 @@ The reports tree is also a mixed current/legacy tree (P1), even though three can
 
 ---
 
-## P0 — must fix
+## P0 - must fix
 
-### P0-1 — `SEVERITY.md` is internally inconsistent for `W3` and physical-memory writes
+### P0-1 - `SEVERITY.md` is internally inconsistent for `W3` and physical-memory writes
 
 **Evidence**
 
-- `audits/scope/SEVERITY.md:17` defines `W3` as **"fixed/narrow/PA-only"** — three different things in one value.
+- `audits/scope/SEVERITY.md:17` defines `W3` as **"fixed/narrow/PA-only"** - three different things in one value.
 - `audits/scope/SEVERITY.md:27` says **MW3** is "Physical-memory mapping/write only" and lists required conditions **`W2`/`W3` + `R3` hardware; physmem map**.
 - `audits/scope/SEVERITY.md:28` says **MW4** is "Narrow/fixed memory write" with required condition **`W3`**.
 - The matrix at `audits/scope/SEVERITY.md:40-43` maps `W3` to **MW4** for every reach tier.
-- The current DirectIo64 report rates **`W3` → MW3** (`audits/reports/DirectIo64.md:11-12`), and `audits/STATUS.md:35`, `PROJECT_GOAL.md:80`, and `README.md:51` all carry **MW3**.
-- The current ImDisk report rates **`W3` → MW4** and explicitly cites the matrix (`audits/reports/imdisk.admin.static.md:12,135`).
+- The current DirectIo64 report rates **`W3` -> MW3** (`audits/reports/DirectIo64.md:11-12`), and `audits/STATUS.md:35`, `PROJECT_GOAL.md:80`, and `README.md:51` all carry **MW3**.
+- The current ImDisk report rates **`W3` -> MW4** and explicitly cites the matrix (`audits/reports/imdisk.admin.static.md:12,135`).
 - `audits/scope/SEVERITY.md:80-82` also calls physical-memory mapping an admin/R2 path, which the matrix sends to MW4.
 
 **Why this blocks work:** two signed auditor outputs use the same `W3` input and produce different published levels (MW3 vs MW4). An auditor cannot apply the scale without guessing whether "PA-only" or "fixed/narrow" wins. This propagates into `STATUS.md`, `PROJECT_GOAL.md`, and `README.md`.
@@ -70,10 +70,10 @@ The reports tree is also a mixed current/legacy tree (P1), even though three can
 **Suggested edit (preferred): split the write-quality axis**
 
 1. In `audits/scope/SEVERITY.md:17`, change the `Write quality` values to:
-   `W1 arbitrary target + value · W2 constrained target or value · W3 fixed/narrow · W3P physical-memory (PA-only) mapping/write · W0 no memory write`
+   `W1 arbitrary target + value ; W2 constrained target or value ; W3 fixed/narrow ; W3P physical-memory (PA-only) mapping/write ; W0 no memory write`
 2. In `:27`, make MW3's required condition `W3P` (plus `R3` + `W2` where applicable), and remove `W3`.
 3. In `:28`, keep MW4 for `W3` fixed/narrow/crash-first.
-4. In `:38-44`, add a `W3P (PA-only)` column with **MW3** for R1/R2 and R3; keep `W3` → **MW4**.
+4. In `:38-44`, add a `W3P (PA-only)` column with **MW3** for R1/R2 and R3; keep `W3` -> **MW4**.
 5. In `:88`, change the report field grammar to `write=<W1|W2|W3|W3P|W0>`; make the same change in `audits/scope/AUDIT_SCOPE.md:66` and `audits/scope/STATIC_ANALYSIS_AGENT_PROMPT.md:119`.
 6. Change `audits/reports/DirectIo64.md:11` from `W3` to `W3P`; leave ImDisk as `W3`.
 7. Move the `CBULWDM` example out of MW2 at `:26` and into MW3/W3P.
@@ -83,7 +83,7 @@ The reports tree is also a mixed current/legacy tree (P1), even though three can
 
 ---
 
-### P0-2 — `SEVERITY.md` orders re-audits of known-bad drivers that `STATUS.md` says are BLOCKED
+### P0-2 - `SEVERITY.md` orders re-audits of known-bad drivers that `STATUS.md` says are BLOCKED
 
 **Evidence**
 
@@ -106,16 +106,16 @@ The reports tree is also a mixed current/legacy tree (P1), even though three can
 Replace `audits/scope/SEVERITY.md:81` with a split bullet:
 
 ```markdown
-- EVGA `driver-x86`, `SMI_IO`, `NTIOLib`, `iocbios2` — old “blocked by DACL”; admin can open.
+- EVGA `driver-x86`, `SMI_IO`, `NTIOLib`, `iocbios2` - old "blocked by DACL"; admin can open.
   The x64 `driver-x64_33DA2CE2`, `MSIO32/64`, `amifldrv`, `MsIo64_CFCF32F5`, and `RTCore*`
-  hashes are in `known_bad_hashes.txt` → **BLOCKED; do not re-audit**.
+  hashes are in `known_bad_hashes.txt` -> **BLOCKED; do not re-audit**.
 ```
 
 Also add the six filenames above to `audits/STATUS.md` as a short "Known-bad images retained in `drivers/`" list, so a future agent does not have to join the manifest to the hash list. Add the exception "unless known-bad/blocklisted" to the historical warning at `audits/README.md:57`.
 
 ---
 
-### P0-3 — `drivers/README.md` gives an unrunnable filter command and tells the reader to copy by hand
+### P0-3 - `drivers/README.md` gives an unrunnable filter command and tells the reader to copy by hand
 
 **Evidence**
 
@@ -161,7 +161,7 @@ The same "copy only the deduped `.sys` into `drivers/`" wording at `README.md:86
 
 ---
 
-### P0-4 — the download workflow never updates `existing_hashes.txt`, so the dedupe gate goes stale after every batch
+### P0-4 - the download workflow never updates `existing_hashes.txt`, so the dedupe gate goes stale after every batch
 
 **Evidence**
 
@@ -169,7 +169,7 @@ The same "copy only the deduped `.sys` into `drivers/`" wording at `README.md:86
 - `tools/rebuild_manifest.ps1:20-31` only rebuilds `indexes/drivers_manifest.csv`; it never writes to `existing_hashes.txt`.
 - `indexes/dedupe/README.md:10-13` is the **only** document that says to append new hashes and regenerate `dedupe_summary.txt`.
 - The workflows omit that step:
-  - `DRIVER_COLLECTION_PLAYBOOK.md:49-59` (§2.1) and `:391-397` (§9 fast loop)
+  - `DRIVER_COLLECTION_PLAYBOOK.md:49-59` (section 2.1) and `:391-397` (section 9 fast loop)
   - `downloads/README.md:14-26`
   - `README.md:82-89`
   - `tools/README.md:20-27`
@@ -190,7 +190,7 @@ $manifest | Where-Object Status -eq 'NEW' |
 # then regenerate indexes\dedupe\dedupe_summary.txt
 ```
 
-Better: add `-UpdateExisting` to `tools/filter_new_drivers.ps1` so the gate is updated atomically with the copy, and document that switch. Until then, add the explicit step to `DRIVER_COLLECTION_PLAYBOOK.md` §2.1/§9, `downloads/README.md`, `tools/README.md`, `README.md`, `drivers/README.md`, and `START_HERE.md`.
+Better: add `-UpdateExisting` to `tools/filter_new_drivers.ps1` so the gate is updated atomically with the copy, and document that switch. Until then, add the explicit step to `DRIVER_COLLECTION_PLAYBOOK.md` section 2.1/section 9, `downloads/README.md`, `tools/README.md`, `README.md`, `drivers/README.md`, and `START_HERE.md`.
 
 **Canonical sequence to adopt** (replaces the variants in the current docs):
 
@@ -227,9 +227,9 @@ Get-ChildItem downloads -Force |
 
 ---
 
-## P1 — should fix
+## P1 - should fix
 
-### P1-1 — `audits/reports/` is still a mixed current/legacy report tree
+### P1-1 - `audits/reports/` is still a mixed current/legacy report tree
 
 **Evidence**
 
@@ -251,7 +251,7 @@ Either (preferred) move the pre-2026-10-24 reports to `audits/legacy/`, leaving 
 
 At minimum, change the wording in `audits/README.md:26`, `audits/reports/README.md:1`, `PROJECT_MAP.md:3,34`, and `START_HERE.md:29` from "all current" to "current plus retained historical reports; `STATUS.md` is authoritative."
 
-### P1-2 — `README.md` "Top findings" contains three drivers absent from `STATUS.md` / `PROJECT_GOAL.md`
+### P1-2 - `README.md` "Top findings" contains three drivers absent from `STATUS.md` / `PROJECT_GOAL.md`
 
 **Evidence**
 
@@ -269,13 +269,13 @@ Either add the three to `audits/STATUS.md` "Current results" with the reach/setu
 
 and add a note to `STATUS.md` that these are not current results. Do not leave them presented as equivalent to the current MW-rated rows.
 
-### P1-3 — cleanup commands delete `downloads/README.md` and `.gitkeep` despite saying "keep"
+### P1-3 - cleanup commands delete `downloads/README.md` and `.gitkeep` despite saying "keep"
 
 **Evidence**
 
-- `downloads/README.md:24`: `Remove-Item .\* -Recurse -Force` "(keep `README.md`)" — the command deletes it, and `.gitkeep` too.
-- `DRIVER_COLLECTION_PLAYBOOK.md:397`: `Remove-Item downloads\* -Recurse -Force # keep downloads\README.md and .gitkeep` — same.
-- `README.md:89`: "Delete everything in `downloads/`" — no exception.
+- `downloads/README.md:24`: `Remove-Item .\* -Recurse -Force` "(keep `README.md`)" - the command deletes it, and `.gitkeep` too.
+- `DRIVER_COLLECTION_PLAYBOOK.md:397`: `Remove-Item downloads\* -Recurse -Force # keep downloads\README.md and .gitkeep` - same.
+- `README.md:89`: "Delete everything in `downloads/`" - no exception.
 - `PROJECT_MAP.md:15` and `downloads/README.md:4` say the folder is "empty" after harvest, while `.gitignore` explicitly unignores `README.md` and `.gitkeep`.
 
 **Suggested edit**
@@ -290,7 +290,7 @@ Get-ChildItem downloads -File | Where-Object Name -notin @('README.md','.gitkeep
 
 Change "empty" to "contains only `README.md` and `.gitkeep`" in `PROJECT_MAP.md:15` and `downloads/README.md:4`.
 
-### P1-4 — `downloads/README.md` quick-start has no runnable harvest command; 7-Zip prerequisite is undocumented
+### P1-4 - `downloads/README.md` quick-start has no runnable harvest command; 7-Zip prerequisite is undocumented
 
 **Evidence**
 
@@ -299,7 +299,7 @@ Change "empty" to "contains only `README.md` and `.gitkeep`" in `PROJECT_MAP.md:
 
 **Suggested edit**
 
-Add the full command from `DRIVER_COLLECTION_PLAYBOOK.md:86-92` to `downloads/README.md` (adjusting paths for the downloads directory), and add a "Prerequisites" line to the playbook §3 and `downloads/README.md`:
+Add the full command from `DRIVER_COLLECTION_PLAYBOOK.md:86-92` to `downloads/README.md` (adjusting paths for the downloads directory), and add a "Prerequisites" line to the playbook section 3 and `downloads/README.md`:
 
 ```text
 7-Zip installed at C:\Program Files\7-Zip\7z.exe (harvest.ps1 hardcodes this path).
@@ -307,13 +307,13 @@ Add the full command from `DRIVER_COLLECTION_PLAYBOOK.md:86-92` to `downloads/RE
 
 Also mention `downloads\_hx` as the work tree, since cleanup must remove it.
 
-### P1-5 — `filter_new_drivers.ps1` adds a second hash suffix to harvested filenames
+### P1-5 - `filter_new_drivers.ps1` adds a second hash suffix to harvested filenames
 
 **Evidence**
 
 - `tools/harvest.ps1:116-120` writes `<base>_<sha8>.sys`.
 - `tools/filter_new_drivers.ps1:48-51` takes the harvested basename (already ending in `_<sha8>`), strips only the extension, and appends `_<sha8>` again:
-  `foo_ABCD1234.sys` → `foo_ABCD1234_ABCD1234.sys`.
+  `foo_ABCD1234.sys` -> `foo_ABCD1234_ABCD1234.sys`.
 - Existing `drivers/` names have one suffix (for example `ArgusMonitor_E2875167.sys`); no current file has the double suffix, so this will appear only in the next batch.
 
 **Suggested edit**
@@ -330,9 +330,9 @@ if ($base.EndsWith($suffix, [StringComparison]::OrdinalIgnoreCase)) {
 }
 ```
 
-Add one sentence to the playbook §3: "`filter_new_drivers.ps1` preserves the harvest hash suffix; it does not add a second one."
+Add one sentence to the playbook section 3: "`filter_new_drivers.ps1` preserves the harvest hash suffix; it does not add a second one."
 
-### P1-6 — count-update instructions are incomplete and will leave six docs stale after a batch
+### P1-6 - count-update instructions are incomplete and will leave six docs stale after a batch
 
 **Evidence**
 
@@ -351,12 +351,12 @@ Add one canonical maintenance line to `downloads/README.md` and `indexes/dedupe/
 
 ```text
 After rebuild_manifest.ps1, update every count copy: PROJECT_GOAL.md, START_HERE.md,
-README.md, audits/STATUS.md, drivers/README.md, DRIVER_COLLECTION_PLAYBOOK.md (§6/§8),
+README.md, audits/STATUS.md, drivers/README.md, DRIVER_COLLECTION_PLAYBOOK.md (section 6/section 8),
 indexes/README.md, and the dedupe summary. Prefer generating these from
 indexes/drivers_manifest.csv instead of hand-editing.
 ```
 
-### P1-7 — current report headers still cite deleted `_collected*`, root `*.sys`, `dynamic_evidence`, and `_vm_batch2` paths
+### P1-7 - current report headers still cite deleted `_collected*`, root `*.sys`, `dynamic_evidence`, and `_vm_batch2` paths
 
 **Evidence**
 
@@ -378,22 +378,22 @@ Current equivalents: `drivers\<name>` (look up SHA-256 in
 
 Optionally update the 16 reports linked from `STATUS.md` so the current-result headers are directly usable; the rest can rely on the banner.
 
-### P1-8 — `audits/evidence/README.md` and the PoC READMEs overstate coverage as t1–t10
+### P1-8 - `audits/evidence/README.md` and the PoC READMEs overstate coverage as t1-t10
 
 **Evidence**
 
-- `audits/evidence/README.md:3`: "VM-phase evidence for the t1–t10 runs."
-- Actual `audits/evidence/` has **t4–t10 only** (`t1`=0, `t2`=0, `t3`=0, `t4`=21, `t5`=45, `t6`=27, `t7`=32, `t8`=14, `t9`=34, `t10`=26).
+- `audits/evidence/README.md:3`: "VM-phase evidence for the t1-t10 runs."
+- Actual `audits/evidence/` has **t4-t10 only** (`t1`=0, `t2`=0, `t3`=0, `t4`=21, `t5`=45, `t6`=27, `t7`=32, `t8`=14, `t9`=34, `t10`=26).
 - `audits/reports/logi_joy_bus_enum.dynamic.md:5` points to `audits\dynamic_evidence\t1_*.txt`; `logi_joy_xlcore.dynamic.md:11` points to `t3_*`. Neither set exists.
-- `poc/README.md:8` and `poc/historical/README.md:3` say "t1–t10"; `PROJECT_MAP.md:44` says "t1–t10 PoC sources". Actual `poc/historical/` has t4–t7 PoC sources plus `host_probe.exe`; t8–t10 runbooks are in `audits/legacy/vm_batch2/`.
+- `poc/README.md:8` and `poc/historical/README.md:3` say "t1-t10"; `PROJECT_MAP.md:44` says "t1-t10 PoC sources". Actual `poc/historical/` has t4-t7 PoC sources plus `host_probe.exe`; t8-t10 runbooks are in `audits/legacy/vm_batch2/`.
 
 **Suggested edit**
 
-- Change `audits/evidence/README.md:3` to: "VM-phase evidence for the t4–t10 runs (t1–t3 evidence was not migrated); reports that cite `t1_*`/`t3_*` are historical."
+- Change `audits/evidence/README.md:3` to: "VM-phase evidence for the t4-t10 runs (t1-t3 evidence was not migrated); reports that cite `t1_*`/`t3_*` are historical."
 - Add: "Reports written before 2026-10-24 call this folder `audits\dynamic_evidence\`; that path is now `audits/evidence/`."
-- Change `poc/README.md:8`, `poc/historical/README.md:3`, and `PROJECT_MAP.md:44` to: "t4–t7 PoC sources and harnesses; t8–t10 runbooks are in `audits/legacy/vm_batch2/`; t1–t3 are not retained."
+- Change `poc/README.md:8`, `poc/historical/README.md:3`, and `PROJECT_MAP.md:44` to: "t4-t7 PoC sources and harnesses; t8-t10 runbooks are in `audits/legacy/vm_batch2/`; t1-t3 are not retained."
 
-### P1-9 — `DRIVER_COLLECTION_PLAYBOOK.md` §5 uses `.\dl`, which creates a second scratch folder
+### P1-9 - `DRIVER_COLLECTION_PLAYBOOK.md` section 5 uses `.\dl`, which creates a second scratch folder
 
 **Evidence**
 
@@ -409,27 +409,27 @@ The canonical scratch folder is `downloads/` (`PROJECT_MAP.md:15`, `downloads/RE
 
 Change `.\dl` to `downloads` and add `-e`/accept flags if the example is meant to be copy-pasteable.
 
-### P1-10 — `DRIVER_COLLECTION_PLAYBOOK.md` §10 rebuilds over historical `collected2/master_drivers.csv` and reintroduces the known-wrong SDDL regex
+### P1-10 - `DRIVER_COLLECTION_PLAYBOOK.md` section 10 rebuilds over historical `collected2/master_drivers.csv` and reintroduces the known-wrong SDDL regex
 
 **Evidence**
 
 - `DRIVER_COLLECTION_PLAYBOOK.md:409-422` sets `$base = 'indexes\collections\collected2'` and exports to `$base\master_drivers.csv`, overwriting batch provenance.
-- `:420` computes `Reach` as `$(if ($_.SDDL -match ';;;(WD|BU|AU)') { 'open' } else { 'restricted' })` — exactly the string-matching method §7.1 (`:249-292`) says is unsound and was replaced by descriptor validation.
+- `:420` computes `Reach` as `$(if ($_.SDDL -match ';;;(WD|BU|AU)') { 'open' } else { 'restricted' })` - exactly the string-matching method section 7.1 (`:249-292`) says is unsound and was replaced by descriptor validation.
 - The canonical inventory is now `indexes/drivers_manifest.csv`; `DRIVER_COLLECTION_PLAYBOOK.md:334` says so.
 
 **Suggested edit**
 
-Either delete §10 or mark it clearly:
+Either delete section 10 or mark it clearly:
 
 ```markdown
 > **HISTORICAL / DO NOT RUN.** This rebuilds the old `collected2` master table with the
-> v1 SDDL string regex that §7.1 supersedes. The canonical inventory is
-> `tools/rebuild_manifest.ps1` → `indexes/drivers_manifest.csv`.
+> v1 SDDL string regex that section 7.1 supersedes. The canonical inventory is
+> `tools/rebuild_manifest.ps1` -> `indexes/drivers_manifest.csv`.
 ```
 
 If a batch-level summary is still wanted, read `Reach` from the harvest JSONL rather than re-deriving it, and write to a scratch path, never `collected2`.
 
-### P1-11 — `indexes/dedupe/dedupe_summary.txt` is stale in both path and overlap count
+### P1-11 - `indexes/dedupe/dedupe_summary.txt` is stale in both path and overlap count
 
 **Evidence**
 
@@ -457,7 +457,7 @@ Index: indexes\dedupe\existing_hashes.txt
 
 Add a line to `indexes/dedupe/README.md` saying `dedupe_summary.txt` is generated, not hand-edited.
 
-### P1-12 — `AUDIT_SCOPE.md` uses a different `Reach` vocabulary from `SEVERITY.md` and the prompt
+### P1-12 - `AUDIT_SCOPE.md` uses a different `Reach` vocabulary from `SEVERITY.md` and the prompt
 
 **Evidence**
 
@@ -471,24 +471,24 @@ Change `AUDIT_SCOPE.md:64` to `Reach: R1 | R2 | R3` (optionally with the textual
 
 ---
 
-## P2 — nice-to-have
+## P2 - nice-to-have
 
 - **`drivers/README.md:3`:** "This is the only driver folder in the project" is true only for the corpus. Say "This is the only corpus folder; `poc/reference/` and `audits/evidence/` hold two non-corpus `.sys` references."
 - **`downloads/README.md:10`:** the `winget download` example omits `-e` and the two `--accept-*` flags used in the playbook; a non-interactive run can fail.
 - **`DRIVER_COLLECTION_PLAYBOOK.md:30` vs `downloads/README.md:29`:** "500 MB" vs "500 MiB". Align on MiB.
 - **`DRIVER_COLLECTION_PLAYBOOK.md:29` vs `:45-59`:** "delete immediately after harvesting" vs "delete after the batch is accepted". Pick one and use it in both places.
-- **`DRIVER_COLLECTION_PLAYBOOK.md:70-75` / `README.md:67-73`:** the tool tables omit `rebuild_manifest.ps1` (used in §9/README step 5) and `tools/vm/`. Add rows.
+- **`DRIVER_COLLECTION_PLAYBOOK.md:70-75` / `README.md:67-73`:** the tool tables omit `rebuild_manifest.ps1` (used in section 9/README step 5) and `tools/vm/`. Add rows.
 - **`DRIVER_COLLECTION_PLAYBOOK.md:247`:** "Check the `Device` column in `master_drivers.csv`" has no path and no such root file; point to `indexes\collections\collected2\master_drivers.csv` or say the manifest has no Device column.
-- **`DRIVER_COLLECTION_PLAYBOOK.md:331-332`:** "`drivers/` — 43 drivers from collected5" and "`drivers/` — 111 from collected1" reads as if `drivers/` has 43/111; change to "collected5 contribution: 43; collected1 contribution: 111; `drivers/` total: 394."
+- **`DRIVER_COLLECTION_PLAYBOOK.md:331-332`:** "`drivers/` - 43 drivers from collected5" and "`drivers/` - 111 from collected1" reads as if `drivers/` has 43/111; change to "collected5 contribution: 43; collected1 contribution: 111; `drivers/` total: 394."
 - **`DRIVER_COLLECTION_PLAYBOOK.md:260` vs `tools/triage_scan.ps1:3`:** the playbook describes the v3 descriptor fix, but the script header still says `triage_scan.ps1 v2`. Update the header to v3 (the implementation already has `ViaDesc` / UNICODE_STRING validation).
 - **`indexes/collections/README.md:14-15`:** "create `collected6/<agent>/`" conflicts with the top-level `collected6/manifest.csv` and `_index.jsonl` used by the playbook, `downloads/README.md`, and `tools/README.md`. Say "`collected6/<agent>/` when multiple agents contribute; otherwise `collected6/manifest.csv` + `_index.jsonl` at the batch root."
 - **`indexes/collections/README.md` / `indexes/dedupe/README.md`:** the historical `manifest.csv` / `existing_drivers.csv` files still contain `_collected1` / `_collected5` paths. Add a one-line note that those are provenance, not live paths.
 - **`indexes/collections/collected5/COLLECTION_REQUIREMENTS.md:70`:** recommends `innounp 2.70.1` for newer Inno Setup, but `tools/` has no `innounp` and `DRIVER_COLLECTION_PLAYBOOK.md:128-130` says Inno > 6.0.5 is unreachable. Mark the line historical or remove it.
-- **`audits/evidence/README.md:12-14`:** the t7 guest image hash (`1205BD89…`) differs from `drivers/vsock.sys` (`CBF13689…`). Say explicitly "guest build, not byte-identical to the corpus copy; see `t7_fuzz.md`."
+- **`audits/evidence/README.md:12-14`:** the t7 guest image hash (`1205BD89...`) differs from `drivers/vsock.sys` (`CBF13689...`). Say explicitly "guest build, not byte-identical to the corpus copy; see `t7_fuzz.md`."
 - **`audits/STATUS.md:57-68`:** the "Rolling queue" and "No full audit yet" table repeat the same targets. Consolidate or state that the table is a capability snapshot, not a second queue.
 - **`DRIVER_COLLECTION_PLAYBOOK.md:214`:** says CPU-Z is "unreachable (Inno 6.3)" while the corpus already contains four CPU-Z images. Add "already obtained via carved resources; re-extraction not required."
 - **`audits/reports/README.md`:** there is no report index. With 141 reports and only 16 named in `STATUS.md`, a generated `audits/reports/INDEX.md` (driver, severity, date, canonical/appendix) would prevent duplicate audits. Optional, but useful before the next audit wave.
-- **`audits/README.md:57`:** add the known-bad exception to the "NO-WRITE because admin-only → re-audit" warning; otherwise RTCore/MSIO/amifldrv look like re-audit candidates.
+- **`audits/README.md:57`:** add the known-bad exception to the "NO-WRITE because admin-only -> re-audit" warning; otherwise RTCore/MSIO/amifldrv look like re-audit candidates.
 
 ---
 

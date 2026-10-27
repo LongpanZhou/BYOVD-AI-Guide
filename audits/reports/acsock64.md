@@ -16,19 +16,19 @@ WFP callout driver (`Fwps*`/`Fwpm*` + WSK) that creates **two devices**, both vi
 
 | Device | Type | Characteristics | Exclusive | DefaultSDDLString | Class GUID |
 |---|---|---|---|---|---|
-| `\Device\ngcsock` (`STR 1400479c0`, site `0x140004b06` → `FUN_140004a60`) | `0x12` FILE_DEVICE_NETWORK | 0 | **TRUE** | `US@0x14005CCF8` = **`"D:P"`** — protected DACL with **zero ACEs** (open denied to everyone) | `0x14005CAE0` |
-| `\Device\csskfltr` (site `0x140007c30`) + symlink `\DosDevices\csskfltr` (`0x140049690`) | `0x22` FILE_DEVICE_UNKNOWN | 0 | FALSE | `US@0x14005CD08` = **`"D:P(A;;GA;;;SY)(A;;GA;;;BA)"`** — **SYSTEM + Administrators only** | `0x14005CAE0` |
+| `\Device\ngcsock` (`STR 1400479c0`, site `0x140004b06` -> `FUN_140004a60`) | `0x12` FILE_DEVICE_NETWORK | 0 | **TRUE** | `US@0x14005CCF8` = **`"D:P"`** - protected DACL with **zero ACEs** (open denied to everyone) | `0x14005CAE0` |
+| `\Device\csskfltr` (site `0x140007c30`) + symlink `\DosDevices\csskfltr` (`0x140049690`) | `0x22` FILE_DEVICE_UNKNOWN | 0 | FALSE | `US@0x14005CD08` = **`"D:P(A;;GA;;;SY)(A;;GA;;;BA)"`** - **SYSTEM + Administrators only** | `0x14005CAE0` |
 
 SDDL strings decoded from file bytes (RVA `0x5CCC0` = 27 chars `"D:P(A;;GA;;;SY)(A;;GA;;;BA)"`; RVA `0x5CD18` = `"D:P"`). DriverObject MajorFunction stores at `0x140007cb4+`: MJ_CREATE/CLOSE/CLEANUP = `FUN_140007570` (stub), **MJ_DEVICE_CONTROL = `FUN_140007480`**. No device interfaces registered. No `Se*`-style caller checks needed in-driver because the object manager gates MJ_CREATE by SDDL.
 
 ## Memory-write analysis
 
-- **IOCTL forwarder** (`FUN_140007480`): resolves file/device context, passes `Irp->SystemBuffer` as both input and output plus lengths to the plugin dispatcher `FUN_1400072e4(DAT_1400620E0, IoControlCode, SystemBuffer, inLen, SystemBuffer, outLen, &info)`. A 4-byte output (`IoControlCode` requiring 4-byte reply) is written back into SystemBuffer — buffered, allowed.
-- **Plugin dispatcher** (`FUN_1400072e4`): requires plugin-ready flag; unserializes SystemBuffer (`FUN_140011CC0` — allocates a scratch buffer of `len+0x100` (capped `< 0xFFFFFEFF`), copies `len` bytes, then validates header `"SRLZ"`, version ≤ 3, and **`hdrLen <= len`**); deserializes 4 fields with a strict bounds predicate `FUN_140011C00 = (offset + needed <= length)`; routes to one of 6 plugin objects (`param_1+0x6070`, stride `0x30`) via `vtbl+0x70(plugin, code, SystemBuffer)`.
+- **IOCTL forwarder** (`FUN_140007480`): resolves file/device context, passes `Irp->SystemBuffer` as both input and output plus lengths to the plugin dispatcher `FUN_1400072e4(DAT_1400620E0, IoControlCode, SystemBuffer, inLen, SystemBuffer, outLen, &info)`. A 4-byte output (`IoControlCode` requiring 4-byte reply) is written back into SystemBuffer - buffered, allowed.
+- **Plugin dispatcher** (`FUN_1400072e4`): requires plugin-ready flag; unserializes SystemBuffer (`FUN_140011CC0` - allocates a scratch buffer of `len+0x100` (capped `< 0xFFFFFEFF`), copies `len` bytes, then validates header `"SRLZ"`, version <= 3, and **`hdrLen <= len`**); deserializes 4 fields with a strict bounds predicate `FUN_140011C00 = (offset + needed <= length)`; routes to one of 6 plugin objects (`param_1+0x6070`, stride `0x30`) via `vtbl+0x70(plugin, code, SystemBuffer)`.
 - The plugin handlers receive the **system buffer** (not raw user VA), so buffered-method OOB against the caller is not possible; no probe-less user-pointer flow exists on this path.
-- **Not found in-file:** no `MmProbeAndLockPages`, `MmMapLockedPagesSpecifyCache` callers that take a caller MDL into kernel VA (the MDL APIs — `IoAllocateMdl`, `MmBuildMdlForNonPagedPool`, `MmMapLockedPagesSpecifyCache` — are used only for driver-owned non-paged buffers on the WFP injection path `FUN_1400120CC`/`FUN_1400124D8`); no `MmMapIoSpace`/`MmGetPhysicalAddress`/`ZwOpenSection`/`MmCopyMemory`; no METHOD_NEITHER; no MSR/GDT/IDT code.
+- **Not found in-file:** no `MmProbeAndLockPages`, `MmMapLockedPagesSpecifyCache` callers that take a caller MDL into kernel VA (the MDL APIs - `IoAllocateMdl`, `MmBuildMdlForNonPagedPool`, `MmMapLockedPagesSpecifyCache` - are used only for driver-owned non-paged buffers on the WFP injection path `FUN_1400120CC`/`FUN_1400124D8`); no `MmMapIoSpace`/`MmGetPhysicalAddress`/`ZwOpenSection`/`MmCopyMemory`; no METHOD_NEITHER; no MSR/GDT/IDT code.
 
-**Reachability conclusion:** an unprivileged local user cannot open either device object (`D:P` empty DACL, or SY/BA-only SDDL), so no IOCTL handler — and therefore no copy/fill/index path in this file — is reachable unprivileged. The one reachable-by-identity mode (SYSTEM) has no defective copy found in the dispatcher.
+**Reachability conclusion:** an unprivileged local user cannot open either device object (`D:P` empty DACL, or SY/BA-only SDDL), so no IOCTL handler - and therefore no copy/fill/index path in this file - is reachable unprivileged. The one reachable-by-identity mode (SYSTEM) has no defective copy found in the dispatcher.
 
 ## Memory-touching IOCTL table
 

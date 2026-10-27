@@ -1,4 +1,4 @@
-# SIV `SIVI64.sys` — admin-reachable kernel memory-write audit (static, architecture check)
+# SIV `SIVI64.sys` - admin-reachable kernel memory-write audit (static, architecture check)
 
 | Field | Value |
 |---|---|

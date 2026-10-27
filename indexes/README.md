@@ -1,4 +1,4 @@
-# indexes/ — machine-readable state
+# indexes/ - machine-readable state
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -9,11 +9,11 @@ file in this folder, this folder wins.
 
 | Path | What it is |
 |---|---|
-| `drivers_manifest.csv` | Canonical inventory: `Batch, Path, FileName, Size, SHA256` — 387 rows (386 in-repo drivers + local-only `vgk.sys`) |
-| `dedupe/existing_hashes.txt` | Hash gate — 925 tracked SHA-256 values |
+| `drivers_manifest.csv` | Canonical inventory: `Batch, Path, FileName, Size, SHA256` - 387 rows (386 in-repo drivers + local-only `vgk.sys`) |
+| `dedupe/existing_hashes.txt` | Hash gate - 925 tracked SHA-256 values |
 | `dedupe/known_bad_hashes.txt` | 5,833 LOLDrivers/known-bad SHA-256 values |
 | `dedupe/dedupe_summary.txt` | Counts and overlap for the dedupe gate |
-| `dedupe/existing_drivers.csv` | Historical hash → source-path map (paths may predate the flat `drivers/` layout) |
+| `dedupe/existing_drivers.csv` | Historical hash -> source-path map (paths may predate the flat `drivers/` layout) |
 | `collections/` | Per-batch provenance: URLs, manifests, summaries, triage |
 | `driverstore/` | DriverStore scan output (discovery artifacts, not audit reports) |
 
@@ -36,7 +36,7 @@ tools\filter_new_drivers.ps1 -SourceDir downloads\_harvest -OutDir drivers `
 | Manifest rows | **387** (adds local-only `vgk.sys`) |
 | Dedupe hashes | **925** tracked + **7** exported (local gate) = **932** |
 | Known-bad hashes | **5,833** |
-| Audit reports | `audits/reports/` — 257 Markdown files (some are appendices/group reports) |
+| Audit reports | `audits/reports/` - 257 Markdown files (some are appendices/group reports) |
 
 Batch counts: `original` 94 (includes `vgk.sys`), `collected2` 135, `collected3` 11,
 `collected5` 41, `collected1` 106. These sum to 387 because of `vgk.sys`; visible files sum to 386.

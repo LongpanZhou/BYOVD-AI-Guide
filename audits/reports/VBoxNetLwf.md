@@ -17,31 +17,31 @@
   - `DeviceName = \Device\VBoxNetLwf`
   - `SymbolicName` **empty**, so no `\DosDevices\` link is created
   - `DefaultSDDLString` **NULL** (NDIS default device ACL; not established in-file)
-  - `MajorFunctions` set for CREATE (0), CLOSE (2), DEVICE_CONTROL (14), CLEANUP (18), all → `FUN_1400023D0`
+  - `MajorFunctions` set for CREATE (0), CLOSE (2), DEVICE_CONTROL (14), CLEANUP (18), all -> `FUN_1400023D0`
 - `FUN_1400023D0` (the only device dispatch): completes `IRP_MJ_DEVICE_CONTROL` with **`STATUS_NOT_SUPPORTED` (0xC00000BB)** and everything else with success. **The device has no working IOCTL handler.** The user-reachable surface is the object name only (open by `\Device\VBoxNetLwf`), with no IOCTL.
-- The live data path is NDIS filter callbacks (`FUN_140002DC0`, `FUN_140004020`, `FUN_140002920`, …), driven by the host stack and by VBoxDrv.
+- The live data path is NDIS filter callbacks (`FUN_140002DC0`, `FUN_140004020`, `FUN_140002920`, ...), driven by the host stack and by VBoxDrv.
 - Imports of note: `MmMapLockedPagesSpecifyCache` (1 site in `FUN_140002920`), `MmGetPhysicalAddress` / `MmAllocateContiguousMemory` (in `RTMemContAlloc`, `FUN_140011150`), `MmIsAddressValid`, `NdisRegisterDeviceEx` / `NdisDeregisterDeviceEx`, `NdisFIndicateReceiveNetBufferLists` (4 call sites, all in `FUN_140002DC0` and `FUN_140004020`).
 
 ## Memory-write analysis (reviewed scope)
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| **VBox SG to NBL, no sum check** | `FUN_140003130`: `total = *(uint*)(SG+0x20)`. Bucket chosen from `total + 0x2A` (5 buckets; "frame too big" drop above the largest). `NdisGetDataBuffer(NB, total)`. Then for each of `count = *(ushort*)(SG+0x2C)` segments, `FUN_1400202C0(dst, seg.ptr, seg.len); dst += seg.len`. Nothing checks `Σ seg.len ≤ total`. Overflow beyond `total` (and beyond the bucket if large) | `ev_6db9ba38…` (`FUN_140003130`) |
-| VBox entry | `FUN_140004020`: under filter state `== 4` and a mutex, flags `1` (send) and `2` (indicate) each call `FUN_140003130` on the caller-supplied SG (`param_3`). The SG is a VBoxDrv-side input | `ev_6fe46386…` (`FUN_140004020`) |
-| Descriptor builder | `FUN_140002920` (NB to descriptor): allocation `(count+2)·0x18`, entries `≤ count`. Bounded. Maps MDLs with `(flags & 5) == 0` via `MmMapLockedPagesSpecifyCache` and stores the VA; **no matching unmap** in the teardown (`FUN_140002570` frees the descriptor only). Mapping leak: DoS-class, not a write | `ev_e2c6075c…`, `ev_9a04eeaf…` (`FUN_140002570`) |
-| Router | `FUN_140002DC0`: splits NBLs by `FUN_140002570` into indicate and return lists. No memory writes beyond list pointers | `ev_a4008bac…` |
-| Device dispatch | `FUN_1400023D0`: MJ_DEVICE_CONTROL to `STATUS_NOT_SUPPORTED`. No IOCTL handler, no caller buffer touched | `ev_ec103b28…` |
-| Contiguous allocation | `RTMemContAlloc` (`FUN_140011150`): same pattern as `VBoxNetAdp6` and `VBoxUSBMon`. Writes the PA low dword to the caller's pointer. Callers not traced | `ev_7883d1d9…` (resolve) |
+| **VBox SG to NBL, no sum check** | `FUN_140003130`: `total = *(uint*)(SG+0x20)`. Bucket chosen from `total + 0x2A` (5 buckets; "frame too big" drop above the largest). `NdisGetDataBuffer(NB, total)`. Then for each of `count = *(ushort*)(SG+0x2C)` segments, `FUN_1400202C0(dst, seg.ptr, seg.len); dst += seg.len`. Nothing checks `Sigma seg.len <= total`. Overflow beyond `total` (and beyond the bucket if large) | `ev_6db9ba38...` (`FUN_140003130`) |
+| VBox entry | `FUN_140004020`: under filter state `== 4` and a mutex, flags `1` (send) and `2` (indicate) each call `FUN_140003130` on the caller-supplied SG (`param_3`). The SG is a VBoxDrv-side input | `ev_6fe46386...` (`FUN_140004020`) |
+| Descriptor builder | `FUN_140002920` (NB to descriptor): allocation `(count+2);0x18`, entries `<= count`. Bounded. Maps MDLs with `(flags & 5) == 0` via `MmMapLockedPagesSpecifyCache` and stores the VA; **no matching unmap** in the teardown (`FUN_140002570` frees the descriptor only). Mapping leak: DoS-class, not a write | `ev_e2c6075c...`, `ev_9a04eeaf...` (`FUN_140002570`) |
+| Router | `FUN_140002DC0`: splits NBLs by `FUN_140002570` into indicate and return lists. No memory writes beyond list pointers | `ev_a4008bac...` |
+| Device dispatch | `FUN_1400023D0`: MJ_DEVICE_CONTROL to `STATUS_NOT_SUPPORTED`. No IOCTL handler, no caller buffer touched | `ev_ec103b28...` |
+| Contiguous allocation | `RTMemContAlloc` (`FUN_140011150`): same pattern as `VBoxNetAdp6` and `VBoxUSBMon`. Writes the PA low dword to the caller's pointer. Callers not traced | `ev_7883d1d9...` (resolve) |
 
 ## Verdict rationale
 
-The VBox-to-NBL conversion writes `Σlen` bytes into an NB data area sized by `total`, with no check between the two. That is a memory-safety defect with length- and content-controlled bytes. Reachability is the question, and the answer splits three ways:
+The VBox-to-NBL conversion writes `Sigmalen` bytes into an NB data area sized by `total`, with no check between the two. That is a memory-safety defect with length- and content-controlled bytes. Reachability is the question, and the answer splits three ways:
 
 - **Not** reachable through the device: the IOCTL dispatch returns `STATUS_NOT_SUPPORTED`. A host user can open the object name at most, and nothing user-facing is handled.
 - **Not** reachable from the host network stack: packets sent by the host go through the send-side descriptor builder, which is bounded.
 - **Reachable** if VBoxDrv can deliver an SG whose segments do not sum to `total`. Whether it can is the open invariant. The producer is in VBoxDrv.
 
-This is the same invariant gap as `VBoxNetAdp6`. The two drivers are the same family, and the producer invariant is shared. Escalate to **WRITE-CRITICAL** if an unprivileged host user can produce such an SG through any path. Drop to **NO-WRITE** if the producer guarantees `Σlen ≤ total`.
+This is the same invariant gap as `VBoxNetAdp6`. The two drivers are the same family, and the producer invariant is shared. Escalate to **WRITE-CRITICAL** if an unprivileged host user can produce such an SG through any path. Drop to **NO-WRITE** if the producer guarantees `Sigmalen <= total`.
 
 ## Open items
 
@@ -54,7 +54,7 @@ This is the same invariant gap as `VBoxNetAdp6`. The two drivers are the same fa
 ## VM confirmation plan (orchestrator-owned; VM only)
 
 1. **Host: no loading.** Running and hypervisor-adjacent. The static item is the producer invariant.
-2. **VM, read-only first.** In a snapshot guest, record the SG descriptors delivered to `FUN_140004020` (read-only kernel breakpoint) and check `Σlen` against `total` for normal and boundary frames.
+2. **VM, read-only first.** In a snapshot guest, record the SG descriptors delivered to `FUN_140004020` (read-only kernel breakpoint) and check `Sigmalen` against `total` for normal and boundary frames.
 3. **Destructive step only if step 2 shows a violable invariant.** Run solo in the VM per the pool-corruption protocol. Never on the host.
 
 ## Evidence (REA, retained IDs)

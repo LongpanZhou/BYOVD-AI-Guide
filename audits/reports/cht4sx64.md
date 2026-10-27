@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `5A7FD2D58C433B9B498A1B37A2F2D877061215360D8E6A752601F2ED4F283A8F` (matches triage_index.csv row 27; verified before opening; REA reports the same digest) |
 | Company/Version | Chelsio Communications, 6.11.4.100 (triage row). Image is an iSCSI-offload **StorPort miniport** (`QueueScsiSrb`, `iscsi_scsi_command_alloc` trace tags, `StorPortExtendedFunction` / `StorPortNotification`) |
 | Method | Static-only REA/Ghidra 12.1.4, memory-write scope, short-form (no user-openable device) |
-| Verdict | **NO-WRITE (coverage-limited, ~45%)** — no caller-controlled kernel write found; the one MDL-building path takes lengths from the storage stack |
+| Verdict | **NO-WRITE (coverage-limited, ~45%)** - no caller-controlled kernel write found; the one MDL-building path takes lengths from the storage stack |
 | Coverage | Import and route recon; SRB dispatch `FUN_14000E8AC`; MDL path `FUN_140013B8C`; request allocator `FUN_14001FBE8`; both dynamic lookups. Not traced: `FUN_14001AA98` (MDL container allocation), `FUN_14000F390`, `FUN_140014004`, `FUN_1400140E4`, `FUN_1400196CC`, offload/DMA hardware side |
 
 > **Static-only.** No load, no device open, no SRB issued. Addresses are linked VAs (image base `0x140000000`).
@@ -22,9 +22,9 @@
 | Pattern | Result | Evidence |
 |---|---|---|
 | Write through caller-controlled kernel address | None found | `FUN_14000E8AC` |
-| MDL built on the SRB path | `FUN_140013B8C` builds an MDL in the request descriptor. PFN count comes from the 32-bit value at `+0x40 → +0x10` (presumed the SRB data length; the pointer's target was not confirmed). `Size` is stored as a 16-bit field. Taken when the length exceeds `DAT_140048514` (or 0x1FF when flag `+0x171D0` is set) or when a flag bit is set. The PFN container is not sized here; its allocation (`FUN_14001AA98`) was not traced. Lengths come from storport. The miniport's reported maximum was not verified | `ev_bba0cb99…` (`FUN_140013B8C`), `ev_2953bafc…` (`FUN_14000E8AC`), `ev_179656d8…` (`FUN_14001FBE8`) |
-| SGL copy into request buffer | Fixed 0x200 bytes (4 × 0x80) when the length is 0x200 | `ev_2953bafc…` |
-| Dynamic routine resolution | Two benign names; no mapping or probe API | `ev_fbec465d…` (`FUN_140033880`), `ev_4c4ee7a0…` (`FUN_140058104`), `ev_482da45c…` / `ev_b0ddd277…` (name strings) |
+| MDL built on the SRB path | `FUN_140013B8C` builds an MDL in the request descriptor. PFN count comes from the 32-bit value at `+0x40 -> +0x10` (presumed the SRB data length; the pointer's target was not confirmed). `Size` is stored as a 16-bit field. Taken when the length exceeds `DAT_140048514` (or 0x1FF when flag `+0x171D0` is set) or when a flag bit is set. The PFN container is not sized here; its allocation (`FUN_14001AA98`) was not traced. Lengths come from storport. The miniport's reported maximum was not verified | `ev_bba0cb99...` (`FUN_140013B8C`), `ev_2953bafc...` (`FUN_14000E8AC`), `ev_179656d8...` (`FUN_14001FBE8`) |
+| SGL copy into request buffer | Fixed 0x200 bytes (4 x 0x80) when the length is 0x200 | `ev_2953bafc...` |
+| Dynamic routine resolution | Two benign names; no mapping or probe API | `ev_fbec465d...` (`FUN_140033880`), `ev_4c4ee7a0...` (`FUN_140058104`), `ev_482da45c...` / `ev_b0ddd277...` (name strings) |
 
 ## Verdict rationale
 

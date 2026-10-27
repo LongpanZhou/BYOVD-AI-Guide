@@ -5,7 +5,7 @@
 | File | drivers\usbdaqlib_1D53580B.sys |
 | SHA-256 | 1D53580BFB36CB70AC49C36525CC7B72BC64F0F6B54991BC3D4C5F2BB116925D |
 | Analysis date | 2026-10-25 |
-| Method | Static PE triage (non-x64; not loadable on x64). Import table, strings, Authenticode and version info. Ghidra: run (Ghidra 12.1.4, dump out_c1\usbdaqlib_1D53580B.txt, 15,000+ lines): device created with IoCreateDevice(…, 0x180, 0, 0x22, 0x80) at dump 91 (no FILE_DEVICE_SECURE_OPEN); buffer locking helpers FUN_000124b6 (dump 2049-2057) and FUN_0002027e (utilLockBuffer, dump 15061-15090) call IoAllocateMdl + MmProbeAndLockPages(MDL, KernelMode, IoWriteAccess) + MmMapLockedPagesSpecifyCache(KernelMode); callers: ADC start FUN_0001659c (dump 5694; buffer param_2[3], count*2 bytes; reached from command 0x50002418 at dump 12660-12676), DAC start FUN_0001aba0 (dump 9798-9837; param_2[5]), FUN_00012550 (dump 2094) |
+| Method | Static PE triage (non-x64; not loadable on x64). Import table, strings, Authenticode and version info. Ghidra: run (Ghidra 12.1.4, dump out_c1\usbdaqlib_1D53580B.txt, 15,000+ lines): device created with IoCreateDevice(..., 0x180, 0, 0x22, 0x80) at dump 91 (no FILE_DEVICE_SECURE_OPEN); buffer locking helpers FUN_000124b6 (dump 2049-2057) and FUN_0002027e (utilLockBuffer, dump 15061-15090) call IoAllocateMdl + MmProbeAndLockPages(MDL, KernelMode, IoWriteAccess) + MmMapLockedPagesSpecifyCache(KernelMode); callers: ADC start FUN_0001659c (dump 5694; buffer param_2[3], count*2 bytes; reached from command 0x50002418 at dump 12660-12676), DAC start FUN_0001aba0 (dump 9798-9837; param_2[5]), FUN_00012550 (dump 2094) |
 | Company / version | Measurement Computing Corp.; file version 5.0.3 Build 1; "USB-2500 Device Driver" |
 | Signature | Authenticode Valid; signer CN=Measurement Computing Corporation, O=Measurement Computing Corporation, L=Norton, S=Massachusetts, C=US, SERIALNUMBER=3958376, OID.2.5.4.15=Private Organization, OID.1.3.6.1.4.1.311.60.2.1.2=Delaware, OID.1.3.6.1.4.1.311.60.2.1.3=US |
 | Architecture | x86 (PE32, i386); machine 0x14c; built 1326992402 |
@@ -24,7 +24,7 @@
 
 ## 2 Verdict
 
-**BLOCKED (architecture).** usbdaqlib_1D53580B.sys is x86 (PE32, i386) and cannot be loaded on x64 Windows. Write quality is not assessed for non-x64 images (see §1 for the static primitive).
+**BLOCKED (architecture).** usbdaqlib_1D53580B.sys is x86 (PE32, i386) and cannot be loaded on x64 Windows. Write quality is not assessed for non-x64 images (see section 1 for the static primitive).
 
 ## 3 Limitations
 

@@ -10,7 +10,7 @@
 | Analysis date | 2026-10-24 |
 | Reach tier | R3 (hardware-gated; provisional). The device would be open to unprivileged callers if it existed, since the driver sets no DACL and performs no privilege check. The driver sets no DACL on its device and performs no privilege check. The effective DACL of the unnamed device object was not determined statically (section 1). If the effective DACL denies non-administrators, the reach tier is local administrator |
 | Setup required | hardware (inferred: the driver attaches to a device stack in `AddDevice`, and the supplied INF does not bind this binary; section 5) |
-| Verdict | **MW3 — reach=R3 setup=hardware write=W2 load=signed** (static, conditional). Scale: `audits\scope\SEVERITY.md`. Basis: W2 with R1 and no hardware gate would be MW2; the device-not-present cap in SEVERITY.md gives MW3 because the device needs hardware (the binding is not verified). |
+| Verdict | **MW3 - reach=R3 setup=hardware write=W2 load=signed** (static, conditional). Scale: `audits\scope\SEVERITY.md`. Basis: W2 with R1 and no hardware gate would be MW2; the device-not-present cap in SEVERITY.md gives MW3 because the device needs hardware (the binding is not verified). |
 | Severity | MW3 |
 | Write quality | W2 (constrained pool overflow: sequential index, caller-chosen values, race-gated) |
 
@@ -124,7 +124,7 @@ Method and access are decoded from the code (CTL_CODE). Codes in the 0x2f range 
 
 ## 4. Verdict and dynamic confirmation plan
 
-**Verdict: MW3 — reach=R1 setup=hardware write=W2 load=signed (static, conditional).**
+**Verdict: MW3 - reach=R1 setup=hardware write=W2 load=signed (static, conditional).**
 
 - **Primitive.** IRP_MJ_DEVICE_CONTROL 0x2f4017 or 0x2f8013, with METHOD_NEITHER buffers, leads to an entry-list walk in `FUN_140002c1c` that reads the same user memory twice. The second pass writes past two `NonPagedPoolNx` arrays, with caller-chosen DWORDs and caller-chosen 8-byte VA and 4-byte length values, plus kernel-generated MDL and mapped-VA pointers in the holder records.
 - **Target constraints.** The write index is sequential from 0 and is not bounded by the pass-1 count. The overflow length is set by the number of pass-2 iterations, which depends on the entry sizes the caller writes during the race. The write target is whatever pool object follows the arrays. Its identity is not controlled statically.

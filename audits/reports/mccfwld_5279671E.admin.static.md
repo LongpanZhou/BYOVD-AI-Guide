@@ -48,5 +48,5 @@
 
 ## 8 Limitations
 
-- As in `mccfwld_2824AC5B` §8.
+- As in `mccfwld_2824AC5B` section 8.
 - No REA session used. No execution, no driver load, no registry writes.

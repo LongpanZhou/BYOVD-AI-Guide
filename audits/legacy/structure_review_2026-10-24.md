@@ -1,4 +1,4 @@
-# Structure Review — driver_candidates
+# Structure Review - driver_candidates
 
 > **HISTORICAL (2026-10-24).** This review drove the cleanup that followed: scratch trees were
 > deleted, `_collected1` was reconciled to 111 unique drivers, counts moved to 394, the ledger
@@ -19,14 +19,14 @@
 
 **The top-level goal is clear and consistent; the canonical register and the status/queue docs are not.** `START_HERE.md`, `PROJECT_GOAL.md`, `README.md`, `audits/README.md`, `audits/AUDIT_SCOPE.md`, `audits/SEVERITY.md`, and `audits/STATIC_ANALYSIS_AGENT_PROMPT.md` all state the same three rules: kernel memory-write only, local-administrator `R2` in scope, hardware-only writes are `HW-ONLY`. That is the strongest part of the project.
 
-The weak point is `audits/_ledger.md`. It is the document `START_HERE.md` calls the "consolidated register", but §7 still contains the old no-setup disqualifier and §2/§18/§19 still use the retired `WRITE-*` scale. A new agent reading the ledger will receive two opposite instructions and will over-rate or drop drivers.
+The weak point is `audits/_ledger.md`. It is the document `START_HERE.md` calls the "consolidated register", but section 7 still contains the old no-setup disqualifier and section 2/section 18/section 19 still use the retired `WRITE-*` scale. A new agent reading the ledger will receive two opposite instructions and will over-rate or drop drivers.
 
 The file layout is generally good and the `_collected4`/`v2` removals are documented. The remaining structural problems are duplication (a second report tree in `_vm_batch1`, duplicate S5/S6 drivers), scratch-vs-corpus ambiguity (`_collected1` is 32 GB of installers/extracts around 106 counted drivers), and no generated status/report index. Those cause duplicate audits, which is the main practical waste.
 
 | Review question | Verdict |
 |---|---|
-| 1. Goal clarity in canonical docs | **Partial.** Pass in six top-level docs; **fail** in `_ledger.md` §7 and §2. |
-| 2. Contradictions / stale language | **Fail.** Ledger uses `WRITE-*` 20 times vs `MW[1-4]` 3 times; §19 rates a blocklisted driver outside `BLOCKED`. |
+| 1. Goal clarity in canonical docs | **Partial.** Pass in six top-level docs; **fail** in `_ledger.md` section 7 and section 2. |
+| 2. Contradictions / stale language | **Fail.** Ledger uses `WRITE-*` 20 times vs `MW[1-4]` 3 times; section 19 rates a blocklisted driver outside `BLOCKED`. |
 | 3. File structure | **Partial.** Numbering is explained and `_collected4` removal is documented; scratch trees, duplicate report trees, and S5/S6 duplication are not. |
 | 4. AI-agent readability | **Partial.** Reading order is good; there is no status/report index, and "in flight" lists are already stale. |
 | 5. Broken links / missing READMEs | **Mostly pass on links** (no genuine broken relative links); several working/evidence folders lack a README. |
@@ -58,20 +58,20 @@ The file layout is generally good and the `_collected4`/`v2` removals are docume
 
 ## P0 blockers (must fix)
 
-### P0-1 — `audits/_ledger.md` still carries the retired no-setup disqualifier
+### P0-1 - `audits/_ledger.md` still carries the retired no-setup disqualifier
 
 **Evidence:** `audits/_ledger.md:95`, under `## 7. Rules reminder`:
 
-> "**No extra setup / no extra hardware:** if exploiting it needs a device you don't have or extra configuration (devnode, INF, composition), it is out of scope regardless of severity — record it as `Setup required: <type>` and move on."
+> "**No extra setup / no extra hardware:** if exploiting it needs a device you don't have or extra configuration (devnode, INF, composition), it is out of scope regardless of severity - record it as `Setup required: <type>` and move on."
 
 This directly contradicts:
 
 - `PROJECT_GOAL.md:16`: setup is "a severity field, **not** a disqualifier".
 - `audits/AUDIT_SCOPE.md:25`: "This is a severity field, not a disqualifier."
-- `_ledger.md:89` §6, which says the old rule is "superseded by §17".
-- `_ledger.md:460-476` §17, which puts `R2` and devnode/hardware paths in scope.
+- `_ledger.md:89` section 6, which says the old rule is "superseded by section 17".
+- `_ledger.md:460-476` section 17, which puts `R2` and devnode/hardware paths in scope.
 
-An agent that reads `START_HERE.md` item 6 will read §7 and may drop exactly the drivers the project now wants (devnode, hardware-gated, composition).
+An agent that reads `START_HERE.md` item 6 will read section 7 and may drop exactly the drivers the project now wants (devnode, hardware-gated, composition).
 
 **Suggested edit:** replace the bullet at `_ledger.md:95` with:
 
@@ -81,30 +81,30 @@ An agent that reads `START_HERE.md` item 6 will read §7 and may drop exactly th
   Only kernel memory writes count; hardware-only writes are `HW-ONLY`.
 ```
 
-Keep the historical text only inside §10, which is already labeled "historical, superseded by §17".
+Keep the historical text only inside section 10, which is already labeled "historical, superseded by section 17".
 
 ---
 
-### P0-2 — The canonical verdict register is still on the retired `WRITE-*` scale, and §19 violates the `BLOCKED` rule
+### P0-2 - The canonical verdict register is still on the retired `WRITE-*` scale, and section 19 violates the `BLOCKED` rule
 
 **Evidence:**
 
 - `audits/_ledger.md:24-41` (`## 2. Verdict register`) uses `WRITE-CRITICAL` (silabser), `WRITE-HIGH` (bxvbda), `WRITE-MEDIUM` (amdpsp), and `NO-WRITE` (VBoxNetAdp6/VBoxNetLwf). The whole ledger contains **20 `WRITE-` occurrences and only 3 `MW[1-4]` occurrences**.
 - A one-to-one reading is wrong: `README.md:47` rates `silabser` **MW2** (CP210x-gated), while the ledger says `WRITE-CRITICAL`; `README.md:49` rates `bxvbda` **MW2**, while the ledger says `WRITE-HIGH`. `SEVERITY.md:53` explicitly says hardware-gated arbitrary writes become MW2.
 - `audits/_ledger.md:509-521` rates MSI RTCore32 `WRITE-PHYS-MEDIUM`, `WRITE-MEDIUM`, and `WRITE-HIGH`. `SEVERITY.md:58` says "Blocklisted / known-bad | **BLOCKED** regardless of primitive", and `_ledger.md:523` admits "Blocklist status not re-checked in this pass".
-- `audits/_ledger.md:509` and `:527` are both headed `## 19.` — the second should be §20.
+- `audits/_ledger.md:509` and `:527` are both headed `## 19.` - the second should be section 20.
 
 **Suggested edit:**
 
-- Migrate §2, §3, §8, §9, §18, and §19 to the `SEVERITY.md:84` format:
-  `MW<n> — reach=<R1|R2|R3> setup=<none|service|devnode|hardware|composition> write=<W1|W2|W3|W0> load=<signed|unsigned|blocked>`.
+- Migrate section 2, section 3, section 8, section 9, section 18, and section 19 to the `SEVERITY.md:84` format:
+  `MW<n> - reach=<R1|R2|R3> setup=<none|service|devnode|hardware|composition> write=<W1|W2|W3|W0> load=<signed|unsigned|blocked>`.
 - If the old labels must be preserved for history, put them in a separate `Legacy verdict` column, not in the primary verdict cell.
 - Resolve MSI RTCore32 to `BLOCKED` (or add a one-line, explicit exception explaining why the project audits blocklisted drivers anyway). Do not leave a `WRITE-MEDIUM` verdict next to a "not re-checked" note.
-- Renumber the §19 at `_ledger.md:527` to §20 and update any `§19` references.
+- Renumber the section 19 at `_ledger.md:527` to section 20 and update any `section 19` references.
 
 ---
 
-### P0-3 — Status, queue, and corpus counts are duplicated and already stale, which causes duplicate audits
+### P0-3 - Status, queue, and corpus counts are duplicated and already stale, which causes duplicate audits
 
 **Evidence:**
 
@@ -112,8 +112,8 @@ Keep the historical text only inside §10, which is already labeled "historical,
   - `audits/DirectIo64.md` (22:14) vs `START_HERE.md:31` and `PROJECT_GOAL.md:64` ("In flight: ... DirectIo64").
   - `audits/sbiedrv.admin.static.md` (22:15) vs `START_HERE.md:31` and `PROJECT_GOAL.md:64` ("Sandboxie SbieDrv").
   - `audits/spacedesk_bus.admin.static.md` (22:17) vs `START_HERE.md:32` and `PROJECT_GOAL.md:65` (queue: "Spacedesk Bus").
-- `audits/_admin_scope_backlog.md:79` says "AIDA64 kerneld x64 — running", but `:128` says it is done.
-- `audits/_admin_scope_backlog.md:74` says "ArgusMonitor — done, NO-WRITE", while the canonical result is `NO-MEMORY-WRITE (HW-ONLY)`.
+- `audits/_admin_scope_backlog.md:79` says "AIDA64 kerneld x64 - running", but `:128` says it is done.
+- `audits/_admin_scope_backlog.md:74` says "ArgusMonitor - done, NO-WRITE", while the canonical result is `NO-MEMORY-WRITE (HW-ONLY)`.
 - `audits/_admin_scope_backlog.md:140-156` says "No audit started yet" for ImDisk, Spacedesk, SIV, and HWMonitor `cpuz`; `audits/legacy/imdisk.static.md`, `audits/legacy/spacedesk_bus_audio_kbd.static.md`, `audits/sivi64.admin.static.md`, and `audits/cpuz_x64_*.admin.static.md` exist.
 - `audits/_ledger.md:17` says 81 static reports and `:19` says 11 remaining; `audits/` has 141 `.md` at review time (6 canonical, 10 dynamic), and the backlog itself says 39 drivers have no full audit.
 - `_collected1/README.md:6` says 106 new binaries; the folder contains 117 `.sys` (111 unique; see P1-1).
@@ -136,7 +136,7 @@ This is a P0 because it is not a cosmetic count issue: it sends agents to re-aud
 
 ## P1 improvements (should fix)
 
-### P1-1 — `_collected1` has three different counts and six duplicate drivers in S5/S6
+### P1-1 - `_collected1` has three different counts and six duplicate drivers in S5/S6
 
 **Evidence:**
 
@@ -155,7 +155,7 @@ This is a P0 because it is not a cosmetic count issue: it sends agents to re-aud
 
 ---
 
-### P1-2 — Dedupe index is 932 in seven places and 776 in the collection requirements
+### P1-2 - Dedupe index is 932 in seven places and 776 in the collection requirements
 
 **Evidence:**
 
@@ -170,7 +170,7 @@ This is a P0 because it is not a cosmetic count issue: it sends agents to re-aud
 
 ---
 
-### P1-3 — `_vm_batch1/reports/` is a second report tree and a second ledger
+### P1-3 - `_vm_batch1/reports/` is a second report tree and a second ledger
 
 **Evidence:**
 
@@ -182,12 +182,12 @@ This is a P0 because it is not a cosmetic count issue: it sends agents to re-aud
 **Suggested edit:**
 
 - Delete the eight duplicate report copies. Replace them with `_vm_batch1/reports/README.md` that points to `..\..\audits\<name>.md`.
-- Rename `_vm_batch1/reports/_ledger.md` to `_vm_batch1/reports/_ledger.batch1.2026-10-23.md` and add a first-line banner: `HISTORICAL — not the consolidated register; see audits/_ledger.md`.
+- Rename `_vm_batch1/reports/_ledger.md` to `_vm_batch1/reports/_ledger.batch1.2026-10-23.md` and add a first-line banner: `HISTORICAL - not the consolidated register; see audits/_ledger.md`.
 - Update `_vm_batch1/README_VM.txt` to say the reports live in `audits/`.
 
 ---
 
-### P1-4 — Several current reports still use the retired scale and say the R2 question is unsettled
+### P1-4 - Several current reports still use the retired scale and say the R2 question is unsettled
 
 **Evidence:**
 
@@ -199,7 +199,7 @@ This is a P0 because it is not a cosmetic count issue: it sends agents to re-aud
 - `audits/DirectIo64.md:207` uses "High" and "not a privilege-boundary crossing", not MW.
 - `audits/sivi64.admin.static.md:13` uses `NOT ASSESSED` where the scale has `BLOCKED`.
 
-The R2 question was settled in `_ledger.md` §17 and `SEVERITY.md` before these reports were written (`SEVERITY.md` last modified 21:49; the reports 21:58-22:14). The sentence is factually stale.
+The R2 question was settled in `_ledger.md` section 17 and `SEVERITY.md` before these reports were written (`SEVERITY.md` last modified 21:49; the reports 21:58-22:14). The sentence is factually stale.
 
 **Suggested edit:** follow the `sbiedrv.admin.static.md:12` model. Rewrite the four header fields to the canonical values:
 
@@ -213,7 +213,7 @@ Put the old label in a `Legacy verdict:` line if it helps continuity. Add a smal
 
 ---
 
-### P1-5 — Report naming has no rule, so one driver has two or three reports
+### P1-5 - Report naming has no rule, so one driver has two or three reports
 
 **Evidence:**
 
@@ -236,7 +236,7 @@ Put the old label in a `Legacy verdict:` line if it helps continuity. Add a smal
 
 ---
 
-### P1-6 — `audits/vm_readiness.md` is a stale blocker note presented as current
+### P1-6 - `audits/vm_readiness.md` is a stale blocker note presented as current
 
 **Evidence:** `audits/vm_readiness.md:7` says **"STOPPED (BLOCKED)"**; `:9-10` cites live `opencode.exe` PIDs and a consent blocker; `:93` says "Do not run the PoC binaries left in earlier stage folders (t8_poc.exe, t9_poc.exe)". It is a one-off 06:46 status report, not a driver audit, and it is not listed in `audits/README.md` or `PROJECT_MAP.md`.
 
@@ -246,20 +246,20 @@ An agent that reads `audits/*.md` for context can conclude the VM is still block
 
 ---
 
-### P1-7 — `_admin_scope_backlog.md` contradicts itself and does not account for legacy reports
+### P1-7 - `_admin_scope_backlog.md` contradicts itself and does not account for legacy reports
 
 **Evidence:**
 
-- `:74` "ArgusMonitor — **done, NO-WRITE**" (canonical: `NO-MEMORY-WRITE (HW-ONLY)`).
-- `:79` "AIDA64 kerneld x64 — running" vs `:128` "AIDA64 kerneld-x64 — **MW2** ... done".
+- `:74` "ArgusMonitor - **done, NO-WRITE**" (canonical: `NO-MEMORY-WRITE (HW-ONLY)`).
+- `:79` "AIDA64 kerneld x64 - running" vs `:128` "AIDA64 kerneld-x64 - **MW2** ... done".
 - `:140-156` "No audit started yet" includes ImDisk, Spacedesk Bus/Audio, SIV, and HWMonitor `cpuz`, but `audits/legacy/imdisk.static.md`, `audits/legacy/spacedesk_bus_audio_kbd.static.md`, `audits/sivi64.admin.static.md`, and `audits/cpuz_x64_*.admin.static.md` exist.
-- `:70` says MSI `RTCore*` is blocklisted and "re-audit only if you want the admin path documented", but the ledger did that audit in §19.
+- `:70` says MSI `RTCore*` is blocklisted and "re-audit only if you want the admin path documented", but the ledger did that audit in section 19.
 
 **Suggested edit:** delete the duplicate "In flight / queued" block at `:72-80` and point to the status register. Add a `Legacy report` column to the P1/P2 tables with values `none` / `legacy, re-audit` / `current report`. Replace `NO-WRITE` with `NO-MEMORY-WRITE (HW-ONLY)`. Remove the "running" line or move the whole status block to the generated register.
 
 ---
 
-### P1-8 — Scratch trees dominate the collections and are not marked disposable
+### P1-8 - Scratch trees dominate the collections and are not marked disposable
 
 **Evidence:**
 
@@ -276,7 +276,7 @@ Then either delete the scratch after harvest or move it under one root `_scratch
 
 ---
 
-### P1-9 — `README.md:69` says drivers are not stored here, but 94 root `.sys` and hundreds in collections are on disk
+### P1-9 - `README.md:69` says drivers are not stored here, but 94 root `.sys` and hundreds in collections are on disk
 
 **Evidence:** `README.md:69`: "Drivers are not stored here. To rebuild a batch..." `PROJECT_MAP.md:16` correctly lists 94 root `*.sys`; `_collected2`, `_collected3`, and `_collected5` contain hundreds more. The `.gitignore` excludes `*.sys`, so the sentence is true only for git.
 
@@ -288,13 +288,13 @@ This preserves the reproducibility point and stops an agent from concluding ther
 
 ---
 
-### P1-10 — `Setup` vocabulary differs across canonical docs; `service` is only in PROJECT_GOAL
+### P1-10 - `Setup` vocabulary differs across canonical docs; `service` is only in PROJECT_GOAL
 
 **Evidence:**
 
-- `PROJECT_GOAL.md:16`: `none · service · devnode · hardware · composition`.
+- `PROJECT_GOAL.md:16`: `none ; service ; devnode ; hardware ; composition`.
 - `AUDIT_SCOPE.md:25`: `none | devnode | hardware | composition`.
-- `SEVERITY.md:16`: `none · devnode · hardware · composition`.
+- `SEVERITY.md:16`: `none ; devnode ; hardware ; composition`.
 - `STATIC_ANALYSIS_AGENT_PROMPT.md:111` and `:62`: `none | devnode | hardware | composition`.
 - `audits/msi_rtcore32_6F818DAF.admin.static.md:10` works around the gap with "Setup required: none (service create + start)".
 
@@ -302,21 +302,21 @@ This preserves the reproducibility point and stops an agent from concluding ther
 
 ---
 
-### P1-11 — Ledger opening, scoreboard, and §5 are stale or internally inconsistent
+### P1-11 - Ledger opening, scoreboard, and section 5 are stale or internally inconsistent
 
 **Evidence:**
 
 - `_ledger.md:3` says "94 non-Microsoft vendor drivers" as the project description; `:14-15` say 389 total. A reader can conclude the project is only the original 94.
 - `_ledger.md:17` says 81 static reports; `audits/` has 141 `.md` at review time (6 canonical, 10 dynamic). `:19` says 11 remaining; the backlog says 39 no-audit.
-- `_ledger.md:72-77` §5 points to `C:\Users\<scrubbed>\AppData\Local\Temp\opencode\agentH` (does not exist) and says "MOVE to audits\handover_agentH"; the folder already exists. It also repeats "Other session's standing claims."
+- `_ledger.md:72-77` section 5 points to `C:\Users\<scrubbed>\AppData\Local\Temp\opencode\agentH` (does not exist) and says "MOVE to audits\handover_agentH"; the folder already exists. It also repeats "Other session's standing claims."
 - `_ledger.md:509` and `:527` are both `## 19.` (also see P0-2).
 - The ledger is 545 lines and mixes current rules with campaign history; `START_HERE.md:18` sends every agent to it as item 6.
 
-**Suggested edit:** rewrite line 3 as "Original corpus 94; total known 389 (or the current generated count)." Generate the report/remaining counts. Move §5 to a dated `HANDOVER` appendix or delete it; replace the Temp path with `audits/handover_agentH` and state it is already moved. Renumber the second §19 to §20. Add a 10-line "current state" header above §1 and move the campaign history below a `## History` divider.
+**Suggested edit:** rewrite line 3 as "Original corpus 94; total known 389 (or the current generated count)." Generate the report/remaining counts. Move section 5 to a dated `HANDOVER` appendix or delete it; replace the Temp path with `audits/handover_agentH` and state it is already moved. Renumber the second section 19 to section 20. Add a 10-line "current state" header above section 1 and move the campaign history below a `## History` divider.
 
 ---
 
-### P1-12 — "Do not create `new`" conflicts with the required per-batch `new/`, and there is no next-batch rule
+### P1-12 - "Do not create `new`" conflicts with the required per-batch `new/`, and there is no next-batch rule
 
 **Evidence:**
 
@@ -336,7 +336,7 @@ This also answers "where do indexes go": discovery CSVs go in `indexes/<topic>/`
 
 ---
 
-### P1-13 — Tooling authority is split between local Ghidra and REA
+### P1-13 - Tooling authority is split between local Ghidra and REA
 
 **Evidence:**
 
@@ -353,7 +353,7 @@ An agent cannot tell whether REA is required, optional, or forbidden under load.
 
 ---
 
-### P1-14 — `BLOCKED` vs `MW2 if loaded` is ambiguous across canonical docs
+### P1-14 - `BLOCKED` vs `MW2 if loaded` is ambiguous across canonical docs
 
 **Evidence:**
 
@@ -367,8 +367,8 @@ An agent can reasonably classify the same driver as `BLOCKED`, `MW2`, or `MW2 + 
 
 **Suggested edit:** separate the two axes explicitly:
 
-- `Severity`: `MW1-MW4` / `NO-MEMORY-WRITE` — what the code can do.
-- `Load status`: `signed | unsigned-DSE-off | blocklisted | unobtainable` — whether it can be loaded on the target.
+- `Severity`: `MW1-MW4` / `NO-MEMORY-WRITE` - what the code can do.
+- `Load status`: `signed | unsigned-DSE-off | blocklisted | unobtainable` - whether it can be loaded on the target.
 - `BLOCKED` only when the driver cannot be loaded/obtained; if the team also wants to exclude blocklisted drivers by policy, say "BLOCKED by policy" and do not also assign MW.
 
 Then update `PROJECT_GOAL.md:31`, `STATIC_ANALYSIS_AGENT_PROMPT.md:70`, and `SEVERITY.md:30/47/58` to the same rule.
@@ -391,7 +391,7 @@ Then update `PROJECT_GOAL.md:31`, `STATIC_ANALYSIS_AGENT_PROMPT.md:70`, and `SEV
 
 7. **`audits/README.md:49` cites `AIDA64 kerneld-x64.md`**, but the actual file is `audits/AIDA64_kerneld.md`. Fix the name (and make it a link). The "Current state" list is also only three rows while `audits/` has many reports; link `_index.md`/`status.csv` instead of duplicating.
 
-8. **Stale cross-references:** `audits/AUDIT_SCOPE.md:5` says it supersedes "`_ledger.md` line 4", but line 4 now already includes admin scope. `_admin_scope_backlog.md:4` makes the same stale reference. Say "the pre-§17 wording" instead of "line 4".
+8. **Stale cross-references:** `audits/AUDIT_SCOPE.md:5` says it supersedes "`_ledger.md` line 4", but line 4 now already includes admin scope. `_admin_scope_backlog.md:4` makes the same stale reference. Say "the pre-section 17 wording" instead of "line 4".
 
 9. **Root CSV placement:** `triage_index.csv` and `triage_audit_joined.csv` are original-94 metadata, but `README.md` does not mention them. Either add a sentence in `README.md` ("original 94 only") or move them to `indexes/original_corpus/`. `README.txt` is a legacy pointer; it is harmless but adds a second README at root. Consider deleting it after one release.
 
@@ -413,12 +413,12 @@ Then update `PROJECT_GOAL.md:31`, `STATIC_ANALYSIS_AGENT_PROMPT.md:70`, and `SEV
 
 ## Recommended fix order
 
-1. **P0-1 and P0-2** — 30-60 minutes. Remove the old no-setup bullet, migrate the ledger register to MW, resolve RTCore32, renumber §19.
-2. **P0-3** — 1-2 hours. Generate `indexes/status.csv` + `audits/_index.md`; replace the duplicated queues and counts with links.
-3. **P1-1 and P1-2** — 1 hour. Fix the 106/111/117 and 776/932 splits; remove S5 duplicates; document the CPU-Z counting rule.
-4. **P1-3, P1-6, P1-7** — delete the duplicate `_vm_batch1/reports` copies, archive `vm_readiness.md`, rewrite the backlog status block.
-5. **P1-8 and P2-4/P2-5** — clean scratch trees, add batch/working-dir READMEs, add missing folder READMEs.
-6. **P1-4/P1-5/P1-10/P1-14** — normalize current report headers, declare the naming convention, settle `service` and `BLOCKED`.
+1. **P0-1 and P0-2** - 30-60 minutes. Remove the old no-setup bullet, migrate the ledger register to MW, resolve RTCore32, renumber section 19.
+2. **P0-3** - 1-2 hours. Generate `indexes/status.csv` + `audits/_index.md`; replace the duplicated queues and counts with links.
+3. **P1-1 and P1-2** - 1 hour. Fix the 106/111/117 and 776/932 splits; remove S5 duplicates; document the CPU-Z counting rule.
+4. **P1-3, P1-6, P1-7** - delete the duplicate `_vm_batch1/reports` copies, archive `vm_readiness.md`, rewrite the backlog status block.
+5. **P1-8 and P2-4/P2-5** - clean scratch trees, add batch/working-dir READMEs, add missing folder READMEs.
+6. **P1-4/P1-5/P1-10/P1-14** - normalize current report headers, declare the naming convention, settle `service` and `BLOCKED`.
 
 ## Bottom line
 

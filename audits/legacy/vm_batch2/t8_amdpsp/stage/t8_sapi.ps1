@@ -1,4 +1,4 @@
-# t8_sapi.ps1 — post-mortem of the failed devnode start: setupapi.dev.log tail + problem codes + events
+# t8_sapi.ps1 - post-mortem of the failed devnode start: setupapi.dev.log tail + problem codes + events
 $ErrorActionPreference = 'Continue'
 $work = 'C:\Users\vmdebug\Desktop\t8_work'
 $out  = "$work\t8_sapi.txt"

@@ -67,7 +67,7 @@ Every IOCTL code is METHOD_BUFFERED (low 2 bits 0) with FILE_ANY_ACCESS (bits 14
 | 0x2220E0 | BUFFERED | ANY | 0 | 0 | `FUN_140002C50` (dump 1551-1570): IOCTL_INTERNAL_USB_RESET_PORT (0x220007) to the lower stack (883-885) |
 | 0x2220E4 | BUFFERED | ANY | 0x10, and >= in[1]+0x10 | 0 | Index / entry checks (888-894); `FUN_1400024F8` queue push, max 16 (dump 1173-1190); `FUN_140002B6C` transfer with buffer = SystemBuffer+0x10, length in[1] (895-901) |
 | 0x2220E8 | BUFFERED | ANY | 0x10 | in[1] <= out | Index / entry checks (913-919); queue push; `FUN_140002B6C` with buffer = SystemBuffer+0 (920-923) |
-| 0x2220EC | BUFFERED | ANY | 8 | 0 (must be 0) | `FUN_140002278(config=in[0], iface=in[1]-1)` (dump 997-1033): builds a URB (function 0x1E) from the pipe/interface table (1006-1027); idx check at 1010 (see §8) (930-931) |
+| 0x2220EC | BUFFERED | ANY | 8 | 0 (must be 0) | `FUN_140002278(config=in[0], iface=in[1]-1)` (dump 997-1033): builds a URB (function 0x1E) from the pipe/interface table (1006-1027); idx check at 1010 (see section 8) (930-931) |
 | 0x2220F0 | BUFFERED | ANY | 0 | must be non-zero | SystemBuffer[0] = byte(ext+0x68+0x10); Info=1 (935-938) |
 | any other | - | - | - | - | STATUS_INVALID_DEVICE_REQUEST (0xC0000010) (943) |
 
@@ -76,14 +76,14 @@ Lower-stack internal codes issued by the driver (not user-facing): IOCTL_INTERNA
 ## 4 Access-control audit
 
 - The dispatcher performs no `SeAccessCheck`, `SeSinglePrivilegeCheck`, or caller-identity check. IRP_MJ_CREATE (`FUN_140001530`, dump 353-384) checks only a device-started byte (ext+0x11, dump 364), allocates a 0x90-byte file context and increments the open count.
-- Gates are therefore: (a) the device-started flag at CREATE, (b) the device-ready byte at each IOCTL (dump 646-653), (c) the table index and length checks listed in §3.
+- Gates are therefore: (a) the device-started flag at CREATE, (b) the device-ready byte at each IOCTL (dump 646-653), (c) the table index and length checks listed in section 3.
 - Any principal that can open the device object (default IoCreateDevice security, or the PnP interface) can issue every IOCTL above. The device exists only while the Blackmagic USB hardware is enumerated, so access is hardware-gated (R3).
 
 ## 5 Memory-write trace
 
 Every dereference write in the dump (`*(...) = ...`, grep over the whole file) was checked. Results:
 
-1. SystemBuffer writes at fixed offsets: IOCTLs 0x222000 (dump 686-687), 0x2220F0 (936), 0x22208C/0x222094/0x222098/0x22209C/0x2220A0/0x2220A8/0x2220AC/0x2220B4/0x2220C0-0x2220D0 (807, 738, 853-856). Every one is guarded by the output-length check in §3 (out >= 4, 6, 8). Writes are within the buffer.
+1. SystemBuffer writes at fixed offsets: IOCTLs 0x222000 (dump 686-687), 0x2220F0 (936), 0x22208C/0x222094/0x222098/0x22209C/0x2220A0/0x2220A8/0x2220AC/0x2220B4/0x2220C0-0x2220D0 (807, 738, 853-856). Every one is guarded by the output-length check in section 3 (out >= 4, 6, 8). Writes are within the buffer.
 2. SystemBuffer writes from `FUN_140001188` (0x2220BC, dump 168, 185): `*param_5 = count` and `param_5[k]` for k <= count. Guard: `param_3 >= (count+1)*4` (169), where param_3 = OutputBufferLength. Else only `*param_4 = 4`.
 3. Device-returned descriptor copy (0x222090): `ExAllocatePool(len)` then `memmove(SystemBuffer+4, pool, len)` at dump 719-720. The copy length is the device-supplied ushort. It is only performed when `len+4 <= OutputBufferLength` (718). Source is driver pool holding device data; the caller controls only the index byte.
 4. URB transfer buffers (0x2220D8, 0x2220DC, 0x2220E4, 0x2220E8, and 0x222080): the buffer is a SystemBuffer offset and the length is caller-supplied. Bounds are enforced in the dispatcher: `len + 0x10 <= InputBufferLength` (793, 893) or `len <= OutputBufferLength` (870, 918). The URB layer also checks `len <= endpoint max` (`FUN_140002A6C` 1467, `FUN_140002B6C` 1515). Direction comes from the device endpoint table, not from the caller. The buffer stays inside the SystemBuffer allocation (size max(in,out)).
@@ -104,7 +104,7 @@ The highest-impact exposed behavior is a re-selection of the device configuratio
 ## 8 Limitations
 
 - The lower stack (USBD / USB bus driver) is not analyzed. URB semantics are taken from the driver's own field writes only.
-- DRIVER_OBJECT+0x68 (DriverUnload) label `_guard_check_icall` is unresolved (§2).
+- DRIVER_OBJECT+0x68 (DriverUnload) label `_guard_check_icall` is unresolved (section 2).
 - Off-by-one read in 0x2220EC: `FUN_140002278` tests `count < iface` (dump 1010), so iface == count passes and reads the entry at +0x20+count*0x18 (1014). That is a read of the table one entry past the end, and its value is passed to USBD as a handle. It is not a kernel write. The value depends on pool contents, which the driver does not set. Recorded as an unresolved read-only issue.
 - PnP, power, start, close and completion routines (`FUN_140001620`, `FUN_140001770`, `FUN_1400014B0`, `FUN_1400017F0`, `FUN_1400018DC`, `FUN_140001408`, `FUN_140001280`, `FUN_140002600/630`, `FUN_14000234C`, `FUN_1400023C4`) were checked by the write-grep and by spot reads. They are kernel-initiated and not reachable from IOCTLs.
 - No REA session used. No execution, no driver load, no registry writes.

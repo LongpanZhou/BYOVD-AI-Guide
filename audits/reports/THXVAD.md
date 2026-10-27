@@ -12,7 +12,7 @@
 
 ## Entry surface
 
-Portcls (Port Class) virtual-audio minidriver: registers the adapter through `PcAddAdapterDevice` (import strings at `0x140026A16`); the KS device object and symbolic links are created by **portcls**, not by this file. The driver registers the standard audio device interface `IoRegisterDeviceInterface(Pdo, {6994AD04-93EF-11D0-A3CC-00A0C9223196}, …)` (`FUN_14001B948`, GUID bytes at `0x140006F98` — KSCATEGORY_AUDIO) and sets interface property data.
+Portcls (Port Class) virtual-audio minidriver: registers the adapter through `PcAddAdapterDevice` (import strings at `0x140026A16`); the KS device object and symbolic links are created by **portcls**, not by this file. The driver registers the standard audio device interface `IoRegisterDeviceInterface(Pdo, {6994AD04-93EF-11D0-A3CC-00A0C9223196}, ...)` (`FUN_14001B948`, GUID bytes at `0x140006F98` - KSCATEGORY_AUDIO) and sets interface property data.
 
 - IOCTL/property requests therefore arrive through the **KS/portcls property system**, which validates property-request buffer sizes against the property-item tables before the miniport handler runs.
 - No `IoCreateDevice` in this file; no custom device names; interfaces are the standard audio stack surface (opened through MMDevAPI/wave services for rendering).
@@ -20,12 +20,12 @@ Portcls (Port Class) virtual-audio minidriver: registers the adapter through `Pc
 ## Memory-write analysis
 
 - **No memory-mapping APIs imported:** no `MmProbeAndLockPages`, `MmMapLockedPagesSpecifyAccess`, `MmMapIoSpace`, `MmGetPhysicalAddress`, `ZwOpenSection`, `MmCopyMemory`. The only MDL-adjacent import is `MmGetSystemRoutineAddress` (WPP/ETW library bootstrap, same family as winmad.sys).
-- `ZwWriteFile` sites (`FUN_140003560`/`FUN_140004FBA` chain and `0x14001EDC8`/`0x14001EE34`): file/config persistence to a storage device — not kernel memory.
+- `ZwWriteFile` sites (`FUN_140003560`/`FUN_140004FBA` chain and `0x14001EDC8`/`0x14001EE34`): file/config persistence to a storage device - not kernel memory.
 - `RtlRaiseException` (`0x140003560`): error-path assertion only.
-- Fill sites: fixed-size `memset` constants (`0x38`, `0x230`, `0x50`, `0x20`) plus a handful of dynamic sizes on buffers just allocated in the same function (allocation-then-zero shapes) — no fixed-destination/user-length mismatch found in the analyzed set.
+- Fill sites: fixed-size `memset` constants (`0x38`, `0x230`, `0x50`, `0x20`) plus a handful of dynamic sizes on buffers just allocated in the same function (allocation-then-zero shapes) - no fixed-destination/user-length mismatch found in the analyzed set.
 - No METHOD_NEITHER codes of its own (no device object), no MSR/GDT/IDT patterns.
 
-**Residual unknown (accepted scope):** custom KSDAI/KSPROPERTY handlers — if THX added any — are routed through binary GUID/property-item tables not fully enumerated in this static pass. Their request buffers are portcls/Ks-validated before the handler runs, so the residual exposure would require a handler that writes past its validated request buffer using a user-embedded count; no such shape was found in the recovered procedures.
+**Residual unknown (accepted scope):** custom KSDAI/KSPROPERTY handlers - if THX added any - are routed through binary GUID/property-item tables not fully enumerated in this static pass. Their request buffers are portcls/Ks-validated before the handler runs, so the residual exposure would require a handler that writes past its validated request buffer using a user-embedded count; no such shape was found in the recovered procedures.
 
 ## Memory-touching IOCTL table
 

@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `8167B314EC353627F7FD635A300D817EEBEE80E4AA92D0510AA8CB8029E48CF6` (matches triage_index.csv row `vmusb`; sha256 recomputed in-session) |
 | Company/Version | VMware, Inc. (VMware USB arbitrator; PDB `vmusb.pdb`) |
 | Method | Static-only audit via REA/Ghidra 12.1.4, memory-write scope only |
-| Verdict | **WRITE-MEDIUM (provisional)** — a header-driven write into a fixed-size request object on the MJ_WRITE path; overflow only if the pool stride is smaller than the device-capped table. Pool init not decompiled. Reachability (device DACL, pipe open) not established |
+| Verdict | **WRITE-MEDIUM (provisional)** - a header-driven write into a fixed-size request object on the MJ_WRITE path; overflow only if the pool stride is smaller than the device-capped table. Pool init not decompiled. Reachability (device DACL, pipe open) not established |
 | Coverage | ~50%. Not traced: pool init that sets stride `*(pool+0x14)` and cap `*(dev+0x270)`, `FUN_140003a08` caller-side sizing, `FUN_140005418` (URB submit), `FUN_1400037dc`, `FUN_140008580` (copy routine), device SDDL and interface registration |
 
 > **Static-only.** No load, no device open, no IOCTL execution. Addresses are linked VAs (image base `0x140000000`).
@@ -25,17 +25,17 @@
   2. Reads header: `count = *(uint*)hdr`; requires `count != 0` and `count*12 + 0x10 <= param_4`; requires `count <= *(uint*)(dev+0x270)` (device cap).
   3. Allocates a request object `plVar5 = FUN_140003cec(dev+0x1d8)` from a fixed-stride free list, and a page-rounded data buffer `FUN_140003a08(dev+0x210, uVar9)` with `uVar9 = param_4 - hdr.offset0`.
   4. **Copy-in before validation:** when `param_5 == 0`, `FUN_140008580(dataBuf, hdr + offset0, uVar9)` runs **before** the per-entry bounds check.
-  5. Writes fixed fields into the request object (offsets `+0x28`, `+0x60`, `+0x68`, `+0x6c`, `+0x70`, `+0xC8`, `+0xCC`), then the entry table in a loop: for each entry `i < count`, writes two dwords at `body + 0xC4 + 12·i` and `body + 0xC8 + 12·i` with values `(entry.offset - offset0)` and `entry.length`. Bounds check per entry (`offset + length <= param_4`; for non-kernel callers also `maxPacket >= length`) occurs **inside** the loop, after the copy.
+  5. Writes fixed fields into the request object (offsets `+0x28`, `+0x60`, `+0x68`, `+0x6c`, `+0x70`, `+0xC8`, `+0xCC`), then the entry table in a loop: for each entry `i < count`, writes two dwords at `body + 0xC4 + 12;i` and `body + 0xC8 + 12;i` with values `(entry.offset - offset0)` and `entry.length`. Bounds check per entry (`offset + length <= param_4`; for non-kernel callers also `maxPacket >= length`) occurs **inside** the loop, after the copy.
 
 ## Memory-write analysis
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Header-driven table write into request object | **PRESENT (conditional).** Writes at `body+0xC4+12i` / `+0xC8+12i`, `i < count`, `count <= dev+0x270`. Values attacker-chosen. Safe **iff** pool stride `S = *(pool+0x14)` satisfies `S >= 0xCC + 12*(cap-1)`. Pool init that sets `S` and `cap` is not decompiled | `ev_0634c577…`, `ev_1c8b5bdb…`, `ev_2298de12…` |
-| Request-object stride | `FUN_140003bb0` refill: slot stride `*(pool+0x14) + 8`; block size `(stride)*n + 0x10`; slot count from pool `+0x28`/`+0x2c`/`+0x30`/`+0x34` | `ev_2298de12…` |
-| Copy before validation | `FUN_140008580(dst, hdr+offset0, param_4 - offset0)` before entry check. If `offset0 > param_4`, the length wraps and the source read runs past the MDL mapping (read-side OOB; page-granular allocation limits the write side). Read-only issue; not a write | `ev_1c8b5bdb…` |
-| Kernel address write from user input | None found. Only the header-chosen values are written, and only to the request object or the allocated data buffer | — |
-| MJ_WRITE vs MJ_READ | Write-direction copy-in (`param_5 == 0`) is the path reachable by MJ_WRITE; read-direction (`param_5 == 1`) skips the copy | `ev_c53febce…` |
+| Header-driven table write into request object | **PRESENT (conditional).** Writes at `body+0xC4+12i` / `+0xC8+12i`, `i < count`, `count <= dev+0x270`. Values attacker-chosen. Safe **iff** pool stride `S = *(pool+0x14)` satisfies `S >= 0xCC + 12*(cap-1)`. Pool init that sets `S` and `cap` is not decompiled | `ev_0634c577...`, `ev_1c8b5bdb...`, `ev_2298de12...` |
+| Request-object stride | `FUN_140003bb0` refill: slot stride `*(pool+0x14) + 8`; block size `(stride)*n + 0x10`; slot count from pool `+0x28`/`+0x2c`/`+0x30`/`+0x34` | `ev_2298de12...` |
+| Copy before validation | `FUN_140008580(dst, hdr+offset0, param_4 - offset0)` before entry check. If `offset0 > param_4`, the length wraps and the source read runs past the MDL mapping (read-side OOB; page-granular allocation limits the write side). Read-only issue; not a write | `ev_1c8b5bdb...` |
+| Kernel address write from user input | None found. Only the header-chosen values are written, and only to the request object or the allocated data buffer | - |
+| MJ_WRITE vs MJ_READ | Write-direction copy-in (`param_5 == 0`) is the path reachable by MJ_WRITE; read-direction (`param_5 == 1`) skips the copy | `ev_c53febce...` |
 | Probe on user-mode data | None in-file. Relies on I/O manager direct I/O (locked MDL). The MDL map helper (`FUN_140002490`, `FUN_140003570`) uses `MmMapLockedPagesSpecifyCache` without a `ProbeFor*` call | import sweep |
 
 ## Entry/cap constants used
@@ -45,13 +45,13 @@
 
 ## Findings
 
-1. **Candidate heap write (WRITE-MEDIUM, provisional).** A user-controlled header can drive 8-byte writes to `body + 0xC4 + 12·i`. If the request-object stride is smaller than `0xCC + 12·(cap−1)`, these writes overflow the slot into neighbouring pool slots, with attacker-chosen values. Whether that happens is decided by the pool init, which is not yet decompiled.
+1. **Candidate heap write (WRITE-MEDIUM, provisional).** A user-controlled header can drive 8-byte writes to `body + 0xC4 + 12;i`. If the request-object stride is smaller than `0xCC + 12;(cap-1)`, these writes overflow the slot into neighbouring pool slots, with attacker-chosen values. Whether that happens is decided by the pool init, which is not yet decompiled.
 2. **Copy-before-validate** on the copy-in path (read-side OOB via length wrap). Noted for completeness; not a write.
 3. **Reachability unknown.** MJ_WRITE needs an open pipe with the expected endpoint type, plus device access. The device DACL and the pipe-open IOCTL are not traced.
 
 ## Verdict rationale
 
-WRITE-MEDIUM (provisional). The write is real in the code path, but its bounds depend on a pool-stride/cap relationship that is not verified, and the path needs device access plus an open pipe. Escalate to **WRITE-HIGH** if (a) pool init sets `S < 0xCC + 12·(cap−1)`, and (b) the device is openable by an unprivileged caller and the pipe can be opened without privilege. Drop to **NO-WRITE** if pool init sets `S >= 0xCC + 12·cap`.
+WRITE-MEDIUM (provisional). The write is real in the code path, but its bounds depend on a pool-stride/cap relationship that is not verified, and the path needs device access plus an open pipe. Escalate to **WRITE-HIGH** if (a) pool init sets `S < 0xCC + 12;(cap-1)`, and (b) the device is openable by an unprivileged caller and the pipe can be opened without privilege. Drop to **NO-WRITE** if pool init sets `S >= 0xCC + 12;cap`.
 
 ## Next steps (for the write-only pass)
 

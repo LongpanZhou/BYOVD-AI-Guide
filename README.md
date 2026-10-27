@@ -1,20 +1,20 @@
-# BYOVD AI Guide — worked example
+# BYOVD AI Guide - worked example
 
 **Guide to finding vulnerable Windows drivers using AI**
 
-This is the `example` branch: the worked example — full corpus, audit reports, and evidence. The method itself, and the clean lab skeleton for running your own hunt, lives on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/main).
+This is the `example` branch: the worked example - full corpus, audit reports, and evidence. The method itself, and the clean lab skeleton for running your own hunt, lives on [`main`](https://github.com/LongpanZhou/BYOVD-AI-Guide/tree/main).
 
 > [!TIP]
-> API cost for a full run is roughly **$20 USD** — pay-per-token usage, not a plan/subscription price.
+> API cost for a full run is roughly **$20 USD** - pay-per-token usage, not a plan/subscription price.
 
 > [!IMPORTANT]
-> This method found real vulnerable drivers — but they're kept **offline**, not in this repo. If you fork, do the same.
+> This method found real vulnerable drivers - but they're kept **offline**, not in this repo. If you fork, do the same.
 
 ## Start here
 
 | | |
 |---|---|
-| Goal — edit to re-target the hunt | [`PROJECT_GOAL.md`](PROJECT_GOAL.md) |
+| Goal - edit to re-target the hunt | [`PROJECT_GOAL.md`](PROJECT_GOAL.md) |
 | Reading order | [`START_HERE.md`](START_HERE.md) |
 | Live status and queue | [`audits/STATUS.md`](audits/STATUS.md) |
 | Target wishlist | [`WANTED_LEDGER.md`](WANTED_LEDGER.md) |
@@ -22,9 +22,9 @@ This is the `example` branch: the worked example — full corpus, audit reports,
 
 ## Setup
 
-Two branches — clone the one that fits:
+Two branches - clone the one that fits:
 
-- **`main`** — instructions only: the guides, ledgers, and empty folder skeleton, for building your own lab from nothing:
+- **`main`** - instructions only: the guides, ledgers, and empty folder skeleton, for building your own lab from nothing:
 
   ```shell
   git clone https://github.com/LongpanZhou/BYOVD-AI-Guide.git driver_lab
@@ -32,7 +32,7 @@ Two branches — clone the one that fits:
 
   Then follow [`guides/00_quickstart.md`](guides/00_quickstart.md); its step 2 fetches the four tools from this branch.
 
-- **`example`** (this branch) — the full worked example: corpus, audit reports, evidence, `tools/`:
+- **`example`** (this branch) - the full worked example: corpus, audit reports, evidence, `tools/`:
 
   ```shell
   git clone -b example https://github.com/LongpanZhou/BYOVD-AI-Guide.git driver_candidates
@@ -45,11 +45,11 @@ Run these steps per batch; each has a detailed guide:
 | Step | Guide | What you do |
 |:---:|---|---|
 | 1 | [`guides/00_quickstart`](guides/00_quickstart.md) | folder layout, command list |
-| 2 | [`guides/01_collect_drivers`](guides/01_collect_drivers.md) | download → extract → dedupe into `drivers/` |
+| 2 | [`guides/01_collect_drivers`](guides/01_collect_drivers.md) | download -> extract -> dedupe into `drivers/` |
 | 3 | [`guides/02_blocklist_check`](guides/02_blocklist_check.md) | LOLDrivers + Microsoft blocklist per hash (runs **before** the audit) |
 | 4 | [`guides/03_audit`](guides/03_audit.md) | static audit: dispatch/IOCTL/memory-write analysis |
 | 5 | [`guides/04_dynamic_vm`](guides/04_dynamic_vm.md) | prove the primitive in a snapshotted VM |
-| 6 | [`audits/STATUS.md`](audits/STATUS.md) — example | record the verdict |
+| 6 | [`audits/STATUS.md`](audits/STATUS.md) - example | record the verdict |
 
 ## What's inside
 

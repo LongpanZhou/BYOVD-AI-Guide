@@ -20,11 +20,11 @@
 
 ## 2 Entry / device / interface / effective DACL
 
-- As in the sibling: `IoCreateDevice(…, 0x250, 0, 0x22, 0x80, 0, …)` at dump 108 (no FILE_DEVICE_SECURE_OPEN flag), `IoRegisterDeviceInterface` at dump 156. Effective DACL: IoCreateDevice default.
+- As in the sibling: `IoCreateDevice(..., 0x250, 0, 0x22, 0x80, 0, ...)` at dump 108 (no FILE_DEVICE_SECURE_OPEN flag), `IoRegisterDeviceInterface` at dump 156. Effective DACL: IoCreateDevice default.
 
 ## 3 Dispatch and IOCTL table
 
-- As in the sibling §3: dispatcher at dump 1915-1977 with IOCTLs 0x220000 (bounded copy of the loader buffer into SystemBuffer, gated by OutputBufferLength and started state), 0x220004 (no buffer), 0x220008 (no caller buffer write); other codes return STATUS_INVALID_DEVICE_REQUEST (0xC0000010).
+- As in the sibling section 3: dispatcher at dump 1915-1977 with IOCTLs 0x220000 (bounded copy of the loader buffer into SystemBuffer, gated by OutputBufferLength and started state), 0x220004 (no buffer), 0x220008 (no caller buffer write); other codes return STATUS_INVALID_DEVICE_REQUEST (0xC0000010).
 
 ## 4 Access-control audit
 
@@ -32,7 +32,7 @@
 
 ## 5 Memory-write trace
 
-- As in the sibling §5: the only IOCTL-path buffer write is `FUN_00014BA0(SystemBuffer, loaderBuffer, len)` with `len <= OutputBufferLength` (dump 1947-1948). Bounded.
+- As in the sibling section 5: the only IOCTL-path buffer write is `FUN_00014BA0(SystemBuffer, loaderBuffer, len)` with `len <= OutputBufferLength` (dump 1947-1948). Bounded.
 
 ## 6 Most dangerous exposed capability
 
@@ -44,5 +44,5 @@
 
 ## 8 Limitations
 
-- As in `usblddaqlib_9E26A72E` §8: the helper functions were read at their call sites only.
+- As in `usblddaqlib_9E26A72E` section 8: the helper functions were read at their call sites only.
 - No REA session used. No execution, no driver load, no registry writes.

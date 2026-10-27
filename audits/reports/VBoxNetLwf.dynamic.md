@@ -1,4 +1,4 @@
-# Dynamic Validation — VBoxNetLwf.sys (t9_* run, guest phase; runs 1-2)
+# Dynamic Validation - VBoxNetLwf.sys (t9_* run, guest phase; runs 1-2)
 
 | | |
 |---|---|
@@ -55,9 +55,9 @@ Host Ghidra 12.1.4 on the guest-identical binary (project T9VMMR0, base 0x140000
 | Item | Status |
 |---|---|
 | `\Device\VBoxNetLwf` exists? | **NEVER** (ntopen/daclnt -> `0xC0000034` at every check across both runs) |
-| DACL pull (resolves the NDIS-default-ACL open item) | **NOT REACHABLE dynamically** - the in-file static claim stands unmodified: `NdisRegisterDeviceEx` with SymbolicName EMPTY and DefaultSDDLString NULL (evidence `ev_e3718aca…`/`ev_ec103b28…`); the OS default device DACL would govern - UNRESOLVED dynamically |
+| DACL pull (resolves the NDIS-default-ACL open item) | **NOT REACHABLE dynamically** - the in-file static claim stands unmodified: `NdisRegisterDeviceEx` with SymbolicName EMPTY and DefaultSDDLString NULL (evidence `ev_e3718aca...`/`ev_ec103b28...`); the OS default device DACL would govern - UNRESOLVED dynamically |
 | Unpriv open (runas /trustlevel:0x20000) | **NOT REACHABLE** (no object to open; staged script `t9_lwf_fuzz.ps1` never ran) |
-| Structured sweep dev 0x12 fn 0x000-0xFFF (0x120000+fn*4, 8 chunks) + raw band fn*4 (2 chunks) + dev 0x22 spot band | **NOT REACHABLE** (no object; the expected universal `0xC00000BB` dead-dispatch result remains a static claim, evidence `ev_ec103b28…`) |
+| Structured sweep dev 0x12 fn 0x000-0xFFF (0x120000+fn*4, 8 chunks) + raw band fn*4 (2 chunks) + dev 0x22 spot band | **NOT REACHABLE** (no object; the expected universal `0xC00000BB` dead-dispatch result remains a static claim, evidence `ev_ec103b28...`) |
 
 The non-fulfillment is itself the dynamic finding: **in a bare Win10 19045 guest the
 LWF is uninstantiable at its binding/start plane** - the same class as t5's vpnva

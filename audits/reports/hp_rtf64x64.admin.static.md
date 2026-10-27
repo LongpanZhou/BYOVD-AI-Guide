@@ -8,10 +8,10 @@
 | Analysis date | 2026-10-25 |
 | Method | Static-only: Ghidra 12.1.4 through the REA MCP provider (headless) plus LLVM `objdump` 20.1.5 and PE/import checks. No load, execute, install, service, or registry access. |
 | Reach tier | **R1** for the device object and IOCTLs (Everyone `GRGW`, all IOCTLs `FILE_ANY_ACCESS`); **R3 / composition** to create a usable adapter context |
-| Setup required | **composition** — NDIS LWF must be bound to a running miniport; a service-only start creates the device but leaves the context list empty |
-| Write quality | **W1** — fully caller-chosen 64-bit target; value is constrained by queued-packet/OID content (see §5.4) |
+| Setup required | **composition** - NDIS LWF must be bound to a running miniport; a service-only start creates the device but leaves the context list empty |
+| Write quality | **W1** - fully caller-chosen 64-bit target; value is constrained by queued-packet/OID content (see section 5.4) |
 | Severity | **MW2** |
-| Verdict | **MW2 — reach=R1 setup=composition write=W1 load=signed** |
+| Verdict | **MW2 - reach=R1 setup=composition write=W1 load=signed** |
 | HW-only | no |
 | Supersedes | `audits/reports/hp_rtf64x64.static.md` (old scope). Its `WRITE-HIGH` label is **not** inherited. |
 
@@ -22,14 +22,14 @@ leaked. A bare service start creates `\Device\RTF64` but no context; every keyed
 `0xC0010006`. The old `WRITE-HIGH` therefore maps to **MW2** here, not MW1: the write is
 composition-gated and leak-assisted.
 
-**Scope correction — the three named `0x8000` CTL_CODEs are not in this file.** The task names
+**Scope correction - the three named `0x8000` CTL_CODEs are not in this file.** The task names
 `0x8000203C` (write), `0x80002038` (read), and `0x80002050` (pointer leak). None of those constants
 occurs in `rtf64x64_DFB5842C.sys`: the little-endian byte patterns `3C 20 00 80`, `38 20 00 80`,
 `50 20 00 80`, and even `00 20 00 80` all return **zero hits**; the dispatch comparisons cover only
-`0x88992264`–`0x889922DC`; the only `0x8000xxxx` immediates are NDIS status values such as
+`0x88992264`-`0x889922DC`; the only `0x8000xxxx` immediates are NDIS status values such as
 `0x80000005` (e.g. `0x140003DA0`, `0x1400073CC`, `0x140007464`). The old HP report does **not**
 contain those three codes either. They are the `bxvbda.sys` (QLogic VBD) primitives documented in
-`b06bdrv_detailed.md` V20–V22. The actual HP primitives are mapped in §3.4 and §5. Re-rating a
+`b06bdrv_detailed.md` V20-V22. The actual HP primitives are mapped in section 3.4 and section 5. Re-rating a
 nonexistent HP `0x8000203C` would be a cross-report conflation.
 
 ---
@@ -43,7 +43,7 @@ nonexistent HP `0x8000203C` would be a cross-report conflation.
 - Authenticode: **valid**, signer `CN=Realtek Semiconductor Corp.` (DigiCert Trusted G4 Code
   Signing RSA4096 SHA384 2021 CA1), timestamped 2025. The SHA-256 is **not** in
   `indexes/dedupe/known_bad_hashes.txt`. Loadability under HVCI was not dynamically verified; see
-  §9.
+  section 9.
 - Imports are a normal NDIS LWF set: `NdisFRegisterFilterDriver`, `NdisRegisterDeviceEx`,
   `NdisFOidRequest`, `NdisFIndicateReceiveNetBufferLists`, `NdisFSendNetBufferLists`,
   `MmMapLockedPagesSpecifyCache`, pool APIs, `ObReferenceObjectByHandle`, WPP APIs. There is **no**
@@ -86,7 +86,7 @@ surface is `DeviceIoControl`.
 ### 2.2 Effective DACL
 
 The SDDL string is at **`0x1400091D0`** (57 UTF-16 characters, 114 bytes). It is copied to the
-stack by the `MOVAPS` sequence at `0x140004132`–`0x1400041A6`; the `UNICODE_STRING` at
+stack by the `MOVAPS` sequence at `0x140004132`-`0x1400041A6`; the `UNICODE_STRING` at
 `[rsp+0x20]` is given `Length=0x72`, `MaxLength=0x74` at `0x1400041AD`, and its buffer points to
 the stack copy at `0x1400041B5`. That structure is passed as `DefaultSDDLString` to
 `NdisRegisterDeviceEx` at `0x14000426E`/`0x140004283`. No other code sets a device or symlink
@@ -136,7 +136,7 @@ Two codes are special-cased before the main switch:
 
 `0x88992284` (SET) and `0x88992288` (QUERY) therefore go directly to `FUN_140006EB4`; all other
 codes go to `FUN_1400016CC` (`0x1400016CC`). The main switch compares `0x88992264` through
-`0x889922DC` (see the immediate scan at `0x14000173A`–`0x140002336`). Unknown codes return
+`0x889922DC` (see the immediate scan at `0x14000173A`-`0x140002336`). Unknown codes return
 `0x10001`.
 
 ### 3.2 Context-key gate
@@ -149,45 +149,45 @@ handler returns `0xC0010006`. The state is set to **3** by `FilterAttach` (`0x14
 `FilterPause` (`0x140005C07`), and to **6** only by a successful `FilterRestart`
 (`0x140006136`). A leaked context is therefore usable only while the filter is running.
 
-The key is the context pointer itself. `0x88992268` leaks it (§5.7); it is not a secret or a random
+The key is the context pointer itself. `0x88992268` leaks it (section 5.7); it is not a secret or a random
 cookie. The state-6 requirement is an additional precondition the old report did not mention.
 
 ### 3.3 Full IOCTL table
 
 All codes use `DeviceType = 0x8899`, `Access = 0` (`FILE_ANY_ACCESS`), `Method = 0`
-(`METHOD_BUFFERED`). `BUF` below means METHOD_BUFFERED; `ANY` means FILE_ANY_ACCESS. “key” means
+(`METHOD_BUFFERED`). `BUF` below means METHOD_BUFFERED; `ANY` means FILE_ANY_ACCESS. "key" means
 the first qword of `SystemBuffer` must be a live context pointer in state 6; failure returns
 `0xC0010006`.
 
 | Code | Fn | Method/Access | In / Out | Gate | Kernel action | Write class |
 |---|---|---|---|---|---|---|
-| `0x88992264` | 0x899 | BUF/ANY | Out ≥ 4 | none | `*SystemBuffer = 0x00030003`; `Information=4` | W0 (output buffer only) |
-| `0x88992268` | 0x89A | BUF/ANY | Out ≥ 0x2284 | none | zero 0x2284; `FUN_140004444` dumps up to 32 contexts; `Information=0x2284` | W0; **kernel pool pointer leak at out+0x2004+8*i** |
-| `0x8899226C` | 0x89B | BUF/ANY | In ≥ 0x10 | key/state 6 | `FUN_140007350(ctx, *(u64*)(buf+8))` builds an NBL from the descriptor and sends it | W0; reads attacker pointer; driver-owned NBL copy |
-| `0x88992270` | 0x89C | BUF/ANY | In ≥ 0x10 | key/state 6 | `memmove(pool, *(u64*)(buf+8), *(u32*)(src+0x14)+0x135)`; indicate up the stack | W0 for kernel write; **kernel read into receive path (indirect)** |
-| **`0x88992274`** | 0x89D | BUF/ANY | In ≥ 0x10 | key/state 6; queue non-empty | pop queue entry; `memmove(*(u64*)(buf+8), entry, *(u32*)(entry+0x14)+0x135)`; `Information=0x10` | **W1 arbitrary-target kernel write** |
-| `0x88992278` | 0x89E | BUF/ANY | In ≥ 0xC | key/state 6 | `ctx+0x280 = *(u32*)(buf+8)` | W3 fixed ctx write (capture/queue flags) |
-| `0x8899227C` | 0x89F | BUF/ANY | In ≥ 8 | key/state 6 | flush `ctx+0x260` queue to free list; `ctx+0x284 = 0` | W0/W3 fixed ctx |
-| `0x88992280` | 0x8A0 | BUF/ANY | In ≥ 0x10 | key/state 6; IRQL 0 | `ObReferenceObjectByHandle(*(u64*)(buf+8), ExEventObjectType)` → `ctx+0x288` | W0 object ref |
-| `0x88992284` | 0x8A1 | BUF/ANY | In == Out > 0x10; `len+0x10 ≤ In` | key/state 6 | `NdisFOidRequest(SET)`: OID=`*(u32*)(buf+8)`, InformationBuffer=`*(u64*)(buf+0x10)`, len=`*(u32*)(buf+0xC)` | W0 for kernel write; **OID set reads caller pointer** |
+| `0x88992264` | 0x899 | BUF/ANY | Out >= 4 | none | `*SystemBuffer = 0x00030003`; `Information=4` | W0 (output buffer only) |
+| `0x88992268` | 0x89A | BUF/ANY | Out >= 0x2284 | none | zero 0x2284; `FUN_140004444` dumps up to 32 contexts; `Information=0x2284` | W0; **kernel pool pointer leak at out+0x2004+8*i** |
+| `0x8899226C` | 0x89B | BUF/ANY | In >= 0x10 | key/state 6 | `FUN_140007350(ctx, *(u64*)(buf+8))` builds an NBL from the descriptor and sends it | W0; reads attacker pointer; driver-owned NBL copy |
+| `0x88992270` | 0x89C | BUF/ANY | In >= 0x10 | key/state 6 | `memmove(pool, *(u64*)(buf+8), *(u32*)(src+0x14)+0x135)`; indicate up the stack | W0 for kernel write; **kernel read into receive path (indirect)** |
+| **`0x88992274`** | 0x89D | BUF/ANY | In >= 0x10 | key/state 6; queue non-empty | pop queue entry; `memmove(*(u64*)(buf+8), entry, *(u32*)(entry+0x14)+0x135)`; `Information=0x10` | **W1 arbitrary-target kernel write** |
+| `0x88992278` | 0x89E | BUF/ANY | In >= 0xC | key/state 6 | `ctx+0x280 = *(u32*)(buf+8)` | W3 fixed ctx write (capture/queue flags) |
+| `0x8899227C` | 0x89F | BUF/ANY | In >= 8 | key/state 6 | flush `ctx+0x260` queue to free list; `ctx+0x284 = 0` | W0/W3 fixed ctx |
+| `0x88992280` | 0x8A0 | BUF/ANY | In >= 0x10 | key/state 6; IRQL 0 | `ObReferenceObjectByHandle(*(u64*)(buf+8), ExEventObjectType)` -> `ctx+0x288` | W0 object ref |
+| `0x88992284` | 0x8A1 | BUF/ANY | In == Out > 0x10; `len+0x10 <= In` | key/state 6 | `NdisFOidRequest(SET)`: OID=`*(u32*)(buf+8)`, InformationBuffer=`*(u64*)(buf+0x10)`, len=`*(u32*)(buf+0xC)` | W0 for kernel write; **OID set reads caller pointer** |
 | **`0x88992288`** | 0x8A2 | BUF/ANY | same as 0x8A1 | key/state 6 | `NdisFOidRequest(QUERY)` writes OID result to `*(u64*)(buf+0x10)`, len=`*(u32*)(buf+0xC)` | **W1 arbitrary-target kernel write (value OID-dependent)** |
-| `0x8899228C` | 0x8A3 | BUF/ANY | In ≥ 8 | none; IRQL 0 | `ObReferenceObjectByHandle(*(u64*)buf, ExEventObjectType)` → `DAT_14000B0E0` | W0 object ref |
-| `0x88992290` | 0x8A4 | BUF/ANY | In ≥ 8 | none; IRQL 0 | same → `DAT_14000B0E8` | W0 object ref |
-| `0x88992294` | 0x8A5 | BUF/ANY | In ≥ 8 | key/state 6 | `*SystemBuffer = ctx+0x284`; `Information=4` | W0 read-back (queue count) |
-| `0x88992298` | 0x8A6 | BUF/ANY | In ≥ 0xC | key/state 6 | `*(u32*)(buf+8) = ctx+0x280`; `Information=0xC` | W0 read-back |
-| `0x889922B0` | 0x8AC | BUF/ANY | In ≥ 8; Out ≥ 0x41804 | key/state 6 | `FUN_140002E14` bulk dump; `Information=0x41804` | W0 |
-| `0x889922B4` | 0x8AD | BUF/ANY | In ≥ 0x18 | key/state 6 | loop `count=*(u32*)(buf+8)`, descriptors at `buf+0x10+8*i`; `FUN_140007350` sends each | W0; reads attacker pointers; count not bounded by In |
-| `0x889922B8` | 0x8AE | BUF/ANY | In ≥ 0x18 | key/state 6 | loop; `memmove(pool, desc, len+0x135)`; indicate | W0 for kernel write; **kernel read into receive path (indirect)**; count not bounded |
-| **`0x889922BC`** | 0x8AF | BUF/ANY | In ≥ 0x18 | key/state 6; queue entries | loop `count=*(u32*)(buf+8)`; `memmove(*(u64*)(buf+0x10+8*i), entry, len+0x135)`; `Information=InLen` | **W1 arbitrary-target kernel write (xN)** |
-| `0x889922C0` | 0x8B0 | BUF/ANY | In ≥ 0xC | key/state 6 | `ctx+0x29D = 1` | W3 fixed ctx |
-| `0x889922C4` | 0x8B1 | BUF/ANY | In ≥ 0xAC | key/state 6 | `ctx+0x2A4 = *(u32*)(buf+8)`; copy 0xA0 from `buf+0xC` to `ctx+0x2A8` | W3 fixed ctx |
-| `0x889922C8` | 0x8B2 | BUF/ANY | In ≥ 9 | key/state 6 | `ctx+0x29F = (buf+8 == 1)` | W3 fixed ctx |
-| `0x889922CC` | 0x8B3 | BUF/ANY | In ≥ 9 | key/state 6 | `ctx+0x2A1 = (buf+8 == 1)` | W3 fixed ctx |
-| `0x889922D0` | 0x8B4 | BUF/ANY | In ≥ 9 | key/state 6 | `ctx+0x2A2 = (buf+8 == 1)` | W3 fixed ctx |
-| `0x889922D4` | 0x8B5 | BUF/ANY | In ≥ 9 | key/state 6 | `*(u8*)(buf+8) = ctx+0x2A1`; `Information=InLen` | W0 read-back; output length not checked |
-| `0x889922D8` | 0x8B6 | BUF/ANY | In ≥ 9 | key/state 6 | same for `ctx+0x2A2` | W0 read-back |
-| `0x889922DC` | 0x8B7 | BUF/ANY | In ≥ 4 | key/state 6 | sets `ctx+0x240..0x24C`; OID `0xFC01020C` set from `ctx+0x240`, len 0x1C; returns `0x10001` | W3 fixed ctx |
-| `0x8899229C`–`0x889922AC` | 0x8A7–0x8AB | BUF/ANY | — | no handler | default `0x10001`; constants appear only in the WPP trace formatter | W0 |
+| `0x8899228C` | 0x8A3 | BUF/ANY | In >= 8 | none; IRQL 0 | `ObReferenceObjectByHandle(*(u64*)buf, ExEventObjectType)` -> `DAT_14000B0E0` | W0 object ref |
+| `0x88992290` | 0x8A4 | BUF/ANY | In >= 8 | none; IRQL 0 | same -> `DAT_14000B0E8` | W0 object ref |
+| `0x88992294` | 0x8A5 | BUF/ANY | In >= 8 | key/state 6 | `*SystemBuffer = ctx+0x284`; `Information=4` | W0 read-back (queue count) |
+| `0x88992298` | 0x8A6 | BUF/ANY | In >= 0xC | key/state 6 | `*(u32*)(buf+8) = ctx+0x280`; `Information=0xC` | W0 read-back |
+| `0x889922B0` | 0x8AC | BUF/ANY | In >= 8; Out >= 0x41804 | key/state 6 | `FUN_140002E14` bulk dump; `Information=0x41804` | W0 |
+| `0x889922B4` | 0x8AD | BUF/ANY | In >= 0x18 | key/state 6 | loop `count=*(u32*)(buf+8)`, descriptors at `buf+0x10+8*i`; `FUN_140007350` sends each | W0; reads attacker pointers; count not bounded by In |
+| `0x889922B8` | 0x8AE | BUF/ANY | In >= 0x18 | key/state 6 | loop; `memmove(pool, desc, len+0x135)`; indicate | W0 for kernel write; **kernel read into receive path (indirect)**; count not bounded |
+| **`0x889922BC`** | 0x8AF | BUF/ANY | In >= 0x18 | key/state 6; queue entries | loop `count=*(u32*)(buf+8)`; `memmove(*(u64*)(buf+0x10+8*i), entry, len+0x135)`; `Information=InLen` | **W1 arbitrary-target kernel write (xN)** |
+| `0x889922C0` | 0x8B0 | BUF/ANY | In >= 0xC | key/state 6 | `ctx+0x29D = 1` | W3 fixed ctx |
+| `0x889922C4` | 0x8B1 | BUF/ANY | In >= 0xAC | key/state 6 | `ctx+0x2A4 = *(u32*)(buf+8)`; copy 0xA0 from `buf+0xC` to `ctx+0x2A8` | W3 fixed ctx |
+| `0x889922C8` | 0x8B2 | BUF/ANY | In >= 9 | key/state 6 | `ctx+0x29F = (buf+8 == 1)` | W3 fixed ctx |
+| `0x889922CC` | 0x8B3 | BUF/ANY | In >= 9 | key/state 6 | `ctx+0x2A1 = (buf+8 == 1)` | W3 fixed ctx |
+| `0x889922D0` | 0x8B4 | BUF/ANY | In >= 9 | key/state 6 | `ctx+0x2A2 = (buf+8 == 1)` | W3 fixed ctx |
+| `0x889922D4` | 0x8B5 | BUF/ANY | In >= 9 | key/state 6 | `*(u8*)(buf+8) = ctx+0x2A1`; `Information=InLen` | W0 read-back; output length not checked |
+| `0x889922D8` | 0x8B6 | BUF/ANY | In >= 9 | key/state 6 | same for `ctx+0x2A2` | W0 read-back |
+| `0x889922DC` | 0x8B7 | BUF/ANY | In >= 4 | key/state 6 | sets `ctx+0x240..0x24C`; OID `0xFC01020C` set from `ctx+0x240`, len 0x1C; returns `0x10001` | W3 fixed ctx |
+| `0x8899229C`-`0x889922AC` | 0x8A7-0x8AB | BUF/ANY | - | no handler | default `0x10001`; constants appear only in the WPP trace formatter | W0 |
 
 The fixed ctx writes are listed for completeness; none of them gives a caller-chosen destination.
 The three arbitrary-target writes are bolded.
@@ -196,12 +196,12 @@ The three arbitrary-target writes are bolded.
 
 | Requested code | Present in this image? | Actual HP equivalent |
 |---|---|---|
-| `0x8000203C` “arbitrary write” | **No** — zero byte hits; no dispatch comparison | `0x88992274`, `0x889922BC` (queue `memmove`), `0x88992288` (OID query write) |
-| `0x80002038` “arbitrary read” | **No** — zero byte hits | `0x88992270`/`0x889922B8` (attacker-pointer read into receive path), `0x88992284` (OID set source); neither is a direct read-to-user |
-| `0x80002050` “pointer leak” | **No** — zero byte hits | `0x88992268` (context pointer at out+0x2004+8*i) |
+| `0x8000203C` "arbitrary write" | **No** - zero byte hits; no dispatch comparison | `0x88992274`, `0x889922BC` (queue `memmove`), `0x88992288` (OID query write) |
+| `0x80002038` "arbitrary read" | **No** - zero byte hits | `0x88992270`/`0x889922B8` (attacker-pointer read into receive path), `0x88992284` (OID set source); neither is a direct read-to-user |
+| `0x80002050` "pointer leak" | **No** - zero byte hits | `0x88992268` (context pointer at out+0x2004+8*i) |
 
 The old HP report (`hp_rtf64x64.static.md`) also contains none of the three `0x8000` codes; it
-analyses `0x889922xx`. Those `0x8000` codes are from `bxvbda.sys` (`b06bdrv_detailed.md` V20–V22),
+analyses `0x889922xx`. Those `0x8000` codes are from `bxvbda.sys` (`b06bdrv_detailed.md` V20-V22),
 a different driver and a different hash. This audit does not manufacture an HP `0x8000203C`
 finding.
 
@@ -213,7 +213,7 @@ finding.
    issue every code. No admin token or privilege is required. This is **R1**.
 2. **Context key.** The first qword of the input must equal a live context pointer, and
    `ctx+0x60` must be 6. Failure returns `0xC0010006`. The pointer is leaked unauthenticated by
-   `0x88992268` (§5.7), so this is not a secrecy gate.
+   `0x88992268` (section 5.7), so this is not a secrecy gate.
 3. **Composition.** A context exists only after `FilterAttach` (and a successful
    `FilterRestart`). A bare service start leaves `DAT_14000B130` pointing to itself. This is the
    only real gate on the write primitive; it is **R3/composition** and requires admin/network
@@ -227,7 +227,7 @@ finding.
   directly as kernel pointers.
 - No `MmIsAddressValid`/range/alignment check on the write targets.
 - No per-IOCTL access mask: `Access=0` on every code.
-- No authentication handshake, cookie, or random key. The “key” is the leaked context pointer.
+- No authentication handshake, cookie, or random key. The "key" is the leaked context pointer.
 
 ### 4.3 Reach conclusion
 
@@ -240,7 +240,7 @@ install/bind the LWF, but an unprivileged user cannot. The canonical report ther
 
 ## 5. Memory-write trace
 
-### 5.1 `0x88992274` — arbitrary-target `memmove` (queue write)
+### 5.1 `0x88992274` - arbitrary-target `memmove` (queue write)
 
 Switch compare at `0x14000176E`; branch at `0x1400017EF`. The handler:
 
@@ -273,7 +273,7 @@ rest of the `len+0x135` copy. The caller can choose `dst = field - 0x34` so the 
 lands on the intended field, but the preceding 0x34 bytes are written too. **Size control:
 packet-length-dependent**, up to the max packet size.
 
-### 5.2 `0x889922BC` — arbitrary-target `memmove`, N-at-a-time
+### 5.2 `0x889922BC` - arbitrary-target `memmove`, N-at-a-time
 
 Switch compare at `0x140001F03`; branch at `0x140001FF1`. The handler:
 
@@ -299,12 +299,12 @@ queued entry per target. The loop breaks when the queue is empty. `Information` 
 kernel write).
 
 **Target control: full for the entries supplied in the input; pool-derived for the OOB tail.**
-**Value control: same as §5.1.** **Size control: one entry per target.**
+**Value control: same as section 5.1.** **Size control: one entry per target.**
 
-### 5.3 `0x88992288` — OID query into a caller-chosen pointer
+### 5.3 `0x88992288` - OID query into a caller-chosen pointer
 
 `0x88992288` is special-cased at `0x140003F2C` and dispatched to `FUN_140006EB4` at
-`0x14000405C`. The argument setup at `0x140004042`–`0x14000405C` is:
+`0x14000405C`. The argument setup at `0x140004042`-`0x14000405C` is:
 
 ```
 140004042  CMP  R15D, 0x88992284
@@ -328,8 +328,8 @@ OID result to `InformationBuffer`. The pointer is the raw qword at `SystemBuffer
 probe, no user/kernel distinction, no range check. The length is the caller-supplied
 `*(u32*)(buf+0xC)`, checked only as `len + 0x10 <= InLen` and `InLen == OutLen > 0x10`. The check
 ensures the OID data length fits the input buffer; it does **not** ensure the 8-byte pointer field
-at `buf+0x10` is fully inside the buffer (with `InLen` 0x11–0x17 the qword is partly read from
-adjacent pool memory — an OOB read/DoS, not a controlled target).
+at `buf+0x10` is fully inside the buffer (with `InLen` 0x11-0x17 the qword is partly read from
+adjacent pool memory - an OOB read/DoS, not a controlled target).
 
 The driver's own code proves the query path writes to the supplied pointer:
 
@@ -361,8 +361,8 @@ not a fixed-offset or driver-owned write.
 
 Value control is weaker: the queue paths write packet-block metadata plus packet payload; the OID
 path writes an OID result. That is why the report uses **W1 for target control** but records the
-value constraint explicitly. The old report's “arbitrary write” is correct on the target axis; its
-“arbitrary read” claims are weaker (§5.7).
+value constraint explicitly. The old report's "arbitrary write" is correct on the target axis; its
+"arbitrary read" claims are weaker (section 5.7).
 
 ### 5.5 Queue reachability (`0x88992274` / `0x889922BC`)
 
@@ -378,16 +378,16 @@ The queue is fillable by the attacker:
    (`ctx+0x280 & 5` / `& 0xA`) and call `FUN_1400012A4` to select a filter action.
 3. With the global static-filter table `DAT_14000B0D0` empty (its `.data` initial value is zero),
    `FUN_1400012A4` returns **3** (queue) at `0x1400012DE`. Action 3 inserts the packet block at
-   `ctx+0x260` and increments `ctx+0x284` (`0x140002566`–`0x14000258B` for receive,
-   `0x140002729`–`0x140002737` for send).
+   `ctx+0x260` and increments `ctx+0x284` (`0x140002566`-`0x14000258B` for receive,
+   `0x140002729`-`0x140002737` for send).
 4. The attacker can read the queue count with `0x88992294` (`0x140001C3E` returns `ctx+0x284`) and
    generate local traffic (e.g. a packet with a chosen payload) until the count is non-zero.
 5. `0x88992274` then pops one entry and writes it to the chosen target; `0x889922BC` pops up to
    `count` entries and writes each to its chosen target.
 
-The old report's caveat “the queue may be empty” is factually true but understates the path: the
+The old report's caveat "the queue may be empty" is factually true but understates the path: the
 flags and the default action make the queue fillable by ordinary local traffic. The remaining
-uncertainty is the exact NDIS send/receive path selected on a given adapter; see §9.
+uncertainty is the exact NDIS send/receive path selected on a given adapter; see section 9.
 
 ### 5.6 Fixed/driver-owned writes (not the verdict driver)
 
@@ -404,13 +404,13 @@ uncertainty is the exact NDIS send/receive path selected on a given adapter; see
 
 These require a valid context but do not let the caller choose the address. The `0x889922C4` copy
 is 0xA0 bytes from `buf+0xC` to `ctx+0x2A8`, and the check is `InLen >= 0xAC`; the source ends at
-`buf+0xAC`, so there is no over-read (the old report's “0xA8 bytes” is off by 8).
+`buf+0xAC`, so there is no over-read (the old report's "0xA8 bytes" is off by 8).
 
 ### 5.7 Reads and leaks (context for the write)
 
 | Code | What it does | Direct to user? |
 |---|---|---|
-| **`0x88992268`** | `FUN_140004444` zeroes 0x2284 and dumps up to 32 contexts. At `0x14000459B` it stores each context pointer at **`out+0x2004+8*i`**; the copy to `SystemBuffer` is at `0x1400045FF`. | **Yes — unauthenticated kernel pool pointer leak.** The pointer is also the context key. |
+| **`0x88992268`** | `FUN_140004444` zeroes 0x2284 and dumps up to 32 contexts. At `0x14000459B` it stores each context pointer at **`out+0x2004+8*i`**; the copy to `SystemBuffer` is at `0x1400045FF`. | **Yes - unauthenticated kernel pool pointer leak.** The pointer is also the context key. |
 | `0x88992270` | `memmove(pool, *(u64*)(buf+8), *(u32*)(src+0x14)+0x135)` (`0x1400019A1`/`0x1400019B3`), then `NdisFIndicateReceiveNetBufferLists` (`0x1400019C3`). | **No direct copy.** The data is copied into a driver packet block and indicated up the receive path; a raw socket may or may not see it, and the bytes must look like a packet. It is a kernel read into the receive stack, not a read-to-user API. |
 | `0x889922B8` | Loop mirror of `0x88992270`; `memmove(pool, desc, len+0x135)` then indicate. | Same indirect behaviour. |
 | `0x88992284` | OID SET reads from `*(u64*)(buf+0x10)`; the miniport consumes the data. | No direct copy to the caller. |
@@ -421,7 +421,7 @@ is 0xA0 bytes from `buf+0xC` to `ctx+0x2A8`, and the check is `InLen >= 0xAC`; t
 The only direct, unauthenticated kernel address leak is **`0x88992268`**. It leaks a **pool**
 pointer (the context), not the `ntoskrnl`/driver image base. It defeats the key gate and gives a
 known writable kernel target; it is not a full KASLR image-base leak. The old report's
-“removing KASLR as a barrier” is stronger than the evidence.
+"removing KASLR as a barrier" is stronger than the evidence.
 
 ### 5.8 Memory-write APIs that are absent
 
@@ -442,7 +442,7 @@ known writable kernel target; it is not a full KASLR image-base leak. The old re
   empty.
 - `FilterAttach` (`FUN_1400054B0`, `0x1400054B0`) is the **only** writer of the context list. It
   allocates a context (`FUN_14000543C`), sets state 3 (`0x1400058F4`), initializes the queue
-  (`0x1400058FC`), and inserts the context at `0x14000592F`–`0x140005951`.
+  (`0x1400058FC`), and inserts the context at `0x14000592F`-`0x140005951`.
 - `FilterRestart` (`FUN_140005D90`, `0x140005D90`) sets state 6 at `0x140006136` after the
   per-context pool/OID setup. `FilterPause` (`FUN_140005BA0`, `0x140005BA0`) sets state 3 at
   `0x140005C07`. `FilterDetach` (`FUN_140005980`) removes the node and frees it.
@@ -456,7 +456,7 @@ known writable kernel target; it is not a full KASLR image-base leak. The old re
 | Configuration | `\Device\RTF64` | Context list | Arbitrary write reachable? |
 |---|---|---|---|
 | `sc create`/`sc start` only (no INF/binding; if `NdisFRegisterFilterDriver` succeeds) | yes | empty (`DAT_14000B130` self) | **No.** Keyed IOCTLs return `0xC0010006`; `0x88992268` returns count 0 and 0x2284 zeros; only `0x88992264`, `0x88992268` (count 0), `0x8899228C`, `0x88992290` do anything, all buffer/object-bounded. |
-| INF install + LWF bound to a running NIC, filter restarted | yes | ≥1, state 6 | **Yes.** Unauthenticated leak + key → `0x88992274`/`0x889922BC`/`0x88992288`. |
+| INF install + LWF bound to a running NIC, filter restarted | yes | >=1, state 6 | **Yes.** Unauthenticated leak + key -> `0x88992274`/`0x889922BC`/`0x88992288`. |
 | INF install + filter attached but paused/not restarted | yes | context state 3 | **No.** Lookup requires `ctx+0x60 == 6`; all keyed IOCTLs return `0xC0010006`. |
 
 ### 6.3 Can the LWF be instantiated without a bound miniport?
@@ -510,7 +510,7 @@ bad destination bugchecks, but the leaked context supplies a known writable targ
 | NO-MEMORY-WRITE | Rejected: `0x88992274`/`0x889922BC`/`0x88992288` write to caller-chosen kernel VAs; this is not HW-ONLY, a fixed output buffer, or an info-leak-only path. |
 | BLOCKED | Signed (Authenticode valid), not in `known_bad_hashes.txt`, component present. HVCI not disproven. |
 
-**Final:** `MW2 — reach=R1 setup=composition write=W1 load=signed`.
+**Final:** `MW2 - reach=R1 setup=composition write=W1 load=signed`.
 
 ## 8. Discrepancies vs the old report
 
@@ -524,13 +524,13 @@ bad destination bugchecks, but the leaked context supplies a known writable targ
 | `0x88992274` requires a non-empty queue; may return `0xC0000001` | **Confirmed**, but the queue is fillable: `0x88992278` flags, default action 3 at `0x1400012DE`, inserts at `ctx+0x260` (`0x140002566`, `0x140002737`). |
 | `0x889922BC` writes N queued packets to `buf+0x10+8*i` | **Confirmed** (`0x1400020CD`, `0x1400020D2`); count is not bounded by `InLen`, so the target array can be read OOB (DoS/read). |
 | `0x88992288` OID query writes to `*(u64*)(buf+0x10)` | **Confirmed** (`0x140007029`, `0x14000707E`); the driver's own `0x1010A`/`0x10115`/`0xFC01020B` queries prove the path. Value is OID-dependent. |
-| `0x88992270` “arbitrary read” | **Partly.** It is a kernel read into a driver packet block that is then indicated as an NBL up the receive path (`0x1400019B3`/`0x1400019C3`), not a direct read-to-user. The direct leak is `0x88992268`. |
-| `0x88992284` “arbitrary read” | OID SET reads from a caller pointer; the miniport consumes the data. Not a direct user leak. |
+| `0x88992270` "arbitrary read" | **Partly.** It is a kernel read into a driver packet block that is then indicated as an NBL up the receive path (`0x1400019B3`/`0x1400019C3`), not a direct read-to-user. The direct leak is `0x88992268`. |
+| `0x88992284` "arbitrary read" | OID SET reads from a caller pointer; the miniport consumes the data. Not a direct user leak. |
 | `0x889922C4` copies 0xA8 bytes | Actual **0xA0** bytes from `buf+0xC`; check `InLen >= 0xAC`; the source ends at `buf+0xAC`, no over-read. |
 | `0x889922D4`/`D8` set `Information=InputBufferLength` | Confirmed; user-side overcopy/DoS, not a kernel write. |
 | WMI is not an independent write | **Confirmed**: `IRP_MJ_SYSTEM_CONTROL` is NULL; the `IoWMIRegistrationControl` call at `0x14000D113` is WPP trace registration, not a data provider. |
 | Setup: composition | **Confirmed**; device at service start, context only after `FilterAttach` + state 6. |
-| `0x8000203C`/`0x80002038`/`0x80002050` | **Not in this image**; those are `bxvbda.sys` codes. The HP equivalents are in §3.4. |
+| `0x8000203C`/`0x80002038`/`0x80002050` | **Not in this image**; those are `bxvbda.sys` codes. The HP equivalents are in section 3.4. |
 
 ## 9. Limitations
 
@@ -576,7 +576,7 @@ bad destination bugchecks, but the leaked context supplies a known writable targ
 | `0x14000410C` | device registration (`NdisRegisterDeviceEx`) |
 | `0x1400091D0` | SDDL string (UTF-16, 57 chars) |
 | `0x140009270` / `0x140009290` | `\Device\RTF64` / `\DosDevices\RTF64` |
-| `0x140004132`–`0x1400041A6` | SDDL stack copy |
+| `0x140004132`-`0x1400041A6` | SDDL stack copy |
 | `0x1400041AD` | `UNICODE_STRING` length 0x72 / max 0x74 |
 | `0x140004283` | `NdisRegisterDeviceEx` call |
 | `0x1400041CB` | `MajorFunctions` memset (0xE0) |
@@ -604,7 +604,7 @@ bad destination bugchecks, but the leaked context supplies a known writable targ
 | `0x14000707E` | `NdisFOidRequest` call |
 | `0x1400054B0` | `FilterAttach` |
 | `0x1400058F4` | state 3 at attach |
-| `0x14000592F`–`0x140005951` | context list insertion |
+| `0x14000592F`-`0x140005951` | context list insertion |
 | `0x1400058FC` | queue init at `ctx+0x260` |
 | `0x140005D90` | `FilterRestart` |
 | `0x140006136` | state 6 at restart |
@@ -614,9 +614,9 @@ bad destination bugchecks, but the leaked context supplies a known writable targ
 | `0x1400017A4` | `ctx+0x280` flags write (`0x88992278`) |
 | `0x140001C3E` | queue-count read (`0x88992294`) |
 | `0x1400012DE` | default filter action 3 |
-| `0x140002566`–`0x14000258B` | receive-path queue insert / count |
-| `0x140002729`–`0x140002737` | send-path queue insert / count |
-| `0x140007350` | descriptor → NBL send |
+| `0x140002566`-`0x14000258B` | receive-path queue insert / count |
+| `0x140002729`-`0x140002737` | send-path queue insert / count |
+| `0x140007350` | descriptor -> NBL send |
 | `0x140007478` | NBL builder |
 | `0x14000751B` | `MmMapLockedPagesSpecifyCache` (NBL MDL only) |
 | `0x140007566` | NBL data copy (driver-owned destination) |
@@ -631,10 +631,10 @@ bad destination bugchecks, but the leaked context supplies a known writable targ
 
 ## 11. References
 
-- `audits/reports/hp_rtf64x64.static.md` — old-scope report; superseded by this file.
-- `audits/reports/b06bdrv_detailed.md` — `bxvbda.sys` V20–V22; source of the `0x8000203C`,
+- `audits/reports/hp_rtf64x64.static.md` - old-scope report; superseded by this file.
+- `audits/reports/b06bdrv_detailed.md` - `bxvbda.sys` V20-V22; source of the `0x8000203C`,
   `0x80002038`, `0x80002050` codes that the task attributed to this driver.
-- `audits/scope/SEVERITY.md` — MW1–MW4 scale; `rtf64x64 composition` is the canonical MW2 example.
-- `audits/scope/AUDIT_SCOPE.md` — reach/setup fields and what counts.
-- `audits/STATUS.md` — historical `WRITE-HIGH` entry for HP `rtf64x64`; this report replaces that
+- `audits/scope/SEVERITY.md` - MW1-MW4 scale; `rtf64x64 composition` is the canonical MW2 example.
+- `audits/scope/AUDIT_SCOPE.md` - reach/setup fields and what counts.
+- `audits/STATUS.md` - historical `WRITE-HIGH` entry for HP `rtf64x64`; this report replaces that
   verdict for the exact hash.

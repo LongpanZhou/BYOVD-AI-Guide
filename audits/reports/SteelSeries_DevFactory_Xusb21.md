@@ -1,18 +1,18 @@
-# Audit: SteelSeries `ssdevfactory` ×5 + `xusb21` ×4
+# Audit: SteelSeries `ssdevfactory` x5 + `xusb21` x4
 
 | Field | Value |
 |---|---|
 | File(s) | `drivers\ssdevfactory_3F76D97A.sys`, `_49E69A7F.sys`, `_63D7C6F1.sys`, `_A7F7DC6A.sys`, `_BB05D258.sys`; `drivers\xusb21_0AABCEB6.sys`, `_785DEFAE.sys`, `_9D614C5D.sys`, `_B7A7A906.sys` |
-| SHA-256(s) | see §0.2 (all nine verified against the assigned files) |
+| SHA-256(s) | see section 0.2 (all nine verified against the assigned files) |
 | Analysis date | 2026-10-25 |
-| Method | **Static only** — local Ghidra 12.1.4 headless (`DumpAll.java`: all functions decompiled + import/string cross-reference), `llvm-objdump` disassembly, raw PE/resource parsing, Authenticode status read locally. Nothing loaded, executed, installed, or written to the registry. **REA cross-check was not used: the four shared REA sessions are at capacity.** All findings below are Ghidra/objdump-only. |
-| Reach tier | **R1** for the `ssdevfactory` child interfaces (Everyone-RWX SDDL); **R2–R3** for `xusb21` (no SDDL, PnP devnode, Xbox-360 controller required) |
-| Setup required | **composition** (`ssdevfactory`, SteelSeries stack must be installed and bound) · **hardware** (`xusb21`) · **none** beyond installation for the i386 builds' static content |
-| Write quality | **W2** (`ssdevfactory` x64) · **W0** (`xusb21` x64) · W2 latent for the i386 `ssdevfactory` builds (same code, not loadable) |
-| Verdict | **MW2** — `ssdevfactory` x64 ×3; **BLOCKED** — `ssdevfactory` i386 ×2 and `xusb21` i386 ×2; **NO-MEMORY-WRITE** — `xusb21` x64 ×2 |
+| Method | **Static only** - local Ghidra 12.1.4 headless (`DumpAll.java`: all functions decompiled + import/string cross-reference), `llvm-objdump` disassembly, raw PE/resource parsing, Authenticode status read locally. Nothing loaded, executed, installed, or written to the registry. **REA cross-check was not used: the four shared REA sessions are at capacity.** All findings below are Ghidra/objdump-only. |
+| Reach tier | **R1** for the `ssdevfactory` child interfaces (Everyone-RWX SDDL); **R2-R3** for `xusb21` (no SDDL, PnP devnode, Xbox-360 controller required) |
+| Setup required | **composition** (`ssdevfactory`, SteelSeries stack must be installed and bound) ; **hardware** (`xusb21`) ; **none** beyond installation for the i386 builds' static content |
+| Write quality | **W2** (`ssdevfactory` x64) ; **W0** (`xusb21` x64) ; W2 latent for the i386 `ssdevfactory` builds (same code, not loadable) |
+| Verdict | **MW2** - `ssdevfactory` x64 x3; **BLOCKED** - `ssdevfactory` i386 x2 and `xusb21` i386 x2; **NO-MEMORY-WRITE** - `xusb21` x64 x2 |
 
-Canonical form: `MW2 — reach=R1 setup=composition write=W2 load=signed` for `ssdevfactory` x64.
-`NO-MEMORY-WRITE — reach=R3 setup=hardware write=W0 load=signed` for `xusb21` x64.
+Canonical form: `MW2 - reach=R1 setup=composition write=W2 load=signed` for `ssdevfactory` x64.
+`NO-MEMORY-WRITE - reach=R3 setup=hardware write=W0 load=signed` for `xusb21` x64.
 
 ---
 
@@ -24,8 +24,8 @@ Both families were previously dismissed as `NO-WRITE`/`NEEDS-DYNAMIC` under the 
 unprivileged-only scope (`steelseries_hid.static.md`, `steelseries_hid_miniport.static.md`).
 Those verdicts are not inherited. `ssdevfactory` was explicitly left as *NEEDS-DYNAMIC* on the
 `0x220003` `METHOD_NEITHER` branch; that branch is the core of this report and is now resolved
-statically as far as the binary allows (§5.2, §9.1). `xusb21` was never enumerated — only
-"hardware-gated" — and is enumerated in §3.3.
+statically as far as the binary allows (section 5.2, section 9.1). `xusb21` was never enumerated - only
+"hardware-gated" - and is enumerated in section 3.3.
 
 ### 0.2 Per-file table
 
@@ -38,8 +38,8 @@ statically as far as the binary allows (§5.2, §9.1). `xusb21` was never enumer
 | `ssdevfactory_A7F7DC6A.sys` | **i386** | 1.1.4.1 / 2017-05-08 | `A7F7DC6AC8916EC2F70AAED08EA3F2343D57906821CA977F20FFBB51D141C123` | SteelSeries ApS | same SDDL (static) | **BLOCKED** (i386) |
 | `xusb21_0AABCEB6.sys` | x64 | 9.18.1034.0 / 2009-08-13 | `0AABCEB627E274E338DDD9BA664BAA128D7C00AF04C95C776C2AFFA6BB17F680` | Microsoft (MOPR) | PnP devnode, default DACL (SYSTEM/admin) | **NO-MEMORY-WRITE** (W0) |
 | `xusb21_B7A7A906.sys` | x64 | 9.18.1015.0 / 2009-04-08 | `B7A7A906A7BB0F760ED241F998C647D728C4DB5D8778AFE585DF38331165803F` | Microsoft (MOPR) | PnP devnode, default DACL (SYSTEM/admin) | **NO-MEMORY-WRITE** (W0) |
-| `xusb21_9D614C5D.sys` | **i386** | 9.18.1034.0 / 2009-08-13 | `9D614C5D3BB679CCF15CA6DD044318692EA6D89B89D80D690E79A1C0B941430F` | Microsoft (MOPR) | — | **BLOCKED** (i386) |
-| `xusb21_785DEFAE.sys` | **i386** | 9.18.1015.0 / 2009-04-08 | `785DEFAE550CAB5BDFA15CF195A1DEF5AD188EFEAD2D8B1508972CF892BB75A9` | Microsoft (MOPR) | — | **BLOCKED** (i386) |
+| `xusb21_9D614C5D.sys` | **i386** | 9.18.1034.0 / 2009-08-13 | `9D614C5D3BB679CCF15CA6DD044318692EA6D89B89D80D690E79A1C0B941430F` | Microsoft (MOPR) | - | **BLOCKED** (i386) |
+| `xusb21_785DEFAE.sys` | **i386** | 9.18.1015.0 / 2009-04-08 | `785DEFAE550CAB5BDFA15CF195A1DEF5AD188EFEAD2D8B1508972CF892BB75A9` | Microsoft (MOPR) | - | **BLOCKED** (i386) |
 
 Notes on the table:
 
@@ -87,7 +87,7 @@ readable; the resolutions used are:
 `ZwMapViewOfSection`, `ZwCreateFile`, `ProbeForRead`, `ProbeForWrite`, `memcpy`, `memset`,
 `KeStackAttachProcess`, `WRMSR`, or PCI/SMBus HAL call in any x64 build.** The two i386
 `ssdevfactory` builds add `memcpy`/`memset`/`_allmul`/`_alldiv` and `READ_PORT_ULONG`/
-`WRITE_PORT_ULONG` (§6.2).
+`WRITE_PORT_ULONG` (section 6.2).
 
 `xusb21` imports only `ExAllocatePoolWithTag`, `ExAllocatePoolWithQuotaTag`,
 `ExFreePool(WithTag)`, `RtlCopyUnicodeString`, `RtlCompareMemory`, `RtlInitUnicodeString`,
@@ -99,7 +99,7 @@ mapping, no port I/O, no PCI config, no MSR, no DMA, no `\Device\PhysicalMemory`
 
 ## 2. Entry / device / interface / effective DACL
 
-### 2.1 `ssdevfactory` — Everyone-RWX, live in all five builds
+### 2.1 `ssdevfactory` - Everyone-RWX, live in all five builds
 
 The driver is a PnP function driver that creates **virtual child devices**
 ("SteelSeries Keyboard", "SteelSeries MB Lighting Interface", XInput controller). Each
@@ -131,16 +131,16 @@ Effective DACL: **protected** (`P`), owner `SYSTEM` full, `BUILTIN\Administrator
 the five binaries and no `WdfDeviceCreateSymbolicLink` (`+0x280`) slot is loaded in the three x64
 builds, so the exposure is the **device interface**
 `{BEA3CED6-38EC-45B0-9DB6-557CC54D7021}` (`WdfDeviceCreateDeviceInterface`), enumerable and
-openable by any user through `CM_Get_DeviceInterfaceList` → `CreateFile`; the interface open is
+openable by any user through `CM_Get_DeviceInterfaceList` -> `CreateFile`; the interface open is
 authorised by the device DACL above, i.e. **Everyone**.
 
 `Setup required` is therefore **composition**: the SteelSeries stack must be installed and the
 parent devnode bound so the factory runs and publishes the children. Once it is, no extra
 privilege and no hardware poke is needed to open the child interface.
 
-### 2.2 `xusb21` — no SDDL, no interface, no symlink
+### 2.2 `xusb21` - no SDDL, no interface, no symlink
 
-`xusb21` is Microsoft's XUSB 2.1 bus driver (`e:\xusb\main\private\drivers\xusb\…` source paths
+`xusb21` is Microsoft's XUSB 2.1 bus driver (`e:\xusb\main\private\drivers\xusb\...` source paths
 in all four builds). It creates **no** `IoCreateDevice`/`IoCreateSymbolicLink` (no such imports),
 applies **no** SDDL (the byte patterns `D:P(` in ASCII and UTF-16 are absent from all four
 images), contains no `\Device\` or `\DosDevices\` string, and registers **no** device interface:
@@ -162,16 +162,16 @@ path, which exists only when the XUSB controller/controller-child hardware enume
 
 | IOCTL | Decode (DeviceType, Function, Method, Access) | Input | Action |
 |---|---|---|---|
-| `0x220003` | `0x22, 0x800, METHOD_NEITHER, ANY` | caller block (see §5.2) | three instances — keyboard queue `FUN_140001ba0@0x140001ba0`, MB-lighting queue `FUN_140002ef0@0x140002ef0`, third child `FUN_140004cb0@0x140004cb0`. Copies a fixed HID report-descriptor template into the caller block; selector 0/9/0xB/0x1B/0x28 |
+| `0x220003` | `0x22, 0x800, METHOD_NEITHER, ANY` | caller block (see section 5.2) | three instances - keyboard queue `FUN_140001ba0@0x140001ba0`, MB-lighting queue `FUN_140002ef0@0x140002ef0`, third child `FUN_140004cb0@0x140004cb0`. Copies a fixed HID report-descriptor template into the caller block; selector 0/9/0xB/0x1B/0x28 |
 | `0x220013` | `0x22, 0x804, METHOD_NEITHER, ANY` | same block | writes `dword 3` at `+0x00`, `word 0` at `+0x02` of the block |
 | `0x2A0000` | `0x2A, 0x000, METHOD_BUFFERED, ANY` | 6 B | copies 6 B into a local 0x10-byte LED struct, sends to HID target (`FUN_1400013b4`) |
 | `0x2A0004` | `0x2A, 0x001, METHOD_BUFFERED, ANY` | 6 B | same, variant (`FUN_140001590`) |
-| `0x2A0008` | `0x2A, 0x002, METHOD_BUFFERED, ANY` | 4 B, `in[0]==7` | `in[1]`/`in[2]` select LED sub-command; retrieves a pending report request from a queue and copies ≤0x20 B into its buffer (`FUN_140001d8d` region) |
+| `0x2A0008` | `0x2A, 0x002, METHOD_BUFFERED, ANY` | 4 B, `in[0]==7` | `in[1]`/`in[2]` select LED sub-command; retrieves a pending report request from a queue and copies <=0x20 B into its buffer (`FUN_140001d8d` region) |
 | `0x2A000C` | `0x2A, 0x003, METHOD_BUFFERED, ANY` | 4 B | returns a 4-byte version (`FUN_140001764`) |
-| `0x2A0010` | `0x2A, 0x004, METHOD_BUFFERED, ANY` | **0x41 B exactly** | copies ≤0x41 B to a pending report buffer |
+| `0x2A0010` | `0x2A, 0x004, METHOD_BUFFERED, ANY` | **0x41 B exactly** | copies <=0x41 B to a pending report buffer |
 | `0x2A0014` | `0x2A, 0x005, METHOD_BUFFERED, ANY` | 8 B | 8-byte LED struct (`FUN_1400014ac`) |
 | `0x2A0018` | `0x2A, 0x006, METHOD_BUFFERED, ANY` | 8 B | 8-byte LED struct (`FUN_140001684`) |
-| `0x2A0028` | `0x2A, 0x00A, METHOD_BUFFERED, ANY` | — | forwarded internally (`WdfRequestForwardToParentDeviceIoQueue`, `+0xC58`) |
+| `0x2A0028` | `0x2A, 0x00A, METHOD_BUFFERED, ANY` | - | forwarded internally (`WdfRequestForwardToParentDeviceIoQueue`, `+0xC58`) |
 | `0x2A0440`/`0x2A0444`/`0x2A0448` | `0x2A, 0x110/0x111/0x112, METHOD_BUFFERED, ANY` | 8/8/0x1C B | child-device configuration (`FUN_1400017c8`, `FUN_1400018ac`, `FUN_14000198c`); no caller pointer |
 
 Only `0x220003` and `0x220013` are `METHOD_NEITHER`; everything else is `METHOD_BUFFERED` with a
@@ -181,14 +181,14 @@ buffer copy bounds those paths.
 `0x2A0448` (`FUN_14000198c`) additionally walks the FDO's default child list
 (`WdfFdoGetDefaultChildList`, table `+0x420`) and hands the child-list request to
 `FUN_140004fc8`; that function performs a
-`memcpy(dst = *(params+0x28), src = local, len = min(0x14, *(params+0x24)))` — the same
-descriptor-shape copy discussed in §5.3, length-clamped.
+`memcpy(dst = *(params+0x28), src = local, len = min(0x14, *(params+0x24)))` - the same
+descriptor-shape copy discussed in section 5.3, length-clamped.
 
 ### 3.2 `ssdevfactory` queues
 
 Three `WdfIoQueueCreate` calls per device set (`+0x4C0` at `0x1400029ed`, `0x140002a3f`,
 `0x140002aa0`), each with an `EvtIoDeviceControl`. The handler signature is the 5-argument
-`(Queue, Request, OutputBufferLength, InputBufferLength, IoControlCode)` form — confirmed by the
+`(Queue, Request, OutputBufferLength, InputBufferLength, IoControlCode)` form - confirmed by the
 prologue reading the 5th argument from `[rsp+0x28]` (`movl 0x7f(%rbp),%ecx` @`0x140001c61`
 with `rbp = rsp+0x81`) and the 4th from `r9` (`movq %r9,%rbx` @`0x140001be1`).
 
@@ -196,12 +196,12 @@ with `rbp = rsp+0x81`) and the 4th from `r9` (`movq %r9,%rbx` @`0x140001be1`).
 
 | Code | Method | Handler | Action |
 |---|---|---|---|
-| `0x220003` | **NEITHER** | `FUN_00015454@0x15454`, alternate `FUN_00013ec0@0x13ec0` | XUSB report-descriptor protocol (selectors `0`,`1`,`2`,`10`,`0xB`,`0x1B`,`0x1E`); templates copied into the request's descriptor buffer, **every copy gated on the descriptor length** (`0x12`, `0xC0`, `1`, `2`, …) |
+| `0x220003` | **NEITHER** | `FUN_00015454@0x15454`, alternate `FUN_00013ec0@0x13ec0` | XUSB report-descriptor protocol (selectors `0`,`1`,`2`,`10`,`0xB`,`0x1B`,`0x1E`); templates copied into the request's descriptor buffer, **every copy gated on the descriptor length** (`0x12`, `0xC0`, `1`, `2`, ...) |
 | `0x220013` | **NEITHER** | `FUN_00013ec0@0x13ec0` | completes `STATUS_INVALID_DEVICE_REQUEST`, information `3` |
-| `0x2F0003` | — | `FUN_00013ec0` region | device-level query on the queue's device |
+| `0x2F0003` | - | `FUN_00013ec0` region | device-level query on the queue's device |
 | `0x80006000`, `0x8000A010`, `0x8000A01C`, `0x8000E004/8/C/14/18/20/3FC` | internal | `FUN_0001a684@0x1a684` | XUSB bus-interface/power packets; each writes a fixed `0x102`-tagged block after checking the caller-provided buffer length (`0xb < param_3[3]`) |
 
-`0x220003`/`0x220013` decode as `0x22, 0x800/0x804, METHOD_NEITHER, FILE_ANY_ACCESS` — the
+`0x220003`/`0x220013` decode as `0x22, 0x800/0x804, METHOD_NEITHER, FILE_ANY_ACCESS` - the
 **same vendor code pair as `ssdevfactory`**, i.e. the SteelSeries package reused the XUSB
 report-descriptor protocol. In
 `xusb21` the descriptor object is reached from the request's own context
@@ -218,10 +218,10 @@ pointer is dereferenced without a matching length check.
 * `ssdevfactory`: **no** `SeSinglePrivilegeCheck`, `SeAccessCheck`, `FILE_WRITE_ACCESS` gate, or
   caller-identity test anywhere. Authorisation is the device DACL only, and that DACL grants
   `Everyone` `GENERIC_READ|GENERIC_WRITE|GENERIC_EXECUTE` (SDDL `A;;GRGWGX;;;WD`). Every IOCTL in
-  §3.1 is `FILE_ANY_ACCESS`, so `CreateFile` with `GENERIC_READ` suffices for all of them.
+  section 3.1 is `FILE_ANY_ACCESS`, so `CreateFile` with `GENERIC_READ` suffices for all of them.
   An administrator does not need to do anything extra; an ordinary user can open the same
   interface. This is the R1 case.
-* `xusb21`: no explicit checks either, but also no permissive DACL — default device security.
+* `xusb21`: no explicit checks either, but also no permissive DACL - default device security.
   Reaching any of the codes requires the devnode (hardware) and, for a non-admin, an ACL change.
   The 5th-argument codes `0x8000xxxx` are internal bus-interface packets used by the child
   stacks, not a user surface.
@@ -238,10 +238,10 @@ destination whose destination is caller-chosen in a *buffered* path, no MDL, no 
 mapping, no `MmMapIoSpace`, no `ZwMapViewOfSection`, no `\Device\PhysicalMemory`, no
 `MmGetPhysicalAddress`, no MSR/port/PCI/SMBus write in either x64 family. The `ssdevfactory`
 `memcpy`/`memset` compiler intrinsics (`FUN_140006080` / `FUN_140006340`) are used only for
-fixed-size `memset`s of locals and for the descriptor copies in §5.2–5.3, always with a
+fixed-size `memset`s of locals and for the descriptor copies in section 5.2-5.3, always with a
 `min(caller_length, fixed_cap)` bound.
 
-### 5.2 `ssdevfactory` `0x220003` / `0x220013` — `METHOD_NEITHER` fixed-content store
+### 5.2 `ssdevfactory` `0x220003` / `0x220013` - `METHOD_NEITHER` fixed-content store
 
 Both handlers obtain their object from the request parameters they themselves fill:
 
@@ -253,7 +253,7 @@ Both handlers obtain their object from the request parameters they themselves fi
 140001c64  mov  rax,[rbp-0x9]            ; block pointer  (base + 8)
 ```
 
-`0x220003`, selector 0 (`0x140001efe`–`0x140001f4d`), writes into that block at fixed offsets:
+`0x220003`, selector 0 (`0x140001efe`-`0x140001f4d`), writes into that block at fixed offsets:
 
 ```
 movw $0x3,0x2c(%rax)      movq $0x140007338,0x48(%rax)
@@ -272,13 +272,13 @@ movl %ebx,0x2(%rax)  ; word 0 at block+0x02
 ```
 
 Selectors `0xB`/`0x28` (`FUN_140002244`), `0x1B` (`FUN_140001fa8`) and `9` (`FUN_140002138`)
-then read/write further through the block's own fields — `+0x24` length (u32) and `+0x28`
-buffer pointer — copying fixed driver templates (`&DAT_1400073b0`, `&DAT_1400074d0`,
-`&DAT_140007398`, …) with a per-selector cap of `0x12`/`0x18`/`0x1A`/`0x1B`/`0x2E`/`0x3B`/`0x3C`,
+then read/write further through the block's own fields - `+0x24` length (u32) and `+0x28`
+buffer pointer - copying fixed driver templates (`&DAT_1400073b0`, `&DAT_1400074d0`,
+`&DAT_140007398`, ...) with a per-selector cap of `0x12`/`0x18`/`0x1A`/`0x1B`/`0x2E`/`0x3B`/`0x3C`,
 and
 `0x1B` (`FUN_140001fa8`) rejecting `*(param_2+0x24) > 0x20E` and then copying that many bytes
 **from** the caller pointer `*(param_2+0x28)` into the device-context buffer created as
-`WdfMemoryCreate(&cfg, PagedPool, 'PSS2' /*0x32325350*/, 0x20E, …)` in `FUN_140002b60`
+`WdfMemoryCreate(&cfg, PagedPool, 'PSS2' /*0x32325350*/, 0x20E, ...)` in `FUN_140002b60`
 (`0x140002b60` region, `0x32325350` at the `WdfMemoryCreate` call). That destination is exactly
 0x20E bytes and the length is checked first, so the 0x1B path is a bounded **read** of caller
 memory, not a write.
@@ -291,7 +291,7 @@ Why this is a caller-controlled object and not a driver context:
   `+0x83`, the length at `+0x24` and the buffer pointer at `+0x28`;
 * the driver **never writes** `+0x00`, `+0x18`, `+0x24`, `+0x28` or `+0x83` in the
   `0x220003`/`0x220013` handlers; it only consumes them (the selector-0 branch fills
-  `+0x2C…+0x80` and drops two `.data` pointers at `+0x48` and `+0x78`);
+  `+0x2C...+0x80` and drops two `.data` pointers at `+0x48` and `+0x78`);
 * there is **no `ProbeForWrite`/`ProbeForRead`** in any build and no
   `WdfRequestRetrieveUnsafeUserInputBuffer` use. For a `METHOD_NEITHER` IOCTL the I/O manager
   does not probe `Type3InputBuffer`; the handler is responsible, and it does not.
@@ -299,22 +299,22 @@ Why this is a caller-controlled object and not a driver context:
 Net primitive, `ssdevfactory` x64: a caller who can open the interface (Everyone) can make the
 driver store a **fixed ~0x5C-byte template (including two `ssdevfactory` `.data` pointers)** at a
 caller-chosen 64-bit address (`0x220003` selector 0), or store `dword 3`/`word 0` at a
-caller-chosen address (`0x220013`), or store a fixed template of ≤0x3C bytes at a pointer
+caller-chosen address (`0x220013`), or store a fixed template of <=0x3C bytes at a pointer
 supplied one level deeper (`+0x28`). The **value is not caller-chosen** (two bytes are, via the
 flags at `+0x83`/`+0x41`), the **length is caller-chosen but clamped**, the **target is
 caller-chosen**. That is a constrained write: **W2**, not W1. It also yields an arbitrary kernel
-**read** (selector `0x1B` copies ≤0x20E bytes from the caller pointer into a HID report), which
+**read** (selector `0x1B` copies <=0x20E bytes from the caller pointer into a HID report), which
 is a KASLR-capable leak but is not itself a write.
 
 ### 5.3 The `0x2A0008`/`0x2A0010` report path
 
-`FUN_140001ba0` `0x140001d8d`–`0x140001e87`: `WdfRequestRetrieveInputBuffer(Request,4,&in,NULL)`,
+`FUN_140001ba0` `0x140001d8d`-`0x140001e87`: `WdfRequestRetrieveInputBuffer(Request,4,&in,NULL)`,
 requires `in[0]==7`, uses `in[1]`/`in[2]` as LED index/branch, then
 `WdfIoQueueRetrieveNextRequest(ctx+8, &pending)` and `WdfRequestGetParameters(pending,&p)`; the
 copy is `FUN_140006080(dst = the buffer pointed to by block+0x28, src = input,
 len = min(0x20, block+0x24))`
-(`0x140001d3d`–`0x140001d5e`). `0x2A0010` is the same with `0x41`. Every bound comes from the
-block's `+0x24`, clamped to `0x20`/`0x41` in the instruction stream — no overflow of the
+(`0x140001d3d`-`0x140001d5e`). `0x2A0010` is the same with `0x41`. Every bound comes from the
+block's `+0x24`, clamped to `0x20`/`0x41` in the instruction stream - no overflow of the
 destination.
 
 ### 5.4 `xusb21`
@@ -337,13 +337,13 @@ fixed 12-byte block after `0xb < length`.
 `FUN_1400023e8`; callback `FUN_140003370@0x140003370`; interface setup
 `FUN_140003438@0x140003438` builds a `'SSMB'` 0x200-byte pool buffer and an IO target for the
 SMBus-controller interface). The resulting object is used to emit the manufacturer's fixed
-lighting packets; **no IOCTL field reaches the SMBus address/register/data** — the lighting
-queue's `0x220003` handler writes only the constants shown in §5.2 plus the caller's variant
+lighting packets; **no IOCTL field reaches the SMBus address/register/data** - the lighting
+queue's `0x220003` handler writes only the constants shown in section 5.2 plus the caller's variant
 byte, and the other lighting codes (`0x2A0440/444/448`) carry fixed-size local structures. So the
 SMBus/MB-lighting side is at most a **HW-ONLY** path (device/hardware access), with no
 user-controlled transaction, and no chain from it into a memory write.
 
-### 6.2 `ssdevfactory` i386 builds — fixed PCI config access
+### 6.2 `ssdevfactory` i386 builds - fixed PCI config access
 
 `ssdevfactory_3F76D97A` and `_A7F7DC6A` import `READ_PORT_ULONG`/`WRITE_PORT_ULONG`, used in
 exactly one 70-byte routine (`FUN_00401120` in `3F76D97A`):
@@ -354,7 +354,7 @@ READ_PORT_ULONG(0xCFC);
 ```
 
 i.e. a fixed PCI-config **address** write plus a read at bus 0 / device 0x1F / function 0 /
-register 0x2C — a chipset-subsystem-ID probe with constants only. `HW-ONLY`, no user input, no
+register 0x2C - a chipset-subsystem-ID probe with constants only. `HW-ONLY`, no user input, no
 memory effect. (This call is absent from the three x64 builds.)
 
 ### 6.3 `xusb21`
@@ -372,7 +372,7 @@ No HW-ONLY surface at all: the bus driver talks to the controller through WDF US
 | SDDL / interface | same `Everyone-RWX` literal in all five builds; 3 creation sites in `63D7C6F1` | same literal | same literal, 3 sites (third child class) |
 | `0x220003` block pointer | `WDF_REQUEST_PARAMETERS+8` (`local_60[1]`) | `+8` (`0x140001c65`) | `+8` (`0x140001c64`) |
 | Descriptor templates | 2017 constant set (`&DAT_140006278`/`...27C`) | same family | 2025 constant set (`&DAT_140007338`/`...33C`), larger `0x2A04xx` block |
-| `0x220003` write size | `+0x2C…+0x80` | same | `+0x2C…+0x88` |
+| `0x220003` write size | `+0x2C...+0x80` | same | `+0x2C...+0x88` |
 | Port I/O | fixed PCI probe (`0xCF8/0xCFC`) | fixed PCI probe | none |
 | Bugchecks | `KeBugCheckEx` imported (not on these paths) | none | none |
 | Signer | SteelSeries | SteelSeries | Microsoft WHCP |
@@ -386,7 +386,7 @@ build changes the memory-write picture.
 
 ## 8. Verdict
 
-**Overall: `MW2 — reach=R1 setup=composition write=W2 load=signed` for the three x64
+**Overall: `MW2 - reach=R1 setup=composition write=W2 load=signed` for the three x64
 `ssdevfactory` builds.** The family exposes a `METHOD_NEITHER` IOCTL pair (`0x220003`,
 `0x220013`) on an `Everyone`-RWX device interface, with no probe and no output-length check, that
 stores fixed driver templates (and `dword 3`/`word 0`) at a caller-supplied 64-bit address. It is
@@ -411,17 +411,17 @@ Per-file: `MW2` for `63D7C6F1`, `49E69A7F`, `BB05D258`; `BLOCKED` for `3F76D97A`
 1. **The one load-bearing uncertainty.** The `ssdevfactory` block pointer is loaded from
    `WDF_REQUEST_PARAMETERS + 8` (`0x140001c64` in `63D7C6F1`, `0x140001c65` in `49E69A7F`). Per
    the KMDF header
-   (`wdfrequest.h`, 1.9 → 1.33, identical) offset `+8` of `Parameters.DeviceIoControl` is
+   (`wdfrequest.h`, 1.9 -> 1.33, identical) offset `+8` of `Parameters.DeviceIoControl` is
    **`OutputBufferLength`**, while `Type3InputBuffer` is `+0x20`; the `Size` field the driver
    writes (`0x28` x64 / `0x18` x86) matches `sizeof(WDF_REQUEST_PARAMETERS)` exactly, and
    `+0x850` was confirmed as `pfnWdfRequestGetParameters` against the local `Wdf01000.pdb`
    (`offset = 2128`). Read literally, the field is a length and the branch would fault on first
-   use. Against that: the block is demonstrably caller-initialised (§5.2), the driver's own
+   use. Against that: the block is demonstrably caller-initialised (section 5.2), the driver's own
    service must drive these codes, and the sibling Microsoft `xusb21` code uses the same block
    shape with a real buffer pointer. One 5-minute KD run (break at `0x140001c64`, print `RAX`,
    call `0x220003` as a standard user with a user buffer and then with a kernel address) settles
    it. If the field is a length, the branch is a bugcheck and the family drops to **MW4 (W3,
-   crash-first)**; if it is the caller's `Type3InputBuffer` — the reading adopted here — the
+   crash-first)**; if it is the caller's `Type3InputBuffer` - the reading adopted here - the
    verdict stands at MW2/W2.
 2. **No dynamic confirmation, no REA.** Static only, as required; the four REA sessions were at
    capacity, so no independent evidence IDs exist for this report. Ghidra decompiler artefacts

@@ -48,7 +48,7 @@ Internal device control (`FUN_140001180`, dump 74-152) is for IRP_MJ_INTERNAL_DE
 
 - No `SeAccessCheck`, `SeSinglePrivilegeCheck` or caller-identity check in the driver.
 - Gates: device creation through PnP only; WDF request validation (`WdfRequestRetrieveOutputBuffer` min size 4).
-- Non-0x222008 requests are passed to the lower target, so their effect is governed by the lower driver, which is outside this image. See §8.
+- Non-0x222008 requests are passed to the lower target, so their effect is governed by the lower driver, which is outside this image. See section 8.
 
 ## 5 Memory-write trace
 

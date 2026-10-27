@@ -1,15 +1,15 @@
-# TeamGroup `nvme_*.sys` — static audit
+# TeamGroup `nvme_*.sys` - static audit
 
 Family: **StorPort NVMe miniport**, Windows DDK build 6.3.9600.17038 (PE TS 2014-12-08). Six builds, all the same date and version:
 
 | Build | Size | SHA256 (prefix) |
 |---|---|---|
-| `45635E0B` | 104288 | 45635E0B… (**audited**) |
-| `A9B48787` | 104288 | A9B48787… |
-| `77C8809A` | 90976 | 77C8809A… |
-| `FFD83A43` | 91488 | FFD83A43… |
-| `E4AB6E36` | 78688 | E4AB6E36… |
-| `35B2D3D4` | 66912 | 35B2D3D4… |
+| `45635E0B` | 104288 | 45635E0B... (**audited**) |
+| `A9B48787` | 104288 | A9B48787... |
+| `77C8809A` | 90976 | 77C8809A... |
+| `FFD83A43` | 91488 | FFD83A43... |
+| `E4AB6E36` | 78688 | E4AB6E36... |
+| `35B2D3D4` | 66912 | 35B2D3D4... |
 
 Only `45635E0B` was dumped. The other five share the family, version, and PE timestamp. The master table lists the same API set for all six. They were not individually dumped.
 
@@ -17,13 +17,13 @@ Method: static only. Ghidra 12.1.4 headless, `DumpAllDecomp.java`. Nothing loade
 
 ## 1. Verdict
 
-**NO-WRITE** — disqualified by policy: the driver is a storage miniport that exists only when a TeamGroup NVMe controller is present (hardware), and its device stack is created by PnP (devnode). No control device of its own.
+**NO-WRITE** - disqualified by policy: the driver is a storage miniport that exists only when a TeamGroup NVMe controller is present (hardware), and its device stack is created by PnP (devnode). No control device of its own.
 
 ## 2. What it is
 
 - Imports `StorPortInitialize`, `StorPortExtendedFunction`, `StorPortGetScatterGatherList`, `StorPortGetPhysicalAddress`, `StorPortRegistryRead`, `StorPortNotification`, `StorPortSetDeviceQueueDepth`, `StorPortPause`/`Resume`/`Busy`, plus `MmGetPhysicalAddress` (NTOSKRNL) and `KeStallExecutionProcessor` (HAL). That is a StorPort miniport: it is driven by the storage stack through SRBs.
 - No `IoCreateDevice`, `IoCreateSymbolicLink`, or `IoRegisterDeviceInterface` import. No `\Device\` or `\DosDevices\` string. The miniport creates no openable device.
-- `entry` @ `0x140012898` → `FUN_140016000` (init) and `FUN_14000dd78` (`DriverEntry` body, which calls `StorPortInitialize`).
+- `entry` @ `0x140012898` -> `FUN_140016000` (init) and `FUN_14000dd78` (`DriverEntry` body, which calls `StorPortInitialize`).
 
 ## 3. Precondition table
 
@@ -51,7 +51,7 @@ The brief lists "storport SRB DataTransferLength vs actual copy" as a known shap
 
 ## 6. Corruption, not write
 
-- Not assessed beyond the import table (see §5).
+- Not assessed beyond the import table (see section 5).
 
 ## 7. Next dynamic test (described, not run)
 

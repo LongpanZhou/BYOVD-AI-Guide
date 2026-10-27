@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `E10768FEB8BB37FE8CD310F47C90EAF1EE6E520E792B67D65FD30ECB285A977F` (matches triage_index.csv row `AMDPCIDev`; sha256 recomputed in-session) |
 | Company/Version | Advanced Micro Devices (PDB `AMDPCIDev.pdb`) |
 | Method | Static-only audit via REA/Ghidra 12.1.4, memory-write scope only |
-| Verdict | **NO-WRITE** — no memory-mapping or physical-memory APIs imported; device-control IRPs are forwarded to the lower stack; the only MSR writes take constant arguments at DriverEntry |
+| Verdict | **NO-WRITE** - no memory-mapping or physical-memory APIs imported; device-control IRPs are forwarded to the lower stack; the only MSR writes take constant arguments at DriverEntry |
 | Coverage | ~70%. Not traced: AddDevice `FUN_140006000`, PnP `FUN_140006120`, power `FUN_1400010f0`, unload `FUN_140006460`, process-notify callbacks `FUN_140001db0` / `FUN_140001a20`, init helpers `FUN_1400013a0`, `FUN_1400018c8`, `FUN_1400020dc`, `FUN_14000218c`, `FUN_14000181c`, `FUN_140001f2c`, `FUN_140001b9c` |
 
 > **Static-only.** No load, no device open, no IOCTL execution. Addresses are linked VAs (image base `0x140000000`).

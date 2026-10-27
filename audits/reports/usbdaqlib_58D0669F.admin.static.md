@@ -30,16 +30,16 @@ Identity (Get-AuthenticodeSignature / VersionInfo): Company Measurement Computin
 Dispatcher `FUN_000138f8 @ 000138f8` (header 1949, size 360):
 
 - Line 1969: IoControlCode = `*(uint *)(IO_STACK + 0x18)`.
-- Line 1973: `if (*(int *)(dev+0x88) != 2)` → completes with STATUS `0xC0000184` (device not started). This gate means the handler needs a started device, i.e. attached hardware.
+- Line 1973: `if (*(int *)(dev+0x88) != 2)` -> completes with STATUS `0xC0000184` (device not started). This gate means the handler needs a started device, i.e. attached hardware.
 - Line 1983: `0x220000` copies a driver-owned block (`memcpy(local_res10, _Src, uVar1)`, line 1983 area).
-- Line 2001: `0x220004` → `FUN_00013b80`. Line 2006: `0x220008` → separate handler.
-- Line 2008: all other codes → `FUN_00022944(dev, IOCTL, SystemBuffer, ...)` (`FUN_00022944 @ 00022944`, header 13084), which calls `FUN_0001f8a0(...)` at line 13146.
+- Line 2001: `0x220004` -> `FUN_00013b80`. Line 2006: `0x220008` -> separate handler.
+- Line 2008: all other codes -> `FUN_00022944(dev, IOCTL, SystemBuffer, ...)` (`FUN_00022944 @ 00022944`, header 13084), which calls `FUN_0001f8a0(...)` at line 13146.
 
 IOCTL handler `FUN_0001f8a0 @ 0001f8a0` (header 10801, size 2339). Custom codes in the 0x5000xxxx range (decoded as device 0x5000, METHOD_BUFFERED, FILE_ANY_ACCESS unless noted):
 
 | IOCTL | Decode | Line | Action (as traced) |
 |---|---|---|---|
-| 0x500024a4 | function 0x929, METHOD_BUFFERED, FILE_ANY_ACCESS | 10856 → 10857 | `FUN_00022c38((int*)param_3, ...)`: buffer lock + pattern copy (section 5, item 1). **Traced.** |
+| 0x500024a4 | function 0x929, METHOD_BUFFERED, FILE_ANY_ACCESS | 10856 -> 10857 | `FUN_00022c38((int*)param_3, ...)`: buffer lock + pattern copy (section 5, item 1). **Traced.** |
 | 0x50002408 | function 0x902, METHOD_BUFFERED, FILE_ANY_ACCESS | 10850 | `FUN_0001f38c(param_3, ...)` (not traced) |
 | 0x500024a8, 0x500024a0, 0x50002490, 0x5000249c, 0x50002484, 0x50002400, 0x50002404, 0x50002478, 0x50002410, 0x5000240c, 0x50002434, 0x50002494, 0x50002414, 0x50002428, 0x50002420, 0x50002424, 0x50002418, 0x5000241c, 0x5000242c, 0x50002480, 0x50002498, 0x50002448, 0x50002454, 0x50002458, 0x5000246c, 0x5000247c, 0xffffffff | various | 10834-10870+ | cases in the same dispatcher; not traced |
 
@@ -70,7 +70,7 @@ Write classification:
 
 ## 6 Most dangerous exposed capability
 
-IOCTL 0x500024a4 (METHOD_BUFFERED, FILE_ANY_ACCESS, `FUN_0001f8a0` line 10856 → `FUN_00022c38` line 13263 → `FUN_000232c0` line 13586): a copy of a fixed pattern to a caller-chosen address, for a caller-chosen length, on a started device.
+IOCTL 0x500024a4 (METHOD_BUFFERED, FILE_ANY_ACCESS, `FUN_0001f8a0` line 10856 -> `FUN_00022c38` line 13263 -> `FUN_000232c0` line 13586): a copy of a fixed pattern to a caller-chosen address, for a caller-chosen length, on a started device.
 
 ## 7 Verdict
 
@@ -81,7 +81,7 @@ IOCTL 0x500024a4 (METHOD_BUFFERED, FILE_ANY_ACCESS, `FUN_0001f8a0` line 10856 �
 ## 8 Limitations
 
 - Behaviour of `MmProbeAndLockPages` / `IoAllocateMdl` with a kernel-mode address was inferred from API semantics, not verified. Dynamic verification was not performed (the driver was not loaded).
-- Other IOCTL cases in `FUN_0001f8a0` (0x50002408 → `FUN_0001f38c`, and the other 0x5000xxxx codes) were not traced. The lock callers at lines 4780 and 9099 were not traced.
+- Other IOCTL cases in `FUN_0001f8a0` (0x50002408 -> `FUN_0001f38c`, and the other 0x5000xxxx codes) were not traced. The lock callers at lines 4780 and 9099 were not traced.
 - Device-interface DACL not resolved (IoRegisterDeviceInterface default; no SDDL in the image).
 - The `0x220000` / `0x220004` / `0x220008` handlers (lines 1983-2006) were not traced.
 - Static only.

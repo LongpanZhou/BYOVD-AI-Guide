@@ -48,7 +48,7 @@
 
 | IOCTL | Method (low bits) | Path | Reachable under F9 | Caller controls | Effect |
 |---|---|---|---|---|---|
-| 0x9C422000 | BUFFERED (0) | probe in callback, then FUN_140004880 | yes | size a (≤ own allocation size), user VA c (own 0x9C422002 allocation), 16-byte header at d | doorbell 0x20000; PA of caller-selected allocation and size sent (F26) |
+| 0x9C422000 | BUFFERED (0) | probe in callback, then FUN_140004880 | yes | size a (<= own allocation size), user VA c (own 0x9C422002 allocation), 16-byte header at d | doorbell 0x20000; PA of caller-selected allocation and size sent (F26) |
 | 0x9C422002 | OUT_DIRECT (2) | callback only, FUN_140003020 | yes | size (uint32, uncapped) | contiguous alloc, user mapping, table entry; no PA returned (F14 to F16) |
 | 0x9C422003 | NEITHER (3) | callback only, FUN_140003810 | yes, if KMDF returns raw pointers (open item 1) | user VA key; output pointer | frees contiguous memory without unmapping (F17); writes 0 to output pointer (F18) |
 | 0x9C422004 | BUFFERED | callback, then FUN_1400031F0 | yes | channel index 1 to 16 | doorbell 0x30000 (F26) |

@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `83E2C81274DDBE695EF845E541F7A2DB60EF5E195AE14FACDEEEBD30C0EF4E67` (matches triage_index.csv row 28; verified before opening; REA reports the same digest) |
 | Company/Version | Chelsio Communications, 6.11.4.100 (triage row). KMDF driver (`WDFLDR.SYS` bind imports); PCIe adapter function with BAR mapping; PDB `cht4vx64.pdb` |
 | Method | Static-only REA/Ghidra 12.1.4, memory-write scope, short-form |
-| Verdict | **NO-WRITE (coverage-limited, ~40%)** — the only MMIO mapping takes its address and length from the PnP resource list; no caller-controlled kernel write found in the traced set |
+| Verdict | **NO-WRITE (coverage-limited, ~40%)** - the only MMIO mapping takes its address and length from the PnP resource list; no caller-controlled kernel write found in the traced set |
 | Coverage | Import recon; the single `MmMapIoSpaceEx` site and its unmap; both dynamic lookups; the four WDF callbacks registered in device init; thunk xrefs for the three imported routines. Not traced: the WDF request-queue configuration (no `EvtIoDeviceControl` routine located), the device-interface creation, and the MMIO register accessors that use the mapped BAR |
 
 > **Static-only.** No load, no device open, no IOCTL issued. Addresses are linked VAs (image base `0x140000000`).
@@ -21,12 +21,12 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| MMIO mapping | One call site (`0x140066250`, in `FUN_140066140`); the import thunk at `0x140034248` has no other callers. Address and length come from the PnP resource list (`DAT_140061048+0x988` enumerator), not from caller input. At most two BARs are mapped (`uVar5 < 2`); stored at device context `+0x780` / `+0x798` | `ev_1f059b1b…` (resolve), `ev_f87fe50c…` (`FUN_140066140`), `ev_aa7dea4f…` (thunk xrefs), `ev_915bcebf…` (xrefs) |
-| MMIO unmap | Two call sites in `FUN_1400663AC`, freeing the stored `+0x780` / `+0x798` mappings and their lengths; no caller input | `ev_097d7d16…`, `ev_169bcf01…`, `ev_dd5c6986…` |
-| Pool allocation sized by a routine's output | `FUN_140002BE8` allocates the `KeQueryLogicalProcessorRelationship` output size (returned by the routine, not the caller) and frees it on all paths | `ev_4501d19b…` |
-| Pool allocation with fixed size and bounded loop | `FUN_1400641B0` allocates `0xAA0` and writes eight-byte function pointers at a `0x10` stride up to `0xAA0`; the last write ends at `0xA98` | `ev_e5733e02…` |
-| WDF callbacks | `FUN_14000F580`, `FUN_14000F4E0`, `FUN_14000F750`, `FUN_14000F650` operate on the device context with fixed offsets and constants. `FUN_14000F750` logs and zeroes five fixed `0xB0` records. None takes a caller-supplied address or length | `ev_b274d678…`, `ev_5a4ba079…`, `ev_83f1c5d4…`, `ev_faf1fb50…` |
-| Dynamic routine resolution | `IoGetDeviceNumaNode` (in `FUN_1400641B0`) and `KeQueryLogicalProcessorRelationship` (in `FUN_140002BE8`). Both names are read from `UNICODE_STRING` literals. No mapping or probe routine is resolved | `ev_4501d19b…`, `ev_e5733e02…`, `ev_92771a2c…` (thunk `0x140034300`) |
+| MMIO mapping | One call site (`0x140066250`, in `FUN_140066140`); the import thunk at `0x140034248` has no other callers. Address and length come from the PnP resource list (`DAT_140061048+0x988` enumerator), not from caller input. At most two BARs are mapped (`uVar5 < 2`); stored at device context `+0x780` / `+0x798` | `ev_1f059b1b...` (resolve), `ev_f87fe50c...` (`FUN_140066140`), `ev_aa7dea4f...` (thunk xrefs), `ev_915bcebf...` (xrefs) |
+| MMIO unmap | Two call sites in `FUN_1400663AC`, freeing the stored `+0x780` / `+0x798` mappings and their lengths; no caller input | `ev_097d7d16...`, `ev_169bcf01...`, `ev_dd5c6986...` |
+| Pool allocation sized by a routine's output | `FUN_140002BE8` allocates the `KeQueryLogicalProcessorRelationship` output size (returned by the routine, not the caller) and frees it on all paths | `ev_4501d19b...` |
+| Pool allocation with fixed size and bounded loop | `FUN_1400641B0` allocates `0xAA0` and writes eight-byte function pointers at a `0x10` stride up to `0xAA0`; the last write ends at `0xA98` | `ev_e5733e02...` |
+| WDF callbacks | `FUN_14000F580`, `FUN_14000F4E0`, `FUN_14000F750`, `FUN_14000F650` operate on the device context with fixed offsets and constants. `FUN_14000F750` logs and zeroes five fixed `0xB0` records. None takes a caller-supplied address or length | `ev_b274d678...`, `ev_5a4ba079...`, `ev_83f1c5d4...`, `ev_faf1fb50...` |
+| Dynamic routine resolution | `IoGetDeviceNumaNode` (in `FUN_1400641B0`) and `KeQueryLogicalProcessorRelationship` (in `FUN_140002BE8`). Both names are read from `UNICODE_STRING` literals. No mapping or probe routine is resolved | `ev_4501d19b...`, `ev_e5733e02...`, `ev_92771a2c...` (thunk `0x140034300`) |
 
 ## Verdict rationale
 

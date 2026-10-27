@@ -13,7 +13,7 @@
 
 ## Entry surface
 
-- **Published device interface.** `FUN_140010B38` (318 bytes) calls `StorPortExtendedFunction(8, adapter, …)` to obtain a PDO (identified from the call pattern; the meaning of extended function 8 is not verified in-file). It then calls `IoRegisterDeviceInterface(PDO, GUID, NULL, &symlink)` and `IoSetDeviceInterfaceState(symlink, TRUE)`. The class GUID is at `0x140045168`: **{4D36E97B-E325-11CE-BFC1-08002BE10318}**, decoded with read_bytes. From memory it matches the Windows SCSI-adapter setup-class family, but that is not verified in-file. The interface ACL (PDO default) is not traced, so user openability is likely but not established.
+- **Published device interface.** `FUN_140010B38` (318 bytes) calls `StorPortExtendedFunction(8, adapter, ...)` to obtain a PDO (identified from the call pattern; the meaning of extended function 8 is not verified in-file). It then calls `IoRegisterDeviceInterface(PDO, GUID, NULL, &symlink)` and `IoSetDeviceInterfaceState(symlink, TRUE)`. The class GUID is at `0x140045168`: **{4D36E97B-E325-11CE-BFC1-08002BE10318}**, decoded with read_bytes. From memory it matches the Windows SCSI-adapter setup-class family, but that is not verified in-file. The interface ACL (PDO default) is not traced, so user openability is likely but not established.
 - No `IoCreateDevice` import. The Io sweep shows only the two interface calls. The in-file IRP dispatch is therefore not established, and MajorFunction writes were not traced. StorPort most likely owns FDO dispatch for this interface; that is an assumption to verify.
 - The two `IoRegisterDeviceInterface` / `IoSetDeviceInterfaceState` call sites are `0x140010C2C` and `0x140010C3B`, both in `FUN_140010B38`. The other references (`0x140045030`, `0x140045028`) are not inside any procedure. They are presumably import-table slots, but their bytes were not checked.
 - StorPortNotification callbacks registered in `FUN_140010B38`: `FUN_14000D018` and `FUN_14000D33C` (not reviewed).
@@ -24,10 +24,10 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Mm, Probe, Wdf, `\Device\`, `(A;` | None | `ev_670f338c…` (Mm), `ev_b289891c…` (Probe), `ev_8cd82cba…` (Wdf), `ev_fc940d43…` (`\Device\`), `ev_07df9768…` (`(A;`) |
-| Device-interface APIs | `IoRegisterDeviceInterface` (one call site, in `FUN_140010B38`) and `IoSetDeviceInterfaceState` (one call site, same function). The interface is enabled unconditionally on success | `ev_9212fbad…` (Io sweep), `ev_38a2bffe…` (xrefs, `IoRegisterDeviceInterface`), `ev_f6bbbc87…` (xrefs, `IoSetDeviceInterfaceState`), `ev_b2d74ec8…` (resolve `0x140010C2C`), `ev_0c81f9c1…` (pseudocode `FUN_140010B38`) |
-| CPU copy primitives | `RtlCompareMemory` only (a read). `RtlCopyUnicodeString` is a write, but it copies at most the destination's MaximumLength; its call sites are not reviewed | `ev_a8134a7d…` (mem sweep), `ev_18637978…` (copy sweep) |
-| Interface GUID constant | Decoded as {4D36E97B-E325-11CE-BFC1-08002BE10318} | `ev_7f50c34c…` (bytes at `0x140045168`) |
+| Mm, Probe, Wdf, `\Device\`, `(A;` | None | `ev_670f338c...` (Mm), `ev_b289891c...` (Probe), `ev_8cd82cba...` (Wdf), `ev_fc940d43...` (`\Device\`), `ev_07df9768...` (`(A;`) |
+| Device-interface APIs | `IoRegisterDeviceInterface` (one call site, in `FUN_140010B38`) and `IoSetDeviceInterfaceState` (one call site, same function). The interface is enabled unconditionally on success | `ev_9212fbad...` (Io sweep), `ev_38a2bffe...` (xrefs, `IoRegisterDeviceInterface`), `ev_f6bbbc87...` (xrefs, `IoSetDeviceInterfaceState`), `ev_b2d74ec8...` (resolve `0x140010C2C`), `ev_0c81f9c1...` (pseudocode `FUN_140010B38`) |
+| CPU copy primitives | `RtlCompareMemory` only (a read). `RtlCopyUnicodeString` is a write, but it copies at most the destination's MaximumLength; its call sites are not reviewed | `ev_a8134a7d...` (mem sweep), `ev_18637978...` (copy sweep) |
+| Interface GUID constant | Decoded as {4D36E97B-E325-11CE-BFC1-08002BE10318} | `ev_7f50c34c...` (bytes at `0x140045168`) |
 
 ## Verdict rationale
 

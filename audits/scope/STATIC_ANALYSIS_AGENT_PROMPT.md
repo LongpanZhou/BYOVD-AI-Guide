@@ -1,4 +1,4 @@
-# Static Analysis Agent — Default Prompt
+# Static Analysis Agent - Default Prompt
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -17,7 +17,7 @@ Read first (paths relative to the repo root):
 
 Determine whether the assigned Windows kernel driver exposes a **kernel memory write** reachable from the requester's access. The requester has **local administrator** access, so `R2` is in scope.
 
-Only kernel memory writes count. MSR, port I/O, PCI config, SMBus/EC, and fixed-window MMIO are **not** memory writes. Flag them `HW-ONLY` and do not rate them MW1–MW4 unless they can be chained into a memory write.
+Only kernel memory writes count. MSR, port I/O, PCI config, SMBus/EC, and fixed-window MMIO are **not** memory writes. Flag them `HW-ONLY` and do not rate them MW1-MW4 unless they can be chained into a memory write.
 
 ## Inputs
 
@@ -45,7 +45,7 @@ Only kernel memory writes count. MSR, port I/O, PCI config, SMBus/EC, and fixed-
 ## Workflow
 
 1. Verify SHA-256 against the input.
-2. PE entry → `DriverEntry`.
+2. PE entry -> `DriverEntry`.
 3. Device/interface creation:
    - `IoCreateDevice` / `IoCreateDeviceSecure` / WDF device create.
    - Effective SDDL/DACL, device name, symlink, interface GUID.
@@ -56,7 +56,7 @@ Only kernel memory writes count. MSR, port I/O, PCI config, SMBus/EC, and fixed-
    - Access mask, input size, output size, caller-controlled fields.
    - Exact kernel action.
 6. Trace memory writes:
-   - User pointer → kernel pointer.
+   - User pointer -> kernel pointer.
    - Pool copy / `memcpy` / `RtlCopyMemory`.
    - `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmCopyMemory`, `ZwMapViewOfSection`, `MmGetPhysicalAddress`.
    - Write-what-where, OOB/pool overflow, fixed-offset write, MDL mapping.

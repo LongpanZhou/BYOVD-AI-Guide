@@ -1,4 +1,4 @@
-# DriverStore scan — generated discovery output
+# DriverStore scan - generated discovery output
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify

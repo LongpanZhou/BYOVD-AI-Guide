@@ -6,10 +6,10 @@
 
 Two public datasets decide whether a candidate is worth auditing fresh:
 
-1. **LOLDrivers** — community data about drivers used by real-world malware activity
+1. **LOLDrivers** - community data about drivers used by real-world malware activity
    (https://www.loldrivers.io/, JSON endpoint `api/drivers.json`).
-2. **Microsoft vulnerable driver blocklist** — the enforced XML that ships with
-   Windows 11 / HVCI. `https://aka.ms/VulnerableDriverBlockList` → ZIP containing
+2. **Microsoft vulnerable driver blocklist** - the enforced XML that ships with
+   Windows 11 / HVCI. `https://aka.ms/VulnerableDriverBlockList` -> ZIP containing
    `DriverPolicy_Enforced.xml`.
 
 Both are *datasets*, not exploit material: they make your hunt faster and your audit honest.
@@ -32,15 +32,15 @@ Then, for each candidate driver, check:
   the certificate-table data-directory entry, plus the section raw data. This is what Microsoft
   uses for Deny rules.
 - `FriendlyName` text of blocklist rules.
-- `FileAttrib` filename+`Minimum/MaximumFileVersion` rules — some blocks are name-based, not hash-based.
+- `FileAttrib` filename+`Minimum/MaximumFileVersion` rules - some blocks are name-based, not hash-based.
 
 ## 2. What the results mean for your hunt
 
 | List result | Audit implication |
 |---|---|
 | Family listed in LOLDrivers, **exact build not** | audit fresh, but expect EDR/tools to flag by name; treat as "known-bad family" |
-| Exact build hash on either list | **BLOCKED (known-bad)** — record the finding and stop; do NOT dynamically test |
-| Exact Authentihash on Microsoft blocklist | same — and note it won't load where that policy is on by default |
+| Exact build hash on either list | **BLOCKED (known-bad)** - record the finding and stop; do NOT dynamically test |
+| Exact Authentihash on Microsoft blocklist | same - and note it won't load where that policy is on by default |
 | Not listed at all | promising audit target |
 
 Keep the raw comparison as a dated evidence file (see below).
@@ -49,7 +49,7 @@ Keep the raw comparison as a dated evidence file (see below).
 
 - Absence from the blocklist does **not** mean a driver is safe, merely uncatalogued.
 - Presence is a strong *signalling* problem, not a proof of damage.
-- Both lists update constantly — an "exact-build not on list" result is only valid on the date you pulled the data. Date-stamp every check like this repo does: `audits/evidence/known_vulnerable_check_<yyyy-mm-dd>.md`.
+- Both lists update constantly - an "exact-build not on list" result is only valid on the date you pulled the data. Date-stamp every check like this repo does: `audits/evidence/known_vulnerable_check_<yyyy-mm-dd>.md`.
 
 ## 4. How to keep your own hunt current
 

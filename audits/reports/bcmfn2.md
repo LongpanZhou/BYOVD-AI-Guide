@@ -14,18 +14,18 @@
 
 KMDF function driver that binds to the **SdBus** interface of its parent stack: `SdBusOpenInterface` (`0x140001280`), `SdBusSubmitRequest`/`Async` (`0x14000138C`/`0x140001478`), internal IRP completion `SdbusIoctlCompletion` (`0x140001504`). All bus traffic goes downward via `IoBuildSynchronousFsdRequest` + `IofCallDriver`.
 
-- **No `IoCreateDevice`/`IoCreateSymbolicLink`/device-name strings** — the driver creates no device object and no interface of its own; it services only the PDO provided by its parent (SDIO) stack.
+- **No `IoCreateDevice`/`IoCreateSymbolicLink`/device-name strings** - the driver creates no device object and no interface of its own; it services only the PDO provided by its parent (SDIO) stack.
 - No IOCTL dispatch of its own: with no device object there is no MJ_DEVICE_CONTROL surface reachable from user mode.
 
 ## Memory-write analysis
 
-- Procedure set is tiny (28 procedures; all memset sites are fixed-size zero-fills of stack/object locals: `0x68`, `0x90`, `0x38`, `0x30`, `0x26`, `0x24`, `0x20` — constants, no caller-dependent sizes).
+- Procedure set is tiny (28 procedures; all memset sites are fixed-size zero-fills of stack/object locals: `0x68`, `0x90`, `0x38`, `0x30`, `0x26`, `0x24`, `0x20` - constants, no caller-dependent sizes).
 - No `MmProbeAndLockPages` / `MmMapLockedPagesSpecifyAccess` / `MmMapIoSpace` / `MmGetPhysicalAddress` / `ZwOpenSection` / `MmCopyMemory` imports.
 - No METHOD_NEITHER, no MSR/GDT/IDT patterns, no user-trusted length fields.
 
 ## Memory-touching IOCTL table
 
-None — the driver registers no device object; no control codes exist.
+None - the driver registers no device object; no control codes exist.
 
 ## Verdict + VM confirmation plan
 

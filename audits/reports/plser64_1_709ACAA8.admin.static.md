@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=Microsoft Windows Hardware Compatibility Publisher |
 | Reach | R1 for opening the device, if the effective descriptor below is applied (WD = Everyone gets GR|GW). R3 (devnode / hardware: a Prolific USB-serial adapter must be attached) for the device to exist. |
 | Setup required | devnode (hardware present) |
-| Write quality | not finalized (PROVISIONAL, see §5 and §8) |
+| Write quality | not finalized (PROVISIONAL, see section 5 and section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -33,16 +33,16 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 
 - The WDF request dispatch (dump 500-2104+) uses WDF retrieve calls for request buffers with explicit minimum sizes (for example `(*(code*)PTR__guard_dispatch_icall_140047150)(DAT_14004a458, param_2, 1, &buf, &len)`, dump 517, 537). The switch is on the IOCTL code `param_5`.
 - Codes with case labels found (first dump line): 0x222580 (514), 0x222090 (535), 0x222018 (1263), 0x222000 (1291), 0x222004 (1306), 0x222008 (1318), 0x22200C (1332), 0x222010 (1341), 0x222014 (1351), 0x22201C (1361), 0x222020 (1370), 0x222024 (1379), 0x222028 (1389), 0x22202C (1397), 0x222030 (1407), 0x22203C (1408), 0x222040 (1253), 0x222050 (1433), 0x222054 (1462), 0x222058 (1491), 0x22205C (1526), 0x222060 (1561), 0x222064 (1603), 0x222068 (1640), 0x22206C (1651), 0x222070 (1419), 0x222074 (1663), 0x222078 (1674), 0x22207C (1684), 0x222080 (1694), 0x222084 (1708), 0x222088 (1718), 0x22208C (1733), 0x2220A0 (1832), 0x2220A4 (1841), 0x2220B4 (1849), 0x2220B8 (1883), 0x2220BC (1917), 0x2220C0 (1966), 0x2220C4 (1768), 0x2220C8 (2015), 0x2220CC (2056), 0x2220D0 (2065), 0x2220D4 (2075), 0x2220D8 (2090), 0x2220DC (2104), 0x222094 (1809), 0x222098 (1819), 0x2224B4 (1756), 0x2224F8 (1746), and others not read.
-- Method and access bits are not decoded per code in this pass; all codes are DeviceType 0x22 (see §8).
+- Method and access bits are not decoded per code in this pass; all codes are DeviceType 0x22 (see section 8).
 - Per-case bodies were not read beyond the first cases (0x222580 at 514-533, and 0x222090 at 535-539). Those cases use WDF-retrieved buffers with minimum sizes from the request.
 
 ## 4 Access-control audit
 
-- No privilege check in the dispatch (no `SeAccessCheck`/`SeSinglePrivilegeCheck` found in the decompile by name). The gate is the device's security descriptor (§2).
+- No privilege check in the dispatch (no `SeAccessCheck`/`SeSinglePrivilegeCheck` found in the decompile by name). The gate is the device's security descriptor (section 2).
 
 ## 5 Memory-write trace
 
-- Writes to request buffers in the traced cases (0x222580: `*puVar14 = local_a0[0]`, `*local_a8 = bVar27`, dump 521, 530) are to WDF-retrieved buffers after a successful retrieve (`if (-1 < iVar9)`, dump 518). Their sizes are the WDF minimum-size argument (1 byte) — bounded.
+- Writes to request buffers in the traced cases (0x222580: `*puVar14 = local_a0[0]`, `*local_a8 = bVar27`, dump 521, 530) are to WDF-retrieved buffers after a successful retrieve (`if (-1 < iVar9)`, dump 518). Their sizes are the WDF minimum-size argument (1 byte) - bounded.
 - Writes into driver structures (`puVar12[...]`, `*(ushort*)((longlong)puVar12+0x3f6)`) are fixed-offset.
 - memcpy/memmove sites were not enumerated. These are the open candidates: a user-length copy into a driver or request buffer would sit there.
 

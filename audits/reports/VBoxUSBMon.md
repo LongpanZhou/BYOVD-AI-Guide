@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `ADE2E8D684CB59BFEA99AD09E55BC5F2A808D824C2905DED1366B7D32E906529` (matches triage_index.csv row `VBoxUSBMon`; sha256 recomputed in-session) |
 | Company/Version | Oracle and/or its affiliates (VirtualBox USB monitor; PDB `VBoxUSBMon.pdb`) |
 | Method | Static-only audit via REA/Ghidra 12.1.4, memory-write scope only |
-| Verdict | **NO-WRITE** (coverage ~55%) — no write through a caller-supplied kernel or user pointer found; handle-table lookups do not dereference inputs; writes stay in driver-owned records and the buffered output |
+| Verdict | **NO-WRITE** (coverage ~55%) - no write through a caller-supplied kernel or user pointer found; handle-table lookups do not dereference inputs; writes stay in driver-owned records and the buffered output |
 | Coverage | Not traced: `FUN_140005c50` (validation), `FUN_140005970` (field reset), `FUN_1400064a0` (release), `FUN_1400028d0` (IOCTL 0x229854), `RTMemContAlloc` caller (reached only through an indirect table; no resolved direct caller, two data references `0x1400335e4`, `0x1400341bc`) |
 
 > **Static-only.** No load, no device open, no IOCTL execution. Addresses are linked VAs (image base `0x140000000`).
@@ -31,10 +31,10 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| User-supplied pointer dereference | None found. `FUN_140002900` and `FUN_140002fd0` use user-supplied 64-bit values only as list-node identities (pointer equality) | `ev_efbba536…`, `ev_d7f05947…` |
-| Record copy from user input | `FUN_140006020` copies a fixed `0x150` bytes from the buffered input into a driver record (`RTMemAllocTag(0x150)`), links it into a driver list and a handle table | `ev_d9dbd0a3…` |
-| Kernel address write from user input | None found | — |
-| Contiguous allocation + physical address | `RTMemContAlloc` (`0x140015eb0`): `MmAllocateContiguousMemory(roundup(size), highest)`, `MmGetPhysicalAddress`, writes the 32-bit physical address through its first parameter `*param_1 = phys`. **No resolved direct caller**; incoming references are two data references (`0x1400335e4`, `0x1400341bc`) that look like table entries. If that output pointer ever comes from user input without probing, the write becomes an unprobed 4-byte kernel write of a fresh physical address. Not established | `ev_b153a513…`, `ev_b64eef79…`, `ev_5267507c…` |
+| User-supplied pointer dereference | None found. `FUN_140002900` and `FUN_140002fd0` use user-supplied 64-bit values only as list-node identities (pointer equality) | `ev_efbba536...`, `ev_d7f05947...` |
+| Record copy from user input | `FUN_140006020` copies a fixed `0x150` bytes from the buffered input into a driver record (`RTMemAllocTag(0x150)`), links it into a driver list and a handle table | `ev_d9dbd0a3...` |
+| Kernel address write from user input | None found | - |
+| Contiguous allocation + physical address | `RTMemContAlloc` (`0x140015eb0`): `MmAllocateContiguousMemory(roundup(size), highest)`, `MmGetPhysicalAddress`, writes the 32-bit physical address through its first parameter `*param_1 = phys`. **No resolved direct caller**; incoming references are two data references (`0x1400335e4`, `0x1400341bc`) that look like table entries. If that output pointer ever comes from user input without probing, the write becomes an unprobed 4-byte kernel write of a fresh physical address. Not established | `ev_b153a513...`, `ev_b64eef79...`, `ev_5267507c...` |
 | MDL / section mapping | Absent from import table | import sweep |
 | Unchecked copy length | None in decompiled code; fixed sizes everywhere | the decompiles above |
 
@@ -46,7 +46,7 @@
 
 ## Verdict rationale
 
-NO-WRITE on the statically visible surface. Escalation needs the RTMemContAlloc caller to pass an unprobed user pointer (→ WRITE-MEDIUM at most, given the value is a physical address the attacker cannot choose).
+NO-WRITE on the statically visible surface. Escalation needs the RTMemContAlloc caller to pass an unprobed user pointer (-> WRITE-MEDIUM at most, given the value is a physical address the attacker cannot choose).
 
 ## Next steps (for the write-only pass)
 

@@ -13,9 +13,9 @@
 
 ## Entry surface
 
-- Storport miniport: initialization solely via `StorPortInitialize`/`StorPortNotification` (DDI list: `StorPortBusy`, `StorPortGetDeviceBase`, `StorPortGetPhysicalAddress`, `StorPortGetScatterGatherList`, `StorPortGetUncachedExtension`, `StorPortRegistryRead`, `StorPortLogError`, …).
+- Storport miniport: initialization solely via `StorPortInitialize`/`StorPortNotification` (DDI list: `StorPortBusy`, `StorPortGetDeviceBase`, `StorPortGetPhysicalAddress`, `StorPortGetScatterGatherList`, `StorPortGetUncachedExtension`, `StorPortRegistryRead`, `StorPortLogError`, ...).
 - **No user-openable control device:** no `\Device\<name>` construction and no `StorPortDeviceControl`-style management device is created by this file. Its only external interface is the storport SRB path (`HwBuildIo`/`HwStartIo` registered with `StorPortInitialize`).
-- Reaching the SRB ioctl path (`SRB_FUNCTION_IO_CONTROL`) requires an adapter device handle; storport adapter device objects use the OS default security descriptor — administrator-gated.
+- Reaching the SRB ioctl path (`SRB_FUNCTION_IO_CONTROL`) requires an adapter device handle; storport adapter device objects use the OS default security descriptor - administrator-gated.
 
 ## Memory-write analysis
 
@@ -25,12 +25,12 @@
 
 ## Memory-touching IOCTL table
 
-None — no dedicated control device; the SRB path is admin-gated by the adapter device object ACL.
+None - no dedicated control device; the SRB path is admin-gated by the adapter device object ACL.
 
 ## Verdict + VM confirmation plan
 
 **NO-WRITE.** No unprivileged local user can reach any memory-write path: there is no control device, and the SRB plane requires an administrator-gated adapter handle.
 
-VM plan (orchestrator-owned, non-destructive): with the 3ware adapter present, attempt a restricted-token `CreateFile` on the adapter's SCSI device — expected ACCESS_DENIED; no IOCTL execution needed beyond reachability confirmation; no corruption test warranted.
+VM plan (orchestrator-owned, non-destructive): with the 3ware adapter present, attempt a restricted-token `CreateFile` on the adapter's SCSI device - expected ACCESS_DENIED; no IOCTL execution needed beyond reachability confirmation; no corruption test warranted.
 
 *End of report.*

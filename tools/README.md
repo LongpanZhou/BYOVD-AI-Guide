@@ -6,11 +6,11 @@
 
 | Path | What it is |
 |---|---|
-| `harvest.ps1` | Installer/tree → `.sys` harvester + fingerprint writer |
-| `triage_scan.ps1` | PE import, device, SDDL, reach scanner |
+| `harvest.ps1` | Installer/tree -> `.sys` harvester + fingerprint writer |
+| `triage_scan.ps1` | PE import, device, SDDL, reach scanner - positional usage: `.\triage_scan.ps1 <file.sys>` |
 | `filter_new_drivers.ps1` | Mandatory dedupe gate |
 | `rebuild_manifest.ps1` | Rebuild `indexes/drivers_manifest.csv` from `drivers/` |
-| `innoextract/` (local only) | Inno Setup ≤ 6.0.5 extractor; not tracked in this repo |
+| `innoextract/` (local only) | Inno Setup <= 6.0.5 extractor; not tracked in this repo |
 | `innounp` (on `PATH`) | Inno Setup 6.1+ extractor; `winget install JurgenRathlev.innounp` |
 | `vm/never_sleep.bat` | VM power/sleep helper |
 

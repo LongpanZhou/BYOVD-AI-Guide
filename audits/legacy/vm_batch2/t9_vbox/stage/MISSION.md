@@ -1,6 +1,6 @@
-# t9 MISSION — VBoxNetAdp6 + VBoxNetLwf dynamic validation (merged session, t7 vmci+vsock precedent)
+# t9 MISSION - VBoxNetAdp6 + VBoxNetLwf dynamic validation (merged session, t7 vmci+vsock precedent)
 
-## Phase 1 (host prep) — DONE 2026-10-24
+## Phase 1 (host prep) - DONE 2026-10-24
 - Static SG-producer check: see `audits\dynamic_evidence\t9_vmmr0_sgproducer.txt` (headline verdict).
 - VBoxSup.sys in-file negative: `audits\dynamic_evidence\t9_vboxsup_sg_check.txt`.
 - INF harvest staged: `stage\inf\{adp,lwf,sup}` (VBox 7.0.14 WHQL-signed production packages).
@@ -34,7 +34,7 @@ vmrun pattern:
   vmrun -T ws -gu vmdebug -gp 123456 runProgramInGuest "VMX" -activeConsole=false "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "C:\Users\vmdebug\Desktop\t9_work\<script>.ps1"
   vmrun -T ws -gu vmdebug -gp 123456 copyFileFromGuestToHost "VMX" "C:\Users\vmdebug\Desktop\t9_work\<log>" "audits\dynamic_evidence\t9_<log>"
 
-## Ordered runbook (PHASE 2 — only on orchestrator authorization)
+## Ordered runbook (PHASE 2 - only on orchestrator authorization)
 1. bootstrap: create t9_work + aliveness marker (t7_bootstrap.ps1 pattern, t9 names).
    ABORT if VM not powered or snapshot not restored by orchestrator.
 2. t9_stage.ps1: in-guest SHA verification (9 files, drift=0 gate) + pre-existing-file check
@@ -66,7 +66,7 @@ vmrun pattern:
     (t7_fuzz.md structure: header table, drift disclosure, per-target sections, matrices,
     verdict deltas vs static, staged list, cleanup verification).
 
-## STAGED (NEVER EXECUTE — orchestrator-only, solo-VM phases)
+## STAGED (NEVER EXECUTE - orchestrator-only, solo-VM phases)
 - SG-invariant violation attempt (any crafted SG with sum != total delivered to the consumers)
   = deliberate pool-corruption: SOLO phase only. See stage\t9_phaseB_STAGED.txt.
 - In-guest VirtualBox VM packet-injection experiments: out of scope (dispatch says so).

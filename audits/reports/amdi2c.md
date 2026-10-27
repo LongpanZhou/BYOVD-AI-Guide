@@ -12,15 +12,15 @@
 
 ## Entry surface
 
-KMDF **SpbCx client** driver (`SPBCx`/`KmdfLibrary` bind strings; `*AMD0010`/`*AMDI0010` ACPI HWIDs). Device SD explicitly assigned via SDDL `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;LS)` (UTF-16 @ `0x140008990` file-off `0x8990`) — System FULL, Administrators FULL, **LocalService** read/write; **no `WD`/Everyone ACE** → unprivileged open denied at the device object. The controller FDO is the SpbCx-owned device; all user-reachable control flows through SpbCx's validated SpbCtl interface (admin-gated by the SDDL above). No other device/interface/string surface in-file.
+KMDF **SpbCx client** driver (`SPBCx`/`KmdfLibrary` bind strings; `*AMD0010`/`*AMDI0010` ACPI HWIDs). Device SD explicitly assigned via SDDL `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;LS)` (UTF-16 @ `0x140008990` file-off `0x8990`) - System FULL, Administrators FULL, **LocalService** read/write; **no `WD`/Everyone ACE** -> unprivileged open denied at the device object. The controller FDO is the SpbCx-owned device; all user-reachable control flows through SpbCx's validated SpbCtl interface (admin-gated by the SDDL above). No other device/interface/string surface in-file.
 
 ## Memory-write analysis
 
-- **`MmMapIoSpaceEx` — one call site** (prepare-hardware path, near `0x140002bxx`): source = PnP **translated** `CmResourceTypeMemory` descriptor (`start@+4`, `len@+0xc` via WDF runtime table), protection `0x204` (READWRITE|WRITECOMBINE). Not attacker-influenced; BAR registers only (`KeStallExecutionProcessor` polling, HAL import).
-- **`MmMapLockedPagesSpecifyCache` — two call sites** (`I2CReadData` @ line ~653 → priority `0x40000020`, `I2CXferData` @ ~920 → priority `0xc0000020` = NoExecute|NoWrite|High): both map the **SpbCx transfer MDL chain** (`param_1+0x21` list; per-MDL `MdlFlags&0x5` pre-check reuses `MDL->MappedSystemVa`) into a **KernelMode system-VA alias** — the standard SpbCx client pattern for CPU access to transfer buffers already locked by the I/O manager (caller-probed). The in-loop stores/loads are 1-byte-per-transferred-byte into the caller's own probed buffer, offset-walked within each MDL's `ByteCount` (`uVar3 < MDL->ByteCount`), bounded by the Spb-request transfer length. **No caller MDL is ever probed or mapped by this driver itself** (no `MmProbeAndLockPages`/`IoAllocateMdl`/`MmUnlockPages`/`MmUnmapLockedPages` imports — SpbCx owns the MDL lifecycle).
+- **`MmMapIoSpaceEx` - one call site** (prepare-hardware path, near `0x140002bxx`): source = PnP **translated** `CmResourceTypeMemory` descriptor (`start@+4`, `len@+0xc` via WDF runtime table), protection `0x204` (READWRITE|WRITECOMBINE). Not attacker-influenced; BAR registers only (`KeStallExecutionProcessor` polling, HAL import).
+- **`MmMapLockedPagesSpecifyCache` - two call sites** (`I2CReadData` @ line ~653 -> priority `0x40000020`, `I2CXferData` @ ~920 -> priority `0xc0000020` = NoExecute|NoWrite|High): both map the **SpbCx transfer MDL chain** (`param_1+0x21` list; per-MDL `MdlFlags&0x5` pre-check reuses `MDL->MappedSystemVa`) into a **KernelMode system-VA alias** - the standard SpbCx client pattern for CPU access to transfer buffers already locked by the I/O manager (caller-probed). The in-loop stores/loads are 1-byte-per-transferred-byte into the caller's own probed buffer, offset-walked within each MDL's `ByteCount` (`uVar3 < MDL->ByteCount`), bounded by the Spb-request transfer length. **No caller MDL is ever probed or mapped by this driver itself** (no `MmProbeAndLockPages`/`IoAllocateMdl`/`MmUnlockPages`/`MmUnmapLockedPages` imports - SpbCx owns the MDL lifecycle).
 - All `memset` sites fixed-size (`0x38`, `0x28`, `0x24`, `0x20`, `0x90`, `0x48`, `0x68`, `0x178` context) on driver-owned buffers; no length-carrying fill.
-- `IoBuildDeviceIoControlRequest`/`IoAllocateIrp`/`IofCallDriver` (internal Spb requests) — outbound only, kernel-controlled buffers.
-- Privileged instructions: single `.text` byte-pair hit `44 0F 20 C0` (file off `0x63bd`) = **`MOV RAX, CR8`** (TPR/IRQL read — benign); **no** `wrmsr`/`rdmsr`/`lgdt`/`sgdt`/`mov cr*`-write in code (remaining scan hits are `.rdata`/`.rsrc` data false positives).
+- `IoBuildDeviceIoControlRequest`/`IoAllocateIrp`/`IofCallDriver` (internal Spb requests) - outbound only, kernel-controlled buffers.
+- Privileged instructions: single `.text` byte-pair hit `44 0F 20 C0` (file off `0x63bd`) = **`MOV RAX, CR8`** (TPR/IRQL read - benign); **no** `wrmsr`/`rdmsr`/`lgdt`/`sgdt`/`mov cr*`-write in code (remaining scan hits are `.rdata`/`.rsrc` data false positives).
 - No `ZwOpenSection`, `\Device\PhysicalMemory`, `MmCopyMemory`, `ProbeFor*` misuse, or METHOD_NEITHER plane attributable to this file (Spb owns the queue).
 
 ## Memory-touching IOCTL table
@@ -31,6 +31,6 @@ none (client registers no own dispatch; SpbCx owns the queue; SDDL above is admi
 
 **NO-WRITE.** Admin-gated SpbCx client; the only system-VA mapping work is the documented SpbCx transfer-buffer pattern over I/O-manager-locked MDLs; the only physical mapping is the PnP BAR; every fill is fixed-size; no privileged instructions beyond a benign CR8 read. Even under the worst-case-DACL convention, no kernel-memory-write path exists in-file (all buffer access is via SpbCx-validated, pre-locked transfer MDLs).
 
-VM plan (orchestrator-owned, describe-only): none warranted. If ever dynamic: unpriv `CreateFile` on the SpbCtl interface GUID → expect denial (SDDL lacks WD); enumerate GPIO/I2C interfaces to confirm the controller publishes only SpbCtl.
+VM plan (orchestrator-owned, describe-only): none warranted. If ever dynamic: unpriv `CreateFile` on the SpbCtl interface GUID -> expect denial (SDDL lacks WD); enumerate GPIO/I2C interfaces to confirm the controller publishes only SpbCtl.
 
 *End of report.*

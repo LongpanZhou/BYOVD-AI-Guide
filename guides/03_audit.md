@@ -1,4 +1,4 @@
-# Auditing a driver — static review before (and instead of) dynamic testing
+# Auditing a driver - static review before (and instead of) dynamic testing
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -11,7 +11,7 @@ testing only confirms it. Every driver in `drivers/` gets exactly one canonical 
 ## 1. The canonical report skeleton
 
 ```markdown
-# <DriverName> — <one-line verdict> audit (static)
+# <DriverName> - <one-line verdict> audit (static)
 
 | Field            | Value |
 |------------------|-------|
@@ -39,26 +39,26 @@ testing only confirms it. Every driver in `drivers/` gets exactly one canonical 
 
 ## 2. What to look for, in order
 
-1. **`DriverEntry`** → `IoCreateDevice` / `IoCreateSymbolicLink` / WDF — the device someone opens.
-2. **The dispatch table** → `MajorFunction[IRP_MJ_DEVICE_CONTROL]` and every `case` in the IOCTL
+1. **`DriverEntry`** -> `IoCreateDevice` / `IoCreateSymbolicLink` / WDF - the device someone opens.
+2. **The dispatch table** -> `MajorFunction[IRP_MJ_DEVICE_CONTROL]` and every `case` in the IOCTL
    switch; the case table is where writes hide.
-3. **`MmMapIoSpace` / `MmGetSystemAddressForMdlSafe` / `MapUserPhysicalPages`** → arbitrary-PHYSICAL
+3. **`MmMapIoSpace` / `MmGetSystemAddressForMdlSafe` / `MapUserPhysicalPages`** -> arbitrary-PHYSICAL
    access from user input.
 4. **`memcpy`/`RtlCopyMemory`/`strncpy`/`_vsnprintf` to a caller-supplied pointer.**
-5. **Length fields taken from input** — pool overflows, `.sys` non-paged buffers with unchecked
+5. **Length fields taken from input** - pool overflows, `.sys` non-paged buffers with unchecked
    `InputBufferLength`/`OutputBufferLength`.
 6. **`Zw*`/kernel API calls** taking user data (registry, files, connections).
-7. **`MmCopyMemory`/`MmGetVirtualForPhysical`** — near-arbitrary reads.
-8. **Pointers leaked into output** — `out` pointers passed to user mode, kernel VA leaks (KASLR).
+7. **`MmCopyMemory`/`MmGetVirtualForPhysical`** - near-arbitrary reads.
+8. **Pointers leaked into output** - `out` pointers passed to user mode, kernel VA leaks (KASLR).
 
 Score each primitive with the scale in [`audits/scope/SEVERITY.md`](../audits/scope/SEVERITY.md),
 then assemble the verdict row into `audits/STATUS.md`.
 
 ## 3. Automation available in this repo
 
-- `tools/triage_scan.ps1` — quick pass for suspicious imports (`MmMapIoSpace`, `MmCopyMemory`,
+- `tools/triage_scan.ps1` - quick pass for suspicious imports (`MmMapIoSpace`, `MmCopyMemory`,
   `PsGetVersion`, `ObReferenceObjectByHandle`) before you commit to a full audit.
-- `guides/02_blocklist_check.md` — the two-list check that stops you re-auditing anything that
+- `guides/02_blocklist_check.md` - the two-list check that stops you re-auditing anything that
   LOLDrivers or the Microsoft blocklist has already catalogued.
 - Copy the per-driver skeleton above into a new file per driver; one file per driver,
   always. Update `STATUS.md` *after* writing the report, not before.

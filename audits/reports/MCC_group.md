@@ -1,24 +1,24 @@
-# Audit: Measurement Computing (MCC) group — 16 drivers (mccfwld / mccusbfn / mcpci / mcusb)
+# Audit: Measurement Computing (MCC) group - 16 drivers (mccfwld / mccusbfn / mcpci / mcusb)
 
 | Field | Value |
 |---|---|
 | File(s) | `drivers\mccfwld_05370B16.sys`, `mccfwld_2824AC5B.sys`, `mccfwld_5279671E.sys`, `mccfwld_B38AFACA.sys`, `mccusbfn_4ACB9302.sys`, `mccusbfn_5B72FADA.sys`, `mccusbfn_B05491B6.sys`, `mccusbfn_FB822917.sys`, `mcpci_10AB0B68.sys`, `mcpci_3A07C67D.sys`, `mcpci_992CA233.sys`, `mcpci_CF877AAB.sys`, `mcusb_2BA82572.sys`, `mcusb_2C269B0F.sys`, `mcusb_458020DF.sys`, `mcusb_E9D1DC60.sys` |
-| SHA-256(s) | see §2 table (16 hashes, each verified against the on-disk file) |
+| SHA-256(s) | see section 2 table (16 hashes, each verified against the on-disk file) |
 | Analysis date | 2026-10-25 |
-| Method | Static-only. PE/import/string/section triage + `.text` hashing; Ghidra 12.1.4 decompilation via REA while the shared bridge was free; **local `objdump` disassembly for the x86 builds after REA was taken over by another agent (see §9)**. No load, no execution, no service, no registry, no web. |
+| Method | Static-only. PE/import/string/section triage + `.text` hashing; Ghidra 12.1.4 decompilation via REA while the shared bridge was free; **local `objdump` disassembly for the x86 builds after REA was taken over by another agent (see section 9)**. No load, no execution, no service, no registry, no web. |
 | Reach tier | R3 (hardware) for `mcpci` / `mccusbfn` / `mcusb`; n/a for `mccfwld` |
 | Setup required | `hardware` for the three I/O families; none applicable to `mccfwld` (no user-reachable device) |
 | Write quality | **W2** (`mcpci`, `mccusbfn`, `mcusb`); **W0** (`mccfwld` x64) |
-| Verdict | **MW3 — reach=R3 setup=hardware write=W2 load=signed** (three I/O families); `mccfwld` x64 = **NO-MEMORY-WRITE**, `mccfwld` x86 = **BLOCKED** (architecture) |
-| HW-only | yes — `mcpci` additionally hands a **user-mode mapping of its PCI BAR** to any opener (fixed-window MMIO) |
+| Verdict | **MW3 - reach=R3 setup=hardware write=W2 load=signed** (three I/O families); `mccfwld` x64 = **NO-MEMORY-WRITE**, `mccfwld` x86 = **BLOCKED** (architecture) |
+| HW-only | yes - `mcpci` additionally hands a **user-mode mapping of its PCI BAR** to any opener (fixed-window MMIO) |
 
-**Overall verdict: MW3.** All twelve I/O-family images (`mcpci` ×4, `mccusbfn` ×4, `mcusb` ×4) contain the same
+**Overall verdict: MW3.** All twelve I/O-family images (`mcpci` x4, `mccusbfn` x4, `mcusb` x4) contain the same
 defect class: a caller-supplied 64-bit **kernel virtual address** is taken from a `METHOD_BUFFERED` input
-buffer, wrapped in an MDL with `MmProbeAndLockPages(MDL, KernelMode, …)` — no user-address validation — and
+buffer, wrapped in an MDL with `MmProbeAndLockPages(MDL, KernelMode, ...)` - no user-address validation - and
 then mapped and used as the device's data buffer. Target address and length are attacker-chosen; the value
 is the device's DMA data. That is a real kernel-VA write, but it is hardware-gated, so it scores **MW3**
 (R3 + W2), not MW1/MW2. No image exposes `\Device\PhysicalMemory`, `ZwMapViewOfSection`, a caller-controlled
-`MmMapIoSpace` physical address, or any user-mode PA mapping — **W3P does not apply to this group**.
+`MmMapIoSpace` physical address, or any user-mode PA mapping - **W3P does not apply to this group**.
 
 ---
 
@@ -72,17 +72,17 @@ no interface, so nothing is reachable.
 
 ## 3 Internals (what each family is)
 
-- **`mccfwld` — "MCC Firmware Loader" (KMDF function driver).** Loaded against MCC USB DAQ devices; on
+- **`mccfwld` - "MCC Firmware Loader" (KMDF function driver).** Loaded against MCC USB DAQ devices; on
   start it reads the USB device descriptor, picks a firmware image from ~150 KB of images embedded in
-  `.data` (e.g. `USB-2404-UI`, `USB-1208MS-10`) and downloads it. Code is split across `.text` (1–2 KB of
-  helpers) and `PAGE`/`INIT` (0x3C014+). **No queue, no interface, no symbolic link** (§4).
-- **`mccusbfn` — "MCCUSBFN" (KMDF USB function driver, "Fusion" transport).** Per-product pipe tables
-  (`0x70A4/0x70A6/0x70A7/0x71C2/0x7270/0x72FD/0x76C4/0x76C6` …), bulk/interrupt pipes, a large per-channel
+  `.data` (e.g. `USB-2404-UI`, `USB-1208MS-10`) and downloads it. Code is split across `.text` (1-2 KB of
+  helpers) and `PAGE`/`INIT` (0x3C014+). **No queue, no interface, no symbolic link** (section 4).
+- **`mccusbfn` - "MCCUSBFN" (KMDF USB function driver, "Fusion" transport).** Per-product pipe tables
+  (`0x70A4/0x70A6/0x70A7/0x71C2/0x7270/0x72FD/0x76C4/0x76C6` ...), bulk/interrupt pipes, a large per-channel
   context (`0x109a8` x64), scan state machine and a 0x8DE-byte scan descriptor.
-- **`mcpci` — "Driver for PCI Devices" (KMDF PCI function driver for PCI-6000-class DAQ boards).** Maps the
+- **`mcpci` - "Driver for PCI Devices" (KMDF PCI function driver for PCI-6000-class DAQ boards).** Maps the
   BARs from the PnP resource list, allocates contiguous DMA memory, exposes a `PCI6000_USER_INFO` request
   context, and submits multi-channel scans described by a 0xE4-byte user structure.
-- **`mcusb` — "MCUSB" (KMDF USB DAQ driver, v1.16).** Same shape as `mccusbfn` with a different transport
+- **`mcusb` - "MCUSB" (KMDF USB DAQ driver, v1.16).** Same shape as `mccusbfn` with a different transport
   layer: 0x8DF-byte scan descriptor, `0x68000` per-channel stride, on-disk FPGA/RBF loading via
   `ZwOpenFile`/`ZwReadFile`.
 
@@ -90,14 +90,14 @@ no interface, so nothing is reachable.
 
 ## 4 Entry / device / interface / effective DACL
 
-Addresses are Ghidra VAs (image base `0x10000` for every image here); x86 file RVA = VA − `0x10000`.
+Addresses are Ghidra VAs (image base `0x10000` for every image here); x86 file RVA = VA - `0x10000`.
 
 | Family | `DriverEntry` path | `EvtDriverDeviceAdd` | Device object | Interface GUID | Queue / dispatch |
 |---|---|---|---|---|---|
-| `mccfwld` x64 | `0x1125C` → `0x3D100` → `0x3D008` | `0x3C014` | `WdfDeviceCreate` @ `0x39858` | **none** | **none** (`WdfIoQueueCreate` never called; no `WdfDeviceCreateDeviceInterface`, no symlink) |
-| `mccusbfn` x64 | `0x25100` → `0x25008` | `0x1E014` | `WdfDeviceCreate` @ `0x1B418` | `{9094E991-B0B4-4E1C-AFDF-9AED298F5D1B}` (`WdfDeviceCreateDeviceInterface` @ `0x1B428`, GUID at `0x1A1A8`) | default queue `FUN_00020994`; read/write queues `FUN_000124F8` / `FUN_000126A4` via `WdfDeviceConfigureRequestDispatching` types 3/4 |
-| `mcpci` x64 | `0x1795C` → `0x1C0B0` → `0x1C008` | `0x11014` | `WdfDeviceCreate` @ `0x19428` | `{BC20052D-05A9-4CCE-92FD-4A9E769D41D0}` (GUID at `0x18150`) | queue callback `FUN_00011444` (3-arg); device-control gate `FUN_000122A0` |
-| `mcusb` x64 | `0x22100` → `0x22008` | `0x1D014` | `WdfDeviceCreate` @ `0x1A418` | `{7AC4DE2F-80E2-4BF0-8EEE-F5D26055F956}` (GUID at `0x191C8`) | default queue `FUN_0001DC18`; read/write queues `FUN_00013230` / `FUN_00013450` |
+| `mccfwld` x64 | `0x1125C` -> `0x3D100` -> `0x3D008` | `0x3C014` | `WdfDeviceCreate` @ `0x39858` | **none** | **none** (`WdfIoQueueCreate` never called; no `WdfDeviceCreateDeviceInterface`, no symlink) |
+| `mccusbfn` x64 | `0x25100` -> `0x25008` | `0x1E014` | `WdfDeviceCreate` @ `0x1B418` | `{9094E991-B0B4-4E1C-AFDF-9AED298F5D1B}` (`WdfDeviceCreateDeviceInterface` @ `0x1B428`, GUID at `0x1A1A8`) | default queue `FUN_00020994`; read/write queues `FUN_000124F8` / `FUN_000126A4` via `WdfDeviceConfigureRequestDispatching` types 3/4 |
+| `mcpci` x64 | `0x1795C` -> `0x1C0B0` -> `0x1C008` | `0x11014` | `WdfDeviceCreate` @ `0x19428` | `{BC20052D-05A9-4CCE-92FD-4A9E769D41D0}` (GUID at `0x18150`) | queue callback `FUN_00011444` (3-arg); device-control gate `FUN_000122A0` |
+| `mcusb` x64 | `0x22100` -> `0x22008` | `0x1D014` | `WdfDeviceCreate` @ `0x1A418` | `{7AC4DE2F-80E2-4BF0-8EEE-F5D26055F956}` (GUID at `0x191C8`) | default queue `FUN_0001DC18`; read/write queues `FUN_00013230` / `FUN_00013450` |
 
 The same GUIDs are present byte-for-byte in the corresponding x86 builds and in both pair members, i.e. the
 interface identity is stable across all four builds of a family.
@@ -108,10 +108,10 @@ ASCII and UTF-16 string scan, and by reading every `EvtDriverDeviceAdd`). Device
 `WdfDeviceCreate`, so the device receives the **framework default PnP descriptor: full access to
 `NT AUTHORITY\SYSTEM` and `BUILTIN\Administrators`, no write access for unprivileged users**. There is also
 no `\DosDevices\` / `\??\` name anywhere, so the only user-visible handle is the device interface above
-(reachable as `\\?\GLOBALROOT\Device\…` via the interface path) and its DACL is the gate.
+(reachable as `\\?\GLOBALROOT\Device\...` via the interface path) and its DACL is the gate.
 
 **Reach: R3 (hardware); a local administrator satisfies the DACL.** `mccfwld` creates a device object with
-no interface and no queue, so it has **no openable user-mode surface at all** — an administrator cannot reach
+no interface and no queue, so it has **no openable user-mode surface at all** - an administrator cannot reach
 an IOCTL handler because none exists.
 
 ---
@@ -121,14 +121,14 @@ an IOCTL handler because none exists.
 All MCC control codes are `METHOD_BUFFERED` on device type `0x8000` (`mccusbfn`, `mcusb`) or `0x8678`
 (`mcpci`); access bits follow the usual `FILE_WRITE_ACCESS` (`0x6xxx`), `FILE_READ_ACCESS` (`0xAxxx`),
 read+write (`0xExxx`) split. Because the method is buffered, **every pointer stored inside the input
-structure is pure user data** — which is exactly why the MDL construction below is unsound.
+structure is pure user data** - which is exactly why the MDL construction below is unsound.
 
 ### 5.1 `mcpci`
 
 | Code | Method / access | Input | Kernel action |
 |---|---|---|---|
-| `0x86782010` | BUFFERED / FILE_ANY_ACCESS (DeviceType `0x8678`, Function `0x804`) | ≥ `0xE4` bytes | `WdfRequestRetrieveInputBuffer(0xE4)` → channel index at `+0xB0`, params at `+0x10..+0x14`, per-channel descriptor pointer at `+0x40/+0x50/+0x60/+0x80/+0xA0`, event handle at `+0xB4` → `FUN_00012C30` builds MDLs and arms the scan |
-| (second path) | BUFFERED | output `PCI6000_USER_INFO` | `FUN_00011444` returns **user-mode VAs of the MMIO windows** (see §6.2) |
+| `0x86782010` | BUFFERED / FILE_ANY_ACCESS (DeviceType `0x8678`, Function `0x804`) | >= `0xE4` bytes | `WdfRequestRetrieveInputBuffer(0xE4)` -> channel index at `+0xB0`, params at `+0x10..+0x14`, per-channel descriptor pointer at `+0x40/+0x50/+0x60/+0x80/+0xA0`, event handle at `+0xB4` -> `FUN_00012C30` builds MDLs and arms the scan |
+| (second path) | BUFFERED | output `PCI6000_USER_INFO` | `FUN_00011444` returns **user-mode VAs of the MMIO windows** (see section 6.2) |
 
 Gate: `FUN_000122A0` compares the framework request block at `+0x18` against `0x86782010` (`CMP dword ptr
 [RSP+0x48], 0x86782010` at `0x122E3`) and a request-type field at `+4` against `0x0E`
@@ -138,12 +138,12 @@ Gate: `FUN_000122A0` compares the framework request block at `+0x18` against `0x
 
 `0x80006000`, `0x80006004`, `0x80006008`, `0x8000600C`, `0x8000603C`, `0x80006040`, `0x80006044`,
 `0x8000A010`, `0x8000A018`, `0x8000A028`, **`0x8000A02C`**, `0x8000A030`, `0x8000A038`, `0x8000A048`,
-`0x8000E014`, `0x8000E01C`, `0x8000E020`, `0x8000E024`, `0x8000E034` — all BUFFERED.
+`0x8000E014`, `0x8000E01C`, `0x8000E020`, `0x8000E024`, `0x8000E034` - all BUFFERED.
 Read/write queues additionally accept `IRP_MJ_READ` / `IRP_MJ_WRITE` (cap 0x10000, `FUN_000124F8` /
 `FUN_000126A4`).
 
-**`0x8000A02C` (SCAN_INFO_SET)** → `FUN_000219F8`: retrieves a `0x8DE`-byte input buffer and
-`memcpy(ctx + 0x10158 + channel*0x109A8, input, 0x8DE)` — a whole caller-controlled channel descriptor,
+**`0x8000A02C` (SCAN_INFO_SET)** -> `FUN_000219F8`: retrieves a `0x8DE`-byte input buffer and
+`memcpy(ctx + 0x10158 + channel*0x109A8, input, 0x8DE)` - a whole caller-controlled channel descriptor,
 including the **buffer pointer at `+0x10`** and the **length fields at `+0x6` (i32) and `+0xE` (u16)**.
 
 ### 5.3 `mcusb` (`FUN_0001DC18`, x64)
@@ -151,9 +151,9 @@ including the **buffer pointer at `+0x10`** and the **length fields at `+0x6` (i
 `0x80006000`, `0x80006008`, `0x8000600C`, `0x80006010`, `0x80006034`, `0x8000603C`, `0x80006040`,
 `0x80006044`, `0x8000A020`, **`0x8000A024`**, `0x8000A028`, `0x8000A030`, `0x8000A038`, `0x8000E014`,
 `0x8000E018`, `0x8000E01C`, `0x8000E02C`, `0x80016000`, `0x80016004`, `0x8001A010`, `0x8001E008`,
-`0x8001E00C`, `0x8001E014`, `0x8001E018` — all BUFFERED, plus read/write queues.
+`0x8001E00C`, `0x8001E014`, `0x8001E018` - all BUFFERED, plus read/write queues.
 
-**`0x8000A024`** → `FUN_0001EF38`: `memcpy(ctx + 0x10260 + channel*0x68000, input, 0x8DF)` — same
+**`0x8000A024`** -> `FUN_0001EF38`: `memcpy(ctx + 0x10260 + channel*0x68000, input, 0x8DF)` - same
 caller-controlled descriptor, with the **buffer pointer at `+0x11`** and **length at `+0x7` / `+0xF`**.
 
 ### 5.4 `mccfwld`
@@ -164,9 +164,9 @@ No `IRP_MJ_DEVICE_CONTROL` surface. No queue object is ever created, so no IOCTL
 
 ## 6 Memory-write trace
 
-### 6.1 The shared defect: caller VA → MDL with `AccessMode = KernelMode`
+### 6.1 The shared defect: caller VA -> MDL with `AccessMode = KernelMode`
 
-`mccusbfn` (x64), `FUN_00014EE0` / `FUN_000225AC` — the read and write transfer paths:
+`mccusbfn` (x64), `FUN_00014EE0` / `FUN_000225AC` - the read and write transfer paths:
 
 ```c
 if (*(u64 *)(ctx + 0x10) == 0 || *(i32 *)(ctx + 6) == 0 || *(u16 *)(ctx + 0xE) == 0) return STATUS_...;
@@ -195,13 +195,13 @@ x86 proof (`mccusbfn_4ACB9302`, identical `.text` in `B05491B6`), `objdump`:
 `mcusb` is the same code shape with `ctx + 0x11`, `+0x7`, `+0xF` (`FUN_000149D0`, `FUN_0001F9FC`; x86
 `0x14A78/0x14A90/0x14AB9`, `0x4A78/0x4A90/0x4AB9`).
 
-`mcpci`, `FUN_00012C30` goes one step further — **two** caller pointers:
+`mcpci`, `FUN_00012C30` goes one step further - **two** caller pointers:
 
 1. `ptr1 = *(u64 *)(input + 0x40/0x50/0x60/0x80/0xA0)` (per channel), `IoAllocateMdl(ptr1, 99)` +
    `MmProbeAndLockPages(..., KernelMode, IoReadAccess)` + map (`0x12E23/0x12E4D`, `0x12EC2/0x12EF6`).
    The driver then reads `{len2 @ +0x30, ptr2 @ +0x38}` **out of that buffer**.
 2. `IoAllocateMdl(ptr2, len2 * 2)` + `MmProbeAndLockPages(..., KernelMode, IoModifyAccess)` + map
-   (`0x133DF/0x13409`, `0x13481/0x134B5`) — this becomes the scan DMA buffer.
+   (`0x133DF/0x13409`, `0x13481/0x134B5`) - this becomes the scan DMA buffer.
 
 x86 `mcpci` (`992CA233`, identical `.text` in `CF877AAB`) shows the same two sites at `0x116B5`/`0x116CE`
 and `0x1174D`/`0x1176D` with `push $0x2; push %ebx(=0); push MDL`.
@@ -210,7 +210,7 @@ and `0x1174D`/`0x1176D` with `push $0x2; push %ebx(=0); push MDL`.
 
 | Input | Source | Control |
 |---|---|---|
-| target VA | `mcpci`: input `+0x40…` and `+0x38` of the first buffer; `mccusbfn`/`mcusb`: blob `+0x10` / `+0x11` | **arbitrary 64-bit kernel VA** |
+| target VA | `mcpci`: input `+0x40...` and `+0x38` of the first buffer; `mccusbfn`/`mcusb`: blob `+0x10` / `+0x11` | **arbitrary 64-bit kernel VA** |
 | length | `mcpci`: `*(u32)(buf+0x30) * 2`; USB: `u16 * i32` | **arbitrary 32-bit** |
 | value | device data (PCI scan samples / USB IN payload) | **not directly**, device-dependent |
 | trigger | the same IOCTL, or scan/read start | arbitrary |
@@ -228,17 +228,17 @@ into the device. For `mcpci` the mapped buffer is the scan data buffer written b
 ### 6.2 `mcpci` also hands the PCI BAR to user mode (HW-ONLY)
 
 `FUN_00011D30` walks `WdfCmResourceListGetDescriptor` output and calls
-`MmMapIoSpace(descriptor->Memory.Start, descriptor->Memory.Length, 0)` at `0x11DFB` — **the address comes from
+`MmMapIoSpace(descriptor->Memory.Start, descriptor->Memory.Length, 0)` at `0x11DFB` - **the address comes from
 the PnP resource list, never from the caller**, so this is *not* a caller-controlled PA. It then builds an MDL
 over that mapping (`IoAllocateMdl` + `MmBuildMdlForNonPagedPool`, `0x11E23`).
 
 `FUN_00011444` iterates the five resource records and, for type==memory, maps that MDL with
 `MmMapLockedPagesSpecifyCache(mdl, 1 /* UserMode */, 0 /* MmNonCached */, NULL, 0, 0x20)` (`0x115A4` x64;
-`0x10A18–0x10A20` x86: `push 0x20 / 0 / 0 / 0 / 1 / MDL`) and stores the resulting **user VAs** into the
+`0x10A18-0x10A20` x86: `push 0x20 / 0 / 0 / 0 / 1 / MDL`) and stores the resulting **user VAs** into the
 `PCI6000_USER_INFO` request context at `+8 + i*8`.
 
 Consequence: any opener gets a writable user-mode mapping of the board's MMIO windows. That is
-**`HW-ONLY` (fixed-window device MMIO)** under `SEVERITY.md` — it is not a kernel memory write. Residual: a BAR
+**`HW-ONLY` (fixed-window device MMIO)** under `SEVERITY.md` - it is not a kernel memory write. Residual: a BAR
 that contains a bus-master DMA engine could be programmed from user mode to write physical memory; the
 register map is hardware-defined and not present in the `.sys`, so it is recorded as an unresolved residual,
 not as a scored primitive.
@@ -251,7 +251,7 @@ not as a scored primitive.
 - No user-mode PA mapping (no `W3P`), therefore no `PhysicalMemory`-style read/write.
 - No unchecked `memcpy` into a fixed kernel object on the traced paths. `mcusb`'s `memcpy` sites are bounded:
   the literal-sized ones (`0x8DF`, `0x802`, `0x80`) and the ring-buffer routine at `0x148F8`
-  (`min(remaining, limit − offset)`, `0x14950–0x14960`). The `mccusbfn`/`mcusb` descriptor copies are
+  (`min(remaining, limit - offset)`, `0x14950-0x14960`). The `mccusbfn`/`mcusb` descriptor copies are
   fixed-size and target a context field of matching size.
 - `mccfwld` imports only `KeBugCheckEx`, `RtlCompareMemory`, `RtlCopyUnicodeString`, `WdfVersionBind/Unbind`
   (plus `memset`, `KeTickCount` on x86). No mapping, no MDL, no probe, no copy-to-user.
@@ -265,13 +265,13 @@ not as a scored primitive.
 | Explicit SDDL / security descriptor | none in any of the 16 |
 | `IoCreateDeviceSecure` | not imported |
 | `SeAccessCheck` / `SeSinglePrivilegeCheck` / `ExGetPreviousMode` | not imported |
-| Named device / DOS symlink | none — interface GUID only (or nothing for `mccfwld`) |
+| Named device / DOS symlink | none - interface GUID only (or nothing for `mccfwld`) |
 | File-object access bits vs. IOCTL access | codes use `FILE_READ/WRITE_ACCESS` bits, but a buffered control reaches the handler after the DACL check; access bits add nothing |
 | Caller identity checks | `mcpci` records `PsGetCurrentProcessId()` for channel ownership (`FUN_00011444`, `FUN_00012C30`); `mccusbfn`/`mcusb` reference an event handle with `ObReferenceObjectByHandle(..., 0x100000, ...)`. These serialise channel ownership; **they do not validate buffer addresses** |
 | Gate for the write primitive | device DACL (admin) + physical board present |
 
 `mcpci`'s process-ID/ownership check is the only meaningful state check, and it is passed by any process that
-acquired the channel first — it constrains *concurrency*, not the target address.
+acquired the channel first - it constrains *concurrency*, not the target address.
 
 ---
 
@@ -279,7 +279,7 @@ acquired the channel first — it constrains *concurrency*, not the target addre
 
 For all three I/O families: **an administrator (R2) who has the matching MCC board can hand the driver an
 arbitrary kernel virtual address and an arbitrary 32-bit length, and have that range locked, mapped and used
-as the device's data buffer** — a kernel-VA write with device-controlled contents, crash-first on a bad
+as the device's data buffer** - a kernel-VA write with device-controlled contents, crash-first on a bad
 address. That is the strongest primitive in the group.
 
 Secondary, `mcpci` only: a **user-mode writable mapping of the board's PCI BAR** handed to any opener
@@ -313,14 +313,14 @@ Secondary, `mcpci` only: a **user-mode writable mapping of the board's PCI BAR**
 
 ## 10 Limitations
 
-1. **DACL is inferred from the framework default.** No SDDL exists in the image. The INF — not in the corpus —
+1. **DACL is inferred from the framework default.** No SDDL exists in the image. The INF - not in the corpus -
    can add a `Security` value that widens or narrows the descriptor. The opener therefore has to be an
    administrator (R2 to satisfy the ACL); because the board must additionally be present, the report's Reach
    is recorded as R3 with `Setup: hardware`.
 2. **Device gating is assumed from the driver model.** `mcpci` is a PCI function driver and
    `mccusbfn`/`mcusb` are USB function drivers; without the matching board (or a spoofed device with the
    right VID/PID) the FDO is never created and none of these paths exist. That is why the verdict is MW3 and
-   not MW2 — I did not verify that a software-only devnode can instantiate them.
+   not MW2 - I did not verify that a software-only devnode can instantiate them.
 3. **Value control is not proven arbitrary.** The write payload is board/USB data. An attacker who owns the
    device can influence it (digital input patterns, loopback, crafted firmware), but I did not demonstrate
    arbitrary bytes reach the target.
@@ -333,5 +333,5 @@ Secondary, `mcpci` only: a **user-mode writable mapping of the board's PCI BAR**
    are configuration/status operations and were not traced instruction-by-instruction.
 7. Prior per-file reports `mccfwld_05370B16.admin.static.md` and `mccfwld_B38AFACA.admin.static.md` are
    **superseded for those two files** by this report: they stopped at imports without running a decompiler and
-   labelled the family `BLOCKED`, which is correct only for the i386 builds — the x64 siblings are loadable and
+   labelled the family `BLOCKED`, which is correct only for the i386 builds - the x64 siblings are loadable and
    are `NO-MEMORY-WRITE`, not `BLOCKED`.

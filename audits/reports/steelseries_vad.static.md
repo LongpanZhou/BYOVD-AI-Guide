@@ -22,18 +22,18 @@ Both files are PortCls virtual-audio miniports built as KMDF "stub" drivers (the
 0x1400012xx  FUN_140001470(&wdfGlobals)              ; FxStubBindClasses (WdfVersionBindClass loop)
 0x1400012xx  FUN_1400013ac()                         ; driver-object creation wrapper
 0x1400012xx  FUN_14001129c(DriverObject, RegistryPath)
-            └─ PcInitializeAdapterDriver(DriverObject, RegistryPath, FUN_14000a220)
-            └─ DriverObject->DriverUnload = FUN_14000a7a0
+            \- PcInitializeAdapterDriver(DriverObject, RegistryPath, FUN_14000a220)
+            \- DriverObject->DriverUnload = FUN_14000a7a0
 ```
 
 `FUN_14001129c` is the PortCls registration path (it calls `PcInitializeAdapterDriver`, whose AddDevice callback performs `PcAddAdapterDevice`). The adapter FDO is therefore created by PortCls **when the PnP manager starts the devnode**, not at DriverEntry.
 
 Evidence from the INFs:
 
-- Engine: `[SteelSeries_Engine_VAD.NTamd64.10.0...17763]` → `ROOT\VEN_SSGG&DEV_0002` (`SteelSeries-Engine-VAD_78C729CA.inf:28-29`).
+- Engine: `[SteelSeries_Engine_VAD.NTamd64.10.0...17763]` -> `ROOT\VEN_SSGG&DEV_0002` (`SteelSeries-Engine-VAD_78C729CA.inf:28-29`).
 - Sonar: `ROOT\VEN_SSGG&DEV_0001` (`SteelSeries-Sonar-VAD_2685B48C.inf:29`).
 - Registered interfaces (`SteelSeries-Engine-VAD_78C729CA.inf:101-104`): `KSCATEGORY_AUDIO`, `KSCATEGORY_RENDER`, `KSCATEGORY_TOPOLOGY` for the "chat" wave + topology subdevices.
-- `AddService=SteelSeries_Engine_VAD,...,StartType=3` (`:106-114`) — demand-start, installed with the devnode.
+- `AddService=SteelSeries_Engine_VAD,...,StartType=3` (`:106-114`) - demand-start, installed with the devnode.
 
 Neither binary imports `IoCreateDevice` or `IoCreateSymbolicLink`, and neither contains a `\Device\...` / `\DosDevices\...` string. There is no legacy control device and no separate symbolic link: the only openable object is the PortCls KS device for the devnode.
 
@@ -57,9 +57,9 @@ Consequence: an unprivileged user can open the KS filter with `GENERIC_READ|GENE
 
 - `IRP_MJ_DEVICE_CONTROL` is owned by **portcls.sys** (`PcDispatchIrp`); the minidriver is reached only through its `PCAUTOMATION_TABLE` / `PCFILTER_DESCRIPTOR` returned by `IMiniport::GetDescription`.
 - No custom IOCTL codes, no vendor device name, no filter-factory hook in the image. Imports are the standard PortCls set: `PcAddAdapterDevice`, `PcInitializeAdapterDriver`, `PcNewPort`, `PcNewMiniport`, `PcNewServiceGroup`, `PcRegisterSubdevice`, `PcRegisterPhysicalConnection`, `PcRegisterAdapterPowerManagement`.
-- The INF registers the standard audio interfaces (Wave render + Topology) and the standard `wdmaud` subclasses (`wave`, `mixer`) — `SteelSeries-Engine-VAD_78C729CA.inf:44-50`.
+- The INF registers the standard audio interfaces (Wave render + Topology) and the standard `wdmaud` subclasses (`wave`, `mixer`) - `SteelSeries-Engine-VAD_78C729CA.inf:44-50`.
 
-**Not recovered statically:** the `PCAUTOMATION_TABLE` itself. The image contains no `PCFD` signature (`0x44434650`) in `.rdata`/`.data`, and a structured scan for `{PropertyItemSize ∈ {0x10,0x14,0x18,0x20,0x28}, Count 1..64, Properties→.rdata}` returned no candidate. The descriptor is either built at runtime or laid out differently in this PortCls version. This is the main residual unknown for this file.
+**Not recovered statically:** the `PCAUTOMATION_TABLE` itself. The image contains no `PCFD` signature (`0x44434650`) in `.rdata`/`.data`, and a structured scan for `{PropertyItemSize in {0x10,0x14,0x18,0x20,0x28}, Count 1..64, Properties->.rdata}` returned no candidate. The descriptor is either built at runtime or laid out differently in this PortCls version. This is the main residual unknown for this file.
 
 ## 4. Write sinks
 
@@ -75,7 +75,7 @@ The one KMDF-specific surface is the standard WDF device/queue set created in `E
 
 ## 5. Validation gaps / residual unknowns
 
-1. **Automation table not enumerated** (see §3). A vendor `PCPROPERTY_ITEM` with a `PCPFNPROPERTY_HANDLER` that treats the KS-validated buffer as a structure could still exist. PortCls validates `MinProperty`/`MinData` from the same table, so the exposure would be a handler that trusts an *internal count* inside a correctly-sized buffer, not an out-of-bounds copy of an unchecked length.
+1. **Automation table not enumerated** (see section 3). A vendor `PCPROPERTY_ITEM` with a `PCPFNPROPERTY_HANDLER` that treats the KS-validated buffer as a structure could still exist. PortCls validates `MinProperty`/`MinData` from the same table, so the exposure would be a handler that trusts an *internal count* inside a correctly-sized buffer, not an out-of-bounds copy of an unchecked length.
 2. The Engine and Sonar binaries differ (different SHAs, different INF device IDs) but both are ~272 internal procedures with the same import set; this audit reviewed Engine in depth and confirmed Sonar's imports/entry/INF match. Sonar's handler bodies were not individually decompiled.
 3. KMDF queue dispatch is opaque in a stub-built driver; `WdfVersionBind` resolves all WDF entry points by index.
 
@@ -86,7 +86,7 @@ The one KMDF-specific surface is the standard WDF device/queue set created in `E
 ## 7. Next dynamic test
 
 1. On a disposable x64 VM, install the Engine VAD INF (`pnputil /add-driver ... /install`), confirm the `KSCATEGORY_RENDER` interface and the `\Device\...` KS filter appear.
-2. As a standard user, `CreateFile` on the render interface with `GENERIC_READ|GENERIC_WRITE` — confirm the INF DACL really grants `WD` `GRGWGX` (this is the only access-control question that matters here).
+2. As a standard user, `CreateFile` on the render interface with `GENERIC_READ|GENERIC_WRITE` - confirm the INF DACL really grants `WD` `GRGWGX` (this is the only access-control question that matters here).
 3. Enumerate the property sets with `KSPROPERTY_TYPE_BASIC_SUPPORT`/`SET_SUPPORT`, then send `KSPROPERTY_TYPE_SET` for every settable id with `MinData-1`, `MinData`, and `MinData+0x100` byte buffers under Driver Verifier (Special Pool, Pool Tracking). No corruption test is warranted unless a set handler is discovered that accepts a variable-length payload.
 
 *End of report.*

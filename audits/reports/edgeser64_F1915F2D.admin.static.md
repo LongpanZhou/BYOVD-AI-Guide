@@ -10,7 +10,7 @@
 | Signature | Authenticode status UnknownError; signer CN="WDKTestCert davidi,132294677773414589" (test-signing certificate, not a WHQL chain) |
 | Reach | R3 (devnode / hardware: an Edgeport USB adapter must be present) |
 | Setup required | hardware, and a test-signed load path |
-| Write quality | W0 (provisional, see §8) |
+| Write quality | W0 (provisional, see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -61,7 +61,7 @@ Full coverage was not achieved. The table lists every code that appears as a cas
 
 - Sampled copies (0x222004, 0x222008, 0x222024) are bounded by the output length (dump 7509-7514, 7553-7554). The copy helper `FUN_14003A1C0` is internal; its destination is the SystemBuffer.
 - Fixed-offset writes (0x1B0078, 0x1B0080, 0x1B008C, 0x222020) write fixed-size data.
-- The unread blocks (§3) are where any user-length copy would sit; they are the open candidates.
+- The unread blocks (section 3) are where any user-length copy would sit; they are the open candidates.
 
 ## 6 Most dangerous exposed capability
 
@@ -73,6 +73,6 @@ Full coverage was not achieved. The table lists every code that appears as a cas
 
 ## 8 Limitations
 
-- The IOCTL switch is large (two dispatch families, dump 6544-9800). Only the blocks listed in §3 were read. The codes marked "not read" (including 0x223000-0x22300C and 0x222028-0x22207C) must be read before the verdict is final.
+- The IOCTL switch is large (two dispatch families, dump 6544-9800). Only the blocks listed in section 3 were read. The codes marked "not read" (including 0x223000-0x22300C and 0x222028-0x22207C) must be read before the verdict is final.
 - Digi-specific device-object logic (`FUN_140001408`, `FUN_140001430`, `FUN_140001D7C`: debug/trace hooks gated by a flag at DAT_14003F000) was not read.
 - No REA session used. No execution, no driver load, no registry writes.

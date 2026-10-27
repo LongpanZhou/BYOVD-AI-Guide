@@ -1,4 +1,4 @@
-# Project Goal — Kernel Memory-Write Vulnerabilities
+# Project Goal - Kernel Memory-Write Vulnerabilities
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -8,7 +8,7 @@
 
 Find and verify **kernel memory-write vulnerabilities** in Windows drivers collected from this host
 and from vendor utility packages. The target class lives in the
-[`WANTED_LEDGER.md`](WANTED_LEDGER.md) — edit it to re-target the hunt.
+[`WANTED_LEDGER.md`](WANTED_LEDGER.md) - edit it to re-target the hunt.
 
 The single question for every driver is:
 
@@ -18,8 +18,8 @@ The single question for every driver is:
 
 | Axis | Values |
 |---|---|
-| **Reach** | `R1` unprivileged / authenticated user · `R2` local administrator (**in scope**) · `R3` devnode / hardware / composition |
-| **Setup** | `none` · `service` · `devnode` · `hardware` · `composition` — a severity field, **not** a disqualifier |
+| **Reach** | `R1` unprivileged / authenticated user ; `R2` local administrator (**in scope**) ; `R3` devnode / hardware / composition |
+| **Setup** | `none` ; `service` ; `devnode` ; `hardware` ; `composition` - a severity field, **not** a disqualifier |
 | **Memory write** | arbitrary write, OOB/pool overflow, write-what-where, physical-memory write, MDL mapping, kernel-VA corruption |
 | **Out of scope** | input injection, RGB/config control, DoS-only, info-leak-only, hardware-only writes |
 | **Corpus payload** | `.sys` only. No installers, `.inf`/`.cat`, app trees, or screenshots in `drivers/`. |
@@ -48,7 +48,7 @@ Use [`audits/scope/SEVERITY.md`](audits/scope/SEVERITY.md):
 | [`audits/README.md`](audits/README.md) | Audits tree and historical-report warning |
 | [`audits/STATUS.md`](audits/STATUS.md) | **Single live status and queue** |
 | [`audits/scope/AUDIT_SCOPE.md`](audits/scope/AUDIT_SCOPE.md) | Reach tiers, setup field, what counts |
-| [`audits/scope/SEVERITY.md`](audits/scope/SEVERITY.md) | MW1–MW4 scale; `HW-ONLY` exclusion |
+| [`audits/scope/SEVERITY.md`](audits/scope/SEVERITY.md) | MW1-MW4 scale; `HW-ONLY` exclusion |
 | [`audits/scope/STATIC_ANALYSIS_AGENT_PROMPT.md`](audits/scope/STATIC_ANALYSIS_AGENT_PROMPT.md) | Default prompt for every summoned audit agent |
 | [`DRIVER_COLLECTION_PLAYBOOK.md`](DRIVER_COLLECTION_PLAYBOOK.md) | How to download/harvest more drivers |
 | [`downloads/README.md`](downloads/README.md) | Future-download quick-start |
@@ -63,8 +63,8 @@ All drivers are flat in [`drivers/`](drivers/); batch provenance is in
 | Original host corpus | 94 |
 | `collected2` | 135 |
 | `collected3` | 11 |
-| `collected5` (R1–R4) | 41 |
-| `collected1` (S1–S6) | 106 |
+| `collected5` (R1-R4) | 41 |
+| `collected1` (S1-S6) | 106 |
 | **Total in repo** | **386** |
 
 Batch counts sum to 387: the original 94 includes `vgk.sys`, which is local-only and not in
@@ -110,7 +110,7 @@ Top current results:
 - **Download hygiene:** extract in `downloads/`; run
   `tools/filter_new_drivers.ps1 -OutDir drivers -UpdateExisting` to copy only deduped `.sys` into
   `drivers/` and update the gate; delete the installer, extract tree, and every non-driver payload
-  before the batch is accepted. See `DRIVER_COLLECTION_PLAYBOOK.md` §2.1 and `downloads/README.md`.
+  before the batch is accepted. See `DRIVER_COLLECTION_PLAYBOOK.md` section 2.1 and `downloads/README.md`.
 
 Historical per-driver reports may still use the old `WRITE-*` vocabulary and unprivileged-only
 wording. The canonical documents above govern new work; `SEVERITY.md` maps old verdicts to MW.

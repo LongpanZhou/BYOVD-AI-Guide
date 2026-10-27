@@ -1,8 +1,8 @@
-# MCHOSE / OUYU USB audio drivers — static audit (14 families, grouped)
+# MCHOSE / OUYU USB audio drivers - static audit (14 families, grouped)
 
-Folder: `_collected2\drivers\MCHOSE\` — **16 `.sys` files, 14 families**. The product names are "USB Gaming Headset" (MCHOSE and BLK), and "USB Advanced Audio Device" (OUYU). Vendors: C-Media Electronics and maicong Inc.
+Folder: `_collected2\drivers\MCHOSE\` - **16 `.sys` files, 14 families**. The product names are "USB Gaming Headset" (MCHOSE and BLK), and "USB Advanced Audio Device" (OUYU). Vendors: C-Media Electronics and maicong Inc.
 
-Method: static only. Ghidra 12.1.4 headless, `AuditCls.java` (imports, device-creation and sink call sites, decompile of each sink-holding function, capped at 300 lines per function). Nothing loaded or installed. **Each family's newest build was dumped.** Other builds were not dumped, but are listed in §2.
+Method: static only. Ghidra 12.1.4 headless, `AuditCls.java` (imports, device-creation and sink call sites, decompile of each sink-holding function, capped at 300 lines per function). Nothing loaded or installed. **Each family's newest build was dumped.** Other builds were not dumped, but are listed in section 2.
 
 ## 1. Verdict
 
@@ -13,18 +13,18 @@ Method: static only. Ghidra 12.1.4 headless, `AuditCls.java` (imports, device-cr
 | Family | Dumped build | Date | Version | Vendor (version resource) | Other build(s), not dumped |
 |---|---|---|---|---|---|
 | BLK2025GHS | `F5CF8A1E` | 2024-10-23 | 10.0.2410.2300 | C-Media | `E328A8AA` (same date and version) |
-| MCHOSE_F9 | `86F422DE` | 2025-03-20 | 10.0.2021.0831 | C-Media | — |
-| MCHOSE_G9 | `E066BCBD` | 2025-03-03 | 10.0.2411.1300 | C-Media | — |
-| MCHOSE_G9_II | `125CBC32` | 2025-03-05 | 10.0.2502.2700 | C-Media | — |
-| MCHOSE_G9_PRO | `25A02326` | 2024-11-13 | 10.0.2411.1300 | maicong | — |
-| MCHOSE_K20 | `C31ADA13` | 2025-03-14 | 10.0.2021.0831 | C-Media | — |
-| MCHOSE_K20_PRO | `0A34F98C` | 2025-10-15 | 10.0.2510.1500 | C-Media | — |
-| MCHOSE_K20_TURBO | `BEC117EA` | 2026-04-13 | 10.0.2604.1301 | C-Media | — |
-| MCHOSE_S9_PRO | `A4F4639E` | 2024-11-13 | 10.0.2411.1300 | maicong | — |
-| MCHOSE_V9 | `DD75AEB4` | 2024-12-12 | 10.0.2412.1200 | C-Media | — |
-| MCHOSE_V9_PRO | `7B451A5E` | 2024-12-12 | 10.0.2412.1200 | C-Media | — |
-| MCHOSE_V9_TURBO | `6D340ECD` | 2025-12-17 | 10.0.2503.2001 | maicong | — |
-| MCHOSE_V9_TURBO_600D | `EF5F2159` | 2025-12-29 | 10.0.2503.2003 | maicong | — |
+| MCHOSE_F9 | `86F422DE` | 2025-03-20 | 10.0.2021.0831 | C-Media | - |
+| MCHOSE_G9 | `E066BCBD` | 2025-03-03 | 10.0.2411.1300 | C-Media | - |
+| MCHOSE_G9_II | `125CBC32` | 2025-03-05 | 10.0.2502.2700 | C-Media | - |
+| MCHOSE_G9_PRO | `25A02326` | 2024-11-13 | 10.0.2411.1300 | maicong | - |
+| MCHOSE_K20 | `C31ADA13` | 2025-03-14 | 10.0.2021.0831 | C-Media | - |
+| MCHOSE_K20_PRO | `0A34F98C` | 2025-10-15 | 10.0.2510.1500 | C-Media | - |
+| MCHOSE_K20_TURBO | `BEC117EA` | 2026-04-13 | 10.0.2604.1301 | C-Media | - |
+| MCHOSE_S9_PRO | `A4F4639E` | 2024-11-13 | 10.0.2411.1300 | maicong | - |
+| MCHOSE_V9 | `DD75AEB4` | 2024-12-12 | 10.0.2412.1200 | C-Media | - |
+| MCHOSE_V9_PRO | `7B451A5E` | 2024-12-12 | 10.0.2412.1200 | C-Media | - |
+| MCHOSE_V9_TURBO | `6D340ECD` | 2025-12-17 | 10.0.2503.2001 | maicong | - |
+| MCHOSE_V9_TURBO_600D | `EF5F2159` | 2025-12-29 | 10.0.2503.2003 | maicong | - |
 | OUYU002X1WGHS | `56F0EDDB` | 2024-09-20 | 10.0.2409.2000 | C-Media | `A7108D76` (same date and version) |
 
 ## 3. Shared import set (identical across all 14 dumped builds)
@@ -68,7 +68,7 @@ Both disqualifiers hold, so no further setup analysis is needed for the verdict.
 
 ## 7. Corruption, not write
 
-- None assessed beyond the sink check. The USB descriptor parser consumes device-supplied data, which is hardware input, not user input. The stream-size arithmetic in `FUN_1402f94f0` was not checked for overflow (§4).
+- None assessed beyond the sink check. The USB descriptor parser consumes device-supplied data, which is hardware input, not user input. The stream-size arithmetic in `FUN_1402f94f0` was not checked for overflow (section 4).
 
 ## 8. Next dynamic test (described, not run)
 

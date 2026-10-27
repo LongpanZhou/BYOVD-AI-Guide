@@ -24,13 +24,13 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Probe, MDL, or locked pages | None. No `Probe*`, `MmProbeAndLockPages`, or `MmMapLockedPagesSpecifyCache` | `ev_bed5c4e5…` (`Probe`, empty), `ev_c1e6b026…` (`Mm`: MmIsAddressValid, MmGetPhysicalAddress, MmGetSystemRoutineAddress, MmMapIoSpace, MmUnmapIoSpace) |
-| `MmMapIoSpace` with a device-supplied length (`FUN_140084c30`, sites `0x140084c4f`, `0x140084c7d`) | Maps 36 bytes at a caller-supplied physical address, reads a signed DWORD at +4 of that mapping (device data), unmaps, then maps that many bytes with `MmMapIoSpace(param_2, iVar1, 0)`. The result is stored at param_1+8. Not bounded in-file (mapping misuse) | `ev_994e2855…` (pseudocode), `ev_7c08a3ab…` (resolve), `ev_b7f1599e…` (callers `0x1400844d8`, `0x1400845c8`) |
-| Option-ROM scan (`FUN_140083694`, site `0x1400836df`) | Fixed mapping of 0x30000 bytes at physical 0xC0000. Steps through ROM headers with ROM-declared lengths (`<<9`). Copies `param_4` bytes into caller buffer `param_3` through `FUN_1400bac80` (not reviewed). Bounded by the scan window and the caller's length; both are set by callers not reviewed | `ev_547ccc46…` (pseudocode), `ev_0ee27e2c…` (resolve), `ev_c3cf2c99…` (callers `0x1400843a4`, `0x140084460`) |
-| WMI teardown (`FUN_140111000`) | No caller-supplied data. Calls `IoWMIRegistrationControl(list head, 0x80000002)` and a global callback. Not a write sink in-file | `ev_739aa5eb…` (pseudocode), `ev_aca7dc42…` (resolve) |
-| `StorPortInitialize` site `0x1400c1308` and WMI site `0x1400c1180` | Not in recovered procedures. DriverEntry and the StorPort callback table are not recovered | `ev_814a8395…`, `ev_9670bbab…` (resolve), `ev_727ab914…`, `ev_a022dbd4…` (xrefs) |
-| SRB_IO_CONTROL (HwAdapterControl, HwStartIo, HwBuildIo) | Not reviewed | — |
-| Other `MmMapIoSpace` sites `0x14008a5a3`, `0x1400c1258` | Not reviewed (`0x1400c1258` is not in a recovered procedure) | `ev_0355b56d…` (xrefs) |
+| Probe, MDL, or locked pages | None. No `Probe*`, `MmProbeAndLockPages`, or `MmMapLockedPagesSpecifyCache` | `ev_bed5c4e5...` (`Probe`, empty), `ev_c1e6b026...` (`Mm`: MmIsAddressValid, MmGetPhysicalAddress, MmGetSystemRoutineAddress, MmMapIoSpace, MmUnmapIoSpace) |
+| `MmMapIoSpace` with a device-supplied length (`FUN_140084c30`, sites `0x140084c4f`, `0x140084c7d`) | Maps 36 bytes at a caller-supplied physical address, reads a signed DWORD at +4 of that mapping (device data), unmaps, then maps that many bytes with `MmMapIoSpace(param_2, iVar1, 0)`. The result is stored at param_1+8. Not bounded in-file (mapping misuse) | `ev_994e2855...` (pseudocode), `ev_7c08a3ab...` (resolve), `ev_b7f1599e...` (callers `0x1400844d8`, `0x1400845c8`) |
+| Option-ROM scan (`FUN_140083694`, site `0x1400836df`) | Fixed mapping of 0x30000 bytes at physical 0xC0000. Steps through ROM headers with ROM-declared lengths (`<<9`). Copies `param_4` bytes into caller buffer `param_3` through `FUN_1400bac80` (not reviewed). Bounded by the scan window and the caller's length; both are set by callers not reviewed | `ev_547ccc46...` (pseudocode), `ev_0ee27e2c...` (resolve), `ev_c3cf2c99...` (callers `0x1400843a4`, `0x140084460`) |
+| WMI teardown (`FUN_140111000`) | No caller-supplied data. Calls `IoWMIRegistrationControl(list head, 0x80000002)` and a global callback. Not a write sink in-file | `ev_739aa5eb...` (pseudocode), `ev_aca7dc42...` (resolve) |
+| `StorPortInitialize` site `0x1400c1308` and WMI site `0x1400c1180` | Not in recovered procedures. DriverEntry and the StorPort callback table are not recovered | `ev_814a8395...`, `ev_9670bbab...` (resolve), `ev_727ab914...`, `ev_a022dbd4...` (xrefs) |
+| SRB_IO_CONTROL (HwAdapterControl, HwStartIo, HwBuildIo) | Not reviewed | - |
+| Other `MmMapIoSpace` sites `0x14008a5a3`, `0x1400c1258` | Not reviewed (`0x1400c1258` is not in a recovered procedure) | `ev_0355b56d...` (xrefs) |
 
 ## Verdict rationale
 
@@ -68,12 +68,12 @@ Hardware-gated (Intel storage controller). Not runnable on the host (stopped dri
 - `ev_0355b56d88a17b9ec271d354cdcd670a0058c438f45551f094b6a825e6464234` (xrefs of MmMapIoSpace: 0x1400836df, 0x140084c4f, 0x140084c7d, 0x14008a5a3, 0x1400c1258)
 - `ev_727ab914cff89f36930d1faec25f46184a4d1b447be3931922e998e8c1a0a932` (xrefs of StorPortInitialize: 0x140010cde thunk, 0x1400c1308)
 - `ev_a022dbd43eeebd5a97436c185e98b171884b86a16978f10ffd5d98d1582b9dcc` (xrefs of IoWMIRegistrationControl: 0x1400c1180, 0x140111035, 0x1401110dd)
-- `ev_814a839536c418fc40bfbc5bcbc2b3ff26d5582f634fdeadfcbb35de933a320f` (0x1400c1308 → not in a procedure)
-- `ev_fcf972543f3cecdfef60813bb4492bf50c6fafe0e8c8fb1074bb347ea34703f5` (0x1400c1258 → not in a procedure)
-- `ev_9670bbaba39d6788686534645f2451a6107c5122cf29b9446c4ba4f0fc85109b` (0x1400c1180 → not in a procedure)
-- `ev_0ee27e2cf907beb8600c080c92e974ba64359f1aac621004cbd0223e30d87188` (0x1400836df → FUN_140083694)
-- `ev_7c08a3ab14e40f9463580166a688d030218778f1ee87bdde510c2044abf7b956` (0x140084c4f → FUN_140084c30)
-- `ev_aca7dc42cb387decca038c11ae6b508142eea34f8cf30f307102184646d6e178` (0x140111035 → FUN_140111000)
+- `ev_814a839536c418fc40bfbc5bcbc2b3ff26d5582f634fdeadfcbb35de933a320f` (0x1400c1308 -> not in a procedure)
+- `ev_fcf972543f3cecdfef60813bb4492bf50c6fafe0e8c8fb1074bb347ea34703f5` (0x1400c1258 -> not in a procedure)
+- `ev_9670bbaba39d6788686534645f2451a6107c5122cf29b9446c4ba4f0fc85109b` (0x1400c1180 -> not in a procedure)
+- `ev_0ee27e2cf907beb8600c080c92e974ba64359f1aac621004cbd0223e30d87188` (0x1400836df -> FUN_140083694)
+- `ev_7c08a3ab14e40f9463580166a688d030218778f1ee87bdde510c2044abf7b956` (0x140084c4f -> FUN_140084c30)
+- `ev_aca7dc42cb387decca038c11ae6b508142eea34f8cf30f307102184646d6e178` (0x140111035 -> FUN_140111000)
 - `ev_994e28554e367e23811e7cbd9f494d7327690926a0d7f5ff1693979382102fa8` (pseudocode FUN_140084c30)
 - `ev_547ccc4692e2ef945da972913890f69ceb3f3808954675a2c088d2bc95c180b9` (pseudocode FUN_140083694)
 - `ev_739aa5ebc9a361428432772b5c3d7a51beb8bc29c406d11422062b688056520d` (pseudocode FUN_140111000)

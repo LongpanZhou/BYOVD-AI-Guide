@@ -14,7 +14,7 @@
 ## Entry surface
 
 - **User-openable device.** `IoCreateDevice` is called from `FUN_000582a8` (site `0x5830e`) with `Exclusive = FALSE` and no SDDL argument, so the device gets the default device security (not traced in-file). `IoCreateSymbolicLink` and `IoRegisterDeviceInterface` are imported (call sites not reviewed). Device-name strings: `\Device\Ide` (`0x68c00`), `\Device\Ide\iaStor%d` (`0x68c20`), `\Device\ScsiPort%d` (`0x68ce0`), `\Device\Ide\IAAStorageDevice-%d` (`0x694c0`).
-- **IOCTL dispatch.** `FUN_0005c084` (1056 bytes, `SpIoCtl` messages) takes `IoControlCode` from the stack location (+0x18) and switches on it. Values by CTL_CODE (names not in the binary): `0x4D004` (IOCTL_SCSI_PASS_THROUGH) → `FUN_0005dcf0`; `0x4D014` (IOCTL_SCSI_PASS_THROUGH_DIRECT) → `FUN_0005e300`; `0x4D008` (IOCTL_SCSI_MINIPORT) → `FUN_0005d198`; `0x41018` (IOCTL_SCSI_GET_ADDRESS) reviewed in part; `0xC3512014` copies 0x54 bytes into a driver global after a length check (bounded).
+- **IOCTL dispatch.** `FUN_0005c084` (1056 bytes, `SpIoCtl` messages) takes `IoControlCode` from the stack location (+0x18) and switches on it. Values by CTL_CODE (names not in the binary): `0x4D004` (IOCTL_SCSI_PASS_THROUGH) -> `FUN_0005dcf0`; `0x4D014` (IOCTL_SCSI_PASS_THROUGH_DIRECT) -> `FUN_0005e300`; `0x4D008` (IOCTL_SCSI_MINIPORT) -> `FUN_0005d198`; `0x41018` (IOCTL_SCSI_GET_ADDRESS) reviewed in part; `0xC3512014` copies 0x54 bytes into a driver global after a length check (bounded).
 - **MinorFunction gate.** Both pass-through handlers return STATUS_INVALID_PARAMETER (0xC000000D) unless the stack-location byte at +1 (MinorFunction) equals 1. In the local WDK header `km\wdm.h` line 30832, `IRP_MN_SCSI_CLASS` is `0x01`. Ordinary IRP_MJ_DEVICE_CONTROL requests carry MinorFunction 0 and are rejected before any write.
 - **MDL and mapping.** `MmProbeAndLockPages` (one site, `0x5e9d5`, in `FUN_0005e968`) and `MmMapLockedPagesSpecifyCache` (several sites) are imported, with `IoAllocateMdl`/`IoFreeMdl`. These serve the DIRECT pass-through data buffer.
 - **Admin gate.** Not traced in-file (the device ACL).
@@ -23,14 +23,14 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| DIRECT pass-through, sense zero-fill (`FUN_0005e300`, IOCTL 0x4D014) | Builds the request, then `memset(SysBuf + SenseInfoOffset, 0, SenseInfoLength)`. `SenseInfoOffset` is a ULONG at +0x20 (SCSI_PASS_THROUGH_DIRECT layout); the only check is a lower bound (≥ 0x38). `SenseInfoLength` is a byte at +7 (≤ 255). No check that offset + length fits the buffer. Unbounded 32-bit offset, zero fill. The zero-fill is not gated by `FUN_0005f908` | `ev_18c2c360…` (pseudocode), `ev_95b13853…` (memset semantics) |
-| Non-direct pass-through, data zero-fill (`FUN_0005dcf0`, IOCTL 0x4D004) | Completion path (`CDB[0] == 0x28`, dev+0xf48 == 2, and `FUN_0005f908` returns 0) calls `memset(SysBuf + DataBufferOffset, 0, DataTransferLength)`. `DataBufferOffset` is a 64-bit ULONG_PTR at +0x18. `DataTransferLength` is bounded by the device limit (dev+0xecc). For DataIn == 1, the bounds check is `OutputBufferLength < DataTransferLength + DataBufferOffset`, computed in 64-bit arithmetic, so it can wrap | `ev_474e33f6…` (pseudocode), `ev_95b13853…` |
-| Gate (both pass-through handlers) | Returns STATUS_INVALID_PARAMETER unless MinorFunction == 1 (IRP_MN_SCSI_CLASS). A user IRP_MJ_DEVICE_CONTROL carries 0, so in-file user reach is not established | `ev_18c2c360…`, `ev_474e33f6…`; WDK `km\wdm.h` line 30832 (local read, not REA) |
-| IOCTL dispatch (`FUN_0005c084`) | Switch on IoControlCode. GET_ADDRESS writes 8 bytes after a length check. 0x41010 writes 0x18 bytes after length checks. 0xC3512014 copies a fixed 0x54 bytes into a driver global after a length check (bounded) | `ev_db140605…` (pseudocode) |
-| MDL and mapping for DIRECT data buffer (`FUN_0005e968`, `FUN_0005e300`) | `IoAllocateMdl` on the user buffer, then `MmProbeAndLockPages(mdl, AccessMode, …)`. The mapping call `MmMapLockedPagesSpecifyCache(…, KernelMode?, …)` is in `FUN_0005e300`. Length is `DataTransferLength`, bounded by the device limit. AccessMode and mapping mode not confirmed | `ev_3afd6e9d…` (resolve), `ev_656f4d0d…` (pseudocode), `ev_b499c7d6…` (MmProbeAndLockPages xrefs), `ev_4095cdc9…` (MmMapLockedPagesSpecifyCache xrefs) |
-| Device creation (`FUN_000582a8`) | `IoCreateDevice(DriverObject, extSize, \Device\..., DeviceType, DeviceCharacteristics, FALSE, &dev)`, default security, no SDDL. Device extension fields set from the stack name | `ev_cc582752…` (resolve), `ev_694d4936…` (pseudocode), `ev_af67b0f1…` (xrefs) |
-| Other IOCTL handlers (0x4D008, 0x4100C, 0x41020, 0x4D02C, 0x4D030, 0x70000, 0x2D1400, 0xC3512010, 0xC3512018) | Not reviewed | — |
-| Other `MmMapLockedPagesSpecifyCache` / `MmMapIoSpace` sites | Not reviewed | `ev_4095cdc9…` (xrefs) |
+| DIRECT pass-through, sense zero-fill (`FUN_0005e300`, IOCTL 0x4D014) | Builds the request, then `memset(SysBuf + SenseInfoOffset, 0, SenseInfoLength)`. `SenseInfoOffset` is a ULONG at +0x20 (SCSI_PASS_THROUGH_DIRECT layout); the only check is a lower bound (>= 0x38). `SenseInfoLength` is a byte at +7 (<= 255). No check that offset + length fits the buffer. Unbounded 32-bit offset, zero fill. The zero-fill is not gated by `FUN_0005f908` | `ev_18c2c360...` (pseudocode), `ev_95b13853...` (memset semantics) |
+| Non-direct pass-through, data zero-fill (`FUN_0005dcf0`, IOCTL 0x4D004) | Completion path (`CDB[0] == 0x28`, dev+0xf48 == 2, and `FUN_0005f908` returns 0) calls `memset(SysBuf + DataBufferOffset, 0, DataTransferLength)`. `DataBufferOffset` is a 64-bit ULONG_PTR at +0x18. `DataTransferLength` is bounded by the device limit (dev+0xecc). For DataIn == 1, the bounds check is `OutputBufferLength < DataTransferLength + DataBufferOffset`, computed in 64-bit arithmetic, so it can wrap | `ev_474e33f6...` (pseudocode), `ev_95b13853...` |
+| Gate (both pass-through handlers) | Returns STATUS_INVALID_PARAMETER unless MinorFunction == 1 (IRP_MN_SCSI_CLASS). A user IRP_MJ_DEVICE_CONTROL carries 0, so in-file user reach is not established | `ev_18c2c360...`, `ev_474e33f6...`; WDK `km\wdm.h` line 30832 (local read, not REA) |
+| IOCTL dispatch (`FUN_0005c084`) | Switch on IoControlCode. GET_ADDRESS writes 8 bytes after a length check. 0x41010 writes 0x18 bytes after length checks. 0xC3512014 copies a fixed 0x54 bytes into a driver global after a length check (bounded) | `ev_db140605...` (pseudocode) |
+| MDL and mapping for DIRECT data buffer (`FUN_0005e968`, `FUN_0005e300`) | `IoAllocateMdl` on the user buffer, then `MmProbeAndLockPages(mdl, AccessMode, ...)`. The mapping call `MmMapLockedPagesSpecifyCache(..., KernelMode?, ...)` is in `FUN_0005e300`. Length is `DataTransferLength`, bounded by the device limit. AccessMode and mapping mode not confirmed | `ev_3afd6e9d...` (resolve), `ev_656f4d0d...` (pseudocode), `ev_b499c7d6...` (MmProbeAndLockPages xrefs), `ev_4095cdc9...` (MmMapLockedPagesSpecifyCache xrefs) |
+| Device creation (`FUN_000582a8`) | `IoCreateDevice(DriverObject, extSize, \Device\..., DeviceType, DeviceCharacteristics, FALSE, &dev)`, default security, no SDDL. Device extension fields set from the stack name | `ev_cc582752...` (resolve), `ev_694d4936...` (pseudocode), `ev_af67b0f1...` (xrefs) |
+| Other IOCTL handlers (0x4D008, 0x4100C, 0x41020, 0x4D02C, 0x4D030, 0x70000, 0x2D1400, 0xC3512010, 0xC3512018) | Not reviewed | - |
+| Other `MmMapLockedPagesSpecifyCache` / `MmMapIoSpace` sites | Not reviewed | `ev_4095cdc9...` (xrefs) |
 
 ## Verdict rationale
 
@@ -73,16 +73,16 @@ Run only in the VM, by the orchestrator.
 - `ev_b499c7d6bfb754946ab0ec484ded77f959611da6cb28ed11ad1dfbb347c0c9dc` (xrefs of MmProbeAndLockPages: 0x5e9d5, 0x6a358)
 - `ev_4095cdc9ccd0ca398f7f0c36596d8baaa0706aaf6dc4057a47eecdc84f7f4ce7` (xrefs of MmMapLockedPagesSpecifyCache: 0x40296, 0x40332, 0x5c02b, 0x5e5cd, 0x5f3f5, 0x6a190)
 - `ev_af67b0f1aff81a70cf91bb25ea45fbc240a7dd564e7d07b5d072ea97718fa15e` (xrefs of IoCreateDevice: 0x5830e, 0x6a2e0)
-- `ev_3afd6e9d8004be39d70cb23db154a5d1b2a4a6660987643e071f604c2a23095a` (0x5e9d5 → FUN_0005e968)
-- `ev_01ab679849e3406fdd5d30853690d72ca58d6e6c378d9390d7eb000b0d33c9db` (0x5e5cd → FUN_0005e300)
-- `ev_cc58275216c6525a25fb4bdacdccffc97309c6588f3d321b7620a491d8ae97ad` (0x5830e → FUN_000582a8)
+- `ev_3afd6e9d8004be39d70cb23db154a5d1b2a4a6660987643e071f604c2a23095a` (0x5e9d5 -> FUN_0005e968)
+- `ev_01ab679849e3406fdd5d30853690d72ca58d6e6c378d9390d7eb000b0d33c9db` (0x5e5cd -> FUN_0005e300)
+- `ev_cc58275216c6525a25fb4bdacdccffc97309c6588f3d321b7620a491d8ae97ad` (0x5830e -> FUN_000582a8)
 - `ev_18c2c3603d0e77025a266a5e6b793d0da53f3724387d0f47494a51696732ec3c` (pseudocode FUN_0005e300, DIRECT pass-through)
 - `ev_656f4d0d78bf04708918f849aa0fdbda25f8a8049c12fb937b116998d81fd0c9` (pseudocode FUN_0005e968)
 - `ev_694d4936a29fdba4f07fbd56f53174f4d08b0c25b11ce08d7231af70c8c26ae8` (pseudocode FUN_000582a8)
 - `ev_3e1927fbe7ba7bbd9217f7f3309874e14175523cbf0af3655715edc5a0ce1f01` (callers of FUN_0005e300: 0x5c084)
 - `ev_95b13853139354a906842927b2c2bb9c8d89045cc6a4b3d66f9f607c8f8765ff` (pseudocode FUN_00067410, memset semantics)
-- `ev_b5d003adcde2970a451066a2a7a77c7f01b320d77b8dcc2cb4130155346a2592` (0x5c084 → FUN_0005c084)
+- `ev_b5d003adcde2970a451066a2a7a77c7f01b320d77b8dcc2cb4130155346a2592` (0x5c084 -> FUN_0005c084)
 - `ev_db140605d7fab23fd7c4aeb45d33f1b8b60cfdd8f22644e7f67badc1ee603292` (pseudocode FUN_0005c084, IOCTL dispatch)
 - `ev_474e33f61c2f091262c958efb5d6f9fa7832701f7d084d02dc574f6c1cbce5b5` (pseudocode FUN_0005dcf0, non-direct pass-through)
-- Local WDK reads (not REA evidence): `km\wdm.h` line 30832 (`IRP_MN_SCSI_CLASS 0x01`); `shared\ntddscsi.h` (IOCTL_SCSI_PASS_THROUGH, _DIRECT, IOCTL_SCSI_MINIPORT via CTL_CODE; SCSI_PASS_THROUGH_DIRECT layout, lines 152–166).
+- Local WDK reads (not REA evidence): `km\wdm.h` line 30832 (`IRP_MN_SCSI_CLASS 0x01`); `shared\ntddscsi.h` (IOCTL_SCSI_PASS_THROUGH, _DIRECT, IOCTL_SCSI_MINIPORT via CTL_CODE; SCSI_PASS_THROUGH_DIRECT layout, lines 152-166).
 - Triage row check: Grep on the SHA returned triage_index.csv line 43.

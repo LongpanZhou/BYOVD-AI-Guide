@@ -7,7 +7,7 @@
 | Architecture | **x86 (PE32 / coff-i386)** for both. Device IDs in the INFs are `NTx86`. |
 | Method | Static-only (REA / Ghidra 12.1.4). No driver loaded, no device opened, no IOCTL issued. |
 | Verdict | **NO-WRITE** (no kernel memory-write primitive found) |
-| Setup required | **devnode** — and additionally a **32-bit** Windows host |
+| Setup required | **devnode** - and additionally a **32-bit** Windows host |
 
 > Addresses for `kinonivd` are linked VAs at image base `0x400000`; for `kinonivad` at image base `0x400000`. Both binaries are 32-bit kernel images and therefore **cannot be loaded by an x64 Windows kernel**, irrespective of the DACL. This alone removes them from the "no-setup" candidate set on any x64 test VM.
 
@@ -63,9 +63,9 @@ PortCls creates the adapter FDO in the PnP `AddDevice` path. Again no `IoCreateD
 ;HKR,,Security,, "D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GRGWGX;;;WD)(A;;GRGX;;;RC)"
 ```
 
-- There is **no `D:P(...)` string in either binary** (`search_strings "D:P"` → empty) and no `Security` string.
+- There is **no `D:P(...)` string in either binary** (`search_strings "D:P"` -> empty) and no `Security` string.
 - Therefore the filter device is created with the **default I/O-manager / KS device descriptor**, not the quoted SDDL. That default is not provable from the image; a camera endpoint must be openable by ordinary users for DirectShow/MediaFoundation, so assume at least `GR` and probably `GRGW` for `WD`.
-- `kinonivd_844635B5.inf:45` is also the only place the "known context" SDDL appears — it is a comment. Treat the SDDL claim in the briefing as **not applicable to this package**.
+- `kinonivd_844635B5.inf:45` is also the only place the "known context" SDDL appears - it is a comment. Treat the SDDL claim in the briefing as **not applicable to this package**.
 
 ## 3. Handler / property table
 
@@ -78,14 +78,14 @@ Array A @ `0x419c20` (11 sets, includes the vendor sets) and array B @ `0x419d28
 | `{9d12d198-f86c-4fed-b023-5d87653da793}` | vendor (Kinoni) | 1 | `0x6c5300` / `0x6c5360` (0x20-byte struct) |
 | `{785e8f49-63a2-4144-ab70-ffb278fa26ce}` | vendor | 1 | `0x6c5480` / `0x6c54e0` (8 bytes) |
 | `{43964bd3-7716-404e-8be1-d299b20e50fd}` | vendor | 1 | `0x6c53c0` / `0x6c5420` (8 bytes) |
-| `{6a2e0670-28e4-11d0-a18c-00a0c9118956}` | `PROPSETID_VIDCAP_VIDEOPROCAMP` | 2 | `0x6c4b70`/`0x6c4bd0`, `0x6c4c30`/— |
-| `{9d3d7bbf-5c6d-4138-bb00-584edd20f7c5}` | camera profile | 1 | `0x6c5540` / — |
+| `{6a2e0670-28e4-11d0-a18c-00a0c9118956}` | `PROPSETID_VIDCAP_VIDEOPROCAMP` | 2 | `0x6c4b70`/`0x6c4bd0`, `0x6c4c30`/- |
+| `{9d3d7bbf-5c6d-4138-bb00-584edd20f7c5}` | camera profile | 1 | `0x6c5540` / - |
 | `{1cb79112-c0d2-4213-9ca6-cd4fdb927972}` | `KSPROPERTYSETID_ExtendedCameraControl` | 33 | paired `0x6c55a0`+N / `0x6c5600`+N |
 | `{f1f3e261-dee6-4537-bff5-ee206db54aac}` | `KSPROPERTYSETID_PerFrameSetting` | 3 | `0x6c9ca0`, `0x6c9e40`; **Set-only** `0x6c86a0` |
 | `{c6e13370-30ac-11d0-a18c-00a0c9118956}` | `PROPSETID_VIDCAP_CAMERACONTROL` | 8 | `0x6c6bc0`+ / `0x6c6c20`+ |
 | `{c6e13360-30ac-11d0-a18c-00a0c9118956}` | `PROPSETID_VIDCAP_VIDEOPROCAMP` | 6 | `0x6c4c90`+ / `0x6c4cf0`+ |
 | `{05dc8943-b9fb-4201-808f-6e91451c4760}` | vendor | 1 | `0x6c5110` / `0x6c5170` (single dword at filter+0x2b0) |
-| `{571c92c9-13a2-47e3-a649-d2a778166384}` | per-frame/profile | 12 | item table did not parse with 0x28 stride — not decoded |
+| `{571c92c9-13a2-47e3-a649-d2a778166384}` | per-frame/profile | 12 | item table did not parse with 0x28 stride - not decoded |
 
 Every vendor handler follows one shape (example `0x6c5170`):
 
@@ -111,7 +111,7 @@ if (Buffer == NULL)        return 0xC000000D;   // STATUS_INVALID_PARAMETER
 
 ## 4. Write sinks (decompiled)
 
-**(a) Custom IOCTL 0x222000 — `FUN_00401080`, memcpy at `0x401203`:**
+**(a) Custom IOCTL 0x222000 - `FUN_00401080`, memcpy at `0x401203`:**
 
 ```
 puVar7  = IrpSp->Parameters.DeviceIoControl.InputBufferLength;  // IrpSp + 0x08
@@ -126,7 +126,7 @@ if (puVar7 <= local_70) {
 
 The copy is length-bounded by a capacity returned from the same vtable call that produced the destination. There is **no user-controlled destination pointer**; the destination comes from a driver-internal object (`DAT_006c3d40`, a .bss global that is NULL until the filter initialises).
 
-**(b) Per-frame-settings SET — `FUN_006ce270` @ `0x6ce270`, memcpy at `0x6ce2e5`:**
+**(b) Per-frame-settings SET - `FUN_006ce270` @ `0x6ce270`, memcpy at `0x6ce2e5`:**
 
 ```
 uVar1 = IrpSp->Parameters.DeviceIoControl.OutputBufferLength;
@@ -139,9 +139,9 @@ if (iVar4 >= 0) {
 ```
 
 `FUN_006cb3da` (3 652 bytes) validates, before any use:
-`param_2 != 0 && param_2 >= param_1[0] && param_1[0] >= 0x28 && param_1[8] == 1 && 1 <= param_1[1] <= 0x200`, then walks each nested element and rejects `element_size < 0x10` or `element_end > frame_end` (`0x6cb49x`–`0x6cb5xx`). The `memcpy` length and the allocation size are the same validated header field.
+`param_2 != 0 && param_2 >= param_1[0] && param_1[0] >= 0x28 && param_1[8] == 1 && 1 <= param_1[1] <= 0x200`, then walks each nested element and rejects `element_size < 0x10` or `element_end > frame_end` (`0x6cb49x`-`0x6cb5xx`). The `memcpy` length and the allocation size are the same validated header field.
 
-**(c) Per-frame-settings GET — `FUN_006c9e40` @ `0x6c9e40`, memcpy at `0x6c9e8b`:**
+**(c) Per-frame-settings GET - `FUN_006c9e40` @ `0x6c9e40`, memcpy at `0x6c9e8b`:**
 
 ```
 _Src  = *(filter + 0x24);  _Size = *_Src;

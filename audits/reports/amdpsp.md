@@ -6,14 +6,14 @@
 | Recorded SHA-256 | `0A3AF18439B6BB4AF119C8020A3D0220ED6CC8AE04E20032F846E77777700A0A` (matches triage_index.csv row `amdpsp`; sha256 recomputed in-session) |
 | Company/Version | Advanced Micro Devices, Inc. (AMD Platform Security Processor driver; KMDF; PDB `amdpsp.pdb`) |
 | Method | Static-only audit via REA/Ghidra 12.1.4, memory-write scope only |
-| Verdict | **WRITE-HIGH (candidate, provisional)** — an unprivileged-reachable path (per in-file SDDL) returns a user-mapped RW view of physically-contiguous kernel memory **with its physical address**; a kernel-side write is **not yet demonstrated** (the PSP mailbox consumer is untraced) |
+| Verdict | **WRITE-HIGH (candidate, provisional)** - an unprivileged-reachable path (per in-file SDDL) returns a user-mapped RW view of physically-contiguous kernel memory **with its physical address**; a kernel-side write is **not yet demonstrated** (the PSP mailbox consumer is untraced) |
 | Coverage | ~60%. Not traced: the PSP mailbox/command submit (`FUN_140005980`, `FUN_140002e20`, `FUN_140003810` slot-free path), `FUN_140002b50` (allocator selection), the SDDL apply site, WDF request wrappers, `FUN_1400026a0` case bodies beyond the allocation IOCTLs |
 
 > **Static-only.** No load, no device open, no IOCTL execution. Addresses are linked VAs (image base `0x140000000`).
 
 ## Entry surface
 
-- KMDF driver. IOCTL dispatch `FUN_1400017b0` (WDF request APIs, `DAT_14001af50` table). IOCTL codes `0x9c422000`–`0x9c422009` (with `0x9c422800+` routed to `FUN_1400026a0`).
+- KMDF driver. IOCTL dispatch `FUN_1400017b0` (WDF request APIs, `DAT_14001af50` table). IOCTL codes `0x9c422000`-`0x9c422009` (with `0x9c422800+` routed to `FUN_1400026a0`).
 - SDDL in the binary at `0x140009210`: `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGWGX;;;WD)(A;;GRGWGX;;;RC)`. **Grants Everyone (`WD`) read/write/execute.** This descriptor is present in-file; the call that applies it to the IOCTL device was not traced.
 - No `IoCreateDevice`, `IoCreateSymbolicLink`, or `IoRegisterDeviceInterface` in the NTOSKRNL import table. Device creation is through WDF.
 
@@ -21,23 +21,23 @@
 
 | Code | Handler | Input | Action |
 |---|---|---|---|
-| `0x9c422002` | `FUN_140003020` (via `FUN_1400017b0`) | 8 bytes (size, `uint`) in; 0x38 out | `FUN_140002b50` / `FUN_140002c30` allocates **contiguous** kernel memory of the caller's size (`MmAllocateContiguousMemorySpecifyCache(size, 0, 0xFFFFFFFFF, 0x4000000, 0)`); `MmGetPhysicalAddress` → output; `IoAllocateMdl` + `MmBuildMdlForNonPagedPool` + `MmMapLockedPagesSpecifyCache(mdl, **UserMode**, ...)` → **user VA** returned to the caller |
+| `0x9c422002` | `FUN_140003020` (via `FUN_1400017b0`) | 8 bytes (size, `uint`) in; 0x38 out | `FUN_140002b50` / `FUN_140002c30` allocates **contiguous** kernel memory of the caller's size (`MmAllocateContiguousMemorySpecifyCache(size, 0, 0xFFFFFFFFF, 0x4000000, 0)`); `MmGetPhysicalAddress` -> output; `IoAllocateMdl` + `MmBuildMdlForNonPagedPool` + `MmMapLockedPagesSpecifyCache(mdl, **UserMode**, ...)` -> **user VA** returned to the caller |
 | `0x9c422009` | `FUN_1400017b0` case | 16 bytes in | MDL/WDF memory helper (not traced) |
 | `0x9c422003` | `FUN_140003810` | 8 bytes | Frees a slot's mapping (slot lookup, `FUN_140002e20`) |
 | `0x9c422004` / `0x9c422005` | `FUN_140003fb0` | 8 bytes | Slot table (16 slots) of **caller-supplied buffers** referenced through WDF memory objects; buffer address stored into slot |
-| `0x9c422800+` | `FUN_1400026a0` | 0x28-byte header | Allocation/mapping case bodies; `0x9c422820` → `FUN_140006920` (`MmMapLockedPagesSpecifyCache` **UserMode**) |
+| `0x9c422800+` | `FUN_1400026a0` | 0x28-byte header | Allocation/mapping case bodies; `0x9c422820` -> `FUN_140006920` (`MmMapLockedPagesSpecifyCache` **UserMode**) |
 
 ## Memory-write analysis
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| User-controlled allocation size | **Present.** `FUN_140003020` takes the 4-byte size from the input and passes it to a contiguous allocator with no visible cap in the function (`param_2 != 0` only). Allocator selection in `FUN_140002b50` not traced | `ev_8594f8ee…`, `ev_530c6617…` |
-| Kernel memory mapped RW into the caller | **Present.** `MmMapLockedPagesSpecifyCache(mdl, 1 = UserMode, 1, ...)` in `FUN_140003020` and `FUN_140006920` maps the driver buffer into the **calling process** and returns the user VA | `ev_5a675094…`, `ev_6399e98a…` |
-| Physical address disclosure | **Present.** `MmGetPhysicalAddress` result returned in the output struct (`*param_3`) | `ev_8594f8ee…` (`FUN_140002c30`) |
-| Caller buffer registered as a device-side buffer | **Present.** `FUN_140003fb0` stores a WDF memory reference for a caller buffer into a 16-slot table (`+0xc4 + 0x120*i`). These slots are the buffers the PSP consumes | `ev_a39aefdd…` |
-| Kernel write driven by caller-chosen address | **Not established.** No direct store to a caller-supplied kernel address in the decompiled paths. The mailbox consumer that could turn registered buffers or physical addresses into writes is untraced | — |
+| User-controlled allocation size | **Present.** `FUN_140003020` takes the 4-byte size from the input and passes it to a contiguous allocator with no visible cap in the function (`param_2 != 0` only). Allocator selection in `FUN_140002b50` not traced | `ev_8594f8ee...`, `ev_530c6617...` |
+| Kernel memory mapped RW into the caller | **Present.** `MmMapLockedPagesSpecifyCache(mdl, 1 = UserMode, 1, ...)` in `FUN_140003020` and `FUN_140006920` maps the driver buffer into the **calling process** and returns the user VA | `ev_5a675094...`, `ev_6399e98a...` |
+| Physical address disclosure | **Present.** `MmGetPhysicalAddress` result returned in the output struct (`*param_3`) | `ev_8594f8ee...` (`FUN_140002c30`) |
+| Caller buffer registered as a device-side buffer | **Present.** `FUN_140003fb0` stores a WDF memory reference for a caller buffer into a 16-slot table (`+0xc4 + 0x120*i`). These slots are the buffers the PSP consumes | `ev_a39aefdd...` |
+| Kernel write driven by caller-chosen address | **Not established.** No direct store to a caller-supplied kernel address in the decompiled paths. The mailbox consumer that could turn registered buffers or physical addresses into writes is untraced | - |
 | `ProbeFor*` in the module | **Absent.** Caller buffers are handled through WDF request/memory APIs (framework probes), not visible here | import sweep |
-| Physical MMIO mapping | `FUN_14001d590` maps firmware/BAR ranges from a kernel-provided resource list (not caller-controlled); its caller `FUN_14001d130` not traced | `ev_92e72227…`, `ev_ede9b250…` |
+| Physical MMIO mapping | `FUN_14001d590` maps firmware/BAR ranges from a kernel-provided resource list (not caller-controlled); its caller `FUN_14001d130` not traced | `ev_92e72227...`, `ev_ede9b250...` |
 
 ## Findings
 

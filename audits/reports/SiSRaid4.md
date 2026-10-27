@@ -15,19 +15,19 @@
 
 - No device object of its own: the Io sweep is empty, there is no `\Device\` string, and the `(A;` SDDL search is empty. StorPort creates the adapter and disk devices. No WDF.
 - Reached through StorPort as SRBs. User mode reaches the miniport through the SCSI port device (IOCTL_SCSI_MINIPORT, which dispatches to the IO_CONTROL handler) and through SCSI pass-through to the disk device. Neither ACL is traced, so an admin gate is not established. The IO_CONTROL handler is not reviewed; per agent A's finding on the megasas family it may be `HwBuildIo` rather than `HwAdapterControl`, so verify per driver.
-- StorPort imports (15): `StorPortGetBusData`, `StorPortGetScatterGatherList`, `StorPortDeviceReady`, `StorPortGetDeviceBase`, `StorPortLogError`, `StorPortSetBusDataByOffset`, `StorPortNotification`, `StorPortGetPhysicalAddress`, `StorPortInitialize`, `StorPortCompleteRequest`, `StorPortReady`, `StorPortGetUncachedExtension`, `StorPortDeviceBusy`, `StorPortStallExecution`, `StorPortDebugPrint`. Each also appears as a thunk procedure in `.text` at `0x1F99A`–`0x1FA42`.
+- StorPort imports (15): `StorPortGetBusData`, `StorPortGetScatterGatherList`, `StorPortDeviceReady`, `StorPortGetDeviceBase`, `StorPortLogError`, `StorPortSetBusDataByOffset`, `StorPortNotification`, `StorPortGetPhysicalAddress`, `StorPortInitialize`, `StorPortCompleteRequest`, `StorPortReady`, `StorPortGetUncachedExtension`, `StorPortDeviceBusy`, `StorPortStallExecution`, `StorPortDebugPrint`. Each also appears as a thunk procedure in `.text` at `0x1F99A`-`0x1FA42`.
 
 ## Memory-write analysis (reviewed scope)
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Kernel mapping or MDL built by the driver | None (`Mm` sweep empty) | `ev_bb43f5bf…` |
-| Probe and WDF APIs | None | `ev_99472d97…` (Probe), `ev_723520d2…` (Wdf) |
-| Device-object APIs (`Io*`, `\Device\`) | None | `ev_c3ff3c3e…` (Io), `ev_8b517e1e…` (`\Device\`) |
-| SDDL | None (`(A;` search empty) | `ev_ab199f0f…` |
-| CPU copy imports (`copy` sweep) | None | `ev_400eae0d…` |
-| In-binary `memcpy` at `0x1F660` | 42 incoming references (`0x11212` through `0x24300`). Lengths not reviewed. Decisive: any caller whose length comes from SRB, CDB, or device data | `ev_32fd566e…` (mem sweep), `ev_37254fbe…` (xrefs of `0x1F660`) |
-| StorPort imports | 15, no direct write API among them | `ev_d143a2ca…` (StorPort sweep) |
+| Kernel mapping or MDL built by the driver | None (`Mm` sweep empty) | `ev_bb43f5bf...` |
+| Probe and WDF APIs | None | `ev_99472d97...` (Probe), `ev_723520d2...` (Wdf) |
+| Device-object APIs (`Io*`, `\Device\`) | None | `ev_c3ff3c3e...` (Io), `ev_8b517e1e...` (`\Device\`) |
+| SDDL | None (`(A;` search empty) | `ev_ab199f0f...` |
+| CPU copy imports (`copy` sweep) | None | `ev_400eae0d...` |
+| In-binary `memcpy` at `0x1F660` | 42 incoming references (`0x11212` through `0x24300`). Lengths not reviewed. Decisive: any caller whose length comes from SRB, CDB, or device data | `ev_32fd566e...` (mem sweep), `ev_37254fbe...` (xrefs of `0x1F660`) |
+| StorPort imports | 15, no direct write API among them | `ev_d143a2ca...` (StorPort sweep) |
 
 ## Verdict rationale
 

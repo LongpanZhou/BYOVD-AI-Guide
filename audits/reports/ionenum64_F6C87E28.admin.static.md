@@ -24,7 +24,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 
 ## 2 Entry / device / interface / effective DACL
 
-- Device objects: `IoCreateDevice(…, ext 0x88, …)` at dump 1931 (child PDO) and `IoCreateDevice(param_1, 0x108, 0, DeviceType 0x2A, 0, Exclusive 1, &device)` at dump 1988 (FDO, exclusive, unnamed).
+- Device objects: `IoCreateDevice(..., ext 0x88, ...)` at dump 1931 (child PDO) and `IoCreateDevice(param_1, 0x108, 0, DeviceType 0x2A, 0, Exclusive 1, &device)` at dump 1988 (FDO, exclusive, unnamed).
 - Interface: `IoRegisterDeviceInterface` (import). No symbolic link to a named device and no SDDL string in the image. No `ZwSetSecurityObject`. Effective DACL: default; the device is reached through the PnP interface.
 
 ## 3 Dispatch and IOCTL table
@@ -34,7 +34,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 | IOCTL | Method | Access | Input | Output | Kernel action (dump lines) |
 |---|---|---|---|---|---|
 | 0x37020C | BUFFERED | ANY | none used | OutputBufferLength (`*(lVar2+8)`, 871) | Reads registry value `PortName`, or `Identifier` if the first query returns STATUS_OBJECT_NAME_NOT_FOUND or STATUS_BUFFER_TOO_SMALL (871-876). The value is copied into SystemBuffer by `FUN_140001350`, and Information is the value's length (877). |
-| any other | - | - | as received | as received | Forwarded to the lower stack by `FUN_140001B20` after `FUN_140001BF0` (dump 884-885, 703-794). Forwarding path not read in full (§8). |
+| any other | - | - | as received | as received | Forwarded to the lower stack by `FUN_140001B20` after `FUN_140001BF0` (dump 884-885, 703-794). Forwarding path not read in full (section 8). |
 
 Decoded code 0x37020C: DeviceType 0x37, function 0x083, METHOD_BUFFERED (low bits 0), FILE_ANY_ACCESS (bits 14-15 = 0).
 

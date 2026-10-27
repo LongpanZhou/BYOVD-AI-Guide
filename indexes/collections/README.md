@@ -1,4 +1,4 @@
-# Collections — batch metadata and download history
+# Collections - batch metadata and download history
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
@@ -10,10 +10,10 @@ in `../../drivers/`.
 | Path | What it is |
 |---|---|
 | `original/` | Original 94-driver triage metadata |
-| `collected1/` | S1–S6 manifests, summaries, `urls.txt`, triage |
+| `collected1/` | S1-S6 manifests, summaries, `urls.txt`, triage |
 | `collected2/` | `master_drivers.csv`, `_index.jsonl`, `discovered.csv` |
 | `collected3/` | `master_drivers.csv`, `_index.jsonl` |
-| `collected5/` | R1–R4 manifests, summaries, `urls.txt`, `COLLECTION_REQUIREMENTS.md` |
+| `collected5/` | R1-R4 manifests, summaries, `urls.txt`, `COLLECTION_REQUIREMENTS.md` |
 
 When adding `collected6`, create `collected6/<agent>/` here and record every official URL. Do not
 recreate batch folders at the project root.

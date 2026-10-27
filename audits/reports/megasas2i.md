@@ -25,21 +25,21 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Caller-controlled kernel address or mapping | None. The `Mm`, `Probe` and `\Device\` sweeps are empty. No section, `MmCopyMemory` or PhysicalMemory references | `ev_24b9978f…` (Mm, empty), `ev_444d50ab…` (Probe, empty), `ev_e3a1f8eb…` (`\Device\`, empty) |
-| IO_CONTROL routing | Worker `FUN_140001290`: the gate `FUN_14000c740` (not reviewed) runs first. `switch(Function)`: 0x02 returns `FUN_140006400`; 0x08 (flush) allocates a frame with `FUN_140001200`; 0x07 and 0x17 go to separate handlers; default sets SRB status 6 | `ev_0f09755f…` (worker), `ev_ac6d9c73…` (HwBuildIo) |
-| Buffer length (`DataTransferLength`, SRB+0x10) | Checked `>= 0xbc` before any buffer access. On failure: SRB status 6, ReturnCode 1 | `ev_742a8ff2…` (`FUN_140006400`) |
-| Special ControlCode `0x001b0780` | Returns success with no action | `ev_742a8ff2…` |
-| Signature and ControlCode gate | 8-byte signature `LSILOGIC` at buffer+4. ControlCode high word `F001` or `F002` (mask `0xfffeffff`). Anything else goes to the fallback `FUN_140005f80` | `ev_742a8ff2…` |
-| Fixed copy, sub-code `0xF0010100` (buffer+0x34) | `FUN_140008ba0(buf+0xbc, "LSILOGIC" constant, 0x70)`. Constant length, guarded by `DataTransferLength > 299` (ends at 0x12c) | `ev_742a8ff2…` |
-| Fixed copy, sub-code `0xF0010200` | 0x70 bytes from adapter field `param_1+8` to buf+0xbc, same guard | `ev_742a8ff2…` |
-| Fixed 4-byte store, sub-code `0xF0020300` | Adapter field `param_1+0x78` stored at buf+0xbc, guarded by `DataTransferLength >= 0xc0` | `ev_742a8ff2…` |
-| Sub-code `0xF0020100` | `StorPortNotification(7, adapter, buf+0x38 byte)`. No write | `ev_742a8ff2…` |
-| Fallback header copy (types 3, 4, 5, 7, 8) | Fixed 0x40 or 0x38 bytes from buf+0x1c into the frame at +0x100. Source is inside the checked 0xbc-byte buffer | `ev_68e04ef2…` (`FUN_140005f80`) |
-| Caller-length SGE build (buffer+0x30) | Types 3, 4 and 5 pass `buf+0x30` directly as the length to `FUN_140001000`, with no check against `DataTransferLength - 0xbc`. Type 7 uses `buf+0x30` for its first build and `DataTransferLength - 0xbc - buf+0x30` for the second. Type 8 uses only the derived length. `FUN_140001000` calls `StorPortGetPhysicalAddress` per chunk and writes one SGE per chunk into the frame. Its count check `adapter+0x8e8 < count` allows max+1 entries (off-by-one). **Conditional sink** | `ev_68e04ef2…` (`FUN_140005f80`), `ev_878b7348…` (`FUN_140001000`) |
-| Request frame capacity | `FUN_140001200` zeroes 0x600 bytes of the SRB extension and places the SGE array at +0x120 (type 7), +0x128 (type 5) or +0x130 (types 3, 4, 8). An SGE write past the frame end needs (max+1) x SGE size above about 0x4d0. That is about 108 entries of 12 bytes (64-bit SGEs) or about 153 of 8 bytes. The SRB extension is 0x700 bytes | `ev_c2c578b8…` (`FUN_140001200`), `ev_b726edfa…` (SrbExtensionSize 0x700) |
-| Caller-length copy (buffer `Length`, buf+0x18) | Not read in `FUN_140006400` or in the reviewed fallback. A user-length copy, if one exists, would be in `FUN_1400062f0` (sub-code `0xF0020200`). **Not reviewed** | `ev_742a8ff2…` (no +0x18 reference) |
-| Signature zeroing helper `FUN_140008bf0` | Fixed 8 bytes at buf+4. `entry` zeroes 0xd0 bytes of the init struct | `ev_742a8ff2…`, `ev_b726edfa…` |
-| Shared `memset` (`0x14000ec40`) | Only named mem-helper in the sweep. Callers and length arguments not enumerated | `ev_094f0392…` (mem sweep) |
+| Caller-controlled kernel address or mapping | None. The `Mm`, `Probe` and `\Device\` sweeps are empty. No section, `MmCopyMemory` or PhysicalMemory references | `ev_24b9978f...` (Mm, empty), `ev_444d50ab...` (Probe, empty), `ev_e3a1f8eb...` (`\Device\`, empty) |
+| IO_CONTROL routing | Worker `FUN_140001290`: the gate `FUN_14000c740` (not reviewed) runs first. `switch(Function)`: 0x02 returns `FUN_140006400`; 0x08 (flush) allocates a frame with `FUN_140001200`; 0x07 and 0x17 go to separate handlers; default sets SRB status 6 | `ev_0f09755f...` (worker), `ev_ac6d9c73...` (HwBuildIo) |
+| Buffer length (`DataTransferLength`, SRB+0x10) | Checked `>= 0xbc` before any buffer access. On failure: SRB status 6, ReturnCode 1 | `ev_742a8ff2...` (`FUN_140006400`) |
+| Special ControlCode `0x001b0780` | Returns success with no action | `ev_742a8ff2...` |
+| Signature and ControlCode gate | 8-byte signature `LSILOGIC` at buffer+4. ControlCode high word `F001` or `F002` (mask `0xfffeffff`). Anything else goes to the fallback `FUN_140005f80` | `ev_742a8ff2...` |
+| Fixed copy, sub-code `0xF0010100` (buffer+0x34) | `FUN_140008ba0(buf+0xbc, "LSILOGIC" constant, 0x70)`. Constant length, guarded by `DataTransferLength > 299` (ends at 0x12c) | `ev_742a8ff2...` |
+| Fixed copy, sub-code `0xF0010200` | 0x70 bytes from adapter field `param_1+8` to buf+0xbc, same guard | `ev_742a8ff2...` |
+| Fixed 4-byte store, sub-code `0xF0020300` | Adapter field `param_1+0x78` stored at buf+0xbc, guarded by `DataTransferLength >= 0xc0` | `ev_742a8ff2...` |
+| Sub-code `0xF0020100` | `StorPortNotification(7, adapter, buf+0x38 byte)`. No write | `ev_742a8ff2...` |
+| Fallback header copy (types 3, 4, 5, 7, 8) | Fixed 0x40 or 0x38 bytes from buf+0x1c into the frame at +0x100. Source is inside the checked 0xbc-byte buffer | `ev_68e04ef2...` (`FUN_140005f80`) |
+| Caller-length SGE build (buffer+0x30) | Types 3, 4 and 5 pass `buf+0x30` directly as the length to `FUN_140001000`, with no check against `DataTransferLength - 0xbc`. Type 7 uses `buf+0x30` for its first build and `DataTransferLength - 0xbc - buf+0x30` for the second. Type 8 uses only the derived length. `FUN_140001000` calls `StorPortGetPhysicalAddress` per chunk and writes one SGE per chunk into the frame. Its count check `adapter+0x8e8 < count` allows max+1 entries (off-by-one). **Conditional sink** | `ev_68e04ef2...` (`FUN_140005f80`), `ev_878b7348...` (`FUN_140001000`) |
+| Request frame capacity | `FUN_140001200` zeroes 0x600 bytes of the SRB extension and places the SGE array at +0x120 (type 7), +0x128 (type 5) or +0x130 (types 3, 4, 8). An SGE write past the frame end needs (max+1) x SGE size above about 0x4d0. That is about 108 entries of 12 bytes (64-bit SGEs) or about 153 of 8 bytes. The SRB extension is 0x700 bytes | `ev_c2c578b8...` (`FUN_140001200`), `ev_b726edfa...` (SrbExtensionSize 0x700) |
+| Caller-length copy (buffer `Length`, buf+0x18) | Not read in `FUN_140006400` or in the reviewed fallback. A user-length copy, if one exists, would be in `FUN_1400062f0` (sub-code `0xF0020200`). **Not reviewed** | `ev_742a8ff2...` (no +0x18 reference) |
+| Signature zeroing helper `FUN_140008bf0` | Fixed 8 bytes at buf+4. `entry` zeroes 0xd0 bytes of the init struct | `ev_742a8ff2...`, `ev_b726edfa...` |
+| Shared `memset` (`0x14000ec40`) | Only named mem-helper in the sweep. Callers and length arguments not enumerated | `ev_094f0392...` (mem sweep) |
 
 ## Verdict rationale
 
@@ -70,7 +70,7 @@
 
 ## Evidence (REA, retained IDs)
 
-Standard sweeps (`open_binary` digest `6d67f52f…`):
+Standard sweeps (`open_binary` digest `6d67f52f...`):
 - `StorPort` (case-sensitive): `ev_b6545e6c8182bd79fb3e04cc19545f2ca64c2fd3ffd3cf399f2786eb31a283fc` (17 externals)
 - `Mm` (case-sensitive): `ev_24b9978f30c4a04a1e8480eee632a4cab9b46e4546fb2d5ed1e2d64dfe1e6e82` (empty)
 - `Io` (case-sensitive): `ev_f2d60c435ba1b68d92748d139d2de7786e399224e234fd03497ae1976471ad61` (empty)

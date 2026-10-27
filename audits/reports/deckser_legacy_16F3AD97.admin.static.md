@@ -16,16 +16,16 @@
 
 ## 1 Internals
 
-- Same code as `deckser_65A92D8F` (dump-identical functions). WDM serial port driver; device `\Device\DeckLinkSerial`; `IoCreateDevice(…, 0x468, …, 0x1B)` and `IoCreateSymbolicLink` as in the sibling.
+- Same code as `deckser_65A92D8F` (dump-identical functions). WDM serial port driver; device `\Device\DeckLinkSerial`; `IoCreateDevice(..., 0x468, ..., 0x1B)` and `IoCreateSymbolicLink` as in the sibling.
 - No mapping API, no memcpy/memmove import, no SDDL string, no `ZwSetSecurityObject`.
 
 ## 2 Entry / device / interface / effective DACL
 
-- As in `deckser_65A92D8F` §2. Effective DACL: IoCreateDevice default.
+- As in `deckser_65A92D8F` section 2. Effective DACL: IoCreateDevice default.
 
 ## 3 Dispatch and IOCTL table
 
-- As in `deckser_65A92D8F` §3: the full serial IOCTL switch 0x1B0004-0x1B009C (dump line numbers identical in this build). Sub-IOCTLs to the lower device are 0x222030 (256-byte local output, dump 2072) and 0x222038 (4-byte output into SystemBuffer+8, dump 309).
+- As in `deckser_65A92D8F` section 3: the full serial IOCTL switch 0x1B0004-0x1B009C (dump line numbers identical in this build). Sub-IOCTLs to the lower device are 0x222030 (256-byte local output, dump 2072) and 0x222038 (4-byte output into SystemBuffer+8, dump 309).
 
 ## 4 Access-control audit
 
@@ -33,11 +33,11 @@
 
 ## 5 Memory-write trace
 
-- As in `deckser_65A92D8F` §5: all output writes are fixed-size and within the output-length checks; the 0x1B0054 memset is bounded by the output length; no caller-chosen destination or index.
+- As in `deckser_65A92D8F` section 5: all output writes are fixed-size and within the output-length checks; the 0x1B0054 memset is bounded by the output length; no caller-chosen destination or index.
 
 ## 6 Most dangerous exposed capability
 
-- None (see the sibling §6).
+- None (see the sibling section 6).
 
 ## 7 Verdict
 
@@ -45,5 +45,5 @@
 
 ## 8 Limitations
 
-- As in `deckser_65A92D8F` §8: the create and close routines and the cancel-safe queue helpers were not read; the lower device's sub-IOCTL behavior is outside the image.
+- As in `deckser_65A92D8F` section 8: the create and close routines and the cancel-safe queue helpers were not read; the lower device's sub-IOCTL behavior is outside the image.
 - No REA session used. No execution, no driver load, no registry writes.

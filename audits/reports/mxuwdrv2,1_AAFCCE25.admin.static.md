@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=MOXA INC. |
 | Reach | R3 (devnode / hardware: a Moxa UPort 1110/1130/1150 USB adapter must be attached) |
 | Setup required | hardware |
-| Write quality | W0 (provisional, see §8) |
+| Write quality | W0 (provisional, see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -25,7 +25,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 ## 2 Entry / device / interface / effective DACL
 
 - `IoCreateDevice(param_2, param_7+8, name, param_4)` at dump 347 (device name built at runtime; strings include `\Device\SerBus%0d`, `\Device\UMP%%d`, `\Device\UMPLDR%%d`, `\Device\mxuport%d`, `\DosDevices\`).
-- `IoRegisterDeviceInterface(…, &DAT_1400150E0, …)` at dump 4527; `IoCreateUnprotectedSymbolicLink` at dump 11712; `IoRegisterDeviceInterface` at dump 12348 (second interface).
+- `IoRegisterDeviceInterface(..., &DAT_1400150E0, ...)` at dump 4527; `IoCreateUnprotectedSymbolicLink` at dump 11712; `IoRegisterDeviceInterface` at dump 12348 (second interface).
 - No SDDL string or `ZwSetSecurityObject`. Effective DACL: IoCreateDevice default and PnP interface default; not fixed by the driver.
 
 ## 3 Dispatch and IOCTL table

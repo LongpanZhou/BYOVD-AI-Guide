@@ -22,7 +22,7 @@ Identity: Company Blackmagic Design; FileVersion 1.0.0.0; signature Valid (WHCP)
 ## 2 Entry / device / interface / effective DACL
 
 - Device objects: `IoCreateDevice(..., 0x20, 0, 0x22, 0x80, 0, ...)` at line 23727 in `FUN_14001d000 @ 14001d000` (header 23716), and `IoCreateDevice(param_1, 0x1c8, 0, 0x22, 0, 0, &local_res18)` at line 24326 in `FUN_14001dc50 @ 14001dc50` (header 24313). Both are **unnamed** (DeviceName = 0).
-- Device interfaces: `IoRegisterDeviceInterface(param_2, &DAT_140024c58, 0, _Dst+0x60)` at line 24356, `(…&DAT_140024c48…, _Dst+0x66)` at line 24360, `(…&DAT_140024c38…, _Dst+0x6c)` at line 24364, all in `FUN_14001dc50`. These three GUIDs are the user-mode route to the device. The interface DACL is not set in the call (no SDDL argument); it is the IoRegisterDeviceInterface default.
+- Device interfaces: `IoRegisterDeviceInterface(param_2, &DAT_140024c58, 0, _Dst+0x60)` at line 24356, `(...&DAT_140024c48..., _Dst+0x66)` at line 24360, `(...&DAT_140024c38..., _Dst+0x6c)` at line 24364, all in `FUN_14001dc50`. These three GUIDs are the user-mode route to the device. The interface DACL is not set in the call (no SDDL argument); it is the IoRegisterDeviceInterface default.
 - Effective DACL: not resolved beyond the IoRegisterDeviceInterface default. No SDDL string appears in the image (strings file).
 - Dispatch: IRP_MJ_DEVICE_CONTROL is assigned at line 25644 `*(code **)(param_1 + 0xe0) = FUN_14001de30;` inside `FUN_14001f784 @ 14001f784` (header 25627). The IOCTL dispatcher with the IOCTL code as `in_EDX` is `FUN_14000ff80 @ 14000ff80` (header 13256). Its direct caller was not identified (indirect dispatch).
 

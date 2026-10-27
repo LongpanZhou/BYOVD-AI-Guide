@@ -1,4 +1,4 @@
-# t7 phase C: structured function-code sweep — parameterized chunk runner
+# t7 phase C: structured function-code sweep - parameterized chunk runner
 # usage: powershell -File t7_sweep.ps1 -dev '\\.\VMCIDev' -startfn 800 -endfn 8ff [-inlen 16] [-outlen 1000]
 param(
   [Parameter(Mandatory=$true)][string]$dev,

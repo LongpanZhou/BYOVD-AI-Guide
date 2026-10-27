@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=Microsoft Windows Hardware Compatibility Publisher |
 | Reach | R3 (devnode / hardware: a DeckLink card must be present) |
 | Setup required | hardware |
-| Write quality | W0 for caller-controlled writes in the traced switch (provisional, see §8) |
+| Write quality | W0 for caller-controlled writes in the traced switch (provisional, see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -25,7 +25,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 ## 2 Entry / device / interface / effective DACL
 
 - `IoCreateDevice(DriverObject, 0x468, &name, 0x1B)` at dump 1288: DeviceType 0x1B (FILE_DEVICE_SERIAL_PORT), extension 0x468, name built at runtime (device name string in the image: `\Device\DeckLinkSerial`).
-- `IoCreateSymbolicLink(…, DriverObject+0x30)` at dump 1489 (`\DosDevices\` link).
+- `IoCreateSymbolicLink(..., DriverObject+0x30)` at dump 1489 (`\DosDevices\` link).
 - No SDDL string and no `ZwSetSecurityObject` in the image. Effective DACL: IoCreateDevice default, not fixed by the driver.
 
 ## 3 Dispatch and IOCTL table
@@ -72,14 +72,14 @@ Dispatch: `FUN_140001470` (IRP_MJ_DEVICE_CONTROL slot). The serial IOCTL switch 
 
 ## 4 Access-control audit
 
-- No privilege or caller-identity check in the driver. The gates are device-state flags and the length checks in §3. Any principal that can open the device object (IoCreateDevice default security) can issue these codes.
+- No privilege or caller-identity check in the driver. The gates are device-state flags and the length checks in section 3. Any principal that can open the device object (IoCreateDevice default security) can issue these codes.
 
 ## 5 Memory-write trace
 
 1. **Output writes at fixed offsets:** 0x1B0020, 0x1B0040, 0x1B0050, 0x1B0058, 0x1B0060, 0x1B0068/0x1B0080, 0x1B0074, 0x1B0078, 0x1B008C, 0x1B0094 write fixed-size data (4 to 0x40 bytes) into the SystemBuffer after the output-length check. Destinations fixed; values device state. Bounded.
 2. **0x1B0054 memset:** `memset(SystemBuffer, 0, OutputBufferLength)` at dump 634, executed only when OutputBufferLength > 2 (633). Length is the caller's output length, which is also the SystemBuffer's size (METHOD buffered). Bounded.
 3. **Device-field writes from input:** 0x1B0004, 0x1B000C, 0x1B001C, 0x1B0064, 0x1B005C write fixed device fields from input DWORDs or bytes at fixed offsets (dump 471, 486-488, 513-521, 694-703, 659-665). No caller-chosen index.
-4. **Handlers 0x1B0044, 0x1B0048, 0x1B004C, 0x1B006C (dump 2672-2720, 2063-2078, 294-333):** traced in full (§3). Each writes only device fields, a local stack buffer, or within the output-length check.
+4. **Handlers 0x1B0044, 0x1B0048, 0x1B004C, 0x1B006C (dump 2672-2720, 2063-2078, 294-333):** traced in full (section 3). Each writes only device fields, a local stack buffer, or within the output-length check.
 
 Conclusion: no write in the IOCTL surface uses a caller-supplied destination, unbounded length, or caller-chosen index.
 

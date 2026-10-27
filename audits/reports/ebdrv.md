@@ -16,22 +16,22 @@
 - KMDF driver: the WDF loader imports (`WdfVersionBind`, `WdfVersionUnbind`, `WdfVersionBindClass`, `WdfVersionUnbindClass`) are present, and the device objects are created dynamically through the WDF function table. No `IoCreateDevice` import. The `\Device\` strings are `\Device\` (prefix, `0x1400EBF80`) and `\Device\PhysicalMemory` (`0x14011B900`). User openability of any device interface is **not established** in-file (WDF device creation and the default device ACL are not traced).
 - The IRP-sending imports (`IoAllocateIrp`, `IofCallDriver`, `IoBuildDeviceIoControlRequest`) show the driver sends requests down its own stack. `IoConnectInterrupt`, `IoGetDmaAdapter`, and `IoGetDeviceProperty` show a hardware-facing PnP role.
 - **Byte search:** `24 20 00 80` (little-endian `0x80002024`, the unbounded BAR-write IOCTL in the sibling `b06bdrv`) has **no match** in any initialized block of this binary (complete search). This rules out that specific code only. It does not rule out a similar write under another IOCTL code.
-- Init-time firmware read: `FUN_1400EAC98` opens `\Device\PhysicalMemory`, maps the fixed physical range `0x80000`–`0xFFFFF`, scans for an SMBIOS/iBFT signature, copies the table into a pool buffer (tag `iFBT`), unmaps, and closes. No attacker-influenced address; not reachable from a dispatch.
+- Init-time firmware read: `FUN_1400EAC98` opens `\Device\PhysicalMemory`, maps the fixed physical range `0x80000`-`0xFFFFF`, scans for an SMBIOS/iBFT signature, copies the table into a pool buffer (tag `iFBT`), unmaps, and closes. No attacker-influenced address; not reachable from a dispatch.
 
 ## Memory-write analysis (reviewed scope)
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| `MmMapIoSpaceEx`, call site `0x1400040F3` (in `FUN_140003C8C`, PnP start) | One 4 KB mapping of the BAR physical address from `FUN_140058398`. Only read use: `FUN_1400EAEE8` reads one value, then `MmUnmapIoSpace`. No write through the mapping | `ev_d33a2999…` (resolve), `ev_3f734767…` (pseudocode) |
-| `MmMapIoSpaceEx`, call site `0x14003B28B` (in `FUN_14003B268`, 59 bytes) | Wrapper, body not read; callers not traced | `ev_9986998b…` (resolve) |
-| `MmMapIoSpaceEx` third reference `0x14011C070` | Presumably an import-table slot (not verified) | `ev_454d9070…` (xrefs) |
-| `\Device\PhysicalMemory` (`FUN_1400EAC98`, init-time) | Read-only section view of the fixed range `0x80000`–`0xFFFFF`. The copy length is taken from the firmware table header and matches the pool allocation (no overflow). A bogus length over-reads the view: a denial-of-service class issue, firmware-controlled, not user reachable | `ev_ec75d30f…` (pseudocode), `ev_84e62d5e…` (resolve), `ev_59120…` see Evidence list |
-| `MmGetPhysicalMemoryRanges` | One code reference at `0x140020AD8` (not reviewed); the other reference at `0x14011C250` is presumably an import-table slot | `ev_21812966…` (xrefs) |
-| `memcpy_s` (import at `0x44`, thunk `0x14004AAB8`) | Call sites not counted; lengths not reviewed. Decisive | `ev_7f4500e3…` (mem sweep) |
-| Internal `memset` at `0x1400EAFC0` | Call sites not counted; lengths not reviewed | `ev_7f4500e3…` (mem sweep) |
-| `RtlCopyUnicodeString` (import) | Bounded by the destination's MaximumLength; call sites not reviewed | `ev_bf9e3353…` (copy sweep) |
-| Probe and WDF-specific write APIs | None (`Probe` sweep empty; the WDF imports are loader-only) | `ev_59131cc8…` (Probe), `ev_1315b471…` (Wdf) |
-| SDDL | None (`(A;` search empty) | `ev_685b6747…` |
+| `MmMapIoSpaceEx`, call site `0x1400040F3` (in `FUN_140003C8C`, PnP start) | One 4 KB mapping of the BAR physical address from `FUN_140058398`. Only read use: `FUN_1400EAEE8` reads one value, then `MmUnmapIoSpace`. No write through the mapping | `ev_d33a2999...` (resolve), `ev_3f734767...` (pseudocode) |
+| `MmMapIoSpaceEx`, call site `0x14003B28B` (in `FUN_14003B268`, 59 bytes) | Wrapper, body not read; callers not traced | `ev_9986998b...` (resolve) |
+| `MmMapIoSpaceEx` third reference `0x14011C070` | Presumably an import-table slot (not verified) | `ev_454d9070...` (xrefs) |
+| `\Device\PhysicalMemory` (`FUN_1400EAC98`, init-time) | Read-only section view of the fixed range `0x80000`-`0xFFFFF`. The copy length is taken from the firmware table header and matches the pool allocation (no overflow). A bogus length over-reads the view: a denial-of-service class issue, firmware-controlled, not user reachable | `ev_ec75d30f...` (pseudocode), `ev_84e62d5e...` (resolve), `ev_59120...` see Evidence list |
+| `MmGetPhysicalMemoryRanges` | One code reference at `0x140020AD8` (not reviewed); the other reference at `0x14011C250` is presumably an import-table slot | `ev_21812966...` (xrefs) |
+| `memcpy_s` (import at `0x44`, thunk `0x14004AAB8`) | Call sites not counted; lengths not reviewed. Decisive | `ev_7f4500e3...` (mem sweep) |
+| Internal `memset` at `0x1400EAFC0` | Call sites not counted; lengths not reviewed | `ev_7f4500e3...` (mem sweep) |
+| `RtlCopyUnicodeString` (import) | Bounded by the destination's MaximumLength; call sites not reviewed | `ev_bf9e3353...` (copy sweep) |
+| Probe and WDF-specific write APIs | None (`Probe` sweep empty; the WDF imports are loader-only) | `ev_59131cc8...` (Probe), `ev_1315b471...` (Wdf) |
+| SDDL | None (`(A;` search empty) | `ev_685b6747...` |
 
 ## Verdict rationale
 
@@ -39,7 +39,7 @@ NO-WRITE, provisional. The reviewed writes are the init-time firmware copy (size
 
 ## Open items
 
-1. **Locate and review the device-control dispatch** (decisive). Queue callbacks are registered during device init. `FUN_140003C8C` sets a set of FDO callback pointers at `+0x1E0`–`+0x248` (for example `FUN_140004FF0`, `FUN_140004EF0`, `FUN_1400050F0`, `FUN_140004C94`), so start with the function that calls `WdfIoQueueCreate`.
+1. **Locate and review the device-control dispatch** (decisive). Queue callbacks are registered during device init. `FUN_140003C8C` sets a set of FDO callback pointers at `+0x1E0`-`+0x248` (for example `FUN_140004FF0`, `FUN_140004EF0`, `FUN_1400050F0`, `FUN_140004C94`), so start with the function that calls `WdfIoQueueCreate`.
 2. `memcpy_s` (thunk `0x14004AAB8`) and internal `memset` (`0x1400EAFC0`): count call sites and review their length arguments.
 3. `FUN_14003B268` (`MmMapIoSpaceEx` wrapper): find its callers.
 4. Firmware-table over-read in `FUN_1400EAC98` (denial-of-service class): recorded, not a write.
@@ -63,9 +63,9 @@ Hardware-gated (stopped driver; not run). In a snapshot VM with the adapter pres
 - xrefs of `\Device\PhysicalMemory` (`0x14011B900`): `ev_591201b676a0366cdd5fe9616d48a68f171c1575e86a68a48ae357c28e363fb9`
 - xrefs of `MmMapIoSpaceEx`: `ev_454d90703c81d080167c6a2f9ccaf086c77e49a0979cfae3db306a5be235994f`
 - xrefs of `MmGetPhysicalMemoryRanges`: `ev_218129664146dbac4719196233cd830bec6584fb4d85696f0d996519eb18f8ec`
-- resolve `0x1400EACAA` (→ `FUN_1400EAC98`): `ev_84e62d5e5c06a4b188c509fed137e22027dd53e072d6cec4151f81d2f91123b4`
-- resolve `0x1400040F3` (→ `FUN_140003C8C`): `ev_d33a2999b419806cd4891ebe9770619fe4fa93e7b29aa9ba67ee7d7b935dc862`
-- resolve `0x14003B28B` (→ `FUN_14003B268`): `ev_9986998bc410f5226a5ae6755ba92dc6fdcb18ea1efdb77cdf8ab3f43de68457`
+- resolve `0x1400EACAA` (-> `FUN_1400EAC98`): `ev_84e62d5e5c06a4b188c509fed137e22027dd53e072d6cec4151f81d2f91123b4`
+- resolve `0x1400040F3` (-> `FUN_140003C8C`): `ev_d33a2999b419806cd4891ebe9770619fe4fa93e7b29aa9ba67ee7d7b935dc862`
+- resolve `0x14003B28B` (-> `FUN_14003B268`): `ev_9986998bc410f5226a5ae6755ba92dc6fdcb18ea1efdb77cdf8ab3f43de68457`
 - pseudocode `FUN_1400EAC98`: `ev_ec75d30fc6be29b4d7247e5b605704d824c3b38c2e3185e0aae41fe39673363e`
 - pseudocode `FUN_140003C8C`: `ev_3f734767314ca6d75ef648eb54a9b9c63ab9170a78f7870ca7961a987352742e`
 - byte search `24 20 00 80` (no match): `ev_8f0de92ccf7c8aff55bb7a6c460215b1d5a6179a4f9af00e9da4697a1ec91cdc`

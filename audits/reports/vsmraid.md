@@ -14,19 +14,19 @@
 ## Entry surface
 
 - No device object of its own: no `Io*` import, no `\Device\` string, no `(A;` SDDL string.
-- Reached through StorPort as SRBs. User mode reaches the miniport through the SCSI port device (IOCTL_SCSI_MINIPORT → `HwAdapterControl` (or `HwBuildIo`; verify per driver)) and through SCSI pass-through to the disk device. Neither ACL is traced in-file, so an admin gate is not established. `HwAdapterControl` (or `HwBuildIo`; verify per driver) is not reviewed (open item).
+- Reached through StorPort as SRBs. User mode reaches the miniport through the SCSI port device (IOCTL_SCSI_MINIPORT -> `HwAdapterControl` (or `HwBuildIo`; verify per driver)) and through SCSI pass-through to the disk device. Neither ACL is traced in-file, so an admin gate is not established. `HwAdapterControl` (or `HwBuildIo`; verify per driver) is not reviewed (open item).
 - StorPort imports (16): `StorPortStallExecution`, `StorPortGetPhysicalAddress`, `StorPortInitialize`, `StorPortGetUncachedExtension`, `StorPortGetBusData`, `StorPortPause`, `StorPortBusy`, `StorPortLogError`, `StorPortGetDeviceBase`, `StorPortSetBusDataByOffset`, `StorPortPauseDevice`, `StorPortSynchronizeAccess`, `StorPortDeviceBusy`, `StorPortGetScatterGatherList`, `StorPortResume`, `StorPortNotification`.
 
 ## Memory-write analysis (reviewed scope)
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Kernel mapping or MDL built by the driver | None (`Mm` sweep empty) | `ev_81e663f9…` (Mm sweep) |
-| Probe, WDF, and device-object APIs | None | `ev_7c3f0108…` (Probe), `ev_d1f60aff…` (Wdf), `ev_49ce40cd…` (Io) |
-| CPU copy primitives imported | None (`copy` sweep empty) | `ev_cf0e5d11…` (copy) |
-| In-binary `memset` at `0x332C0` | 109 incoming references. Lengths not reviewed. Decisive: any caller whose length comes from SRB, CDB, or device data | `ev_bfadab49…` (mem sweep), `ev_a46ecb68…` (xrefs of `0x332C0`) |
-| In-binary `memcmp` at `0x32E70` | Read-only; no write | `ev_bfadab49…` (mem sweep) |
-| `StorPortLogError` | Logging only; call sites not reviewed | `ev_31ff6a7f…` (StorPort sweep) |
+| Kernel mapping or MDL built by the driver | None (`Mm` sweep empty) | `ev_81e663f9...` (Mm sweep) |
+| Probe, WDF, and device-object APIs | None | `ev_7c3f0108...` (Probe), `ev_d1f60aff...` (Wdf), `ev_49ce40cd...` (Io) |
+| CPU copy primitives imported | None (`copy` sweep empty) | `ev_cf0e5d11...` (copy) |
+| In-binary `memset` at `0x332C0` | 109 incoming references. Lengths not reviewed. Decisive: any caller whose length comes from SRB, CDB, or device data | `ev_bfadab49...` (mem sweep), `ev_a46ecb68...` (xrefs of `0x332C0`) |
+| In-binary `memcmp` at `0x32E70` | Read-only; no write | `ev_bfadab49...` (mem sweep) |
+| `StorPortLogError` | Logging only; call sites not reviewed | `ev_31ff6a7f...` (StorPort sweep) |
 
 ## Verdict rationale
 

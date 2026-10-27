@@ -14,19 +14,19 @@
 ## Entry surface
 
 - No device object of its own: no `Io*` imports, no `\Device\` string, no `(A;` SDDL string. StorPort creates the adapter and disk devices.
-- Reached through StorPort as SRBs from the storage stack. User mode reaches the miniport through the SCSI port device (IOCTL_SCSI_MINIPORT → `HwAdapterControl` (or `HwBuildIo`; verify per driver)) and through SCSI pass-through to the disk device. Neither ACL is traced in-file, so an admin gate is not established. The `HwAdapterControl` (or `HwBuildIo`; verify per driver) path is not reviewed (open item).
+- Reached through StorPort as SRBs from the storage stack. User mode reaches the miniport through the SCSI port device (IOCTL_SCSI_MINIPORT -> `HwAdapterControl` (or `HwBuildIo`; verify per driver)) and through SCSI pass-through to the disk device. Neither ACL is traced in-file, so an admin gate is not established. The `HwAdapterControl` (or `HwBuildIo`; verify per driver) path is not reviewed (open item).
 - StorPort imports (13): `StorPortGetUncachedExtension`, `StorPortReady`, `StorPortInitialize`, `StorPortGetPhysicalAddress`, `StorPortStallExecution`, `StorPortSetBusDataByOffset`, `StorPortBusy`, `StorPortSetDeviceQueueDepth`, `StorPortGetDeviceBase`, `StorPortDeviceReady`, `StorPortGetScatterGatherList`, `StorPortGetBusData`, `StorPortNotification`.
 
 ## Memory-write analysis (reviewed scope)
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Kernel mapping or MDL built by the driver | None. Its only `Mm` import is `MmGetSystemRoutineAddress` | `ev_2385ab4a…` (Mm sweep) |
-| Probe, WDF, and device-object APIs | None | `ev_c387586f…` (Probe), `ev_71c65c06…` (Wdf), `ev_969b83a7…` (Io) |
-| CPU copy primitives | None imported (`mem` and `copy` sweeps empty) | `ev_cfd4399d…` (mem), `ev_822a2dcd…` (copy) |
-| Dynamic lookup `MmGetSystemRoutineAddress` | Call site `0x11A8A` in `FUN_00011984` resolves `RtlQueryRegistryValuesEx`, with the imported `RtlQueryRegistryValues` as fallback. `0x15020` is an IAT slot (RVA-like bytes), not a call. The resolved name is a registry query, not a write primitive | `ev_56a1aad5…` (xrefs), `ev_f4f01d44…` (resolve `0x11A8A`), `ev_0bdd09c5…` (resolve `0x15020`), `ev_aeedd455…` (bytes at `0x15020`) |
-| Registry read in `FUN_00011984` | Queries value `RESET` under the service's `Parameters\Device` key as `REG_DWORD` (DefaultType 4, DefaultLength 4, `RTL_QUERY_REGISTRY_DIRECT`), writing into the fixed global `DAT_00016160`. Fixed size, so bounded. The registry input is configuration-control and out of scope | `ev_95d310aa…` (pseudocode of `FUN_00011984`) |
-| Zeroing calls in init | `FUN_00014A30(…, 0, n)` with constant sizes (0xCC, 0x200, 0x70). The helper is unnamed, so name sweeps do not list it | `ev_95d310aa…` |
+| Kernel mapping or MDL built by the driver | None. Its only `Mm` import is `MmGetSystemRoutineAddress` | `ev_2385ab4a...` (Mm sweep) |
+| Probe, WDF, and device-object APIs | None | `ev_c387586f...` (Probe), `ev_71c65c06...` (Wdf), `ev_969b83a7...` (Io) |
+| CPU copy primitives | None imported (`mem` and `copy` sweeps empty) | `ev_cfd4399d...` (mem), `ev_822a2dcd...` (copy) |
+| Dynamic lookup `MmGetSystemRoutineAddress` | Call site `0x11A8A` in `FUN_00011984` resolves `RtlQueryRegistryValuesEx`, with the imported `RtlQueryRegistryValues` as fallback. `0x15020` is an IAT slot (RVA-like bytes), not a call. The resolved name is a registry query, not a write primitive | `ev_56a1aad5...` (xrefs), `ev_f4f01d44...` (resolve `0x11A8A`), `ev_0bdd09c5...` (resolve `0x15020`), `ev_aeedd455...` (bytes at `0x15020`) |
+| Registry read in `FUN_00011984` | Queries value `RESET` under the service's `Parameters\Device` key as `REG_DWORD` (DefaultType 4, DefaultLength 4, `RTL_QUERY_REGISTRY_DIRECT`), writing into the fixed global `DAT_00016160`. Fixed size, so bounded. The registry input is configuration-control and out of scope | `ev_95d310aa...` (pseudocode of `FUN_00011984`) |
+| Zeroing calls in init | `FUN_00014A30(..., 0, n)` with constant sizes (0xCC, 0x200, 0x70). The helper is unnamed, so name sweeps do not list it | `ev_95d310aa...` |
 
 ## Verdict rationale
 

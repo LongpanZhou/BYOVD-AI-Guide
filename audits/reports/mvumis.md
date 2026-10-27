@@ -21,13 +21,13 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Kernel mapping or MDL built by the driver | None (no `Mm*` imports) | `ev_ee8e9ec7…` (Mm sweep) |
-| Probe, device, and WDF APIs | None | `ev_ea508d6a…` (Probe), `ev_e984dcca…` (Wdf), `ev_7529ccea…` (Io) |
-| CPU copy primitives imported | None (`mem` and `copy` sweeps have no imports) | `ev_d03ebc08…` (mem), `ev_fa8d1c22…` (copy) |
-| In-binary `memset` at `0x15740` | 12 incoming references: `0x110FB`, `0x11141`, `0x11440`, `0x11BB2`, `0x12172`, `0x1396F`, `0x13F32`, `0x14019`, `0x1444F`, `0x14555`, `0x14BAF`, `0x1824C`. Lengths not reviewed. Decisive: any call whose length comes from SRB, CDB, or device data | `ev_ba8e7dcb…` (xrefs of `0x15740`) |
-| SRB data and SGL lengths | Supplied by StorPort, bounded by the miniport's reported transfer limit (not verified). `StorPortGetScatterGatherList` is the path; not decompiled | `ev_0d490638…` (StorPort sweep) |
-| Hardware-written completion data | Lengths and indices read back from hardware are the trust boundary. Not analysable statically | — |
-| Admin gate on the SRB path | Not established (ACLs not traced) | — |
+| Kernel mapping or MDL built by the driver | None (no `Mm*` imports) | `ev_ee8e9ec7...` (Mm sweep) |
+| Probe, device, and WDF APIs | None | `ev_ea508d6a...` (Probe), `ev_e984dcca...` (Wdf), `ev_7529ccea...` (Io) |
+| CPU copy primitives imported | None (`mem` and `copy` sweeps have no imports) | `ev_d03ebc08...` (mem), `ev_fa8d1c22...` (copy) |
+| In-binary `memset` at `0x15740` | 12 incoming references: `0x110FB`, `0x11141`, `0x11440`, `0x11BB2`, `0x12172`, `0x1396F`, `0x13F32`, `0x14019`, `0x1444F`, `0x14555`, `0x14BAF`, `0x1824C`. Lengths not reviewed. Decisive: any call whose length comes from SRB, CDB, or device data | `ev_ba8e7dcb...` (xrefs of `0x15740`) |
+| SRB data and SGL lengths | Supplied by StorPort, bounded by the miniport's reported transfer limit (not verified). `StorPortGetScatterGatherList` is the path; not decompiled | `ev_0d490638...` (StorPort sweep) |
+| Hardware-written completion data | Lengths and indices read back from hardware are the trust boundary. Not analysable statically | - |
+| Admin gate on the SRB path | Not established (ACLs not traced) | - |
 
 ## Verdict rationale
 

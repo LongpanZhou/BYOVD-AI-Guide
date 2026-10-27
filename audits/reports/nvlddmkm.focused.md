@@ -1,4 +1,4 @@
-# Audit: nvlddmkm.sys — focused mapping / devices plane
+# Audit: nvlddmkm.sys - focused mapping / devices plane
 
 > **Supplements** [`nvlddmkm.md`](nvlddmkm.md), the 0%-coverage baseline. That report issued no
 > verdict because Ghidra auto-analysis of the 71.8 MB image never finished. This pass bypasses
@@ -11,15 +11,15 @@
 | Field | Value |
 |---|---|
 | File | `C:\Users\<scrubbed>\Desktop\driver_candidates\drivers\nvlddmkm.sys` |
-| SHA-256 | `71C743AF98CBB9F7924C7366062CBC65D938CDD5007D7FF22225498CF94E2E5C` — recomputed this pass, matches the baseline/triage row |
-| Size / build | 71,847,544 bytes (0x4484C38) · NVIDIA 32.0.15.6094 (560.94) · PE32+ · ImageBase `0x140000000` · SizeOfImage `0x45da000` · TimeDateStamp 2024-08-14 · signed (Security dir RVA `0x4480200`, 0x4c78) |
+| SHA-256 | `71C743AF98CBB9F7924C7366062CBC65D938CDD5007D7FF22225498CF94E2E5C` - recomputed this pass, matches the baseline/triage row |
+| Size / build | 71,847,544 bytes (0x4484C38) ; NVIDIA 32.0.15.6094 (560.94) ; PE32+ ; ImageBase `0x140000000` ; SizeOfImage `0x45da000` ; TimeDateStamp 2024-08-14 ; signed (Security dir RVA `0x4480200`, 0x4c78) |
 | Analysis date | 2026-10-25 |
 | Method | Static-only, offline. `llvm-objdump` 18.x (msys64) disassembly of all executable sections, custom Python PE/`.pdata`/IAT parsers, address-driven xref sweep. **No REA session opened. No Ghidra import.** Nothing loaded, executed, installed, or written to the registry. No web. |
 | Reach tier | **R1** for the device objects (explicit DACLs grant `Everyone` generic read+write); no R1 write primitive established |
-| Setup required | `none` — devices are created by `DriverEntry` / on-demand UVM runtime; the driver is already loaded as the WDDM miniport on this host |
+| Setup required | `none` - devices are created by `DriverEntry` / on-demand UVM runtime; the driver is already loaded as the WDDM miniport on this host |
 | Write quality | **W0** (no kernel memory write established) |
 | Loadability | Signed / WHQL / HVCI-compatible; already running |
-| Verdict | **NO-MEMORY-WRITE** — *scoped to the reviewed mapping/devices plane only; not a full-driver clearance* |
+| Verdict | **NO-MEMORY-WRITE** - *scoped to the reviewed mapping/devices plane only; not a full-driver clearance* |
 | Coverage | 63,466 / 70,475 `.pdata` functions fully disassembled (**90.0%**); 7,009 PAGE_DD functions scanned only for target references; **~30 functions read in detail (0.04%)**, but 100% of the device-creation sites for the flagged devices and 100% of `\Device\PhysicalMemory` consumers. **UVM IOCTL handlers: followed up in `nvlddmkm.ioctl.appendix.md`.** |
 
 ### Method disclosure
@@ -29,10 +29,10 @@
   from `.pdata` as a function boundary table, build the IAT name map from the import directory,
   then disassemble the 11 executable sections with `llvm-objdump -d --no-show-raw-insn` and index
   every instruction by VA.
-- Xrefs were found two ways: (a) rip-relative operands printed by `objdump` (`# 0x…`), and
+- Xrefs were found two ways: (a) rip-relative operands printed by `objdump` (`# 0x...`), and
   (b) a raw scan of every section for pointer-sized little-endian immediates plus 32-bit
   `.text` immediates. String-driven triage across the whole image, then upward call-chain walking.
-- Every mapping-API import was enumerated by its IAT slot, so the call-site census in §5 is
+- Every mapping-API import was enumerated by its IAT slot, so the call-site census in section 5 is
   complete for **direct** calls in the disassembled set; it does not cover indirect dispatch
   through function pointers stored in tables.
 - No decompiler was used; all statements are instruction-level readings with addresses.
@@ -41,17 +41,17 @@
 
 ## 1 Internals relevant to this plane
 
-- `DriverEntry` body at `0x1445af000` (PE entry `0x1445b02f0` → `0x1445af0b0`). It sets
+- `DriverEntry` body at `0x1445af000` (PE entry `0x1445b02f0` -> `0x1445af0b0`). It sets
   `DriverObject->DriverUnload = 0x14161ebe0` at `0x1445afa2f` and fills
-  `MajorFunction[1..0x1b]` (offsets `0x78`–`0x138`) with a **single common handler**
-  `0x14161d190` (`0x1445af95c`–`0x1445afa12`). `IRP_MJ_CREATE` (`0x70`) is not written in the
+  `MajorFunction[1..0x1b]` (offsets `0x78`-`0x138`) with a **single common handler**
+  `0x14161d190` (`0x1445af95c`-`0x1445afa12`). `IRP_MJ_CREATE` (`0x70`) is not written in the
   blocks recovered; its writer was not located.
 - The common handler `0x14161d190` is a **device-type switch** on `DEVICE_OBJECT+0x48`:
 
   | DeviceType | Route |
   |---|---|
-  | `0x4a6e` | `0x14161c960` (both UVM device families) — gated by byte `0x140fd206d`, else `STATUS_INVALID_DEVICE_REQUEST` (`0xc0000002`) |
-  | `0x90de` | `0x14161d222` → per-major-function table at `0x140fcf910 + 0x3a080 + major*8` |
+  | `0x4a6e` | `0x14161c960` (both UVM device families) - gated by byte `0x140fd206d`, else `STATUS_INVALID_DEVICE_REQUEST` (`0xc0000002`) |
+  | `0x90de` | `0x14161d222` -> per-major-function table at `0x140fcf910 + 0x3a080 + major*8` |
   | `0xa033` | `0x14161d273` (reject) |
   | `0xa0de` | `0x141590b20` |
   | other | `0x140fcf910 + 0x3a080 + major*8` indirect jump |
@@ -62,7 +62,7 @@
 
 ## 2 Device objects, names, and effective DACL
 
-### 2.1 `\Device\UVMLiteProcess%lld` — per-process UVM device
+### 2.1 `\Device\UVMLiteProcess%lld` - per-process UVM device
 
 - Creator: `0x140069ae0`. Formats three names from `PsGetCurrentProcessId()`:
   `\Device\UVMLiteProcess%lld` (`0x140bc6fd0`), `\DosDevices\Global\UVMLiteProcess%lld`
@@ -82,7 +82,7 @@
 
   `P` = protected DACL. **SYSTEM generic-all; Administrators read/write/execute; Everyone
   generic-read + generic-write; Restricted Code read.**
-- Then `IoCreateSymbolicLink(0x140cc52d0)` for `\DosDevices\Global\…`.
+- Then `IoCreateSymbolicLink(0x140cc52d0)` for `\DosDevices\Global\...`.
 - Device flags (`DEVICE_OBJECT+0x30`): `|= 0x10` (**DO_DIRECT_IO**), `&= ~0x80`
   (`0x140069c0d`, `0x140069c16`). So this is a direct-I/O device, not buffered.
 - Extension (`0x870` bytes, zero-filled at `0x140069c3a`): `+0x4` = creating PID
@@ -90,15 +90,15 @@
   `+0x20` = `PDEVICE_OBJECT`, `+0x730` = sub-object from `0x140073f90`. The record
   `{object, pid}` (size `0x10`) is inserted into the generic table at `0x1410e53c0`
   (`RtlInsertElementGenericTable`, `0x140069cb9`).
-- Teardown mirror: `0x14006a085` — `IoDeleteSymbolicLink` for `\DosDevices\Global\…`,
+- Teardown mirror: `0x14006a085` - `IoDeleteSymbolicLink` for `\DosDevices\Global\...`,
   `IoDeleteDevice` (`0x140cc52e0`), then `RtlInitUnicodeString`/lookup.
 
 ### 2.2 `\Device\UVMLiteController0x%x`
 
 - Creator: `0x14006fa20`. Formats `\Device\UVMLiteController0x%x` (`0x140bc7190`) using a global
   counter, retrying on `0x40000000` / `0xC0000035` (name collision) with the counter incremented
-  (`0x14006fb01`–`0x14006fb0d`).
-- **Same SDDL pointer** `0x140d101c8` → `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)(A;;GR;;;RC)`,
+  (`0x14006fb01`-`0x14006fb0d`).
+- **Same SDDL pointer** `0x140d101c8` -> `D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGW;;;WD)(A;;GR;;;RC)`,
   same `DeviceType 0x4a6e`, extension `0x28`. Symlink name
   `\DosDevices\Global\UVMLiteController` (`0x140d00fc0`, stored as an absolute pointer at
   `0x140e9c970`, i.e. a statically initialised `UNICODE_STRING` buffer).
@@ -110,7 +110,7 @@
   Names `\Device\NvAdminDevice` (`0x1416660f0`) and `\DosDevices\NvAdminDevice` (`0x141666120`).
 - `IoCreateDeviceSecure` at `0x14161cfbd` with `DeviceType = 0x90de`,
   `DeviceCharacteristics = 0x100` (**FILE_DEVICE_SECURE_OPEN**), extension `0x20`,
-  `DeviceClassGuid = {A73C93F1-9727-4D1D-ACE1-0E333BA4E7DB}` (built at `0x14161cf28`–`0x14161cf44`),
+  `DeviceClassGuid = {A73C93F1-9727-4D1D-ACE1-0E333BA4E7DB}` (built at `0x14161cf28`-`0x14161cf44`),
   SDDL **`0x141666160`**:
 
   ```
@@ -120,7 +120,7 @@
   SYSTEM all; Administrators, **Everyone**, Restricted Code and **All Application Packages**
   all get read+write+execute.
 - `IoInitializeRemoveLockEx` ('NVMG'), flags `|= 0x2004` (**DO_BUFFERED_IO | DO_POWER_PAGABLE**),
-  `&= ~0x80` (`0x14161d039`–`0x14161d072`).
+  `&= ~0x80` (`0x14161d039`-`0x14161d072`).
 
 ### 2.4 Other names seen, not traced
 
@@ -130,11 +130,11 @@ flagged plane; no verdict offered for them.
 
 ## 3 Dispatch
 
-- **Located**: the device-type switch `0x14161d190` (§1) and the `0x4a6e` entry `0x14161c960`.
+- **Located**: the device-type switch `0x14161d190` (section 1) and the `0x4a6e` entry `0x14161c960`.
   `0x14161c960` re-validates `DeviceType == 0x4a6e` (`0x14161c9a4`), takes the current stack
   location from `IRP+0xb8` (`0x14161c972`), calls `0x140cab2e0` (`0x14161c9cb`) and on failure
   returns `0xC0000225` (`STATUS_NOT_FOUND`) after walking a process/registration list at
-  `0x140fd2038` (`0x14161ca07`–`0x14161ca7a`, comparing a PID-like field at `-0x27d0(rbx)`
+  `0x140fd2038` (`0x14161ca07`-`0x14161ca7a`, comparing a PID-like field at `-0x27d0(rbx)`
   against `0`).
 - **Not located within cap**: the `IRP_MJ_DEVICE_CONTROL` fan-out for the `0x4a6e` family
   (`IoControlCode` read/dispatch inside `0x14161c960` or a callee) and the UVM IOCTL table
@@ -158,10 +158,10 @@ whose `RequiredAccess` includes `FILE_WRITE_ACCESS` is satisfiable by **any** pr
 
 - The DACL is the only *object-level* gate. The identity gate is inside the dispatcher: the UVM
   path keys on the creating PID stored at extension `+0x4` and a process list at `0x140fd2038`,
-  and returns `STATUS_NOT_FOUND` for non-matching callers (`0x14161c9d0`–`0x14161c9ee`). The
-  exact comparison (and whether a *different* process can satisfy it) was **not** resolved; §3.
+  and returns `STATUS_NOT_FOUND` for non-matching callers (`0x14161c9d0`-`0x14161c9ee`). The
+  exact comparison (and whether a *different* process can satisfy it) was **not** resolved; section 3.
 - `SeTokenIsAdmin` is imported (`0x140cc54e8`) and called at `0x1415b76b3`, `0x1415b76f8`
-  (function `0x1415b7640`) and `0x141667f9e` — none of these is on the reviewed device-creation
+  (function `0x1415b7640`) and `0x141667f9e` - none of these is on the reviewed device-creation
   or `\Device\PhysicalMemory` path, so no admin gate is documented for the three devices above.
 - Note on the exposure itself: a world-read/write device object is a **reach** finding (R1), not
   a memory-write finding. It matters here because it removes the DACL as a defence for whatever
@@ -169,15 +169,15 @@ whose `RequiredAccess` includes `FILE_WRITE_ACCESS` is satisfiable by **any** pr
 
 ## 5 Memory-write trace
 
-### 5.1 `\Device\PhysicalMemory` occurrence #1 — `0x140bc70a0` (**live**)
+### 5.1 `\Device\PhysicalMemory` occurrence #1 - `0x140bc70a0` (**live**)
 
 The literal sits in the UVM string cluster between the `memory-manager.c` and `counters.c`
 `__FILE__` strings. Two consumers:
 
-- **`0x14006c750` — `map_physical_range(offset, size, protect, state)`**
+- **`0x14006c750` - `map_physical_range(offset, size, protect, state)`**
   1. `RtlInitUnicodeString(&name, L"\\Device\\PhysicalMemory")` (`0x14006c770`).
   2. `OBJECT_ATTRIBUTES { Length=0x30, RootDirectory=NULL, ObjectName=&name,
-     Attributes=0x240 }` — `OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE` (`0x14006c787`–`0x14006c7ba`).
+     Attributes=0x240 }` - `OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE` (`0x14006c787`-`0x14006c7ba`).
   3. `ZwOpenSection(&state->handle, 0x80000000 /* GENERIC_READ */, &oa)` (`0x14006c7c3`).
   4. `ZwMapViewOfSection(state->handle, NtCurrentProcess, &state->base, 0, 0,
      &offset, &view_size, ViewShare=1, 0, protect)` (`0x14006c80e`). The **section offset is the
@@ -191,23 +191,23 @@ The literal sits in the UVM string cluster between the `memory-manager.c` and `c
   - The section handle is opened **read-only** (`GENERIC_READ`), so a `PAGE_READWRITE` view
     (`protect = 4`) is subject to the section object's granted access and cannot legitimately
     succeed on that handle; only the read-only view (`protect = 2`) is consistent with the open.
-- **`0x14006c870`** — loops over an array of descriptors and repeats the same open/map per entry
+- **`0x14006c870`** - loops over an array of descriptors and repeats the same open/map per entry
   (`0x14006c8f2`, `0x14006c9ff`), with `protect` from the descriptor.
 - Reviewed callers of `0x14006c750`:
-  - `0x140078e7f` — `map(pa = f(0, p), size = 0x1000, protect = 2 /*PAGE_READONLY*/)`.
-  - `0x140078f07` — `map(pa = f(0, p), size = 0x1000, protect = 4 /*PAGE_READWRITE*/)`.
+  - `0x140078e7f` - `map(pa = f(0, p), size = 0x1000, protect = 2 /*PAGE_READONLY*/)`.
+  - `0x140078f07` - `map(pa = f(0, p), size = 0x1000, protect = 4 /*PAGE_READWRITE*/)`.
   In both, `p` is a freshly allocated, zero-filled `0x1000` buffer
-  (`ExAllocatePool…`-style call at `0x140078e97`, `memset` at `0x140078eaf`,
+  (`ExAllocatePool...`-style call at `0x140078e97`, `memset` at `0x140078eaf`,
   `pa = 0x140c572e0(0, p)` at `0x140078eb9`). The shape is a **self-test of the mapping
   mechanism against its own page**, not an attacker-chosen range.
   - `0x14006c870` is called from `0x14006c056` inside a UVM path that allocates a `0x238`
     structure and performs `RtlEqualSid` token comparisons plus `IoGetCurrentProcess` lookups
     (`0x14006bf8f`, `0x14006bfb6`, `0x14006bfc1`). Descriptor contents were not traced to a user
     input.
-- Upward: `0x14006beb0` ← `0x140070426` (function `0x140070220`). Not traced further inside the
+- Upward: `0x14006beb0` <- `0x140070426` (function `0x140070220`). Not traced further inside the
   cap; **no path from a device IOCTL to either consumer was established.**
 
-### 5.2 `\Device\PhysicalMemory` occurrence #2 — `0x141664910` (**dead**)
+### 5.2 `\Device\PhysicalMemory` occurrence #2 - `0x141664910` (**dead**)
 
 Sits in a PAGE_K string blob next to `Validation`, `Trigger bugcheck to collect full kernel dump
 for %s error`, `To disable the bugcheck, run "?? nvlddmkm!g_GlobalData.driverDebugBreakMode=0"`.
@@ -226,10 +226,10 @@ build.
 | `ZwMapViewOfSection` `0x140cc5360` | 10 | `0x14006c80e`, `0x14006c939`, `0x14006ca45`, `0x1400797f2`, `0x1400798f5`, `0x1400db6a2`, `0x1400dbbff`, `0x1400dbe74`, `0x14154c155`, `0x141590aa2` |
 | `MmMapLockedPagesSpecifyCache` `0x140cc52a0` | 9 | UVM `0x140068d3d`, `0x140069980`, `0x14006a8f4`; `0x140079899`; `0x140c50fbd`; `0x140c574d1`; `0x140c5e1d1`; `0x1416361c5`; `0x14166327b` |
 | `MmProbeAndLockPages` `0x140cc5330` | 6 | `0x14006a8c6`, `0x14007983f`, `0x1400d948e`, `0x1400d9b00`, `0x1400db73d`, `0x140c5e18d` |
-| `MmGetPhysicalAddress` `0x140cc5188` | 11 | thunk `0x140c57401`; 10 calls in PAGE_K/PAGE (`0x1415aa2f7` … `0x141669244`) |
+| `MmGetPhysicalAddress` `0x140cc5188` | 11 | thunk `0x140c57401`; 10 calls in PAGE_K/PAGE (`0x1415aa2f7` ... `0x141669244`) |
 
 - `0x14154c20b` is a clean generic helper: `MmMapIoSpace(PhysicalAddress = arg1,
-  NumberOfBytes = arg2, CacheType = arg3)` (`0x14154c201`–`0x14154c20b`), with its cache type
+  NumberOfBytes = arg2, CacheType = arg3)` (`0x14154c201`-`0x14154c20b`), with its cache type
   taken from a stack field (`[rbp+0x6f]`) and its PA/length from the function arguments. Its
   callers are RM/PCI initialisation code, not a reviewed device IOCTL.
 - `0x14154bfa0` and `0x1415909a0` are the open-section + map-view (+ `MmMapIoSpace`) pair used by
@@ -252,7 +252,7 @@ build.
 
 ## 7 Verdict
 
-**NO-MEMORY-WRITE — reach=R1 setup=none write=W0 load=signed (scoped).**
+**NO-MEMORY-WRITE - reach=R1 setup=none write=W0 load=signed (scoped).**
 
 Within the reviewed plane there is no established kernel memory write: no caller-controlled
 physical address, length, cache attribute, or kernel VA reaches `MmMapIoSpace`,
@@ -271,7 +271,7 @@ so a write primitive behind those IOCTLs would be neither found nor excluded by 
    and the only place a user-reachable PA/VA primitive could plausibly hide.
 2. **`NvAdminDevice` IOCTL table unreviewed.** `0x90de` routes through the per-major-function
    table at `0x140fcf910 + 0x3a080`; the table entries were not followed.
-3. **PAGE_DD (7,009 functions, 10% of functions) not reviewed** — only string-grepped for the two
+3. **PAGE_DD (7,009 functions, 10% of functions) not reviewed** - only string-grepped for the two
    `\Device\PhysicalMemory` addresses and for `140bc70*` operands (zero hits).
 4. **Indirect dispatch not covered.** The mapping census counts direct IAT calls only; a handler
    reached through a stored function pointer in `.data` would not appear.

@@ -1,4 +1,4 @@
-# Audit: collected1 tail — DesktopVideoUpdate ×2, EL_Display_vhidbus ×2, usblddaqlib ×2
+# Audit: collected1 tail - DesktopVideoUpdate x2, EL_Display_vhidbus x2, usblddaqlib x2
 
 | Field | Value |
 |---|---|
@@ -9,14 +9,14 @@
 | Reach tier | **R3 hardware** (DesktopVideoUpdate, usblddaqlib); **R2 child PDO + R3 composition** (`EL_Display_vhidbus` x64); **n/a architecture** (`EL_Display_vhidbus` i386) |
 | Setup required | `hardware` (DesktopVideoUpdate, usblddaqlib); `composition` (EL_Display_vhidbus) |
 | Write quality | **W0** on all six images (no caller-controlled kernel memory write). Loadability differs: four are normally loadable; the Blackmagic legacy image is test-signed and the i386 image is architecture-blocked |
-| Verdict | **NO-MEMORY-WRITE ×5; BLOCKED (i386) ×1 — no MW1–MW4** |
+| Verdict | **NO-MEMORY-WRITE x5; BLOCKED (i386) x1 - no MW1-MW4** |
 
 ## Hash and file table
 
 | # | File | SHA-256 | Arch | Signer / load | Size | Version |
 |---|---|---|---|---|---|---|
 | 1 | `DesktopVideoUpdate_81F65827.sys` | `81F658278AF06AE31EE6EB406F426A243D3F3A56BAABF14FFBA44644CAB5F6A4` | PE32+ x64 | Valid; CN=Microsoft Windows Hardware Compatibility Publisher (WHQL chain) | 28,592 | 4.0.2.0 |
-| 2 | `DesktopVideoUpdate_legacy_8A6D0B83.sys` | `8A6D0B832DF371D96A153AAB31EAEED4090B89DC3B8E99FA723F381E834CD03C` | PE32+ x64 | `UnknownError`; CN="WDKTestCert build,131958900460134002" — **test-signed, not normally loadable** | 18,104 | 4.0.2.0 |
+| 2 | `DesktopVideoUpdate_legacy_8A6D0B83.sys` | `8A6D0B832DF371D96A153AAB31EAEED4090B89DC3B8E99FA723F381E834CD03C` | PE32+ x64 | `UnknownError`; CN="WDKTestCert build,131958900460134002" - **test-signed, not normally loadable** | 18,104 | 4.0.2.0 |
 | 3 | `EL_Display_vhidbus_3242D1DC.sys` | `3242D1DC709DC77FF6495B566F84DEBEC503CD6DAC317060A259FDAF116BAFAA` | PE32+ x64 | Valid; Microsoft Windows Hardware Compatibility Publisher | 46,088 | 2,9,2,0 |
 | 4 | `EL_Display_vhidbus_ECE1CE28.sys` | `ECE1CE28A756E2B307AD54148BB070D930FD2C8007F028B6E58318C61061015A` | PE32 i386 | Valid; Microsoft Windows Hardware Compatibility Publisher | 37,896 | 2,9,2,0 |
 | 5 | `usblddaqlib_9E26A72E.sys` | `9E26A72E9C00DFE57FC5D47D467F73E13F08BD8A02D46F4BAC51C89EFFCFA4AD` | PE32+ x64 | Valid; CN=Measurement Computing Corporation | 209,072 | 5.0.0 Build 11 |
@@ -28,11 +28,11 @@ All six are x64 except `EL_Display_vhidbus_ECE1CE28.sys` (i386). All six are Aut
 
 | File | Device / interface | Effective DACL / open gate | User IOCTL surface | Memory-write finding | Verdict |
 |---|---|---|---|---|---|
-| `DesktopVideoUpdate_81F65827.sys` | Unnamed FDO, type 0x22, ext 0x80; PnP interface `{B8719EFC-9A7F-400F-B2AF-285913FBCECC}` | No SDDL; `IoCreateDevice` default; no symlink; PnP interface default. CREATE checks a started byte only | 27 codes `0x222000`–`0x2220F0`, all METHOD_BUFFERED, FILE_ANY_ACCESS | No caller destination/length; SystemBuffer writes length-checked; URB buffers bounded by in/out length and endpoint max; descriptor copy requires `len+4 <= out` | **NO-MEMORY-WRITE (W0)** |
+| `DesktopVideoUpdate_81F65827.sys` | Unnamed FDO, type 0x22, ext 0x80; PnP interface `{B8719EFC-9A7F-400F-B2AF-285913FBCECC}` | No SDDL; `IoCreateDevice` default; no symlink; PnP interface default. CREATE checks a started byte only | 27 codes `0x222000`-`0x2220F0`, all METHOD_BUFFERED, FILE_ANY_ACCESS | No caller destination/length; SystemBuffer writes length-checked; URB buffers bounded by in/out length and endpoint max; descriptor copy requires `len+4 <= out` | **NO-MEMORY-WRITE (W0)** |
 | `DesktopVideoUpdate_legacy_8A6D0B83.sys` | Same code, same interface GUID | Same as #1 | Same 27 codes | Same; code dump is line-identical to #1 apart from the program name | **NO-MEMORY-WRITE (W0; test-signed load gate)** |
-| `EL_Display_vhidbus_3242D1DC.sys` | Parent unnamed FDO, type 0x2A, chars 0x100 (SECURE_OPEN), exclusive; interface `{FE54197A-D9F9-4695-8A69-8B264A2F54F8}`. Child PDOs via `WdmlibIoCreateDeviceSecure`, interface `{A3CE5953-5303-4DF4-A8AE-FAC86ACD06C8}` | Parent: no SDDL in image, `IoCreateDevice` default + PnP interface default. Child: `D:P(A;;GA;;;SY)(A;;GA;;;BA)` → **SYSTEM + Administrators only (R2)** | 6 codes `0x2A0000`, `04`, `08`, `0C`, `10`, `14`, all METHOD_BUFFERED, FILE_ANY_ACCESS | No caller-controlled kernel target/length. Pool copies into allocations of the same length; fixed 8/14-byte report writes into a kernel-submitted URB buffer; no mapping API | **NO-MEMORY-WRITE (W0)** |
+| `EL_Display_vhidbus_3242D1DC.sys` | Parent unnamed FDO, type 0x2A, chars 0x100 (SECURE_OPEN), exclusive; interface `{FE54197A-D9F9-4695-8A69-8B264A2F54F8}`. Child PDOs via `WdmlibIoCreateDeviceSecure`, interface `{A3CE5953-5303-4DF4-A8AE-FAC86ACD06C8}` | Parent: no SDDL in image, `IoCreateDevice` default + PnP interface default. Child: `D:P(A;;GA;;;SY)(A;;GA;;;BA)` -> **SYSTEM + Administrators only (R2)** | 6 codes `0x2A0000`, `04`, `08`, `0C`, `10`, `14`, all METHOD_BUFFERED, FILE_ANY_ACCESS | No caller-controlled kernel target/length. Pool copies into allocations of the same length; fixed 8/14-byte report writes into a kernel-submitted URB buffer; no mapping API | **NO-MEMORY-WRITE (W0)** |
 | `EL_Display_vhidbus_ECE1CE28.sys` | Same source, 115 functions, same SDDL/IOCTLs; i386 | Same intended SDDL (admin-only child) | Same 6 codes | Same logic; cannot load on x64 | **BLOCKED (i386 architecture)** |
-| `usblddaqlib_9E26A72E.sys` | Unnamed FDO, type 0x22, chars 0x80, ext 0x250; interface `{C8711B66-9900-4F42-83C2-7EFEFEE0F221}` | No SDDL; `IoCreateDevice` default; no symlink. CREATE compares `FileObject->FileName` against a name allow-list; empty name accepted, `FsContext=0` | 3 codes `0x220000`, `0x220004`, `0x220008`, all METHOD_BUFFERED, FILE_ANY_ACCESS | No `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmGetPhysicalAddress`, `ZwMapViewOfSection`, `IoAllocateMdl` or `MmProbeAndLockPages` in the image; the only copy is device-buffer → SystemBuffer, bounded by OutputBufferLength | **NO-MEMORY-WRITE (W0)** |
+| `usblddaqlib_9E26A72E.sys` | Unnamed FDO, type 0x22, chars 0x80, ext 0x250; interface `{C8711B66-9900-4F42-83C2-7EFEFEE0F221}` | No SDDL; `IoCreateDevice` default; no symlink. CREATE compares `FileObject->FileName` against a name allow-list; empty name accepted, `FsContext=0` | 3 codes `0x220000`, `0x220004`, `0x220008`, all METHOD_BUFFERED, FILE_ANY_ACCESS | No `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmGetPhysicalAddress`, `ZwMapViewOfSection`, `IoAllocateMdl` or `MmProbeAndLockPages` in the image; the only copy is device-buffer -> SystemBuffer, bounded by OutputBufferLength | **NO-MEMORY-WRITE (W0)** |
 | `usblddaqlib_CDEC967D.sys` | Same code, same interface GUID | Same as #5 | Same 3 codes | Same; dump line-identical to #5 apart from program name | **NO-MEMORY-WRITE (W0)** |
 
 ## 2 DesktopVideoUpdate pair (Blackmagic Design USB driver)
@@ -48,14 +48,14 @@ All six are x64 except `EL_Display_vhidbus_ECE1CE28.sys` (i386). All six are Aut
 - DriverEntry `FUN_1400013a8`:
   - `DriverObject->AddDevice` (`+0x30`/`+8`) = `FUN_140001950`.
   - Major functions: CREATE `0x70`=`FUN_140001530`, CLOSE `0x80`=`FUN_1400014b0`, DEVICE_CONTROL `0xE0`=`FUN_140001a20`, POWER `0x120`=`FUN_140001770`, PNP `0x148`=`FUN_140001620`. READ/WRITE/INTERNAL_DEVICE_CONTROL are **not set**.
-- AddDevice `FUN_140001950` → `FUN_1400015bc` calls `IoCreateDevice(DriverObject, 0x80, NULL, 0x22 /*FILE_DEVICE_UNKNOWN*/, 0, FALSE, &DeviceObject)`, then attaches to the PDO and registers interface GUID `{B8719EFC-9A7F-400F-B2AF-285913FBCECC}` (`DAT_140004130`).
+- AddDevice `FUN_140001950` -> `FUN_1400015bc` calls `IoCreateDevice(DriverObject, 0x80, NULL, 0x22 /*FILE_DEVICE_UNKNOWN*/, 0, FALSE, &DeviceObject)`, then attaches to the PDO and registers interface GUID `{B8719EFC-9A7F-400F-B2AF-285913FBCECC}` (`DAT_140004130`).
 - **Effective DACL:** device name is NULL and no security descriptor is passed; `IoCreateDevice` (not `IoCreateDeviceSecure`) is used, characteristics = 0, and there is no `IoCreateSymbolicLink`, `ZwSetSecurityObject` or SDDL literal in the image. The device therefore has the `IoCreateDevice`/object-manager default DACL. The only user-visible name is the PnP interface symbolic link, whose ACL is set by PnP (and possibly the INF, not in the corpus). The driver itself adds no gate. Access is hardware-gated: the FDO exists only for an enumerated Blackmagic USB device (**R3**).
 
 ### 2.3 Dispatch and IOCTL table
 
 Dispatcher `FUN_140001a20`. Entry gate: `FUN_14000246c` fails with `STATUS_DEVICE_NOT_READY` (0xC0000056) unless the device-ready byte (`ext+0x38`) is set. `lVar3 = *(IRP+0xB8)` = current stack; `FileObject->FsContext` must be non-NULL (`0xC0000008` otherwise). `SystemBuffer = IRP+0x18`; `InputBufferLength = stack+0x10`, `OutputBufferLength = stack+0x08`, `IoControlCode = stack+0x18`.
 
-All codes are METHOD_BUFFERED (low 2 bits 0) and FILE_ANY_ACCESS (bits 14–15 = 0).
+All codes are METHOD_BUFFERED (low 2 bits 0) and FILE_ANY_ACCESS (bits 14-15 = 0).
 
 | IOCTL | Input min | Output min | Kernel action |
 |---|---|---|---|
@@ -86,7 +86,7 @@ All codes are METHOD_BUFFERED (low 2 bits 0) and FILE_ANY_ACCESS (bits 14–15 =
 | `0x2220E8` | `0x10` | `in[1]` | Queue push; `FUN_140002b6c` URB with buffer `SystemBuffer` |
 | `0x2220EC` | 8 | ==0 | `FUN_140002278(config=in[0], iface=in[1]-1)`: builds select-interface URB |
 | `0x2220F0` | 0 | non-zero | `SystemBuffer[0] = [ext+0x68]+0x10`; Information=1 |
-| other | — | — | `STATUS_INVALID_DEVICE_REQUEST` (0xC0000010) |
+| other | - | - | `STATUS_INVALID_DEVICE_REQUEST` (0xC0000010) |
 
 ### 2.4 Access control
 
@@ -96,7 +96,7 @@ No `SeAccessCheck`, `SeSinglePrivilegeCheck`, ACL query, or caller-identity test
 
 Every store in the 41-function dump was reviewed.
 
-1. **SystemBuffer fixed-offset writes** in `0x222000` (`UINT64` at `SystemBuffer`, 2 dwords), `0x2220F0` (1 byte), `0x22208C`/`094`/`098`/`09C`/`0A0`/`0A8`/`0AC`/`0B4` (4 bytes), and `0x2220C0`–`0x2220D0` (4 bytes). Each branch is entered only after `OutputBufferLength > 3` (or `> 7` for `0x222000`), so the write is inside the METHOD_BUFFERED allocation.
+1. **SystemBuffer fixed-offset writes** in `0x222000` (`UINT64` at `SystemBuffer`, 2 dwords), `0x2220F0` (1 byte), `0x22208C`/`094`/`098`/`09C`/`0A0`/`0A8`/`0AC`/`0B4` (4 bytes), and `0x2220C0`-`0x2220D0` (4 bytes). Each branch is entered only after `OutputBufferLength > 3` (or `> 7` for `0x222000`), so the write is inside the METHOD_BUFFERED allocation.
 2. **`0x2220D4`** writes 6 bytes after `in >= 8` and `out >= 6`.
 3. **`0x2220BC`** (`FUN_140001188`, `0x140001188`): `*out = count`; then `out[k] = index` for `k <= count`. Guard: if `OutputBufferLength < (count+1)*4`, only `*out = 4` (and `out >= 4` was checked). No overflow.
 4. **`0x222090`** (`FUN_140002920` at `0x140002920`): the descriptor length is a device-supplied ushort. The driver writes `len+4` into `out[0]` and calls `FUN_140003080` (`memcpy`) with `len` only when `len+4 <= OutputBufferLength`. Destination is `SystemBuffer+4` inside the allocation.
@@ -109,7 +109,7 @@ No write uses a caller-supplied destination pointer, offset or value: every call
 
 ### 2.6 Verdict
 
-**NO-MEMORY-WRITE — reach=R3 setup=hardware write=W0 load=signed (WHQL).** The legacy image is the same code (dump-identical apart from the program name) but is test-signed; it has no primitive either and is not normally loadable.
+**NO-MEMORY-WRITE - reach=R3 setup=hardware write=W0 load=signed (WHQL).** The legacy image is the same code (dump-identical apart from the program name) but is test-signed; it has no primitive either and is not normally loadable.
 
 ## 3 EL_Display_vhidbus pair (DEVGURU "DGVHID Bus")
 
@@ -130,12 +130,12 @@ No write uses a caller-supplied destination pointer, offset or value: every call
   - `WdmlibIoCreateDeviceSecure(DriverObject, 0x98, NULL, 0x2A, 0x180 /*SECURE_OPEN|AUTOGENERATED*/, FALSE, &SDDL, &GUID, &DeviceObject)`.
   - SDDL `UNICODE_STRING` at `0x140003428` points to `0x1400033f0`: **`D:P(A;;GA;;;SY)(A;;GA;;;BA)`** (protected; GENERIC_ALL only to SYSTEM and Built-in Administrators).
   - Child interface GUID at `0x140003350`: `{A3CE5953-5303-4DF4-A8AE-FAC86ACD06C8}`.
-  - **Effective child DACL: SYSTEM + Administrators only → R2.** No other principal can open a child PDO.
+  - **Effective child DACL: SYSTEM + Administrators only -> R2.** No other principal can open a child PDO.
 - PNP also creates children itself (six variants in `FUN_140006cac` at `0x140006cac`, calling `FUN_140007708` with a local 0x8DC-byte template), so the 0x2A0000 IOCTL is the user-reachable equivalent of the internal creation path.
 
 ### 3.3 Dispatch and IOCTL table
 
-User dispatcher `FUN_140006800` (IRP_MJ_DEVICE_CONTROL). `SystemBuffer = IRP+0x18`; `IoControlCode = stack+0x18`; it checks `DeviceExtension->Started` and state, then switches on the code. All six are METHOD_BUFFERED (low 2 bits 0), FILE_ANY_ACCESS (bits 14–15 = 0). **InputBufferLength is never checked.**
+User dispatcher `FUN_140006800` (IRP_MJ_DEVICE_CONTROL). `SystemBuffer = IRP+0x18`; `IoControlCode = stack+0x18`; it checks `DeviceExtension->Started` and state, then switches on the code. All six are METHOD_BUFFERED (low 2 bits 0), FILE_ANY_ACCESS (bits 14-15 = 0). **InputBufferLength is never checked.**
 
 | IOCTL | Method / access | Input (implicit) | Output | Kernel action |
 |---|---|---|---|---|
@@ -145,15 +145,15 @@ User dispatcher `FUN_140006800` (IRP_MJ_DEVICE_CONTROL). `SystemBuffer = IRP+0x1
 | `0x2A000C` | BUFFERED / ANY | 20 (id + 8 data + 4 + 4-read/2-used) | 0 | `FUN_140001348`: complete a pending bulk/interrupt read: 8-byte store + 4-byte store + 2-byte store into the URB `TransferBuffer`; sets URB status 0 and IRP status 0 |
 | `0x2A0010` | BUFFERED / ANY | 20 | 0 | Same as `0x2A000C` |
 | `0x2A0014` | BUFFERED / ANY | 12 (id + 8 data) | 0 | `FUN_140001258`: complete a pending read with one 8-byte store into the URB `TransferBuffer` |
-| other | — | — | — | `STATUS_INVALID_DEVICE_REQUEST` (0xC0000010) |
+| other | - | - | - | `STATUS_INVALID_DEVICE_REQUEST` (0xC0000010) |
 
-Internal (kernel-only) path: IRP_MJ_INTERNAL_DEVICE_CONTROL `FUN_140001530` accepts only `0x220003` (`IOCTL_INTERNAL_USB_SUBMIT_URB`) and dispatches by URB function in `FUN_14000157c` → `FUN_1400016e0` (select configuration), `FUN_14000171c` (descriptors/class requests), or pends bulk/interrupt reads (`FUN_14000157c`, up to 2 pending). `0x220003` is **not** reachable from `DeviceIoControl` (it would arrive as IRP_MJ_DEVICE_CONTROL and be rejected by `FUN_140006800`).
+Internal (kernel-only) path: IRP_MJ_INTERNAL_DEVICE_CONTROL `FUN_140001530` accepts only `0x220003` (`IOCTL_INTERNAL_USB_SUBMIT_URB`) and dispatches by URB function in `FUN_14000157c` -> `FUN_1400016e0` (select configuration), `FUN_14000171c` (descriptors/class requests), or pends bulk/interrupt reads (`FUN_14000157c`, up to 2 pending). `0x220003` is **not** reachable from `DeviceIoControl` (it would arrive as IRP_MJ_DEVICE_CONTROL and be rejected by `FUN_140006800`).
 
 ### 3.4 Access control
 
 - No `SeAccessCheck`, `SeSinglePrivilegeCheck`, `ProbeForWrite` or caller-identity check in the dispatcher.
 - Parent: default device/interface DACL; `FILE_DEVICE_SECURE_OPEN` makes the object DACL apply; `Exclusive=TRUE` limits to one open handle. No image-level restriction.
-- Child PDOs: protected SDDL `D:P(A;;GA;;;SY)(A;;GA;;;BA)` — **admin-only (R2)**. The child interface GUID is registered, but the SD makes it an R2 surface.
+- Child PDOs: protected SDDL `D:P(A;;GA;;;SY)(A;;GA;;;BA)` - **admin-only (R2)**. The child interface GUID is registered, but the SD makes it an R2 surface.
 - The six IOCTLs are FILE_ANY_ACCESS, so any handle that can open the object can send them; the governing gate is the DACL above, not an IOCTL access mask.
 - The PCI-config interface (`IRP_MN_QUERY_INTERFACE`, `FUN_140006770`) hands out four callbacks including `FUN_140001150` (`HalSetBusDataByOffset`). This is a **kernel-to-kernel** interface, not a user IOCTL, and is **HW-ONLY** (PCI config), not a memory write.
 
@@ -168,13 +168,13 @@ Internal (kernel-only) path: IRP_MJ_INTERNAL_DEVICE_CONTROL `FUN_140001530` acce
 4. **URB descriptor path** (`FUN_14000171c`): for `DescriptorType 1` it requires `TransferBufferLength == 0x12` and writes exactly 0x12 bytes; for the configuration descriptor it writes a fixed 0x22-byte descriptor; for `DescriptorType 0x22` (HID report) it writes a fixed 0x82 / 0x9D / 0x3F-byte blob and updates `TransferBufferLength`, **without checking the incoming `TransferBufferLength`**. This is a fixed-size write into a URB buffer supplied by a **kernel** URB submitter (hidusb/hidclass), not by the user. It is not reachable through `DeviceIoControl`; no user-controlled target or length.
 5. **Child list / device relations** (`FUN_140006cac`, `FUN_140007a68`, `FUN_140006c08`): list unlink, reference-count and `IoInvalidateDeviceRelations`/`IoRequestDeviceEject`; fixed kernel structures.
 6. **WMI** (`FUN_140007b30`, `FUN_140007b90`): writes a fixed 8-byte value and fixed WMI structures after length checks; not a memory-write primitive.
-7. **HAL callbacks** (`FUN_140001090`, `0x140001110`, `0x140001150`, `0x1400011d0`): PCI config read/write, DMA adapter, bus-address translation — **HW-ONLY**, no kernel memory write.
+7. **HAL callbacks** (`FUN_140001090`, `0x140001110`, `0x140001150`, `0x1400011d0`): PCI config read/write, DMA adapter, bus-address translation - **HW-ONLY**, no kernel memory write.
 
 No write uses a caller-controlled destination pointer or offset; every caller-controlled length is matched to the destination allocation, and the remaining stores are fixed-size. The only non-driver-buffer stores are the fixed 8/14-byte report injections and the fixed descriptor blobs into kernel-owned URB buffers.
 
 ### 3.6 Verdict
 
-**NO-MEMORY-WRITE — reach=R2 (child PDO) / R3 (composition) setup=composition write=W0 load=signed.** The child PDO SDDL is admin-only, and the IOCTL surface has no caller-controlled kernel target or length. The i386 sibling is **BLOCKED (architecture)**; its static logic is the same and contains no additional write.
+**NO-MEMORY-WRITE - reach=R2 (child PDO) / R3 (composition) setup=composition write=W0 load=signed.** The child PDO SDDL is admin-only, and the IOCTL surface has no caller-controlled kernel target or length. The i386 sibling is **BLOCKED (architecture)**; its static logic is the same and contains no additional write.
 
 ## 4 usblddaqlib pair (Measurement Computing USB-2500 loader)
 
@@ -204,9 +204,9 @@ Dispatcher `FUN_00013878`. Gate: `ext+0x88` must be 2 (started), else `STATUS_IN
 | `0x220000` | BUFFERED / ANY | out >= `ushort(*(ext+0x70)+2)` | Copies `ushort(ext+0x70+2)` bytes from the driver's device-config buffer at `ext+0x70` to `SystemBuffer`; returns `STATUS_BUFFER_TOO_SMALL` (0xC0000023) if out is smaller; Information = copied length |
 | `0x220004` | BUFFERED / ANY | none | `FUN_00013a4c`: builds and sends `IOCTL 0x220013` and, if bit 2 of the result is set, `IOCTL 0x220007` to the lower device with no user buffer; returns the lower status |
 | `0x220008` | BUFFERED / ANY | none | `FUN_000139c0`: requires `FileObject->FsContext != 0` (name-matched open); builds a 0x28-byte vendor URB with `*(FsContext+8)` as the pipe handle and sends it to the lower device; no user buffer |
-| other | — | — | `STATUS_INVALID_DEVICE_REQUEST` (0xC0000010) |
+| other | - | - | `STATUS_INVALID_DEVICE_REQUEST` (0xC0000010) |
 
-All three are METHOD_BUFFERED (low 2 bits 0) and FILE_ANY_ACCESS (bits 14–15 = 0).
+All three are METHOD_BUFFERED (low 2 bits 0) and FILE_ANY_ACCESS (bits 14-15 = 0).
 
 ### 4.4 Access control
 
@@ -224,11 +224,11 @@ No `SeAccessCheck`, privilege check, or security-descriptor work. The only gate 
 
 ### 4.6 Verdict
 
-**NO-MEMORY-WRITE — reach=R3 setup=hardware write=W0 load=signed.** `CDEC967D` is code-identical to `9E26A72E` (dump line-identical apart from the program name); the only material difference is the signature block/signer (MCC vs Digilent).
+**NO-MEMORY-WRITE - reach=R3 setup=hardware write=W0 load=signed.** `CDEC967D` is code-identical to `9E26A72E` (dump line-identical apart from the program name); the only material difference is the signature block/signer (MCC vs Digilent).
 
 ## 5 Most dangerous exposed capability (overall)
 
-- **DesktopVideoUpdate:** raw URB transfers and configuration re-selection (`0x2220B8`, `0x2220D8`–`0x2220E8`), all bounded by SystemBuffer/endpoint lengths. The device is a USB peripheral; no kernel memory write.
+- **DesktopVideoUpdate:** raw URB transfers and configuration re-selection (`0x2220B8`, `0x2220D8`-`0x2220E8`), all bounded by SystemBuffer/endpoint lengths. The device is a USB peripheral; no kernel memory write.
 - **EL_Display_vhidbus:** admin-only child PDO creation with caller-supplied report/ID blobs (`0x2A0000`) and fixed 8/14-byte report injection into a kernel URB buffer (`0x2A000C`/`10`/`14`). The injection target and size are kernel-owned, not caller-controlled; the creation path has a kernel OOB **read** (leak) but no write overflow. The PCI-config interface is HW-ONLY and kernel-to-kernel.
 - **usblddaqlib:** a device-config read-back IOCTL and two device-control IOCTLs. No MDL, no physical mapping, no kernel memory write.
 
@@ -241,7 +241,7 @@ No `SeAccessCheck`, privilege check, or security-descriptor work. The only gate 
 | Setup | hardware (4), composition (1), n/a (1) |
 | Write quality | **W0** |
 | Verdict | **NO-MEMORY-WRITE** for `DesktopVideoUpdate_81F65827`, `DesktopVideoUpdate_legacy_8A6D0B83`, `EL_Display_vhidbus_3242D1DC`, `usblddaqlib_9E26A72E`, `usblddaqlib_CDEC967D`; **BLOCKED (i386)** for `EL_Display_vhidbus_ECE1CE28` |
-| MW level | **none (no MW1–MW4)** |
+| MW level | **none (no MW1-MW4)** |
 
 No driver in this tail exposes a caller-controlled kernel memory write. The closest surfaces are the EL_Display child-creation pool copies (destination sized to the copy; OOB read only) and the fixed report injection into a kernel-submitted URB buffer (target/size not caller-controlled).
 

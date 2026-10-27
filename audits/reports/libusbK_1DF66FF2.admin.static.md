@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=Travis Lee Robinson |
 | Reach | R3 (devnode / hardware: a USB device bound to libusbK must be present); the device-interface and DosDevices name `\DosDevices\libusb0-` are created through the driver's own device objects |
 | Setup required | devnode (INF binding to a USB device) |
-| Write quality | W0 (provisional: no kernel write to a caller-chosen address found in the traced cases; see §8) |
+| Write quality | W0 (provisional: no kernel write to a caller-chosen address found in the traced cases; see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -69,7 +69,7 @@ Method and access bits were not decoded for each code; all codes are in the 0x22
 
 - The traced case (0x222408, dump 3183-3196) writes one byte to the retrieved request buffer (`*(char*)local_70`, 3187/3190) after the minimum-size retrieval. Bounded.
 - The stored-code cases (0x222018, 0x222429, 0x22242E, 0x22244D, 0x222452, 0x222455, 0x22245A; dump 3291, 3309, 3452, 3478, 3502, 3527, 3632) store the code into an internal request field (`piVar13[3]`) and then queue the request. The writes are to driver-owned request context, not to a caller-chosen address.
-- Transfer cases (control/bulk/interrupt I/O with caller-supplied lengths) were not traced; their buffer handling decides the verdict (§8).
+- Transfer cases (control/bulk/interrupt I/O with caller-supplied lengths) were not traced; their buffer handling decides the verdict (section 8).
 
 ## 6 Most dangerous exposed capability
 

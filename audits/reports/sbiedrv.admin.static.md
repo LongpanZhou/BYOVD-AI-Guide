@@ -9,7 +9,7 @@
 | Method | static, Ghidra 12.1.4 headless decompile dump (730/730 functions; dump `ghidra_dump\out\sbiedrv.txt`, `=== DONE functions=730`). Analysis date 2026-10-24 |
 | Reach tier | local administrator (indirect). Every memory-touching path found sits behind the trusted-caller gate in section 2. No such path is reachable from an ordinary device opener. |
 | Setup required | none (driver load). The trusted-caller state is a runtime condition of the Sandboxie service, not a devnode or hardware gate. |
-| Verdict | **MW2** — reach=R2 setup=none write=W2 load=signed (conditional; NEEDS-DYNAMIC). Legacy label: `WRITE-MEDIUM`. No write to a kernel address chosen by input was found; the overflows are constrained pool/stack writes. |
+| Verdict | **MW2** - reach=R2 setup=none write=W2 load=signed (conditional; NEEDS-DYNAMIC). Legacy label: `WRITE-MEDIUM`. No write to a kernel address chosen by input was found; the overflows are constrained pool/stack writes. |
 | Write quality | W2 |
 | Severity | MW2 |
 
@@ -88,7 +88,7 @@ No ordinary device opener reaches the trusted handlers.
 | # | Sink | Site (line, function) | Reached from | Gate | Destination and value | Finding |
 |---|---|---|---|---|---|---|
 | 1 | `ZwMapViewOfSection` | 5611, FUN_140008030 (5514-5648) | init range only: callers at 35144, 35178, 36766, 36991, 37157 (their reach from `entry` not fully traced) | init only (no IOCTL caller found) | maps `\SystemRoot\System32\<name>` read-only into the current process (ZwCreateFile 5580, ZwCreateSection 5596). Not a write. | NO-WRITE |
-| 2 | `IoAllocateMdl` 10088, `MmProbeAndLockPages(…,2)` 10094, `MmMapLockedPagesSpecifyCache(…,KernelMode)` 10095 | FUN_14000E6D8 (10046-10119) | single caller FUN_14000E064 at line 9680, size constant 0x60 | constant size | driver-owned 4 KiB pool page used as a bump allocator. The size argument is not from input. | NO-WRITE |
+| 2 | `IoAllocateMdl` 10088, `MmProbeAndLockPages(...,2)` 10094, `MmMapLockedPagesSpecifyCache(...,KernelMode)` 10095 | FUN_14000E6D8 (10046-10119) | single caller FUN_14000E064 at line 9680, size constant 0x60 | constant size | driver-owned 4 KiB pool page used as a bump allocator. The size argument is not from input. | NO-WRITE |
 | 3 | `KeStackAttachProcess` | 20499, FUN_14001BE18 (20462-20530) | FUN_14001B248 (19966), FUN_14001B29C (19987), FUN_14001B348 (20032), FUN_14001BFA8 (20553); these are reached from FUN_140018810 (18276) and FUN_14001B4D0 (20199). FUN_140018810 is reached from handler 0x24 (FUN_14001A050, line 19191). | the handler 0x24 gate is not traced (open item in section 8) | attaches to a target process, reads its PEB and parameter block through `ProbeForRead` (lines 20500-20514), then copies at most `param_3*2` bytes into a pool block of `param_3*2 + 0x20` (copy at line 20516). | cross-process **read**. NO-WRITE. |
 | 4 | `KeStackAttachProcess` | 24054, FUN_140020E74 (24020-24095) | FUN_140020D30 (24006) | not traced to a handler | attaches to a caller-named process only to resolve a handle with `ObReferenceObjectByHandle`. Not a memory write. | NO-WRITE |
 | 5 | `MmCopyMemory` (resolved dynamically) | resolved at 35599-35600 (FUN_14003DE0C, 35587); used at 36966 (FUN_14003F86C, 36880) | DriverEntry only: FUN_14003F2EC (36681), called from `entry` (35291) | init only | copies from a csrss address held in an init-time filter table (the origin of that table was not fully traced) into a kernel buffer sized `count << 2` (lines 36963-36974). Read direction. | NO-WRITE (init-only read) |
@@ -119,12 +119,12 @@ No ordinary device opener reaches the trusted handlers.
 | 0x36 | FUN_14001FBC0 | 23372 | stack `local_288[80]` | `0x41 < uVar21` raises (23367), so at most 65 bytes plus NUL | ProbeForRead 23363, 23366 | NO-WRITE |
 | 0x3A | FUN_14001EF10 | 22823, 22886 | pool 0x1008 | at most 0x800 chars, probed before clamp | ProbeForRead 22794 | NO-WRITE |
 | 0x40 | FUN_140002010 | 1210 | user (`puVar2`) | capacity check `puVar1[1] < uVar8` (1204) | ProbeForWrite 1177-1182, 1209 | user VA only; NO-WRITE |
-| **0x43** | **FUN_140013EE0** | **14999** | pool `int len + 0x178` (allocation 14938) | length `(uint)len` (14996, 14999); **no lower bound** | ProbeForRead(…, `int len`) at 14998 (negative value passes, see 3.3) | **heap overflow, trusted-only** |
+| **0x43** | **FUN_140013EE0** | **14999** | pool `int len + 0x178` (allocation 14938) | length `(uint)len` (14996, 14999); **no lower bound** | ProbeForRead(..., `int len`) at 14998 (negative value passes, see 3.3) | **heap overflow, trusted-only** |
 | 0x46 | FUN_140002D20 | 1753, 1755 | pool | `<0x4000` and `<0x100001` (1749) | ProbeForRead 1750, 1751 | NO-WRITE (out-of-class, section 5) |
 | 0x47 | FUN_140002270 | 1262 | pool | `uVar1 < 0x4000`, `uVar2 < 0x100001` (1253) | ProbeForRead 1256; ProbeForWrite 1257 (output buffer, same lengths) | NO-WRITE |
 | **0x49** | **FUN_14000A5D0** | **7029, 7034** | pool `(int)len1*2 + 0x220` (7024) | second copy length `len2*2` where `len2 = wcslen(...)`, **no bound** | none (trusted-only) | **heap overflow, trusted-only** |
 | **0x4A** | **FUN_14000AD60** | **7330** | stack `local_228[256]` | copy `wcslen*2` **before** the check `0x1FF < uVar2` at 7331 | none (trusted-only) | **stack overflow, then fast-fail (crash-first)** |
-| 0x4E | FUN_1400045C0 → FUN_140001B74 | 947-948 | pool `len+2` | copy `len+2` bytes; NUL at offset `(len+2) & ~1` (948) | ProbeForRead 937, 941 | 1-byte NUL past the requested size for odd `len`; pool granularity normally absorbs it. NO-WRITE (confirm, section 7). |
+| 0x4E | FUN_1400045C0 -> FUN_140001B74 | 947-948 | pool `len+2` | copy `len+2` bytes; NUL at offset `(len+2) & ~1` (948) | ProbeForRead 937, 941 | 1-byte NUL past the requested size for odd `len`; pool granularity normally absorbs it. NO-WRITE (confirm, section 7). |
 | 0x2A | FUN_140012940 | 13755 | user 8-byte store (`*puVar1`) | ProbeForRead (not ProbeForWrite) at 13755 | user VA only | NO-WRITE |
 
 Store-only handlers (direct writes through input pointers, no memmove) were checked against their ProbeFor calls (lines in section 3.2 and the ProbeFor grep). Full coverage of every direct store was not completed (section 8).
@@ -134,7 +134,7 @@ Store-only handlers (direct writes through input pointers, no memmove) were chec
 **Handler 0x12340043, FUN_140013EE0 (lines 14757-15036).**
 - Gate: line 14836 (`PsGetCurrentProcessId() == DAT_1400396A0`, inside `param_1 == 0`).
 - Length: `iVar1 = *(int*)(param_2 + 0x20)` (14995), **signed**.
-- Allocation: `ExAllocatePool(…, len + 0x178)` (14938). The sum is computed as `int` and passed as an unsigned size. A failed allocation returns an error and no copy follows.
+- Allocation: `ExAllocatePool(..., len + 0x178)` (14938). The sum is computed as `int` and passed as an unsigned size. A failed allocation returns an error and no copy follows.
 - Copy: `FUN_14002CD40(plVar3 + 0x2F, src, (ulonglong)*(uint*)(plVar3 + 0x174))` (14999), where the stored value at +0x174 is `len` (14996). For negative `len` the copy length is `2^32 - |len|`, while the block is `len + 0x178` bytes.
 - Probe: `ProbeForRead(*(param_2+0x28), iVar1, 1)` (14998) uses the same value as an unsigned length. It passes only when the user source address plus that length stays below the user boundary, so the source has to sit low in user space. This narrows the path but does not close it.
 - Negative `len` values from -0x177 to -1 produce a block of 1 to 0x177 bytes and allow the copy. A value of -0x178 gives a zero-size request; whether that returns a block was not verified. More negative values make the allocation fail; the code logs the failure (`FUN_140016DE0`) and skips the copy.
@@ -195,7 +195,7 @@ All user-reachable memory paths go through IOCTL `0x00222007` (method NEITHER, F
 These are not kernel memory writes under the scope. They are recorded for the owner.
 
 - **0x12340031, FUN_140015030 (lines 15629-15688).** Writes `DAT_140039830` (Authenticated Users, Everyone and Restricted Code GENERIC_ALL, built at 5764-5792) as the DACL of a caller-named registry key, after the filter FUN_140003D84 returns 0. Gate: context must be non-zero (table entry, line 15648). The insertion path into `DAT_140039C80` (handler 0x24, FUN_140018810, FUN_140017944) is not fully traced.
-- **0x12340046, FUN_140002D20 → FUN_140026C70 (28296-28317).** Writes a caller-supplied DACL blob onto a caller-named key under `\REGISTRY\MACHINE\SECURITY\SBIE...` (fixed prefix, line 1756; `ZwSetSecurityObject` at 28317). Gate: `FUN_140026A5C` (line 1743). That gate returns TRUE for every caller while test-signing is on (section 2).
+- **0x12340046, FUN_140002D20 -> FUN_140026C70 (28296-28317).** Writes a caller-supplied DACL blob onto a caller-named key under `\REGISTRY\MACHINE\SECURITY\SBIE...` (fixed prefix, line 1756; `ZwSetSecurityObject` at 28317). Gate: `FUN_140026A5C` (line 1743). That gate returns TRUE for every caller while test-signing is on (section 2).
 - **0x12340011, FUN_1400122A0 (13463-13583).** Creates an object directory from a caller-supplied name. The object attributes carry a security descriptor built from DAT_140039820, and a label is set through `ZwSetSecurityObject` (line 13530). The exact argument layout was not confirmed beyond the decompile. FUN_140013200 (14104-14133) creates a directory object with a NULL DACL (Everyone full access) from a config-derived name, called from FUN_1400184A0 (17959). The gate for that call chain is not traced.
 - **FUN_1400169F0 (16743-16767)** sets a DACL and calls `ZwSetSecurityObject`. The only caller in the dump is itself, so it is unreached in this dump (callback registration not traced).
 - **FUN_14002649C (27819-27821)** via FUN_140025530 (27160) and FUN_140025310 (27132). The handler chain is not traced.
@@ -231,7 +231,7 @@ All steps are for an isolated Windows 10 build 19045 VM. Nothing below was execu
 - Only the Ghidra decompile was read; the disassembly was not. Argument directions for FUN_14002CD40 (memmove) and FUN_14002D000 (memset) were inferred from their call pattern and from the ImDisk helpers FUN_140005A40 and FUN_140005D00, whose opening branches were read.
 - All 730 functions decompiled. Only the 56 handler bodies, the named import sinks and the functions they call with caller-derived destinations were traced. The 105 memmove and 50 memset call sites in the whole dump were not individually audited.
 - Direct stores through input pointers were checked against their ProbeFor calls only where those calls are visible. Full store coverage was not completed.
-- Not traced in full: the body of signature verification (FUN_140028EAC); the licence word parser (FUN_140027B54); FUN_140026C70 internals; the context table FUN_1400182D0; the insertion path into DAT_140039C80 (handler 0x24 → FUN_140018810 → FUN_140017944 and its gate); the caller of FUN_140020E74 (FUN_140020D30); the chains FUN_140025530/FUN_140025310 and FUN_1400184A0; FUN_1400062B4 (the 0x4E sink).
+- Not traced in full: the body of signature verification (FUN_140028EAC); the licence word parser (FUN_140027B54); FUN_140026C70 internals; the context table FUN_1400182D0; the insertion path into DAT_140039C80 (handler 0x24 -> FUN_140018810 -> FUN_140017944 and its gate); the caller of FUN_140020E74 (FUN_140020D30); the chains FUN_140025530/FUN_140025310 and FUN_1400184A0; FUN_1400062B4 (the 0x4E sink).
 - Init-only classification of ZwMapViewOfSection (row 1) and MmCopyMemory (row 5) rests on the caller listing. Not every init caller was traced back to `entry`.
 - The effective device DACL is not determined.
 - Time-of-check and time-of-use between ProbeFor and use was reasoned only for the sites listed.

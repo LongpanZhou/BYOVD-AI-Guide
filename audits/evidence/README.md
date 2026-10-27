@@ -4,8 +4,8 @@
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
-VM-phase evidence for the t4–t10 runs: logs, scripts, transcripts, and decompiled snippets.
-t1–t3 evidence was not migrated; reports that cite `t1_*`/`t3_*` are historical. This is
+VM-phase evidence for the t4-t10 runs: logs, scripts, transcripts, and decompiled snippets.
+t1-t3 evidence was not migrated; reports that cite `t1_*`/`t3_*` are historical. This is
 **evidence**, not a reusable toolkit.
 
 - PoC sources and compiled harnesses are in [`../../poc/historical/`](../../poc/historical/).

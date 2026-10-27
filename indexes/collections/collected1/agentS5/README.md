@@ -1,4 +1,4 @@
-# S5 — superseded by S6
+# S5 - superseded by S6
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify

@@ -22,33 +22,33 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Kernel mapping, MDL, or probe | None. No `Mm*` or `Probe*` procedures or imports | `ev_87f7ce2c…` (`Mm`, empty), `ev_5e3783ea…` (`Probe`, empty) |
-| Caller-controlled kernel address | None in the reviewed code. Stores go through device-extension pointers set at init | `ev_3868cd52…` |
-| HwAdapterControl, ControlType 0 | Writes the Parameters buffer at fixed offsets +4, +6, +8. No caller length read | `ev_3868cd52…` |
-| HwAdapterControl, ControlType 1 | Read-modify-write (`|= 1`) through up to 4 device-extension pointer slots; index guarded by `< 4`. Indirect call through dev+0x50 | `ev_3868cd52…` |
-| HwStartIo dispatch, SRB function 2 | Reads the 8-byte CSMI signature from the IOCTL buffer. Writes ReturnCode (buffer+0x14) at a fixed offset. Requires a buffer of at least 0x18 bytes, which is not checked in-file | `ev_6d0ef31c…` |
-| CPQCISS handler `FUN_0001670c` | CC1 writes 8 bytes at +0x1f; CC3 writes 3 bytes at +0x24..+0x26. Both gated by Length ≥ 12, extent ≤ 0x27, inside the claimed 28+Length. Overflow needs an IOCTL buffer smaller than the claimed size, which the code does not check (up to 8 bytes) | `ev_547bbc57…` |
-| CSMIALL handler `FUN_00016c80`, CC3 | `memset(+0x1c, 0, 0x24)` gated only by Length ≥ 8. Store extent reaches +0x40, against a claimed end of 28+Length. Overflow of up to **28 bytes** (zero fill) when Length < 36, even for a buffer sized exactly to the claim | `ev_338298f6…` |
-| CSMIALL handler, CC1 | DWORD stores at +0xbe, +0xc2, +0xc6 (extent +0xca) plus two driver-string copies at fixed offsets. Gated by Length ≥ 0x92, claimed end 0xae. Overflow of up to **28 bytes** with a buffer sized exactly to the claim | `ev_338298f6…` |
-| Gate `FUN_00017f5c(dev, 4, 0, CC)` for CC 1–4 | Passes only when dev+0x9e60 ≤ 2. The value is set outside this file | `ev_35bb164d…` |
-| CSMIARY and CSMIPHY (inline in HwStartIo) | Fixed-offset ReturnCode writes only, gated by the same FUN_00017f5c | `ev_6d0ef31c…` |
-| CPQCSMI `FUN_000165a0`, CSMISAS `FUN_00016e10`, CC2/CC4 subhandlers | Not reviewed | — |
-| HwBuildIo, HwInterrupt, HwFindAdapter, HwResetBus, HwInitialize | Not reviewed | — |
-| memset helper `0x1b440` callers | Not counted; not reviewed | `ev_f950d909…` (`mem`) |
+| Kernel mapping, MDL, or probe | None. No `Mm*` or `Probe*` procedures or imports | `ev_87f7ce2c...` (`Mm`, empty), `ev_5e3783ea...` (`Probe`, empty) |
+| Caller-controlled kernel address | None in the reviewed code. Stores go through device-extension pointers set at init | `ev_3868cd52...` |
+| HwAdapterControl, ControlType 0 | Writes the Parameters buffer at fixed offsets +4, +6, +8. No caller length read | `ev_3868cd52...` |
+| HwAdapterControl, ControlType 1 | Read-modify-write (`|= 1`) through up to 4 device-extension pointer slots; index guarded by `< 4`. Indirect call through dev+0x50 | `ev_3868cd52...` |
+| HwStartIo dispatch, SRB function 2 | Reads the 8-byte CSMI signature from the IOCTL buffer. Writes ReturnCode (buffer+0x14) at a fixed offset. Requires a buffer of at least 0x18 bytes, which is not checked in-file | `ev_6d0ef31c...` |
+| CPQCISS handler `FUN_0001670c` | CC1 writes 8 bytes at +0x1f; CC3 writes 3 bytes at +0x24..+0x26. Both gated by Length >= 12, extent <= 0x27, inside the claimed 28+Length. Overflow needs an IOCTL buffer smaller than the claimed size, which the code does not check (up to 8 bytes) | `ev_547bbc57...` |
+| CSMIALL handler `FUN_00016c80`, CC3 | `memset(+0x1c, 0, 0x24)` gated only by Length >= 8. Store extent reaches +0x40, against a claimed end of 28+Length. Overflow of up to **28 bytes** (zero fill) when Length < 36, even for a buffer sized exactly to the claim | `ev_338298f6...` |
+| CSMIALL handler, CC1 | DWORD stores at +0xbe, +0xc2, +0xc6 (extent +0xca) plus two driver-string copies at fixed offsets. Gated by Length >= 0x92, claimed end 0xae. Overflow of up to **28 bytes** with a buffer sized exactly to the claim | `ev_338298f6...` |
+| Gate `FUN_00017f5c(dev, 4, 0, CC)` for CC 1-4 | Passes only when dev+0x9e60 <= 2. The value is set outside this file | `ev_35bb164d...` |
+| CSMIARY and CSMIPHY (inline in HwStartIo) | Fixed-offset ReturnCode writes only, gated by the same FUN_00017f5c | `ev_6d0ef31c...` |
+| CPQCSMI `FUN_000165a0`, CSMISAS `FUN_00016e10`, CC2/CC4 subhandlers | Not reviewed | - |
+| HwBuildIo, HwInterrupt, HwFindAdapter, HwResetBus, HwInitialize | Not reviewed | - |
+| memset helper `0x1b440` callers | Not counted; not reviewed | `ev_f950d909...` (`mem`) |
 
 ## Verdict rationale
 
-WRITE-MEDIUM, conditional. The overflow is real in-file. Two SRB_IO_CONTROL handlers gate their stores on the caller-supplied `SRB_IO_CONTROL.Length` (+0x18), then store beyond the bound that the gate implies. The CSMIALL CC3 path is self-contained: the memset extent (+0x40) exceeds the Length-8 claim (+0x24). The CSMIALL CC1 path is self-contained too: the extent (+0xca) exceeds the Length-0x92 claim (+0xae). Both overflow by up to 28 bytes with zero fill or driver constants, so the write is bounded in size and not attacker-chosen in content. Reachability depends on three conditions: (a) the IOCTL_SCSI_MINIPORT path is admin-only (ACL not traced); (b) dev+0x9e60 ≤ 2 (set by hardware or init, not traced); (c) StorPort passes an IOCTL buffer sized from the caller (not verified).
+WRITE-MEDIUM, conditional. The overflow is real in-file. Two SRB_IO_CONTROL handlers gate their stores on the caller-supplied `SRB_IO_CONTROL.Length` (+0x18), then store beyond the bound that the gate implies. The CSMIALL CC3 path is self-contained: the memset extent (+0x40) exceeds the Length-8 claim (+0x24). The CSMIALL CC1 path is self-contained too: the extent (+0xca) exceeds the Length-0x92 claim (+0xae). Both overflow by up to 28 bytes with zero fill or driver constants, so the write is bounded in size and not attacker-chosen in content. Reachability depends on three conditions: (a) the IOCTL_SCSI_MINIPORT path is admin-only (ACL not traced); (b) dev+0x9e60 <= 2 (set by hardware or init, not traced); (c) StorPort passes an IOCTL buffer sized from the caller (not verified).
 
 Escalate to **WRITE-HIGH** if the port device ACL allows non-admin callers, or if the unreviewed CPQCSMI (`FUN_000165a0`) or CSMISAS (`FUN_00016e10`) handler copies with a Length-derived size into the same buffer.
 
-Drop to **NO-WRITE** if StorPort enforces a minimum IOCTL_SCSI_MINIPORT buffer of 0xca bytes (which covers both CC1 and CC3), or if the device gate at dev+0x9e60 is shown to be above 2 on all shipping hardware, which makes CC1–CC4 unreachable.
+Drop to **NO-WRITE** if StorPort enforces a minimum IOCTL_SCSI_MINIPORT buffer of 0xca bytes (which covers both CC1 and CC3), or if the device gate at dev+0x9e60 is shown to be above 2 on all shipping hardware, which makes CC1-CC4 unreachable.
 
 ## Open items
 
 1. Review `FUN_000165a0` (CPQCSMI) and `FUN_00016e10` (CSMISAS) for copy lengths taken from the SRB_IO_CONTROL header. These are the decisive unreviewed sinks.
 2. Confirm whether storport.sys enforces a minimum buffer for IOCTL_SCSI_MINIPORT (drop condition) and whether SRB DataTransferLength equals the IOCTL buffer size (escalation condition).
-3. Source of the value at dev+0x9e60, which gates CC1–CC4 through `FUN_00017f5c`.
+3. Source of the value at dev+0x9e60, which gates CC1-CC4 through `FUN_00017f5c`.
 4. Port device ACL (the admin gate).
 5. Two references to the StorPortInitialize IAT slot (`0x101d0`, `0x10224`) lie outside any Ghidra procedure and were not decoded. If they are live calls with a different HW_INITIALIZATION_DATA, the callback set above is incomplete.
 6. Not reviewed: HwBuildIo `FUN_000110e4`, HwInterrupt `FUN_00013018`, HwFindAdapter `FUN_00014624`, HwResetBus `FUN_000189f0`, HwInitialize `FUN_000152c8`, and the callers of the memset helper `0x1b440`.
@@ -76,9 +76,9 @@ Run only in the VM, by the orchestrator. Nothing here is to be run on the host.
 - `ev_07c94000fd76b7b32c3b3b2307bbc6acf948d08b36fe25de99545fb8b19d50fc` (xrefs of `STORPORT.SYS::StorPortInitialize`: 0x110c2, 0x1c000)
 - `ev_fc780a2ea28c72fac42b391e092abfd26ba2b4e8d5c8f008c55cdff5e2dcd953` (xrefs of 0x1c000: 0x101d0, 0x10224, 0x110c2)
 - `ev_86236775f95f7436cc42a38a30710a77c41cefca933aac1f00c815fb3be2271f` (bytes at 0x1c000, IAT name RVAs)
-- `ev_a5e1ed992bc58ff5dd3eb08e47e78429f14f597d0e1ea4ec8bb03edf85e5902b` (0x110c2 → FUN_00011008)
-- `ev_412fb4ff57c46d0ab1fa4ee53c7e21a617eb70ba582482c4946847ac7e098352` (0x101d0 → not in a procedure)
-- `ev_0335a82a990f6984c5c389775273ed2bb6d85c82414a5afa5c951a62520673ef` (0x10224 → not in a procedure)
+- `ev_a5e1ed992bc58ff5dd3eb08e47e78429f14f597d0e1ea4ec8bb03edf85e5902b` (0x110c2 -> FUN_00011008)
+- `ev_412fb4ff57c46d0ab1fa4ee53c7e21a617eb70ba582482c4946847ac7e098352` (0x101d0 -> not in a procedure)
+- `ev_0335a82a990f6984c5c389775273ed2bb6d85c82414a5afa5c951a62520673ef` (0x10224 -> not in a procedure)
 - `ev_9f0956c4bcfc0195ccfab836c028c5303aae95fa9f79a263bc10bbfbd60d14ad` (bytes at 0x101c0)
 - `ev_b55f86b8ff9f439ae6f31e4ccdbf5cf2b9fe5bbc23ebd473bec6082d08d38974` (DriverEntry FUN_00011008)
 - `ev_3868cd52178d5624fc32bc126a48ee71695c1086f280655ec70b9ebb4ae83833` (HwAdapterControl FUN_00014480)

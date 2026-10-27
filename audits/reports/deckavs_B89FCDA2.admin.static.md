@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=Microsoft Windows Hardware Compatibility Publisher |
 | Reach | R3 (devnode / hardware: a DeckLink card must be present) |
 | Setup required | hardware |
-| Write quality | W0 (provisional: no caller-controlled kernel write found in the traced code; see §5 and §8) |
+| Write quality | W0 (provisional: no caller-controlled kernel write found in the traced code; see section 5 and section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -41,8 +41,8 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 | 0x222898 (7123) | - | - | 0x20 | 8 into `local_38` | Local buffer. |
 | 0x22288C (923) | - | - | 0x10 | 0 | Fixed. |
 | 0x222818 (7083) | - | - | 0x20 | 8 into `local_38` | Local buffer. |
-| 0x222458 (1159) | - | - | 8 | 0x9A0 into caller `param_3` | Called from 7904 with a stack buffer `local_9f8`; not a user buffer (§5). |
-| 0x222453, 0x222443, 0x22244B, 0x22244F, 0x22242B, 0x22241C, 0x22240F, 0x222403, 0x222413, 0x222418, 0x222424, 0x222447, 0x222467, 0x222480, 0x222484, 0x22246C, 0x2224C0-0x2224E8, 0x222643, 0x222648, 0x222664, 0x222668, 0x222678, 0x22208C, 0x22264C, 0x222084, 0x222088 | - | - | fixed (4 to 0x20) | fixed (0 to 0x10) or caller `param_2` / `param_4` with fixed size 4 or 8 | Fixed-size private calls; outputs go to driver or stack buffers, sizes fixed (see §5). |
+| 0x222458 (1159) | - | - | 8 | 0x9A0 into caller `param_3` | Called from 7904 with a stack buffer `local_9f8`; not a user buffer (section 5). |
+| 0x222453, 0x222443, 0x22244B, 0x22244F, 0x22242B, 0x22241C, 0x22240F, 0x222403, 0x222413, 0x222418, 0x222424, 0x222447, 0x222467, 0x222480, 0x222484, 0x22246C, 0x2224C0-0x2224E8, 0x222643, 0x222648, 0x222664, 0x222668, 0x222678, 0x22208C, 0x22264C, 0x222084, 0x222088 | - | - | fixed (4 to 0x20) | fixed (0 to 0x10) or caller `param_2` / `param_4` with fixed size 4 or 8 | Fixed-size private calls; outputs go to driver or stack buffers, sizes fixed (see section 5). |
 | 0x222018 (7312) | - | - | 0x10 | 8 into `local_60` | Local buffer. |
 
 | Code | Method | Access | Input | Output | Kernel action |
@@ -53,21 +53,21 @@ Method and access are not stated by the driver for the private codes: they are l
 
 ## 4 Access-control audit
 
-- No privilege or caller-identity check in the driver. Access is governed by KS and the default device security (§2).
+- No privilege or caller-identity check in the driver. Access is governed by KS and the default device security (section 2).
 
 ## 5 Memory-write trace
 
 1. **FUN_140001f40 (dump 1048-1117):** allocates `ExAllocatePoolWithTag(max(param_6, param_4))` (1083), copies `param_4` bytes from `param_3` into it (1084), sends the IRP and, on success, copies `param_6` bytes out to `param_5` (1098). The pool size is at least `param_6` and at least `param_4`, so both copies are bounded by the allocation. The destination `param_5` is a caller-supplied pointer; its size is the caller's `param_6`.
 2. **FUN_140001e3c (dump 1010-1040):** passes its buffers to `IoBuildDeviceIoControlRequest` and copies back into `param_5` only through the IOCTL output path of the lower stack (`local_38` is the completion information, dump 1034).
 3. **FUN_14000211c (dump 1148-1163):** the 0x9A0-byte output (0x222458) targets `param_3`. The only caller (dump 7904) passes the stack buffer `local_9f8`, so the write stays in the frame.
-4. **Fixed-size private calls** (§3) write into local stack buffers or to fixed-size driver output; the output lengths are constants.
+4. **Fixed-size private calls** (section 3) write into local stack buffers or to fixed-size driver output; the output lengths are constants.
 5. **Other memcpy-like sites:** none by name (`memcpy`/`memmove` are not imported; `FUN_140006100` is the internal CRT copy called at dump 1084 and 1098 with the sizes in item 1).
 
-Conclusion of this pass: no site writes to a caller-chosen kernel address. Copy sizes are bounded by the allocation or are constants. The caller-supplied destination `param_5` in item 1 is bounded by the caller's own `param_6`; the callers that pass a non-stack buffer were not enumerated (§8).
+Conclusion of this pass: no site writes to a caller-chosen kernel address. Copy sizes are bounded by the allocation or are constants. The caller-supplied destination `param_5` in item 1 is bounded by the caller's own `param_6`; the callers that pass a non-stack buffer were not enumerated (section 8).
 
 ## 6 Most dangerous exposed capability
 
-- Not established. The KS property, method and stream handlers (the user surface) were not traced. The private IOCTL chain (§3) is driver-initiated and not user-selected.
+- Not established. The KS property, method and stream handlers (the user surface) were not traced. The private IOCTL chain (section 3) is driver-initiated and not user-selected.
 
 ## 7 Verdict
 
@@ -75,6 +75,6 @@ Conclusion of this pass: no site writes to a caller-chosen kernel address. Copy 
 
 ## 8 Limitations
 
-- Callers of `FUN_140001f40` and `FUN_140001e3c` that pass a non-stack output buffer (the `param_5` destination in §5 item 1) were not enumerated. The verdict is provisional until those callers are checked.
+- Callers of `FUN_140001f40` and `FUN_140001e3c` that pass a non-stack output buffer (the `param_5` destination in section 5 item 1) were not enumerated. The verdict is provisional until those callers are checked.
 - The KS property, method and stream handlers (the user surface) were not traced.
 - No REA session used. No execution, no driver load, no registry writes.

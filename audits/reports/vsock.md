@@ -6,7 +6,7 @@
 | Recorded SHA-256 | `CBF13689A852E6062FA656E15DB2A22DD6D83091BDA5F573A98502215556CA68` (matches triage_index.csv row `vsock`; sha256 recomputed in-session) |
 | Company/Version | Broadcom Inc. / 9.8.23.0 (VMware VSOCK; PDB `vsock.pdb`) |
 | Method | Static-only audit via REA/Ghidra 12.1.4, memory-write scope only |
-| Verdict | **NO-WRITE** (coverage ~55%) — every user-pointer write is probed and fixed- or bounded-length; the MJ_READ/WRITE copy targets are unresolved (indirect vtable) and are the open item |
+| Verdict | **NO-WRITE** (coverage ~55%) - every user-pointer write is probed and fixed- or bounded-length; the MJ_READ/WRITE copy targets are unresolved (indirect vtable) and are the open item |
 | Coverage | Not traced: MJ_READ/WRITE vtable targets (`ctx+0x130`/`ctx+0x140`), most IOCTL handlers (`FUN_140005f50`, `FUN_140006060`, `FUN_140002e68`, `FUN_140002f80`, `FUN_140006090`, `FUN_1400060b0`, `FUN_1400062a0`, `FUN_140003228`), device SDDL (`DAT_14000e608`, not decoded) |
 
 > **Static-only.** No load, no device open, no IOCTL execution. Addresses are linked VAs (image base `0x140000000`).
@@ -15,19 +15,19 @@
 
 - DriverEntry = `FUN_140002544` (wrapped by `entry`). Creates `\Device\vmci` via `WdmlibIoCreateDeviceSecure` (device type `0x22`, characteristics `0x100`, SDDL pointer `DAT_14000e608`) + `\DosDevices\vmci`. Note: device name collides with VMCI's `\Device\vmci` naming; this driver's device is a VSOCK front end.
 - Dispatch: `MJ_CREATE` = `FUN_140002840`; `MJ_CLOSE` = `FUN_1400027c0`; `MJ_CLEANUP` = `FUN_140002770`; `MJ_DEVICE_CONTROL` = `FUN_140002c40`; `MJ_READ` and `MJ_WRITE` = `FUN_140002f30`; `DriverUnload` = `FUN_1400032d0`.
-- Import surface for memory-write APIs: `ProbeForRead` and `ProbeForWrite` (only from `FUN_1400048bc`). **No** `MmMapIoSpace`, `MmMapLockedPages`, `MmProbeAndLockPages`, `IoAllocateMdl`, `ZwMapViewOfSection`, `MmCopyMemory` in the import table. Registry and security APIs present (`ZwCreateKey`, `ZwSetValueKey`, `ZwSetSecurityObject`) — not memory-write.
+- Import surface for memory-write APIs: `ProbeForRead` and `ProbeForWrite` (only from `FUN_1400048bc`). **No** `MmMapIoSpace`, `MmMapLockedPages`, `MmProbeAndLockPages`, `IoAllocateMdl`, `ZwMapViewOfSection`, `MmCopyMemory` in the import table. Registry and security APIs present (`ZwCreateKey`, `ZwSetValueKey`, `ZwSetSecurityObject`) - not memory-write.
 
 ## Memory-write analysis
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| User-pointer copy helper | `FUN_1400048bc(struct, src, len, flag)`: destination = `*(struct+0x10)` (stored user pointer), bound `len <= *(struct+4)`, `ProbeForWrite` when `flag == 1`, copy via `FUN_14000d2c0` | `ev_e641b0b4…` |
-| Helper callers | Five: `0x140004fec`, `0x140005d70`, `0x140006c00`, `0x140007144`, `0x140007f00` | `ev_0ed85504…` |
-| Property get/set writer (IOCTL `0x81032074`) | `FUN_140005d70`: writes a **fixed 4-byte** value (driver state or zero) via `FUN_1400048bc`; requires `*(param_4+4) == 4`; probe applies for user callers | `ev_d2f0346a…` |
-| Kernel-only IOCTL branch (`0x810320c0`) | Requires `RequestorMode == KernelMode`; writes a fixed `0xB4`-byte block (function-pointer table) into SystemBuffer; length gate `0x97 < outLen-0x1c`. Information disclosure of driver code addresses to kernel callers; not a write primitive | `ev_72249e2f…` |
-| Common IOCTL dispatch | `FUN_140003738`: buffered; requires `InLen == OutLen`; user-mode branch covers `0x81032080`–`0x810320c7` with per-code length checks | `ev_72249e2f…` |
-| READ/WRITE dispatch | `FUN_140003ea8` passes raw `IRP+0x70` (UserBuffer) into a local context structure and calls `FUN_140006050` / `FUN_140006080`. Both are **indirect call stubs** through the context vtable (`+0x130` / `+0x140`); targets are **not resolved** statically | `ev_9d245029…`, `ev_df4b8af0…`, `ev_127876749…` |
-| Kernel address write from user input | None found in decompiled paths | — |
+| User-pointer copy helper | `FUN_1400048bc(struct, src, len, flag)`: destination = `*(struct+0x10)` (stored user pointer), bound `len <= *(struct+4)`, `ProbeForWrite` when `flag == 1`, copy via `FUN_14000d2c0` | `ev_e641b0b4...` |
+| Helper callers | Five: `0x140004fec`, `0x140005d70`, `0x140006c00`, `0x140007144`, `0x140007f00` | `ev_0ed85504...` |
+| Property get/set writer (IOCTL `0x81032074`) | `FUN_140005d70`: writes a **fixed 4-byte** value (driver state or zero) via `FUN_1400048bc`; requires `*(param_4+4) == 4`; probe applies for user callers | `ev_d2f0346a...` |
+| Kernel-only IOCTL branch (`0x810320c0`) | Requires `RequestorMode == KernelMode`; writes a fixed `0xB4`-byte block (function-pointer table) into SystemBuffer; length gate `0x97 < outLen-0x1c`. Information disclosure of driver code addresses to kernel callers; not a write primitive | `ev_72249e2f...` |
+| Common IOCTL dispatch | `FUN_140003738`: buffered; requires `InLen == OutLen`; user-mode branch covers `0x81032080`-`0x810320c7` with per-code length checks | `ev_72249e2f...` |
+| READ/WRITE dispatch | `FUN_140003ea8` passes raw `IRP+0x70` (UserBuffer) into a local context structure and calls `FUN_140006050` / `FUN_140006080`. Both are **indirect call stubs** through the context vtable (`+0x130` / `+0x140`); targets are **not resolved** statically | `ev_9d245029...`, `ev_df4b8af0...`, `ev_127876749...` |
+| Kernel address write from user input | None found in decompiled paths | - |
 | MDL / physical map / section map | Absent from import table | import sweep |
 | Unchecked copy lengths (decompiled) | None: `FUN_1400048bc` bounded by `*(struct+4)`; `FUN_140005d70` fixed 4-byte copies; `FUN_140003738` fixed-size writes after length gates | the decompiles above |
 

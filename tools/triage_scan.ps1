@@ -287,7 +287,7 @@ foreach ($f in $Files) {
       if ($e.Va -ne 0 -and $targets.Contains([uint64]$e.Va)) { $e.Code = 1 }
     }
 
-    # data-section pointer tables — also record where the pointer lives, so a
+    # data-section pointer tables - also record where the pointer lives, so a
     # UNICODE_STRING descriptor that is itself lea'd counts as a live reference
     $dataSecs = @($pe.Sections | Where-Object { ($_.Flags -band 0x20000000) -eq 0 })
     foreach ($e in $sddl) {

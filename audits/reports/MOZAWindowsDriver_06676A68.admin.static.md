@@ -14,7 +14,7 @@
 | Signature | Authenticode Valid; signer CN=Microsoft Windows Hardware Compatibility Publisher |
 | Reach | R3 (devnode / hardware: loaded by PnP for a MOZA device; device-interface notification in dump 1064) |
 | Setup required | hardware |
-| Write quality | W2 (in-object constrained write, 256 fixed slots in the device context, arbitrary byte value); secondary W3 8-byte pool overflow (see §5) |
+| Write quality | W2 (in-object constrained write, 256 fixed slots in the device context, arbitrary byte value); secondary W3 8-byte pool overflow (see section 5) |
 | Severity | MW3 (`reach=R3 setup=hardware write=W2 load=signed`) |
 | HW-only | no (the rated primitive is a kernel-pool write into the device context; no HW-ONLY writes) |
 
@@ -24,7 +24,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 
 - PE32+ x64, KMDF driver (WDFLDR imports). WDF calls go through `DAT_1400066f0` and the dispatch thunk `PTR__guard_dispatch_icall_140005098`; WDF function indices are not named in the dump.
 - ntoskrnl imports include `IoRegisterPlugPlayNotification` and `IoUnregisterPlugPlayNotification`, `DbgPrint`, `RtlCopyUnicodeString`, `wcsstr`. No MmMapIoSpace, MmMapLockedPagesSpecifyCache, MmCopyMemory, ZwMapViewOfSection, MmGetPhysicalAddress, MmGetSystemRoutineAddress, RtlCopyMemory or ProbeForWrite in the imports.
-- Entry: `entry @ 140003A90` (dump 1796) → DriverEntry `FUN_140003ABC` (dump 1807-1845); DriverUnload slot (+0x68) = `FUN_140003C20` (dump 1845).
+- Entry: `entry @ 140003A90` (dump 1796) -> DriverEntry `FUN_140003ABC` (dump 1807-1845); DriverUnload slot (+0x68) = `FUN_140003C20` (dump 1845).
 
 ## 2 Entry / device / interface / effective DACL
 
@@ -38,14 +38,14 @@ Dispatch: `FUN_140002800` (dump 1102-1381) is EVT_WDF_IO_QUEUE_IO_DEVICE_CONTROL
 
 | IOCTL | Method | Access | Input | Output | Kernel action (dump lines) |
 |---|---|---|---|---|---|
-| 0x22200C | BUFFERED | ANY | InputBufferLength != 0 (1143) | OutputBufferLength exactly 0x22 or 0x2A (1140-1143) | Selector = input[0] (1155). `FUN_1400017FC(selector, ctx, output)` (dump 393-436): selector 0/1/2 copies a 0x2A-byte record from device-context regions to the output (402-434); other selectors return 0xC000000D (423). Completed with Information = OutputBufferLength (1158-1160, 1378). **See §5: 8-byte overflow when OutputBufferLength = 0x22.** |
-| 0xB0191 | IN_DIRECT | READ\|WRITE | input >= 0x12 (1169) | none | If input[0] == 0x11: `FUN_1400015DC` (309-331) writes input[1] into the first free slot flag (see §5 item 4). Otherwise the request is forwarded (1179-1188). |
+| 0x22200C | BUFFERED | ANY | InputBufferLength != 0 (1143) | OutputBufferLength exactly 0x22 or 0x2A (1140-1143) | Selector = input[0] (1155). `FUN_1400017FC(selector, ctx, output)` (dump 393-436): selector 0/1/2 copies a 0x2A-byte record from device-context regions to the output (402-434); other selectors return 0xC000000D (423). Completed with Information = OutputBufferLength (1158-1160, 1378). **See section 5: 8-byte overflow when OutputBufferLength = 0x22.** |
+| 0xB0191 | IN_DIRECT | READ\|WRITE | input >= 0x12 (1169) | none | If input[0] == 0x11: `FUN_1400015DC` (309-331) writes input[1] into the first free slot flag (see section 5 item 4). Otherwise the request is forwarded (1179-1188). |
 | 0xB0192 | OUT_DIRECT | READ\|WRITE | none | OutputBufferLength (1193-1194) | `*ctx_request = output[0]` (1196-1198), then the request is forwarded with completion `FUN_140003630` (1270). |
 | 0x222000 | BUFFERED | ANY | input >= 1 (1203) | none | Sets ctx+0x48 = (input[0] == 1) (1205-1209). Information 1 (1299-1300). |
 | 0x222004 | BUFFERED | ANY | input >= 1 (1240) | none | Sets ctx+0x47 = (input[0] == 1); if ctx+0x10 != 0, calls `FUN_1400024D0` and a WDF call on ctx+0x5649 (1244-1257). Information 1. |
 | 0x222008 | BUFFERED | ANY | OutputBufferLength >= 4 (1215, buffer retrieved with size 4, 1221-1222) | 4 | Writes version bytes {01 00 02 06} (1224-1228), Information 4 (1372-1374). |
 | 0x222010 | BUFFERED | ANY | input == 0x10 exactly (1278) | none | Expands the 16-byte input into 128 bit-flags at ctx+0x565A+2k (1283-1298). Information 1. |
-| 0x222014 | BUFFERED | ANY | input != 0 (1304), length = InputBufferLength (1307-1308) | none | For each pair i: ctx[0x5657 + 2*input[2i]] = input[2i+1] (1310-1322). Information 1. **§5 item 1: caller-controlled slot and value.** |
+| 0x222014 | BUFFERED | ANY | input != 0 (1304), length = InputBufferLength (1307-1308) | none | For each pair i: ctx[0x5657 + 2*input[2i]] = input[2i+1] (1310-1322). Information 1. **section 5 item 1: caller-controlled slot and value.** |
 | 0x222018 | BUFFERED | ANY | none | none | ctx+0x5A9F = 0; ctx+0x5A9E = 1 (1333-1334). Status 0. |
 | 0x22201C | BUFFERED | ANY | none | OutputBufferLength == 4 (1350) | Requires ctx+0x5A9E (1347); requires ctx+0x5A9F != 0 (1354); writes ctx[0x5A9F..0x5AA2] to the output (1359-1368); clears ctx+0x5A9F (1369). Information 4. |
 | 0x222020 | BUFFERED | ANY | none | none | ctx+0x5A9E = 0; ctx+0x5AA2 = 0 (1343-1345). Status 0. |
@@ -75,7 +75,7 @@ Conclusion: the one caller-controlled kernel write is the in-object write in ite
 
 ## 7 Verdict
 
-**MW3 — reach=R3 setup=hardware write=W2 load=signed.** The in-object constrained write (0x222014, §5 item 1) is the rated primitive. The 8-byte pool overflow in 0x22200C (§5 item 5) is noted as a separate MW4-class defect. Hardware-gated (MOZA device present); not HW-only.
+**MW3 - reach=R3 setup=hardware write=W2 load=signed.** The in-object constrained write (0x222014, section 5 item 1) is the rated primitive. The 8-byte pool overflow in 0x22200C (section 5 item 5) is noted as a separate MW4-class defect. Hardware-gated (MOZA device present); not HW-only.
 
 ## 8 Limitations
 

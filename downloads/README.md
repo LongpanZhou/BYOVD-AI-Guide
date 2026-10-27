@@ -1,10 +1,10 @@
-# downloads/ — disposable scratch
+# downloads/ - disposable scratch
 
 > [!CAUTION]
 > **AI-written.** This document was written by an AI agent and may contain mistakes. Verify
 > commands, paths, versions, and hashes against your own environment before relying on them.
 
-Installers live here **only during a batch**. Gitignored — only `README.md` + `.gitkeep` are committed.
+Installers live here **only during a batch**. Gitignored - only `README.md` + `.gitkeep` are committed.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ Get-ChildItem . -Force | Where-Object { $_.Name -notin @('README.md','.gitkeep')
 ```
 
 The scripts create `indexes/collections/collected6/` and `downloads/_harvest` on first use;
-`collected6` is just the next batch name — use `collected7`, `collected8`, etc. for later batches.
+`collected6` is just the next batch name - use `collected7`, `collected8`, etc. for later batches.
 
 > [!TIP]
 > On a default Windows install, PowerShell may block local scripts. If you see

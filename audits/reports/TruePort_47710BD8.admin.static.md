@@ -11,7 +11,7 @@
 | Reach | R3 (devnode / hardware: a Perle port device must be enumerated; the control device is created in the AddDevice path) |
 | Setup required | hardware |
 | Write quality | W0 for caller-controlled writes in the traced IOCTL switch; provisional (see Limitations) |
-| Severity | NO-MEMORY-WRITE (PROVISIONAL: the untraced paths in §8 may change this) |
+| Severity | NO-MEMORY-WRITE (PROVISIONAL: the untraced paths in section 8 may change this) |
 | HW-only | no |
 
 Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000.
@@ -46,7 +46,7 @@ Common helper names: `FUN_140007B20` queues the IRP behind a wait routine (cance
 | 0x1B001C | 0x14 (653) | - | Copies 5 DWORDs from input into device fields +0x500..+0x510 (656-660). Info 0. |
 | 0x1B0020 | output >= 0x14 (671) | 0x14 | Copies device fields +0x500..+0x510 (20 bytes) to output (675-678). Info 0x14. |
 | 0x1B0024 | - | - | `FUN_140007B20(FUN_140002840 or FUN_140002760)`, then `FUN_140006970` when dev+0xD58 > 1 (715-744). |
-| 0x1B0028 | input >= 8 (699) | - | If input DWORD[0] > dev+0x4C0: `FUN_1400054CC` allocates input DWORD[0] bytes (701) and attaches the buffer at IO stack +0x20 (702); queued with callback `FUN_140004AB0` via `FUN_14000E680` (704-707, 800-801). **Not fully traced: see §8.** Otherwise error (710). |
+| 0x1B0028 | input >= 8 (699) | - | If input DWORD[0] > dev+0x4C0: `FUN_1400054CC` allocates input DWORD[0] bytes (701) and attaches the buffer at IO stack +0x20 (702); queued with callback `FUN_140004AB0` via `FUN_14000E680` (704-707, 800-801). **Not fully traced: see section 8.** Otherwise error (710). |
 | 0x1B002C | - | - | Completes with the default path (753). |
 | 0x1B0030 / 0x1B0034 | - | - | Checks flags +0x4EC and queues via `FUN_140007B20(FUN_140002880 or FUN_140002780)` (754-762). |
 | 0x1B0038 | dev+0xD58 >= 2 (765) | - | `FUN_140006970` with flag +0xB90 |= 0x2000 (767-770). |
@@ -60,7 +60,7 @@ Common helper names: `FUN_140007B20` queues the IRP behind a wait routine (cance
 | 0x1B0058 | output >= 6 (903) | 6 | Writes dev+0x4F9 (DWORD) and dev+0x4FD (WORD) to output (906-908). Info 6. |
 | 0x1B005C | input >= 6 (914) | - | Conditional queue `FUN_140007B20(FUN_1400026F0)` and sets dev+0x2CC/+0x2D4 from device bytes (918-924). Error if the state check fails (927). |
 | 0x1B0060 | output >= 0x10 (933) | 0x10 | Copies 16 bytes (dev+0x4E8, +0x4F0) to output (936-939). Info 0x10. |
-| 0x1B0064 | input >= 0x10 (945) | - | Validates four fields ≤ dev+0x4C0 and flags (946-949); queues `FUN_140007B20(FUN_140002860)` and sets dev+0x2D0 / +0x2D8 (953-961). |
+| 0x1B0064 | input >= 0x10 (945) | - | Validates four fields <= dev+0x4C0 and flags (946-949); queues `FUN_140007B20(FUN_140002860)` and sets dev+0x2D0 / +0x2D8 (953-961). |
 | 0x1B0068 | output >= 4 (968) | 4 | `FUN_1400053DC` query; writes DWORD from dev+0xBC8 or dev+0xBC8 & 0xF0 to output (970-979). Info 4. |
 | 0x1B006C | output >= 0x14 (983) | 0x14 | Queues `FUN_140007B20(FUN_140001530)` under the cancel lock (985-989). Info 0x14. |
 | 0x1B0070 | input >= 0xC (837), input DWORD[1] > 0 (838) | - | Queues `FUN_14000F2F0` via `FUN_14000E680` (839-842). |
@@ -72,38 +72,38 @@ Common helper names: `FUN_140007B20` queues the IRP behind a wait routine (cance
 | 0x1B0090 | - | - | Queues `FUN_140001510` (1042-1046). |
 | 0x1B0094 | output >= 4 (1049) | 4 | Writes a 2-bit status DWORD to output (1051-1053). Info 4. |
 | 0x1B0098 | input >= 4 (1058) | 4 | Reads input DWORD (1061), queues `FUN_140002840` (1059). Info 4. |
-| 0x222000 | - | - | Handled in the second device path (`FUN_140007770`, dump 5771). Not traced (§8). |
+| 0x222000 | - | - | Handled in the second device path (`FUN_140007770`, dump 5771). Not traced (section 8). |
 | other | - | - | Invalid request (0xC000000D). |
 
 ## 4 Access-control audit
 
-- No `SeAccessCheck`, `SeSinglePrivilegeCheck` or caller-identity check. The gates are device state (dev+0xD58 port count, dev+0x4C0 queue size, flag bytes) and the length checks in §3.
+- No `SeAccessCheck`, `SeSinglePrivilegeCheck` or caller-identity check. The gates are device state (dev+0xD58 port count, dev+0x4C0 queue size, flag bytes) and the length checks in section 3.
 - Any principal that can open the device object (IoCreateDevice default security, or the interface) can issue the 0x1B00xx codes.
 
 ## 5 Memory-write trace
 
-1. **IOCTL-written output buffers:** 0x1B0020, 0x1B0040, 0x1B0050, 0x1B0054, 0x1B0058, 0x1B0060, 0x1B0068, 0x1B0074, 0x1B0078, 0x1B0080, 0x1B0094 write fixed-size fields (3 to 0x40 bytes) into the SystemBuffer after the output-length check in §3. Destinations are fixed; values are device state. Bounded.
+1. **IOCTL-written output buffers:** 0x1B0020, 0x1B0040, 0x1B0050, 0x1B0054, 0x1B0058, 0x1B0060, 0x1B0068, 0x1B0074, 0x1B0078, 0x1B0080, 0x1B0094 write fixed-size fields (3 to 0x40 bytes) into the SystemBuffer after the output-length check in section 3. Destinations are fixed; values are device state. Bounded.
 2. **Device-field writes from input:** 0x1B0004, 0x1B000C, 0x1B0018, 0x1B001C, 0x1B0064, 0x1B005C write fixed device fields from input DWORDs or bytes at fixed offsets (dump 511-512, 534-609, 631, 656-660, 946-961, 918-924). No index comes from the caller.
-3. **Pool allocation with caller size (0x1B0028):** `FUN_1400054CC` allocates `SystemBuffer[0]` bytes when it exceeds dev+0x4C0 (dump 699-702). The allocation is attached to the IO stack location. Its later use is in `FUN_140004AB0` (queue callback) and the queue machinery, which were not traced for copy lengths (§8).
+3. **Pool allocation with caller size (0x1B0028):** `FUN_1400054CC` allocates `SystemBuffer[0]` bytes when it exceeds dev+0x4C0 (dump 699-702). The allocation is attached to the IO stack location. Its later use is in `FUN_140004AB0` (queue callback) and the queue machinery, which were not traced for copy lengths (section 8).
 4. **Ring-buffer writes on the write IRP:** `FUN_1400086E0` copies user data into the device ring (`FUN_140010100` at dump 6826, 6874, 6896) with length limited to the free space `(dev+0x4B0 - dev+0x4A8) + 1` and the request length (6810-6833). Bounded by the ring; not an IOCTL.
 5. **Serial receive state machine:** `FUN_140003614` (dump 1946-3585) writes received characters into the ring from hardware interrupts (dump 1979-1984). Not caller-controlled.
-6. **0x222000 (second device path):** not traced (§8). The second device uses `FUN_140007B84` (dump 5906-6268) whose writes are bounded by the output-length check (5941, 5984) and the 0x31 table cap (5937-5939, 5959-5961); this is the 0x222000 candidate path and is bounded for the paths read.
+6. **0x222000 (second device path):** not traced (section 8). The second device uses `FUN_140007B84` (dump 5906-6268) whose writes are bounded by the output-length check (5941, 5984) and the 0x31 table cap (5937-5939, 5959-5961); this is the 0x222000 candidate path and is bounded for the paths read.
 
 No write in the traced IOCTL switch uses a caller-supplied destination or unbounded length. No MmMapIoSpace, MmMapLockedPagesSpecifyCache, MmCopyMemory, ZwMapViewOfSection or MmGetPhysicalAddress import exists.
 
 ## 6 Most dangerous exposed capability
 
-The caller-sized allocation in 0x1B0028 (up to the pool limit, §5 item 3) is the only input-controlled allocation found. It is a denial-of-service or resource-pressure path until its use is traced. No write primitive is identified in the traced code.
+The caller-sized allocation in 0x1B0028 (up to the pool limit, section 5 item 3) is the only input-controlled allocation found. It is a denial-of-service or resource-pressure path until its use is traced. No write primitive is identified in the traced code.
 
 ## 7 Verdict
 
-**NO-MEMORY-WRITE (PROVISIONAL).** Reach R3 (devnode/hardware); Setup: hardware; Write quality W0 in the traced code. The verdict is provisional because the paths in §8 are not traced. HW-only: no.
+**NO-MEMORY-WRITE (PROVISIONAL).** Reach R3 (devnode/hardware); Setup: hardware; Write quality W0 in the traced code. The verdict is provisional because the paths in section 8 are not traced. HW-only: no.
 
 ## 8 Limitations (paths not traced; reason: scale)
 
 - **0x1B0028 allocation (dump 699-711, 800-801):** the allocation buffer and its later use in `FUN_140004AB0` (dump 2947-3931), `FUN_14000E680`, `FUN_14000E300` (dump 10517) and the queue callbacks are not fully traced. A copy length taken from the buffer's own size, or a store past it, is not ruled out.
-- **Queue and wait helpers not individually read:** `FUN_140007B20`, `FUN_140006970`, `FUN_14000539C`, `FUN_14000131C`, `FUN_140002600/…/2880`, `FUN_1400026F0`, `FUN_140002860`, `FUN_14000F2F0`, `FUN_140001510`, `FUN_1400016C0`, `FUN_140001624`, `FUN_140004070`, `FUN_14000EAF0`.
-- **Second device dispatch (FUN_140007090 → FUN_140007500 → FUN_140007B84/FUN_14000798C):** the 0x222000 handler's routing was located but the caller of FUN_140007500 (IOCTL code) and FUN_14000798C (dump 5797-5902) were not traced.
+- **Queue and wait helpers not individually read:** `FUN_140007B20`, `FUN_140006970`, `FUN_14000539C`, `FUN_14000131C`, `FUN_140002600/.../2880`, `FUN_1400026F0`, `FUN_140002860`, `FUN_14000F2F0`, `FUN_140001510`, `FUN_1400016C0`, `FUN_140001624`, `FUN_140004070`, `FUN_14000EAF0`.
+- **Second device dispatch (FUN_140007090 -> FUN_140007500 -> FUN_140007B84/FUN_14000798C):** the 0x222000 handler's routing was located but the caller of FUN_140007500 (IOCTL code) and FUN_14000798C (dump 5797-5902) were not traced.
 - **IRP_MJ_READ / WRITE copy helpers** (`FUN_140003560`, `FUN_140003F58`, `FUN_140003614` tail) were read only at call sites.
 - **Device-interface GUID** `DAT_1400114F8` not decoded.
 - No REA session used. No execution, no driver load, no registry writes.

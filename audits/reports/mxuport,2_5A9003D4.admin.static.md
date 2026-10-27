@@ -21,11 +21,11 @@
 
 ## 2 Entry / device / interface / effective DACL
 
-- As in the sibling: `IoCreateDevice(…, 0x968, name, 0x1B)` (dump 219), `IoCreateSymbolicLink` (dump 268); effective DACL default.
+- As in the sibling: `IoCreateDevice(..., 0x968, name, 0x1B)` (dump 219), `IoCreateSymbolicLink` (dump 268); effective DACL default.
 
 ## 3 Dispatch and IOCTL table
 
-- As in the sibling §3: serial IOCTL switch `FUN_140001CB0` (dump 579-1720). Output-handling cases read at dump 776-860: 0x1B0078, 0x1B0050, 0x1B0054, 0x1B0058, 0x1B005C, 0x1B0060, 0x1B0064, 0x1B0068, 0x1B006C, each with the same gates and fixed offsets (see the sibling table). Queue cases (0x1B0008-0x1B0044, 0x1B0080-0x1B009C) not read.
+- As in the sibling section 3: serial IOCTL switch `FUN_140001CB0` (dump 579-1720). Output-handling cases read at dump 776-860: 0x1B0078, 0x1B0050, 0x1B0054, 0x1B0058, 0x1B005C, 0x1B0060, 0x1B0064, 0x1B0068, 0x1B006C, each with the same gates and fixed offsets (see the sibling table). Queue cases (0x1B0008-0x1B0044, 0x1B0080-0x1B009C) not read.
 
 ## 4 Access-control audit
 
@@ -33,7 +33,7 @@
 
 ## 5 Memory-write trace
 
-- As in the sibling §5: fixed-offset SystemBuffer writes gated by the output length; fixed-size input-to-state copies; no caller-chosen destination or index in the read cases.
+- As in the sibling section 5: fixed-offset SystemBuffer writes gated by the output length; fixed-size input-to-state copies; no caller-chosen destination or index in the read cases.
 
 ## 6 Most dangerous exposed capability
 
@@ -45,5 +45,5 @@
 
 ## 8 Limitations
 
-- As in `mxuport,1_5B845038` §8: the queue cases and helper routines were not read.
+- As in `mxuport,1_5B845038` section 8: the queue cases and helper routines were not read.
 - No REA session used. No execution, no driver load, no registry writes.

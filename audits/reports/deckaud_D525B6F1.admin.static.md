@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=Microsoft Windows Hardware Compatibility Publisher |
 | Reach | R3 (devnode / hardware: a DeckLink card must be present for the adapter to start) |
 | Setup required | hardware |
-| Write quality | W0 (provisional: no caller-controlled kernel write found in the traced code; see §8) |
+| Write quality | W0 (provisional: no caller-controlled kernel write found in the traced code; see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -44,12 +44,12 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 
 ## 4 Access-control audit
 
-- No privilege or caller-identity check in the driver. Access is governed by PortCls, KS and default device security (§2).
+- No privilege or caller-identity check in the driver. Access is governed by PortCls, KS and default device security (section 2).
 
 ## 5 Memory-write trace
 
 - No mapping API and no memcpy/memmove imports, so no mapped or bulk copy into kernel memory is visible.
-- The outbound IOCTLs (§3) use constant buffer sizes. Driver-state writes are fixed-offset.
+- The outbound IOCTLs (section 3) use constant buffer sizes. Driver-state writes are fixed-offset.
 - `_vsnwprintf` (dump 189, 529-536) formats strings into a caller-sized destination (`_Count`); the destination and count are driver-internal.
 
 ## 6 Most dangerous exposed capability

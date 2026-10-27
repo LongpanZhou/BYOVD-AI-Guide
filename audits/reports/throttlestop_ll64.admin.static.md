@@ -15,7 +15,7 @@
 | Method | Static only. Ghidra 12.1.4 headless decompile dump (`scratchpad\ghidra_dump\out\throttlestop_ll64.txt`, 2,761 lines, complete). Read-only PE parsing for the SDDL. Nothing loaded, installed, or executed. |
 | Reach | **local administrator** (device DACL SYSTEM + Administrators only). |
 | Setup required | **none** (driver load); the binary is unsigned, so driver-signature enforcement must be disabled. Load status is tracked separately as `load=unsigned`. |
-| Verdict | **BLOCKED** (unsigned; loading needs signature enforcement off). Static primitive: **MW3** — reach=R2 setup=none write=W3P load=unsigned. Unvalidated physical read/write mapped into user mode; no arbitrary kernel VA and no kernel-address leak. MSR, port and PCI paths are HW-ONLY. |
+| Verdict | **BLOCKED** (unsigned; loading needs signature enforcement off). Static primitive: **MW3** - reach=R2 setup=none write=W3P load=unsigned. Unvalidated physical read/write mapped into user mode; no arbitrary kernel VA and no kernel-address leak. MSR, port and PCI paths are HW-ONLY. |
 | Write quality | W3P |
 | Severity | BLOCKED (static MW3/W3P) |
 
@@ -23,7 +23,7 @@
 
 ## 1. Entry surface (verified)
 
-- `entry` (`0x140001730`): `FUN_1400016A0` builds `\Device\<name>`, then `WdmlibIoCreateDeviceSecure(DriverObject, 0x2818, name, 0x22, 0x100, 0, &DAT_1400032B0, 0, &DeviceObject)` (dump lines 577–585). The `0x100` flag is `FILE_DEVICE_SECURE_OPEN`.
+- `entry` (`0x140001730`): `FUN_1400016A0` builds `\Device\<name>`, then `WdmlibIoCreateDeviceSecure(DriverObject, 0x2818, name, 0x22, 0x100, 0, &DAT_1400032B0, 0, &DeviceObject)` (dump lines 577-585). The `0x100` flag is `FILE_DEVICE_SECURE_OPEN`.
 - The SDDL argument is a `UNICODE_STRING` at `0x1400032B0` (Length 54, MaxLength 56). Its buffer (`0x140003278`) is `D:P(A;;GA;;;SY)(A;;GA;;;BA)`. **DACL: SYSTEM and Administrators, generic all. Standard users cannot open the device.** Read from the image; the decompile hides the third argument.
 - Symbolic link `\??\<name>` created with `IoCreateSymbolicLink` (line 595).
 - IRP_MJ_DEVICE_CONTROL dispatcher: `FUN_140001EF0` (line 841), switching on the IOCTL code at IO_STACK_LOCATION `+0x18`.
@@ -40,19 +40,19 @@
 
 - Same mapping step and the same missing range check. The mapped value is returned to the caller.
 
-### 2.3 Physical-range map returned as kernel VA (IOCTL `0x8000645C`, line 1040 → `FUN_140001D30`, line 753)
+### 2.3 Physical-range map returned as kernel VA (IOCTL `0x8000645C`, line 1040 -> `FUN_140001D30`, line 753)
 
 - Input 12 bytes: physical base (8) and length (4). Output 4 or 8 bytes.
-- `MmMapIoSpace` → `IoAllocateMdl` → `MmBuildMdlForNonPagedPool` → `MmMapLockedPagesSpecifyCache(mdl, KernelMode, …)`. The **kernel VA** is returned to the caller (kernel address disclosure), and the mapping is recorded in a table keyed by process ID.
+- `MmMapIoSpace` -> `IoAllocateMdl` -> `MmBuildMdlForNonPagedPool` -> `MmMapLockedPagesSpecifyCache(mdl, KernelMode, ...)`. The **kernel VA** is returned to the caller (kernel address disclosure), and the mapping is recorded in a table keyed by process ID.
 - No range check on the physical base. Unmapped by IOCTL `0x80006460` (line 1044), which checks the caller's process ID against the record.
 
-### 2.4 MSR write, partial denylist (IOCTL `0x8000644C`, line 1036 → `FUN_140001C10`, line 699)
+### 2.4 MSR write, partial denylist (IOCTL `0x8000644C`, line 1036 -> `FUN_140001C10`, line 699)
 
 - `wrmsr(index, value)`, both from input.
-- Denied: `0x174–0x176` and `0xC0000080–0xC0000082` only (line 705–711).
+- Denied: `0x174-0x176` and `0xC0000080-0xC0000082` only (line 705-711).
 - **Writable:** `IA32_CSTAR` `0xC0000083`, `IA32_FMASK` `0xC0000084`, `IA32_GS_BASE` `0xC0000101`, `IA32_KERNEL_GS_BASE` `0xC0000102`, MTRR and PAT ranges.
 
-### 2.5 MSR read, no gate (IOCTL `0x80006448`, line 1032 → `FUN_140001CB0`, line 728)
+### 2.5 MSR read, no gate (IOCTL `0x80006448`, line 1032 -> `FUN_140001CB0`, line 728)
 
 - `rdmsr(index)` with no denylist. Read-only.
 
@@ -76,14 +76,14 @@
 | `0x8000649C` | physical write, 1/2/4/8 bytes | DACL only | **unconstrained physical write** | local administrator |
 | `0x80006498` | physical read, 1/2/4/8 bytes | DACL only | **unconstrained physical read** | local administrator |
 | `0x8000645C` / `0x80006460` | map / unmap physical range | DACL; process-ID check on unmap | kernel VA of arbitrary physical range (disclosed); mapping table | local administrator |
-| `0x8000644C` | `wrmsr` | denylist (§2.4) | MSR write; GS base and KERNEL_GS base writable | local administrator |
+| `0x8000644C` | `wrmsr` | denylist (section 2.4) | MSR write; GS base and KERNEL_GS base writable | local administrator |
 | `0x80006448` | `rdmsr` | none | MSR read | local administrator |
 | `0x80006434` | port `in` / `out` | none | arbitrary port I/O | local administrator |
 | `0x800064A0` / `0x800064A4` | PCI config read / write | none | arbitrary bus/slot/function config write | local administrator |
 
 ## 4. Verdict and scale note
 
-**BLOCKED; static primitive MW2** (reach=R2 setup=other write=W1 load=unsigned). The write primitive is unconstrained in address and value: any physical address, any value, sizes 1–8 bytes, through a device the administrator can open directly.
+**BLOCKED; static primitive MW2** (reach=R2 setup=other write=W1 load=unsigned). The write primitive is unconstrained in address and value: any physical address, any value, sizes 1-8 bytes, through a device the administrator can open directly.
 
 Caveats the reader needs:
 

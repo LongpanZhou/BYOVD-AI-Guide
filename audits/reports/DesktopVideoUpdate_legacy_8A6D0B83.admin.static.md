@@ -25,7 +25,7 @@
 
 ## 3 Dispatch and IOCTL table
 
-- Same table as `DesktopVideoUpdate_81F65827` §3 (IOCTLs 0x222000 through 0x2220F0, all METHOD_BUFFERED, FILE_ANY_ACCESS, identical length checks and actions). Refer to that report for the per-code rows and dump line numbers, which are identical in this build.
+- Same table as `DesktopVideoUpdate_81F65827` section 3 (IOCTLs 0x222000 through 0x2220F0, all METHOD_BUFFERED, FILE_ANY_ACCESS, identical length checks and actions). Refer to that report for the per-code rows and dump line numbers, which are identical in this build.
 
 ## 4 Access-control audit
 
@@ -33,7 +33,7 @@
 
 ## 5 Memory-write trace
 
-- Same trace as the sibling build (§5 of `DesktopVideoUpdate_81F65827`): SystemBuffer writes at fixed offsets and bounded by IOCTL lengths; URB transfer buffers bounded by in/out lengths; config-table copies sized from device-supplied descriptor lengths (`FUN_140002CE4`, memmove at dump 1663-1668); fixed-offset device-extension and IRP writes. No caller-controlled destination, offset or value reaches kernel memory.
+- Same trace as the sibling build (section 5 of `DesktopVideoUpdate_81F65827`): SystemBuffer writes at fixed offsets and bounded by IOCTL lengths; URB transfer buffers bounded by in/out lengths; config-table copies sized from device-supplied descriptor lengths (`FUN_140002CE4`, memmove at dump 1663-1668); fixed-offset device-extension and IRP writes. No caller-controlled destination, offset or value reaches kernel memory.
 
 ## 6 Most dangerous exposed capability
 

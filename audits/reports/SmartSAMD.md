@@ -23,15 +23,15 @@
 
 | Pattern | Result | Evidence |
 |---|---|---|
-| Kernel mapping, MDL, or probe | None. `Mm` sweep empty, `Probe` sweep empty | `ev_c18d1f62…`, `ev_6c053aa7…` |
-| HwAdapterControl (`FUN_140001010`) | Fixed-offset stores into the Parameters buffer (+4, +6, +8, +0xf). Flag read-modify-write on the device extension. No caller-supplied length is read | `ev_4247f2bf…` |
-| HwStartIo SRB function 2 (`FUN_140022610` to `FUN_140016a2c`) | Top-level bounds check: DataTransferLength ≥ 0x1c and `Length` (+0x18) ≤ DataTransferLength − 0x1c. The claimed payload is bounded by the real buffer size. This check is correct | `ev_afb9fda7…`, `ev_4388436d…` |
-| CSMIALL dispatcher (`FUN_1400170f4`) | ReturnCode stores at fixed +0x14 (inside the 0x1c header, which the caller guarantees). Routes by ControlCode to sub-handlers; gate `FUN_14001bd10(dev, 4, 0, CC)` not reviewed | `ev_424d0187…` |
-| CC3 handler (`FUN_140018744`) | `if (Length < 8)` → ReturnCode 3; otherwise `memset(buf+0x1c, 0, 0x24)`. The store extent reaches +0x40, but the gate only ensures Length ≥ 8, so the claim is 36 bytes. With DataTransferLength = 36 and Length = 8, the top-level check passes and the memset overruns the buffer by **28 bytes** (zero fill) | `ev_f74c286e…` |
-| CC1 handler (`FUN_1400188b0`) | `if (Length < 0x92)` → ReturnCode 3; otherwise driver strings at +0x1c..+0x2b and +0x6d..+0xa8, 8 bytes at +0x9d, 8 bytes at +0xbe, 4 bytes at +0xc6 (extent +0xca). The claim is Length ≥ 0x92 (end 0xae). With DataTransferLength = 174 and Length = 146, the top-level check passes and the stores overrun by **28 bytes** (driver constants and strings) | `ev_c1e438b8…` |
-| CC2 (`FUN_1400185d8`), CSMIARY (`FUN_140017638`), CSMISAS (`FUN_140017a3c`), FIRMWARE (`FUN_14001825c`), inline CSMIPHY | Not reviewed | — |
-| Gate `FUN_14001bd10(dev, 4, 0, CC)` | Not reviewed | — |
-| memset helper `0x14002d940` callers | Not counted; not reviewed | `ev_567d552c…` (`mem`) |
+| Kernel mapping, MDL, or probe | None. `Mm` sweep empty, `Probe` sweep empty | `ev_c18d1f62...`, `ev_6c053aa7...` |
+| HwAdapterControl (`FUN_140001010`) | Fixed-offset stores into the Parameters buffer (+4, +6, +8, +0xf). Flag read-modify-write on the device extension. No caller-supplied length is read | `ev_4247f2bf...` |
+| HwStartIo SRB function 2 (`FUN_140022610` to `FUN_140016a2c`) | Top-level bounds check: DataTransferLength >= 0x1c and `Length` (+0x18) <= DataTransferLength - 0x1c. The claimed payload is bounded by the real buffer size. This check is correct | `ev_afb9fda7...`, `ev_4388436d...` |
+| CSMIALL dispatcher (`FUN_1400170f4`) | ReturnCode stores at fixed +0x14 (inside the 0x1c header, which the caller guarantees). Routes by ControlCode to sub-handlers; gate `FUN_14001bd10(dev, 4, 0, CC)` not reviewed | `ev_424d0187...` |
+| CC3 handler (`FUN_140018744`) | `if (Length < 8)` -> ReturnCode 3; otherwise `memset(buf+0x1c, 0, 0x24)`. The store extent reaches +0x40, but the gate only ensures Length >= 8, so the claim is 36 bytes. With DataTransferLength = 36 and Length = 8, the top-level check passes and the memset overruns the buffer by **28 bytes** (zero fill) | `ev_f74c286e...` |
+| CC1 handler (`FUN_1400188b0`) | `if (Length < 0x92)` -> ReturnCode 3; otherwise driver strings at +0x1c..+0x2b and +0x6d..+0xa8, 8 bytes at +0x9d, 8 bytes at +0xbe, 4 bytes at +0xc6 (extent +0xca). The claim is Length >= 0x92 (end 0xae). With DataTransferLength = 174 and Length = 146, the top-level check passes and the stores overrun by **28 bytes** (driver constants and strings) | `ev_c1e438b8...` |
+| CC2 (`FUN_1400185d8`), CSMIARY (`FUN_140017638`), CSMISAS (`FUN_140017a3c`), FIRMWARE (`FUN_14001825c`), inline CSMIPHY | Not reviewed | - |
+| Gate `FUN_14001bd10(dev, 4, 0, CC)` | Not reviewed | - |
+| memset helper `0x14002d940` callers | Not counted; not reviewed | `ev_567d552c...` (`mem`) |
 
 ## Verdict rationale
 
@@ -44,7 +44,7 @@ Drop to **NO-WRITE** if StorPort enforces an IOCTL_SCSI_MINIPORT buffer of at le
 ## Open items
 
 1. Review CC2 `FUN_1400185d8`, CSMIARY `FUN_140017638`, CSMISAS `FUN_140017a3c`, FIRMWARE `FUN_14001825c`, and the inline CSMIPHY block for the same store-beyond-claim pattern.
-2. Gate `FUN_14001bd10` for ControlCodes 1–4, and its device-level input.
+2. Gate `FUN_14001bd10` for ControlCodes 1-4, and its device-level input.
 3. Whether storport.sys enforces a minimum IOCTL_SCSI_MINIPORT buffer (drop condition), and whether DataTransferLength equals the IOCTL buffer size.
 4. The second `StorPortInitialize` reference `0x14002f098` (not in a recovered procedure).
 5. Not reviewed: HwBuildIo `FUN_1400070a0`, HwInitialize `FUN_1400136d0`, HwFindAdapter `FUN_140010790`, HwInterrupt `FUN_14001bfd0`, HwResetBus `FUN_140026b30`, HwTracingEnabled `FUN_140021f10`, and the callers of the memset helper `0x14002d940`.
@@ -71,8 +71,8 @@ Run only in the VM, by the orchestrator. Nothing here is to be run on the host.
 - `ev_22569f9128c08554b8090dd50804d2a994b010e0b1261ed86cc154709aadf0a4` (`(A;`, empty)
 - `ev_f807dba6f8f0336fb3d6325ff6792ba1c366578fd41ecd0a2189fed36d69cd6d` (`\Device\`, empty)
 - `ev_68349e1c46df1d258cc3f3ca623e2bd10c4fbaac7a5c8f717ae2c1fced21b26b` (xrefs of StorPortInitialize: 0x140022051, 0x14002f098)
-- `ev_e1fb4f6387134fa72b74fc99adb6928e396ecc7379c3abc8378df231387f0d28` (0x140022051 → FUN_140021f34)
-- `ev_281c69bbce4d004608cb6ab08833bc8c154524f8ad74676e10069eedcd6cac06` (0x14002f098 → not in a procedure)
+- `ev_e1fb4f6387134fa72b74fc99adb6928e396ecc7379c3abc8378df231387f0d28` (0x140022051 -> FUN_140021f34)
+- `ev_281c69bbce4d004608cb6ab08833bc8c154524f8ad74676e10069eedcd6cac06` (0x14002f098 -> not in a procedure)
 - `ev_49d5c96afe67d8f1d126f11bc5fc2cecbb889f437de142c87af434600471627a` (pseudocode FUN_140021f34, DriverEntry)
 - `ev_4247f2bfa51f07f75c81443396dd4472f6d52b17e6d8e8438654485dce448680` (pseudocode FUN_140001010, HwAdapterControl)
 - `ev_afb9fda7bada159b1147145091ccbc79462feeaf82bc8c69a0c278afdf52a23c` (pseudocode FUN_140022610, HwStartIo; large output, subject verified in the saved file as SmartSAMD)

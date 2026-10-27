@@ -1,20 +1,20 @@
-# Audit: GPU-Z nvflash — x64 variant 2 and x86
+# Audit: GPU-Z nvflash - x64 variant 2 and x86
 
 | Field | Value |
 |---|---|
 | File(s) | `C:\Users\<scrubbed>\Desktop\driver_candidates\drivers\GPUZ_nvflash_x64_variant2_8C2D9847.sys`<br>`C:\Users\<scrubbed>\Desktop\driver_candidates\drivers\GPUZ_nvflash_x86_01BBA8E8.sys` |
 | SHA-256(s) | `8C2D9847B70C3DC1AAC5D9E5330C67DEB86F369DCD3CA85845ADF2A001088DDE` (x64 variant 2, 48,848 bytes)<br>`01BBA8E8D0859F605D72DE7E0C015A2E96DAFCF856B37AD3EA7F8E187BE1B8FB` (x86, 39,104 bytes) |
 | Analysis date | 2026-10-24 |
-| Method | Static-only. Local **Ghidra 12.1.4 headless** decompiler (per-file projects, full-function dump), **llvm-objdump** linear disassembly, and a hand-written PE/import/resource parser. **REA was not used** — the shared REA bridge is at capacity (four concurrent audits); there are no REA evidence IDs in this report and no claim depends on REA. |
-| Reach tier | **R3** — device DACL is R2 (local administrator); the write needs a physical NVIDIA/PLX/LSI PCI function with a mapped BAR0 |
+| Method | Static-only. Local **Ghidra 12.1.4 headless** decompiler (per-file projects, full-function dump), **llvm-objdump** linear disassembly, and a hand-written PE/import/resource parser. **REA was not used** - the shared REA bridge is at capacity (four concurrent audits); there are no REA evidence IDs in this report and no claim depends on REA. |
+| Reach tier | **R3** - device DACL is R2 (local administrator); the write needs a physical NVIDIA/PLX/LSI PCI function with a mapped BAR0 |
 | Setup required | **hardware** (service load + present PCI device) |
-| Write quality | **W2** — constrained OOB kernel-VA write relative to an undisclosed mapping base |
-| Verdict | **MW3** — reach=R3 setup=hardware write=W2 load=signed |
+| Write quality | **W2** - constrained OOB kernel-VA write relative to an undisclosed mapping base |
+| Verdict | **MW3** - reach=R3 setup=hardware write=W2 load=signed |
 
 | File | Bits | Build (UTC) | CFG | Device / SDDL | IOCTLs | Primitive | Reach | Setup | Write | Verdict |
 |---|---|---|---|---|---|---|---|---|---|---|
 | `GPUZ_nvflash_x64_variant2_8C2D9847.sys` | PE32+ AMD64 | 2024-10-15 06:25:11 (`0x670E0AC7`) | yes (`DllChar 0x4160`) | `\Device\NVFLASH`, `D:P(A;;GA;;;SY)(A;;GA;;;BA)` | 9 + 2 unsupported | OOB write past `MmMapIoSpace` BAR, caller 32-bit offset | R2 DACL / R3 hardware | hardware | W2 | **MW3** |
-| `GPUZ_nvflash_x86_01BBA8E8.sys` | PE32 i386 | 2024-10-15 06:25:53 (`0x670E0AF1`) | no (`DllChar 0x540`) | `\Device\NVFLASH`, `D:P(A;;GA;;;SY)(A;;GA;;;BA)` | 9 + 2 unsupported | Same, 32-bit address arithmetic (wraps mod 2³²) | R2 DACL / R3 hardware | hardware | W2 | **MW3** |
+| `GPUZ_nvflash_x86_01BBA8E8.sys` | PE32 i386 | 2024-10-15 06:25:53 (`0x670E0AF1`) | no (`DllChar 0x540`) | `\Device\NVFLASH`, `D:P(A;;GA;;;SY)(A;;GA;;;BA)` | 9 + 2 unsupported | Same, 32-bit address arithmetic (wraps mod 2^3^2) | R2 DACL / R3 hardware | hardware | W2 | **MW3** |
 
 Both files: NVIDIA Flash Driver 1.21.0, linker 14.37, Authenticode **Valid** (`CN=Microsoft Windows Hardware Compatibility Publisher`, Microsoft Third Party Component CA 2014, timestamped, leaf notAfter 2025-01-10), neither hash in `indexes\dedupe\known_bad_hashes.txt`. Static only; neither file was loaded, installed, or executed.
 
@@ -30,9 +30,9 @@ Both files: NVIDIA Flash Driver 1.21.0, linker 14.37, Authenticode **Valid** (`C
 | Size | 48,848 | 39,104 |
 | Image base | `0x140000000` | `0x400000` |
 | `AddressOfEntryPoint` | `0x2C80` | `0x29F0` |
-| Sections | `.text` `0x1000`–`0x3640`, `.rdata` `0x4000`–`0x4E40`, `.data` `0x5000`–`0x52B4`, `.pdata` `0x6000`, `PAGE` `0x7000`–`0x8C4F`, `INIT` `0x9000`–`0x9698`, `.rsrc` `0xA000`, `.reloc` `0xB000` | `.text` `0x1000`–`0x2D00`, `.rdata` `0x3000`–`0x337C`, `.data` `0x4000`–`0x41D0`, `PAGE` `0x5000`–`0x65D8`, `INIT` `0x7000`–`0x75AC`, `.rsrc` `0x8000`, `.reloc` `0x9000` |
+| Sections | `.text` `0x1000`-`0x3640`, `.rdata` `0x4000`-`0x4E40`, `.data` `0x5000`-`0x52B4`, `.pdata` `0x6000`, `PAGE` `0x7000`-`0x8C4F`, `INIT` `0x9000`-`0x9698`, `.rsrc` `0xA000`, `.reloc` `0xB000` | `.text` `0x1000`-`0x2D00`, `.rdata` `0x3000`-`0x337C`, `.data` `0x4000`-`0x41D0`, `PAGE` `0x5000`-`0x65D8`, `INIT` `0x7000`-`0x75AC`, `.rsrc` `0x8000`, `.reloc` `0x9000` |
 | Subsystem / DllCharacteristics | `NATIVE` / `0x4160` (HIGH_ENTROPY_VA, DYNAMIC_BASE, NX, **GUARD_CF**) | `NATIVE` / `0x540` (DYNAMIC_BASE, NX, TERMINAL_SERVER_AWARE) |
-| Version resource | `nvflash.sys` 1.21.0, "NVIDIA Flash Driver, Version 1.21.0", © 2017-2024 | same |
+| Version resource | `nvflash.sys` 1.21.0, "NVIDIA Flash Driver, Version 1.21.0", (C) 2017-2024 | same |
 
 The x64 image is compiled with Control Flow Guard (guard thunks at `0x1400030A0`/`0x1400030E0`; every indirect call to a driver-supplied pointer goes through `__guard_dispatch_icall`). The x86 image has no CFG. CFG is the main code-generation difference between the x64 variant and the baseline (which is not CFG-enabled).
 
@@ -52,7 +52,7 @@ Each file contains exactly **one** `MmMapIoSpace` call and **one** `MmUnmapIoSpa
 |---|---|
 | `0x140005000` (`0x404004`) | `__security_cookie` |
 | `0x140005288` (`0x4041B8`) | resolved `IoCreateDeviceSecure` (fallback `0x140007130` / `0x405076`) |
-| `0x140005280` (`0x4041B0`) | resolved `IoValidateDeviceIoControlAccess` — stored, **never referenced** |
+| `0x140005280` (`0x4041B0`) | resolved `IoValidateDeviceIoControlAccess` - stored, **never referenced** |
 | `0x140005298` (`0x4041C0`) | `LIST_ENTRY` head of mapped-BAR contexts |
 | `0x1400052A8` (`0x4041C8`) | one-byte `'LTVN'` pool sentinel = "driver active" |
 | `0x1400052B0` (`0x4041CC`) | live context count |
@@ -79,8 +79,8 @@ Baseline `drivers\GPUZ_nvflash_x64_79050454.sys` was verified on disk: SHA-256 `
 
 **Two descriptive errors in the baseline report, confirmed against the baseline binary:**
 
-1. §2.3 states the driver enumerates `\Device\Video%u`. The baseline does **not** contain that string or code path; it formats `\Device\NTPNP_PCI%04u` at `0x140001816` and opens PCI PDOs. Both variants do the same.
-2. §3.2 describes `IOCTL 0x81DE002C` as a "GPU locate/match helper (reads config space, compares BDF/vendor, no output write)". In the baseline the case calls `FUN_140002470` (1,862 bytes) — a flash program/erase sequence (config-space capability walk, flash-controller register pokes, status polling up to 3,000 iterations). It writes nothing to the caller buffer, but it is not a locate/match helper. Variant 2's `FUN_1400024F0` (1,929 bytes) is the same routine.
+1. section 2.3 states the driver enumerates `\Device\Video%u`. The baseline does **not** contain that string or code path; it formats `\Device\NTPNP_PCI%04u` at `0x140001816` and opens PCI PDOs. Both variants do the same.
+2. section 3.2 describes `IOCTL 0x81DE002C` as a "GPU locate/match helper (reads config space, compares BDF/vendor, no output write)". In the baseline the case calls `FUN_140002470` (1,862 bytes) - a flash program/erase sequence (config-space capability walk, flash-controller register pokes, status polling up to 3,000 iterations). It writes nothing to the caller buffer, but it is not a locate/match helper. Variant 2's `FUN_1400024F0` (1,929 bytes) is the same routine.
 
 Neither correction changes the baseline's core finding or its MW3 verdict; they are recorded so later work does not inherit the wrong model of the device surface.
 
@@ -96,12 +96,12 @@ x64 `0x140002C80`, x86 `0x4029F0`:
 
 1. `__security_init_cookie` (`0x140009000` / `0x407000`).
 2. Single-load sentinel: if `[0x1400052A8]` is non-NULL, return `0xC0000001`; else `ExAllocatePoolWithTag(0x401, 1, 'LTVN')` (x64 `0x140002CB1`; x86 `0x402A24`).
-3. Device name is assembled on the stack from split string literals (`\DosDevices\NVFL` + `ASH`, `\Device\NVFLASH`; x64 literals at `0x1400035C0`/`0x140003620`, same construction on x86) — `RtlInitUnicodeString` produces `\Device\NVFLASH`.
-4. Device creation at x64 `0x140002D9A` → `FUN_14000708C` → `[0x140005288]`; x86 `0x402AD2` → `_WdmlibIoCreateDeviceSecure@36`. Arguments: `DeviceExtensionSize=0`, `DeviceType=0x81DE`, `DeviceCharacteristics=0`, **`Exclusive=1`**, `DefaultSDDLString` = x64 `0x140004298` / x86 `0x4030D8`, `DeviceClassGuid=NULL`.
+3. Device name is assembled on the stack from split string literals (`\DosDevices\NVFL` + `ASH`, `\Device\NVFLASH`; x64 literals at `0x1400035C0`/`0x140003620`, same construction on x86) - `RtlInitUnicodeString` produces `\Device\NVFLASH`.
+4. Device creation at x64 `0x140002D9A` -> `FUN_14000708C` -> `[0x140005288]`; x86 `0x402AD2` -> `_WdmlibIoCreateDeviceSecure@36`. Arguments: `DeviceExtensionSize=0`, `DeviceType=0x81DE`, `DeviceCharacteristics=0`, **`Exclusive=1`**, `DefaultSDDLString` = x64 `0x140004298` / x86 `0x4030D8`, `DeviceClassGuid=NULL`.
 5. Handlers: unload + `IRP_MJ_CREATE`, `IRP_MJ_CLOSE`, `IRP_MJ_DEVICE_CONTROL` only (x64 `+0x68/0x70/0x80/0xE0`; x86 `+0x34/0x38/0x40/0x70`). No READ, WRITE, INTERNAL_DEVICE_CONTROL, PNP, POWER, or SYSTEM_CONTROL handler.
 6. `\DosDevices\NVFLASH` symlink created; then the BAR-mapping routine runs.
 
-### 3.2 Effective DACL — admin-only, protected
+### 3.2 Effective DACL - admin-only, protected
 
 The SDDL is a real `UNICODE_STRING`, verified byte-for-byte in both files:
 
@@ -134,13 +134,13 @@ The query is sent to `IoGetAttachedDeviceReference(PDO)` after enumerating the P
 
 `FUN_140001BE0` (x86 `FUN_004019F0`):
 
-1. Enumerate `\Device\NTPNP_PCI0000`…`\Device\NTPNP_PCIFFFE` (`0x140001826`, x86 `0x401731`), take the base PDO, enumerate that driver's device objects into a `'LTVN'` array.
+1. Enumerate `\Device\NTPNP_PCI0000`...`\Device\NTPNP_PCIFFFE` (`0x140001826`, x86 `0x401731`), take the base PDO, enumerate that driver's device objects into a `'LTVN'` array.
 2. Query `GUID_PCI_BUS_INTERFACE_STANDARD` on each attached device; read 0x100 bytes of config space (`fn38(ctx, 0, buf, 0, 0x100)`).
 3. Vendor filter: accept `0x10DE` (NVIDIA, any class), `0x10B5` (PLX with subsystem vendor `0x10DE`, class `0x06/0x04`), `0x1000` (LSI with subsystem vendor `0x10DE`, class `0x06/0x04` or `0x01/0x07`).
 4. Allocate a 0x48-byte context (`0x140001DF9`, x86 `0x401BF8`) with fields `+0x08` bus, `+0x0C` device, `+0x10` function, `+0x14` vendor, `+0x18` device ID, `+0x1C` physical BAR0 (qword), `+0x24` map size, `+0x28` mapped VA, `+0x30` interface, `+0x38` `LIST_ENTRY`.
-5. Map size is selected by vendor/class only (`0x140001EBF`–`0x140001F0C`): NVIDIA `0x1000000` (16 MiB), or `0x2000000` if class `0x06`/subclass `0x80`; PLX `0x100000`; LSI `0x4000`. The actual BAR size is **not** read.
+5. Map size is selected by vendor/class only (`0x140001EBF`-`0x140001F0C`): NVIDIA `0x1000000` (16 MiB), or `0x2000000` if class `0x06`/subclass `0x80`; PLX `0x100000`; LSI `0x4000`. The actual BAR size is **not** read.
 6. Enable PCI command bits 1/2 (memory space + bus master) via `SetBusData` (`0x140001F65`).
-7. `MmMapIoSpace(BAR0_phys, map_size, MmNonCached)` at `0x140001FA4` (x86 `0x401E0D`–`0x401E15`), then store VA/size in the context.
+7. `MmMapIoSpace(BAR0_phys, map_size, MmNonCached)` at `0x140001FA4` (x86 `0x401E0D`-`0x401E15`), then store VA/size in the context.
 
 **The physical address never comes from an IOCTL.** It is BAR0 from PCI config space of an enumerated NVIDIA/PLX/LSI device. Only devices with header type 0 or 1 (`(byte&0x7F)`, `0x140001F10`) and a non-zero BAR0 are mapped.
 
@@ -160,13 +160,13 @@ code         = ioStack->Parameters.DeviceIoControl.IoControlCode
 if ((code - 0x81DE0004) > 0x28) -> 0xC00000BB
 ```
 
-Two-level jump table: byte selector at RVA `0x1688` (x86 `0x4015D0`), target RVAs at `0x1660` (x86 `0x4015A8`). All implemented codes are `CTL_CODE(DeviceType=0x81DE, Function=F, Access=0, Method=0)` → **`FILE_ANY_ACCESS` + `METHOD_BUFFERED`**. Every case checks `InputBufferLength == OutputBufferLength == exact size` before touching `Irp->AssociatedIrp.SystemBuffer` (`Irp+0x18` x64, `Irp+0x0C` x86); a size mismatch returns `0xC000000D`.
+Two-level jump table: byte selector at RVA `0x1688` (x86 `0x4015D0`), target RVAs at `0x1660` (x86 `0x4015A8`). All implemented codes are `CTL_CODE(DeviceType=0x81DE, Function=F, Access=0, Method=0)` -> **`FILE_ANY_ACCESS` + `METHOD_BUFFERED`**. Every case checks `InputBufferLength == OutputBufferLength == exact size` before touching `Irp->AssociatedIrp.SystemBuffer` (`Irp+0x18` x64, `Irp+0x0C` x86); a size mismatch returns `0xC000000D`.
 
 | IOCTL | F | In/Out | x64 handler | x86 handler | Kernel action |
 |---|---|---|---|---|---|
-| `0x81DE0004` | 1 | `0x218`/`0x218` | `0x140001117` | `0x4010D3` | BDF match; copy `count` dwords (`buf+0x14`, 1–128) from `mapped_VA + buf[0x10]` into `buf+0x18`. Block BAR read (x86 additionally rejects count 0 and guards `offset+4*count` overflow). |
+| `0x81DE0004` | 1 | `0x218`/`0x218` | `0x140001117` | `0x4010D3` | BDF match; copy `count` dwords (`buf+0x14`, 1-128) from `mapped_VA + buf[0x10]` into `buf+0x18`. Block BAR read (x86 additionally rejects count 0 and guards `offset+4*count` overflow). |
 | `0x81DE0008` | 2 | `0x1C`/`0x1C` | `0x1400011EE` | `0x40119F` | BDF match; read 1/2/4 bytes at `mapped_VA + buf[0x10]` into `buf+0x18`. Scalar BAR read. |
-| `0x81DE000C` | 3 | `0x1C`/`0x1C` | `0x1400012C6` | `0x401258` | BDF match; **write 1/2/4 bytes of `buf+0x18` to `mapped_VA + buf[0x10]`**. Scalar BAR write — the primitive. |
+| `0x81DE000C` | 3 | `0x1C`/`0x1C` | `0x1400012C6` | `0x401258` | BDF match; **write 1/2/4 bytes of `buf+0x18` to `mapped_VA + buf[0x10]`**. Scalar BAR write - the primitive. |
 | `0x81DE0010` | 4 | `0x1C`/`0x1C` | `0x140001398` | `0x401321` | `SetBusData(ctx, 0, buf+0x18, buf[0x10], buf[0x14])`; success iff return == `buf[0x14]`. Length unchecked. |
 | `0x81DE0014` | 5 | `0x1C`/`0x1C` | `0x140001445` | `0x4013B9` | `GetBusData(ctx, 0, buf+0x14, buf[0x10], buf[0x18])`; success iff return == `buf[0x18]`. Length unchecked. |
 | `0x81DE0018` | 6 | any | default `0x140001623` | default `0x40157E` | `STATUS_NOT_SUPPORTED` (`0xC00000BB`). |
@@ -174,7 +174,7 @@ Two-level jump table: byte selector at RVA `0x1688` (x86 `0x4015D0`), target RVA
 | `0x81DE0020` | 8 | `4`/`4` | `0x1400014F3` | `0x401454` | Returns 4-byte version `{00,15,00,01}`. |
 | `0x81DE0024` | 9 | `0x7E0`/`0x7E0` | `0x140001527` | `0x401487` | One 0x24-byte record per context: index, BDF, vendor/device ID, physical BAR, map size. **No entry-count bound.** |
 | `0x81DE0028` | 10 | `4`/`4` | `0x1400015D7` | `0x401529` | Returns live context count. |
-| `0x81DE002C` | 11 | `0x14`/`0x14` | `0x14000160C` → `FUN_1400024F0` | `0x401561` → `FUN_00402250` | Flash routine: config-space reads, flash-controller register writes via `SetBusData`/BAR, status polling. No output write. |
+| `0x81DE002C` | 11 | `0x14`/`0x14` | `0x14000160C` -> `FUN_1400024F0` | `0x401561` -> `FUN_00402250` | Flash routine: config-space reads, flash-controller register writes via `SetBusData`/BAR, status polling. No output write. |
 
 Input layout for BDF-selected codes (`0x1C` bytes): `+0x04` bus, `+0x08` device, `+0x0C` function, `+0x10` offset (u32, zero-extended), `+0x14` width `{1,2,4}` or block count `{1..128}`, `+0x18` value/result.
 
@@ -202,42 +202,42 @@ An administrator can satisfy every gate; a standard user cannot open the device.
 
 ### 6.1 Primary: unchecked-offset write past the mapped BAR (`0x81DE000C`)
 
-x64 path: case `0x1400012C6` → BDF match `0x14000130D`–`0x14000133C` → width dispatch `0x140001349` → store.
+x64 path: case `0x1400012C6` -> BDF match `0x14000130D`-`0x14000133C` -> width dispatch `0x140001349` -> store.
 
-* `0x14000133C` `mov r8, [rdx-0x10]` — `r8` = `ctx+0x28` = **MmMapIoSpace kernel VA** (not caller-controlled, not disclosed).
-* `0x14000135F`/`0x1371`/`0x1385` `mov ecx, [rsi+0x10]` — `ecx` = caller **offset**, a 32-bit load (upper 32 bits zeroed).
+* `0x14000133C` `mov r8, [rdx-0x10]` - `r8` = `ctx+0x28` = **MmMapIoSpace kernel VA** (not caller-controlled, not disclosed).
+* `0x14000135F`/`0x1371`/`0x1385` `mov ecx, [rsi+0x10]` - `ecx` = caller **offset**, a 32-bit load (upper 32 bits zeroed).
 * `0x140001368` `mov [rcx+r8], eax` (dword), `0x14000137B` `mov [rcx+r8], ax` (word), `0x14000138F` `mov [rcx+r8], al` (byte).
 * The context's map size at `ctx+0x24` (`[rdx-0x14]`) is **never loaded in this path**. No `cmp`, no `sub`, no bound.
 
-x86 path: case `0x401258` → `0x4012CB` loads the VA into `edi` (with a two-dword null check), width dispatch `0x4012D9`, stores `0x4012F7` (dword), `0x401308` (word), `0x401317` (byte) as `mov [edi+ecx], …` with `ecx = [esi+0x10]`. No size comparison against `[edx-0x10]` (map size).
+x86 path: case `0x401258` -> `0x4012CB` loads the VA into `edi` (with a two-dword null check), width dispatch `0x4012D9`, stores `0x4012F7` (dword), `0x401308` (word), `0x401317` (byte) as `mov [edi+ecx], ...` with `ecx = [esi+0x10]`. No size comparison against `[edx-0x10]` (map size).
 
 Caller control:
 
 | Input | Control | Bound |
 |---|---|---|
-| Destination base | none (kernel-chosen `MmMapIoSpace` VA) | — |
-| Offset | full 32-bit (`0`–`0xFFFFFFFC`) | **none** |
-| Value | full 8/16/32-bit | — |
+| Destination base | none (kernel-chosen `MmMapIoSpace` VA) | - |
+| Offset | full 32-bit (`0`-`0xFFFFFFFC`) | **none** |
+| Value | full 8/16/32-bit | - |
 | Width | `{1,2,4}` | enforced |
 | Device | BDF of any accepted PCI function | enumerated list |
 
-Impact: offsets `< map_size` are ordinary GPU/device MMIO writes (the product's purpose). Offsets above the mapping produce a **kernel virtual-address write past the `MmMapIoSpace` region** — up to 4 GiB forward on x64; on x86 the 32-bit sum wraps modulo 2³², so the reachable set is the whole 32-bit address space. The base VA is not returned by any IOCTL (§4: the enumeration record returns physical BAR and size only), so the target cannot be aimed at a known object without a separate kernel-VA leak; a wrong guess raises `0x50`/`0x0A`. This is a genuine relative/OOB kernel memory-corruption primitive, not a write-what-where.
+Impact: offsets `< map_size` are ordinary GPU/device MMIO writes (the product's purpose). Offsets above the mapping produce a **kernel virtual-address write past the `MmMapIoSpace` region** - up to 4 GiB forward on x64; on x86 the 32-bit sum wraps modulo 2^3^2, so the reachable set is the whole 32-bit address space. The base VA is not returned by any IOCTL (section 4: the enumeration record returns physical BAR and size only), so the target cannot be aimed at a known object without a separate kernel-VA leak; a wrong guess raises `0x50`/`0x0A`. This is a genuine relative/OOB kernel memory-corruption primitive, not a write-what-where.
 
 The same missing check applies to the reads (`0x81DE0004`, `0x81DE0008`): arbitrary-offset MMIO reads, and OOB reads past the mapping.
 
 ### 6.2 Secondary: pool overflow in the context dump (`0x81DE0024`)
 
-`0x140001580`–`0x1400015D0` (x86 `0x4014D0`–`0x401523`) walks the context list and writes 9 dwords (0x24 bytes) per entry, advancing the destination by 0x24 **with no counter and no comparison against the 0x7E0-byte output buffer** (56 records fit exactly). With 57 or more live contexts the loop writes 36 bytes past the `METHOD_BUFFERED` system buffer into non-paged pool.
+`0x140001580`-`0x1400015D0` (x86 `0x4014D0`-`0x401523`) walks the context list and writes 9 dwords (0x24 bytes) per entry, advancing the destination by 0x24 **with no counter and no comparison against the 0x7E0-byte output buffer** (56 records fit exactly). With 57 or more live contexts the loop writes 36 bytes past the `METHOD_BUFFERED` system buffer into non-paged pool.
 
-Reachability: contexts are one per accepted PCI function; the list is rebuilt from hardware each time it is empty. Exploiting this needs ≥57 NVIDIA/PLX/LSI PCI functions on one machine (the audit host has 2: RTX 3080 `10DE:2206` and NVIDIA HDA `10DE:1AEF`). Real defect, not a practical primitive here.
+Reachability: contexts are one per accepted PCI function; the list is rebuilt from hardware each time it is empty. Exploiting this needs >=57 NVIDIA/PLX/LSI PCI functions on one machine (the audit host has 2: RTX 3080 `10DE:2206` and NVIDIA HDA `10DE:1AEF`). Real defect, not a practical primitive here.
 
 ### 6.3 Secondary: caller-controlled length forwarded to `SetBusData`/`GetBusData`
 
-`0x81DE0010` passes `buf[0x14]` as the length and `buf[0x10]` as the offset to `SetBusData`, with the data buffer at `SystemBuffer+0x18` — only 4 bytes remain in the 0x1C input buffer. `0x81DE0014` does the same with `buf[0x18]` into `SystemBuffer+0x14`. Neither length is validated by this driver. Whether `pci.sys` validates `Offset + Length` before touching the caller buffer is **outside this image and was not verified**; PCI configuration space is normally limited to 256 bytes (4 KiB extended), which would make the oversized calls fail before any copy. Treated as an unproven secondary path, not as the verdict driver.
+`0x81DE0010` passes `buf[0x14]` as the length and `buf[0x10]` as the offset to `SetBusData`, with the data buffer at `SystemBuffer+0x18` - only 4 bytes remain in the 0x1C input buffer. `0x81DE0014` does the same with `buf[0x18]` into `SystemBuffer+0x14`. Neither length is validated by this driver. Whether `pci.sys` validates `Offset + Length` before touching the caller buffer is **outside this image and was not verified**; PCI configuration space is normally limited to 256 bytes (4 KiB extended), which would make the oversized calls fail before any copy. Treated as an unproven secondary path, not as the verdict driver.
 
 ### 6.4 Secondary: unsynchronised teardown/rebuild
 
-Every case calls `FUN_140001BE0` when the list head is empty; that routine first calls `FUN_140001B10` (`0x140001B97` `MmUnmapIoSpace`), which frees every context and unmaps every BAR, then rebuilds. There is no lock, mutex, or critical section anywhere. Two threads issuing IOCTLs on the single handle while the list is empty can run the rebuild concurrently → double free / list corruption (the list-integrity checks bugcheck via `int 0x29` at `0x140001BDB` and `0x140002050`; x86 `0x4019DF`, `0x401EA6`). Requires an empty list (machine with no accepted device) plus a race; DoS/UAF, not a controlled write.
+Every case calls `FUN_140001BE0` when the list head is empty; that routine first calls `FUN_140001B10` (`0x140001B97` `MmUnmapIoSpace`), which frees every context and unmaps every BAR, then rebuilds. There is no lock, mutex, or critical section anywhere. Two threads issuing IOCTLs on the single handle while the list is empty can run the rebuild concurrently -> double free / list corruption (the list-integrity checks bugcheck via `int 0x29` at `0x140001BDB` and `0x140002050`; x86 `0x4019DF`, `0x401EA6`). Requires an empty list (machine with no accepted device) plus a race; DoS/UAF, not a controlled write.
 
 ### 6.5 Not present
 
@@ -250,7 +250,7 @@ Every case calls `FUN_140001BE0` when the list head is empty; that routine first
 
 ### 6.6 Flash routine (`0x81DE002C`)
 
-`FUN_1400024F0` (x86 `FUN_00402250`) re-enumerates PCI devices, matches bus `buf+4`, reads 0x100 bytes of config space, walks capabilities, and programs flash-controller registers through `SetBusData` and the mapped BAR (`fn30`), polling a status bit up to 3,000 times. All buffers are fixed-size and all callback lengths are constants (0x100, 4, 2, 0x40); the count of accepted devices is bounded at 0x100 before indexing the three 256-entry stack arrays. It writes **nothing** to the caller buffer and performs no kernel memory write — it is a hardware flash-programming capability (HW-ONLY).
+`FUN_1400024F0` (x86 `FUN_00402250`) re-enumerates PCI devices, matches bus `buf+4`, reads 0x100 bytes of config space, walks capabilities, and programs flash-controller registers through `SetBusData` and the mapped BAR (`fn30`), polling a status bit up to 3,000 times. All buffers are fixed-size and all callback lengths are constants (0x100, 4, 2, 0x40); the count of accepted devices is bounded at 0x100 before indexing the three 256-entry stack arrays. It writes **nothing** to the caller buffer and performs no kernel memory write - it is a hardware flash-programming capability (HW-ONLY).
 
 ---
 
@@ -269,11 +269,11 @@ The secondary defects (unbounded record dump, unsynchronised rebuild, unchecked 
 | File | Reach | Setup | Write | Load | Verdict |
 |---|---|---|---|---|---|
 | `GPUZ_nvflash_x64_variant2_8C2D9847.sys` | R3 (admin-only DACL; NVIDIA/PLX/LSI PCI function required) | hardware | W2 | signed, CFG | **MW3** |
-| `GPUZ_nvflash_x86_01BBA8E8.sys` | R3 (same) | hardware | W2 | signed; x86 image — only loadable on 32-bit Windows, not on this x64 host | **MW3** |
+| `GPUZ_nvflash_x86_01BBA8E8.sys` | R3 (same) | hardware | W2 | signed; x86 image - only loadable on 32-bit Windows, not on this x64 host | **MW3** |
 
-**Overall: MW3 — reach=R3 setup=hardware write=W2 load=signed.**
+**Overall: MW3 - reach=R3 setup=hardware write=W2 load=signed.**
 
-This matches the baseline verdict and for the same reason: the strongest admin-reachable primitive is a kernel-VA write whose base is chosen by `MmMapIoSpace` and never disclosed, with an unvalidated 32-bit offset — a real OOB kernel write, but relative and crash-first, not an arbitrary write. Neither variant is `BLOCKED` (both are validly WHQL-signed and not blocklisted), and neither is `NO-MEMORY-WRITE` (the write path exists and is reachable). The x86 image carries an additional platform constraint but is rated on the same static merits.
+This matches the baseline verdict and for the same reason: the strongest admin-reachable primitive is a kernel-VA write whose base is chosen by `MmMapIoSpace` and never disclosed, with an unvalidated 32-bit offset - a real OOB kernel write, but relative and crash-first, not an arbitrary write. Neither variant is `BLOCKED` (both are validly WHQL-signed and not blocklisted), and neither is `NO-MEMORY-WRITE` (the write path exists and is reachable). The x86 image carries an additional platform constraint but is rated on the same static merits.
 
 ---
 
@@ -282,7 +282,7 @@ This matches the baseline verdict and for the same reason: the strongest admin-r
 * Static analysis only. Neither file was loaded, installed, executed, or used to create a service; no registry writes. No dynamic confirmation of mapping addresses, pool layout, or crash behaviour.
 * **REA was not used** because the shared bridge already had four active audits. All evidence is from local Ghidra 12.1.4 headless, `llvm-objdump`, and the PE parser; function names are analyst-assigned (`FUN_*`), no PDB was available.
 * Authenticode was checked statically with `Get-AuthenticodeSignature` (Valid, WHCP); revocation and catalog membership were not evaluated.
-* The PCI bus interface callbacks (`GetBusData`/`SetBusData`) are Microsoft `pci.sys` code outside this image. Their internal bounds checking (and therefore the real impact of §6.3) was not analysed.
+* The PCI bus interface callbacks (`GetBusData`/`SetBusData`) are Microsoft `pci.sys` code outside this image. Their internal bounds checking (and therefore the real impact of section 6.3) was not analysed.
 * BAR addresses and map sizes come from PCI configuration space; behaviour with a malicious or emulated PCI device (arbitrary BAR, arbitrary config space) was not modelled.
 * The OOB write's practical exploitability depends on the system VA layout and on whether the mapping VA can be inferred or groomed; no VA leak exists in either binary, so the write was rated W2 rather than W1.
-* The audit host has an NVIDIA RTX 3080 (`10DE:2206`) plus its HDA function (`10DE:1AEF`), so the hardware gate is satisfiable here; the two contexts are far below the 57 needed for §6.2.
+* The audit host has an NVIDIA RTX 3080 (`10DE:2206`) plus its HDA function (`10DE:1AEF`), so the hardware gate is satisfiable here; the two contexts are far below the 57 needed for section 6.2.

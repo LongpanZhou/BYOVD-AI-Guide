@@ -9,7 +9,7 @@
 | Reach tier | **R3** (devnode + physical capture device); R2 local admin if the INF DACL grants write; R1 not established |
 | Setup required | **hardware** (INF-installed function driver + the matching AVerMedia PCIe/USB capture device) |
 | Write quality | **W2** for the AVerPL33 property-handler pool overflow; **W0** for every `MmMapIoSpace` / `MmMapLockedPagesSpecifyCache` path and for the four avmu3-family images |
-| Verdict | **MW3** (both AVerPL33 builds) · **NO-MEMORY-WRITE (HW-ONLY)** (four avmu3-family builds) |
+| Verdict | **MW3** (both AVerPL33 builds) ; **NO-MEMORY-WRITE (HW-ONLY)** (four avmu3-family builds) |
 | HW-only | BAR/register MMIO and I2C register access: yes. The MW3 finding is a kernel pool write, not MMIO. |
 
 ## 0 Files verified
@@ -33,17 +33,17 @@ All six are native WDM/AVStream kernel-streaming minidrivers (`Subsystem 1`, `Dl
 
 | Image | Entry VA | DriverEntry body |
 |---|---|---|
-| `AVerPL33_x64` | `0x1c0264` | `FUN_001c0208` (cookie init) → `FUN_00010f20` → `KsInitializeDriver(DriverObject, RegistryPath, &descriptor_0x1b9830)` |
-| `AVerPL33` x86 | `0x18f5be` | cookie init → `FUN_00010d80` → `KsInitializeDriver` |
-| `avmu3` | `0x818be` | cookie init → `FUN_00015560` → `KsInitializeDriver` |
-| `avmu364` | `0x8cce4` | cookie init → `FUN_00015560` → `KsInitializeDriver` |
-| `avmu3gc550` | `0xa54be` | cookie init → `FUN_0001665c` → `KsInitializeDriver` |
-| `avmu3gc550_x64` | `0xb3464` | cookie init → `FUN_0001665c` → `KsInitializeDriver` |
+| `AVerPL33_x64` | `0x1c0264` | `FUN_001c0208` (cookie init) -> `FUN_00010f20` -> `KsInitializeDriver(DriverObject, RegistryPath, &descriptor_0x1b9830)` |
+| `AVerPL33` x86 | `0x18f5be` | cookie init -> `FUN_00010d80` -> `KsInitializeDriver` |
+| `avmu3` | `0x818be` | cookie init -> `FUN_00015560` -> `KsInitializeDriver` |
+| `avmu364` | `0x8cce4` | cookie init -> `FUN_00015560` -> `KsInitializeDriver` |
+| `avmu3gc550` | `0xa54be` | cookie init -> `FUN_0001665c` -> `KsInitializeDriver` |
+| `avmu3gc550_x64` | `0xb3464` | cookie init -> `FUN_0001665c` -> `KsInitializeDriver` |
 
 Role, from version resources and embedded strings:
 
-- **AVerPL33 pair** – service name `AVer330`; AVerMedia C353/C353E/C875/C985/C985E PCIe and USB capture/encoder family. Imports PCI BAR mapping (`MmMapIoSpace`), interrupt connect, DMA adapter, MDLs, and a USB bus interface. Contains a large custom KS property set (`AVer*Handler` functions).
-- **avmu3 / avmu364 / avmu3gc550 pair** – service name `AVerMedia`; AVerMedia Hybrid TV / HD Capture USB3 tuners. Register access is through I2C device classes (`CLFE3`, `CPCA9539A`, `CVX8897`, `CVampVDecoderIT6603`) over the USB bus. No `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmGetPhysicalAddress`, `MmCopyMemory`, `ZwMapViewOfSection`, or `KeStackAttachProcess` import in any of the four.
+- **AVerPL33 pair** - service name `AVer330`; AVerMedia C353/C353E/C875/C985/C985E PCIe and USB capture/encoder family. Imports PCI BAR mapping (`MmMapIoSpace`), interrupt connect, DMA adapter, MDLs, and a USB bus interface. Contains a large custom KS property set (`AVer*Handler` functions).
+- **avmu3 / avmu364 / avmu3gc550 pair** - service name `AVerMedia`; AVerMedia Hybrid TV / HD Capture USB3 tuners. Register access is through I2C device classes (`CLFE3`, `CPCA9539A`, `CVX8897`, `CVampVDecoderIT6603`) over the USB bus. No `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache`, `MmGetPhysicalAddress`, `MmCopyMemory`, `ZwMapViewOfSection`, or `KeStackAttachProcess` import in any of the four.
 
 ## 2 Entry / device / interface / effective DACL
 
@@ -68,12 +68,12 @@ The driver installs no `IRP_MJ_DEVICE_CONTROL` routine. User-visible control is 
 | Code | Name | Method | Access | Kernel action |
 |---|---|---|---|---|
 | `0x2F0003` | `IOCTL_KS_PROPERTY` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` (Set still needs a writable handle) | ks.sys validates set/id, then calls the minidriver property item's Get/Set handler |
-| `0x2F000F` | `IOCTL_KS_METHOD` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` | ks.sys → minidriver method handler (standard capture methods only here) |
-| `0x2F0007` | `IOCTL_KS_ENABLE_EVENT` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` | ks.sys → event handler |
-| `0x2F000B` | `IOCTL_KS_DISABLE_EVENT` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` | ks.sys → event handler |
+| `0x2F000F` | `IOCTL_KS_METHOD` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` | ks.sys -> minidriver method handler (standard capture methods only here) |
+| `0x2F0007` | `IOCTL_KS_ENABLE_EVENT` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` | ks.sys -> event handler |
+| `0x2F000B` | `IOCTL_KS_DISABLE_EVENT` | `METHOD_NEITHER` | `FILE_ANY_ACCESS` | ks.sys -> event handler |
 | `0x2F0013` / `0x2F0017` | `IOCTL_KS_WRITE_STREAM` / `IOCTL_KS_READ_STREAM` | `METHOD_NEITHER` | `FILE_WRITE_ACCESS` / `FILE_READ_ACCESS` | AVStream pin streaming |
-| `IRP_MJ_CREATE/CLOSE/CLEANUP` | — | — | handle rights | `CCaptureFilter::dispatchCreate` / `dispatchClose` (`0x187a0` / `0x18a50` in the x64 filter dispatch) |
-| `IRP_MJ_READ/WRITE` | pin I/O | — | pin rights | AVStream pin processing / DMA |
+| `IRP_MJ_CREATE/CLOSE/CLEANUP` | - | - | handle rights | `CCaptureFilter::dispatchCreate` / `dispatchClose` (`0x187a0` / `0x18a50` in the x64 filter dispatch) |
+| `IRP_MJ_READ/WRITE` | pin I/O | - | pin rights | AVStream pin processing / DMA |
 
 ### 3.1 AVerPL33 custom property sets (the only non-standard surface)
 
@@ -110,7 +110,7 @@ The avmu3-family images contain no `AVer*Handler` string and no comparable vendo
 
 ## 5 Memory-write trace
 
-### 5.1 `MmMapIoSpace` — fixed device BAR, not caller-controlled
+### 5.1 `MmMapIoSpace` - fixed device BAR, not caller-controlled
 
 Single call site in each AVerPL33 build:
 
@@ -121,7 +121,7 @@ The function walks the `IRP_MN_START_DEVICE` `CM_RESOURCE_LIST` and, for `CmReso
 
 Register access on the resulting window is hardware-addressed: x86 uses `WRITE_REGISTER_ULONG/USHORT/UCHAR` (`0x95440`) and `WRITE_REGISTER_BUFFER_*` (`0x95b00`); x64 uses the same mapped base with direct volatile stores. Offsets and values are selected by the driver's GPIO/I2C/parameter code, not by a raw user pointer. **Classification: fixed-window MMIO, `HW-ONLY`, W0.**
 
-### 5.2 `MmMapLockedPagesSpecifyCache` — user DMA buffer, no kernel target
+### 5.2 `MmMapLockedPagesSpecifyCache` - user DMA buffer, no kernel target
 
 Two call sites per AVerPL33 build:
 
@@ -130,7 +130,7 @@ Two call sites per AVerPL33 build:
 | `mapUserBuffer` | `FUN_00010390`, map call `0x104e6` | `FUN_00010490`, map call `0x105e9` |
 | `PedDmaComplete` | `FUN_000ba7f0`, map call `0xbab2f` | `FUN_00097950`, map call `0x97be0` |
 
-`mapUserBuffer` performs `IoAllocateMdl(Buffer, Length)` → `MmProbeAndLockPages(Mdl, UserMode, IoModifyAccess)` → `MmMapLockedPagesSpecifyCache(Mdl, KernelMode, MmCached, ...)`, and unlocks/frees the MDL on teardown (`MmUnlockPages` / `IoFreeMdl`). The MDL describes the caller's own capture buffer; the kernel alias is handed to the DMA engine and written by the device. There is no caller-supplied physical address, no caller-supplied MDL, and no store to a kernel-selected destination. **Classification: user-memory DMA mapping, W0.**
+`mapUserBuffer` performs `IoAllocateMdl(Buffer, Length)` -> `MmProbeAndLockPages(Mdl, UserMode, IoModifyAccess)` -> `MmMapLockedPagesSpecifyCache(Mdl, KernelMode, MmCached, ...)`, and unlocks/frees the MDL on teardown (`MmUnlockPages` / `IoFreeMdl`). The MDL describes the caller's own capture buffer; the kernel alias is handed to the DMA engine and written by the device. There is no caller-supplied physical address, no caller-supplied MDL, and no store to a kernel-selected destination. **Classification: user-memory DMA mapping, W0.**
 
 ### 5.3 True kernel-VA write: AVerGpioI2cSetHandler pool overflow (both AVerPL33 builds)
 
@@ -148,7 +148,7 @@ if (*(u32 *)(data + 0x124) < 0x100)
     buf[len] = (u8)*(u32 *)(data + 0x124);                // one controlled byte
 ```
 
-`operator new[]` is the same in x86 (`FUN_000227e0` → `ExAllocatePoolWithTag(0, size, 0x6c787051)` = `Qpxl`), and the x86 handler `0x28af0` has the identical `len = *(u32 *)(data + 0x120)` / 4-byte allocation / `buf[uVar1] = length` sequence. Consequences:
+`operator new[]` is the same in x86 (`FUN_000227e0` -> `ExAllocatePoolWithTag(0, size, 0x6c787051)` = `Qpxl`), and the x86 handler `0x28af0` has the identical `len = *(u32 *)(data + 0x120)` / 4-byte allocation / `buf[uVar1] = length` sequence. Consequences:
 
 - A 4-byte non-paged-pool block is written from index 0 through `len`, i.e. up to `len + 1` bytes, with `len` taken directly from property input and never compared with 4.
 - Bytes 1..`len-1` are read from the handler's kernel stack (not the user buffer), so the overflow is a stack-content/heap-metadata smash rather than a clean write-what-where; the last byte is attacker-chosen (0..0xFF) and lands at offset `len`.
@@ -167,27 +167,27 @@ No `MmGetPhysicalAddress`, `MmCopyMemory`, `ZwMapViewOfSection`, `\Device\Physic
 
 ## 6 Most dangerous exposed capability
 
-The GpioI2c property set on the two AVerPL33 builds: a hardware-gated non-paged-pool overflow of attacker-controlled length, with one attacker-chosen byte at a chosen offset and kernel-stack bytes filling the rest. It is not an arbitrary write and it is not what the triage flags pointed at — the `MmMapIoSpace`/`MmMapLockedPagesSpecifyCache` uses are benign fixed-BAR and user-DMA mappings — but it is a real kernel-VA memory write and therefore the reason these two files are not `NO-MEMORY-WRITE`.
+The GpioI2c property set on the two AVerPL33 builds: a hardware-gated non-paged-pool overflow of attacker-controlled length, with one attacker-chosen byte at a chosen offset and kernel-stack bytes filling the rest. It is not an arbitrary write and it is not what the triage flags pointed at - the `MmMapIoSpace`/`MmMapLockedPagesSpecifyCache` uses are benign fixed-BAR and user-DMA mappings - but it is a real kernel-VA memory write and therefore the reason these two files are not `NO-MEMORY-WRITE`.
 
-Preconditions: AVerMedia C353/C353E/C875/C985/C985E class device installed and started, a handle to the KS filter with write access (admin by default; unprivileged only if the INF allows it), and a `KS_PROPERTY` Set with the vendor set GUID and a ≥0x130-byte input.
+Preconditions: AVerMedia C353/C353E/C875/C985/C985E class device installed and started, a handle to the KS filter with write access (admin by default; unprivileged only if the INF allows it), and a `KS_PROPERTY` Set with the vendor set GUID and a >=0x130-byte input.
 
 ## 7 Verdict
 
 | File | Flagged API | Gate | Write | Verdict |
 |---|---|---|---|---|
-| `AVerPL33_75F3DAE3.sys` | `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache` | hardware + INF ACL | W0 for mappings; **W2** for GpioI2c pool overflow; W2 crash-first for the I2C stack overflow | **MW3** — reach=R3 setup=hardware write=W2 load=catalog-signed (unverified) |
-| `AVerPL33_x64_93CBC0D8.sys` | same | same | same | **MW3** — reach=R3 setup=hardware write=W2 load=catalog-signed (unverified) |
-| `avmu3_F0EAC5C2.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** — reach=R3 setup=hardware write=W0 |
-| `avmu364_A266C94C.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** — reach=R3 setup=hardware write=W0 |
-| `avmu3gc550_B0E987CC.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** — reach=R3 setup=hardware write=W0 |
-| `avmu3gc550_x64_495B04F2.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** — reach=R3 setup=hardware write=W0 |
+| `AVerPL33_75F3DAE3.sys` | `MmMapIoSpace`, `MmMapLockedPagesSpecifyCache` | hardware + INF ACL | W0 for mappings; **W2** for GpioI2c pool overflow; W2 crash-first for the I2C stack overflow | **MW3** - reach=R3 setup=hardware write=W2 load=catalog-signed (unverified) |
+| `AVerPL33_x64_93CBC0D8.sys` | same | same | same | **MW3** - reach=R3 setup=hardware write=W2 load=catalog-signed (unverified) |
+| `avmu3_F0EAC5C2.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** - reach=R3 setup=hardware write=W0 |
+| `avmu364_A266C94C.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** - reach=R3 setup=hardware write=W0 |
+| `avmu3gc550_B0E987CC.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** - reach=R3 setup=hardware write=W0 |
+| `avmu3gc550_x64_495B04F2.sys` | none imported | hardware + INF ACL | W0 | **NO-MEMORY-WRITE (HW-ONLY)** - reach=R3 setup=hardware write=W0 |
 
 **Overall: MW3 for the two AVerPL33 builds; NO-MEMORY-WRITE (HW-ONLY) for the four avmu3-family builds. No user-controlled physical-address mapping exists in any of the six.** The flagged `MmMapIoSpace` calls map PnP-assigned BARs at start-device; the flagged `MmMapLockedPagesSpecifyCache` calls map the caller's own DMA buffer. The primary kernel-VA write is the AVerPL33 GpioI2c property-handler pool overflow (secondary: the I2C handler stack overflow); it is hardware-gated and therefore MW3 rather than MW2.
 
 ## 8 Limitations
 
 - **REA not used.** Four REA audits were already active; this audit is Ghidra 12.1.4 headless + llvm-objdump only. No REA evidence IDs exist for this report.
-- **DACL unresolved.** The INF and `.cat` are not in the corpus; the KS device object is created by ks.sys, so the effective SDDL could not be read from the image. The R2 assumption is conservative, not proven. If the vendor INF grants write to `Everyone`, the PL33 finding would be R1 → MW2.
+- **DACL unresolved.** The INF and `.cat` are not in the corpus; the KS device object is created by ks.sys, so the effective SDDL could not be read from the image. The R2 assumption is conservative, not proven. If the vendor INF grants write to `Everyone`, the PL33 finding would be R1 -> MW2.
 - **Loadability unverified.** No embedded certificate in any file; catalog signature was not available. Not `BLOCKED` because there is no blocklist hit or unsigned-at-install evidence.
 - **Property-table layout confirmed; device binding inferred.** The 0x28-byte `KSPROPERTY_SET` and 0x48-byte `KSPROPERTY_ITEM` layouts match the Windows SDK `ks.h`, and the descriptor at `0x1b9830` points to the automation table at `0x111c70` (10 sets). The exact INF/device-model binding that loads this filter was not resolved.
 - **No dynamic confirmation.** No driver was loaded and no IOCTL was sent. Crash behavior and pool layout are static inferences.

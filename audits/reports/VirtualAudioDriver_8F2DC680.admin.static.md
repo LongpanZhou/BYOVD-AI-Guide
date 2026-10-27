@@ -10,7 +10,7 @@
 | Signature | Authenticode Valid; signer CN=SignPath Foundation |
 | Reach | R3 (devnode: a PnP audio adapter created through the INF / PortCls path) |
 | Setup required | devnode |
-| Write quality | W0 (no caller-controlled kernel write found in the traced code; PROVISIONAL, see §8) |
+| Write quality | W0 (no caller-controlled kernel write found in the traced code; PROVISIONAL, see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL) |
 | HW-only | no |
 
@@ -21,7 +21,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 - PE32+ x64 PortCls / KS audio sample driver built on the Fx (KMDF) stub (`FxDriverEntryWorker` dump 1455, `FxStubDriverUnload` dump 1524).
 - Imports: ntoskrnl (`IoRegisterDeviceInterface`, `ZwCreateFile`, `ZwWriteFile`, timers, registry, work items), portcls (`PcInitializeAdapterDriver`, `PcAddAdapterDevice`, `PcNewPort`, `PcNewMiniport`, `PcRegisterSubdevice`, `PcRegisterPhysicalConnection`, `PcDispatchIrp`, `PcGetPhysicalDeviceObject`), HAL (`KeQueryPerformanceCounter`), USBD-free.
 - No MmMapIoSpace, MmMapLockedPagesSpecifyCache, MmCopyMemory, ZwMapViewOfSection, MmGetPhysicalAddress, MmGetSystemRoutineAddress, ProbeForWrite, RtlCopyMemory or memcpy import.
-- Entry: `entry @ 140002530` (dump 1444) → `FxDriverEntryWorker` (dump 1455-1513, calls `RtlCopyUnicodeString` at dump 1477 for the registry path).
+- Entry: `entry @ 140002530` (dump 1444) -> `FxDriverEntryWorker` (dump 1455-1513, calls `RtlCopyUnicodeString` at dump 1477 for the registry path).
 
 ## 2 Entry / device / interface / effective DACL
 
@@ -31,7 +31,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 ## 3 Dispatch and IOCTL table
 
 - IRP dispatch: `PcDispatchIrp` (dump 3091) handles the IRP path for the PortCls-managed device. The driver does not install its own IRP_MJ_DEVICE_CONTROL routine: no `0x22xxxx` IOCTL codes and no `IoControlCode` comparisons appear in the decompile (grep: none).
-- User-reachable surface is KS (property, method, event and stream IRPs routed by PortCls to the miniport). KS property handlers are not traced in this pass (§8).
+- User-reachable surface is KS (property, method, event and stream IRPs routed by PortCls to the miniport). KS property handlers are not traced in this pass (section 8).
 
 | Code | Method | Access | Input | Output | Kernel action |
 |---|---|---|---|---|---|
@@ -39,7 +39,7 @@ Legend: "dump lines" are line numbers in the Ghidra dump. Image base 0x140000000
 
 ## 4 Access-control audit
 
-- No privilege checks in the driver. Access is governed by the KS / PortCls device and the default device security (§2).
+- No privilege checks in the driver. Access is governed by the KS / PortCls device and the default device security (section 2).
 
 ## 5 Memory-write trace
 

@@ -10,7 +10,7 @@
 | Signature | NotSigned (no Authenticode signature). The image is 67,072 bytes against 77,528 for the signed sibling. |
 | Reach | R3 (devnode / hardware: a DeckLink card must be present) |
 | Setup required | hardware |
-| Write quality | W0 (provisional, as for the sibling; see §8) |
+| Write quality | W0 (provisional, as for the sibling; see section 8) |
 | Severity | NO-MEMORY-WRITE (PROVISIONAL). Unsigned image: not loadable on a normally configured system. |
 | HW-only | no |
 
@@ -21,11 +21,11 @@
 
 ## 2 Entry / device / interface / effective DACL
 
-- As in `deckavs_B89FCDA2` §2: KS filter factories; interface enumeration via `IoGetDeviceInterfaces`; effective DACL default.
+- As in `deckavs_B89FCDA2` section 2: KS filter factories; interface enumeration via `IoGetDeviceInterfaces`; effective DACL default.
 
 ## 3 Dispatch and IOCTL table
 
-- As in `deckavs_B89FCDA2` §3: no custom IOCTL dispatch. Private outbound lower-device codes through `FUN_140001e3c` / `FUN_140001f40` with constant codes and fixed sizes (see the sibling table; dump line numbers are identical).
+- As in `deckavs_B89FCDA2` section 3: no custom IOCTL dispatch. Private outbound lower-device codes through `FUN_140001e3c` / `FUN_140001f40` with constant codes and fixed sizes (see the sibling table; dump line numbers are identical).
 
 ## 4 Access-control audit
 
@@ -33,11 +33,11 @@
 
 ## 5 Memory-write trace
 
-- As in `deckavs_B89FCDA2` §5: `FUN_140001f40` copies bounded by its pool allocation; `FUN_14000211c`'s 0x9A0-byte output targets a stack buffer (dump 7904); other private calls use constant sizes.
+- As in `deckavs_B89FCDA2` section 5: `FUN_140001f40` copies bounded by its pool allocation; `FUN_14000211c`'s 0x9A0-byte output targets a stack buffer (dump 7904); other private calls use constant sizes.
 
 ## 6 Most dangerous exposed capability
 
-- Not established (KS user surface not traced; see §8).
+- Not established (KS user surface not traced; see section 8).
 
 ## 7 Verdict
 
@@ -45,5 +45,5 @@
 
 ## 8 Limitations
 
-- Same as `deckavs_B89FCDA2` §8: callers of `FUN_140001f40` that pass a non-stack output buffer were not enumerated, and the KS property, method and stream handlers were not traced.
+- Same as `deckavs_B89FCDA2` section 8: callers of `FUN_140001f40` that pass a non-stack output buffer were not enumerated, and the KS property, method and stream handlers were not traced.
 - No REA session used. No execution, no driver load, no registry writes.

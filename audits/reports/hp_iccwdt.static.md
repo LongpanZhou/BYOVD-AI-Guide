@@ -1,4 +1,4 @@
-# HP `ICCWDT_C4876B04.sys` — static audit
+# HP `ICCWDT_C4876B04.sys` - static audit
 
 Identity: **Intel Watchdog Timer driver (Intel WDT)**, version 11.7.0.1017, PE TS 2024-05-14, SHA256 `c4876b0465f1848b71e6e5334515fea100ffd1b803ffcd6c7cf56abb1128de25`. Shipped under HP. Not a generic device-object driver. It is a **KMDF watchdog with MMIO resources and a WMI interface**, so the surface is PnP plus WMI, not a named device.
 
@@ -6,11 +6,11 @@ Method: static only. Ghidra 12.1.4 headless, `DumpAllDecomp.java`. Nothing loade
 
 ## 1. Verdict
 
-**NO-WRITE** — disqualified by policy: needs the Intel WDT hardware (its MMIO resource is assigned by the platform) and a PnP devnode. The driver publishes no openable name. The WMI write path was not traced to its callers (see §5), so the surface is documented but not fully characterized.
+**NO-WRITE** - disqualified by policy: needs the Intel WDT hardware (its MMIO resource is assigned by the platform) and a PnP devnode. The driver publishes no openable name. The WMI write path was not traced to its callers (see section 5), so the surface is documented but not fully characterized.
 
 ## 2. What it is (the question the brief asked)
 
-- **Framework:** KMDF. `WdfVersionBind`/`WdfVersionUnbind` are imported from `WDFLDR.SYS`. `entry` @ `0x1400011a0` → `FxDriverEntryWorker` @ `0x140001070`.
+- **Framework:** KMDF. `WdfVersionBind`/`WdfVersionUnbind` are imported from `WDFLDR.SYS`. `entry` @ `0x1400011a0` -> `FxDriverEntryWorker` @ `0x140001070`.
 - **Device object:** none created by the driver. No `IoCreateDevice` import. The device comes from the KMDF PnP path (`EvtDriverDeviceAdd`), which needs the PnP-enumerated platform device.
 - **Hardware resource:** `EvtDevicePrepareHardware` = `FUN_140007330` @ `0x140007330`. It walks the `CM_RESOURCE_LIST` and, for each memory descriptor (type `0x03`), calls `MmMapIoSpace(descriptor.PA, descriptor.Length, 0)` at line 2682 of the dump. The physical base comes from the **platform resource assignment**, not from user input.
 - **WMI:** `IoWMIRegistrationControl` at lines 2920 and 2952 of the dump (`PTR_LOOP_140004028` with `0x80000002`; `DAT_140004fa0` with `0x80010001`). The WMI data block exposes the watchdog controls (`IccWdtGetWdtStatus`, `IccWdtStartWdtOnNextOSBoot`, and similar, by name in the string table).
@@ -51,7 +51,7 @@ Method: static only. Ghidra 12.1.4 headless, `DumpAllDecomp.java`. Nothing loade
 
 ## 6. Corruption, not write
 
-- Not assessed. The WMI input handler was not traced (§5).
+- Not assessed. The WMI input handler was not traced (section 5).
 
 ## 7. Next dynamic test (described, not run)
 
