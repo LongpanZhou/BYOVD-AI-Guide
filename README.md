@@ -63,6 +63,8 @@ Collection also needs three extractors on the host (details in `DRIVER_COLLECTIO
   [constexpr.org/innoextract](https://constexpr.org/innoextract/), drop at
   `tools\innoextract\innoextract.exe`
 - **innounp** (Inno Setup > 6.0.5) — `winget install JurgenRathlev.innounp`
+- Optional: **WiX 3.14** → install `dark.exe` at `tools\wix\` only if a package needs
+  Burn/MSI decompilation.
 
 The scripts and the known-bad hash list are not stored on this branch. Fetch both from `example`:
 

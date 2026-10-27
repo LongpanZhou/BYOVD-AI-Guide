@@ -33,7 +33,8 @@ and no tool binaries; your job is to build the lab and run the method.
 2. Collect with `tools/harvest.ps1`; dedupe with `tools/filter_new_drivers.ps1`.
 3. Blocklist-check against LOLDrivers and the Microsoft list (`guides/02_blocklist_check.md`).
 4. Audit statically with the default prompt; write `audits/reports/<driver>.md`.
-5. Prove the primitive only in a snapshotted VM; log under `audits/evidence/`.
+5. Prove the primitive only in a snapshotted VM; raw logs go to `poc/dynamic/results/<date>/`,
+   the reproduction recipe goes to `audits/evidence/`.
 6. Record the verdict in `audits/STATUS.md`.
 
 ## Re-targeting

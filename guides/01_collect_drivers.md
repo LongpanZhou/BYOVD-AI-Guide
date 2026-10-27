@@ -94,8 +94,9 @@ Everything about *which* drivers you chase is data in `indexes/`, never code:
 - **Corpus manifest** — `indexes/drivers_manifest.csv` is regenerated from `drivers/`; the
   `Batch` column is how you slice the corpus later.
 - **Known-bad list** — `indexes/dedupe/known_bad_hashes.txt` is a plain SHA-256-per-line
-  text file. Fill it from LOLDrivers + the Microsoft blocklist so your own collection loop
-  auto-skips hashes already known/exploited.
+  text file that seeds your gate (auto-skip already known/exploited hashes). Refresh it from
+  the live lists the way [`02_blocklist_check.md`](02_blocklist_check.md) shows — the tools own
+  the gate file, so never edit it by hand.
 - **Severity/scope rules** — `audits/scope/SEVERITY.md` and `AUDIT_SCOPE.md` define what counts
   as a memory write; copy then customize them to your own hunt focus (e.g. include EVTs for
   physical drive writes).

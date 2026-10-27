@@ -15,7 +15,7 @@ driver_lab/
 │   ├── reports/                  # one canonical report per driver
 │   ├── scope/                    # scope, severity, default audit prompt
 │   ├── evidence/                 # dated proof (blocklist checks, logs)
-│   └── projects/                 # analysis state (Ghidra/decomp)
+│   └── projects/                 # analysis state (decomp)
 ├── drivers/                      # flat .sys corpus
 ├── indexes/
 │   ├── drivers_manifest.csv      # generated inventory

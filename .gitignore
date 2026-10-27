@@ -1,5 +1,4 @@
-﻿# Instructor-branch .gitignore - same defaults as the working repo min
-# mode: ignore scratch, keep the .sys corpus you collect yourself.
+﻿# Skeleton .gitignore — ignore scratch, keep the .sys corpus you collect yourself.
 downloads/*
 !downloads/README.md
 !downloads/.gitkeep
@@ -10,6 +9,10 @@ _collected*/**/manual/
 _collected*/**/staging/
 _scratch/
 *.log
+!poc/dynamic/results/**
 *.tmp
 Thumbs.db
 desktop.ini
+
+# VM guest credentials stay local and out of git.
+VM_ACCESS.md

@@ -94,6 +94,10 @@ Everything lives under `tools/`. Prerequisite: **7-Zip** at
 WiX `dark.exe` (116 MB) is not retained; re-install WiX 3.14 into `tools\wix\` when a new
 Burn/MSI package must be unpacked, then delete it again after the batch is accepted.
 
+`harvest.ps1` delegates to `7z`/`innoextract`/`dark.exe` only — it **cannot unpack Inno ≥ 6.1
+packages**. Run `innounp -x <file> -d <dir>` on those, then re-run `harvest.ps1` against the
+extracted folder with `-NoExpand`.
+
 `harvest.ps1` resolves `dark.exe`, `innoextract.exe` and `triage_scan.ps1` relative to its own
 folder, so the `tools\` directory is self-contained and can be copied to another machine.
 
@@ -133,7 +137,8 @@ downloaded file
 │     └── produced < 10 files (PE stub only)  -> Inno Setup
 │           └── innoextract.exe -e -d <dir3> -- <file>
 │                 ├── ok                                  -> harvest
-│                 └── "Unexpected setup data version: 6.x" -> UNSUPPORTED, drop it
+│                 └── "Unexpected setup data version: 6.x" -> innounp -x <file> -d <dir3>
+│                       -> re-run harvest against <dir3> with -NoExpand
 └── .cab
       └── expand.exe <file> -F:* <dir>
 ```
@@ -319,7 +324,7 @@ Xref markers bumped accordingly: `CODE-XREF` (direct), `DESC-XREF` (via descript
 | `SDDL-ACTIVE-OPEN` | Literal is code-referenced **and** grants Everyone/Users. Real. |
 | `SDDL-ACTIVE-RESTRICTED` | Code-referenced but admin-only. Real, but not reachable. |
 | `INF-SDDL-OPEN` | Binary silent; INF declares an open DACL. Requires devnode install. |
-| `SDDL-UNPROVEN` | Literal has a data pointer but no code reference. **Needs Ghidra.** |
+| `SDDL-UNPROVEN` | Literal has a data pointer but no code reference. **Needs decompile-time reference resolution (REA).** |
 | `SDDL-DEAD` | Literal present, nothing points at it. Ignore. |
 | `DEFAULT-ADMIN` | Creates a device with no descriptor. Admin-only by construction. |
 | `NO-DEVICE` | No control device at all (miniport / filter / class driver). |
@@ -386,7 +391,7 @@ winget search --source winget "AQUACOMPUTER"
 winget download -e --id <ID> --download-directory downloads `
   --accept-package-agreements --accept-source-agreements --disable-interactivity
 
-# 3. harvest  (auto-handles zip/7z/cab/msi/NSIS/Inno/Burn; flat .sys output)
+# 3. harvest  (handles zip/7z/cab/msi/NSIS/Burn; Inno >=6.1 needs innounp first; flat .sys output)
 powershell -File "tools\harvest.ps1" -Path "downloads\<file>" `
   -Vendor <Vendor> -PackageId <ID> -Out "downloads\_harvest" -Index "indexes\collections\collected<N>\_index.jsonl"
 
@@ -447,7 +452,7 @@ driver_lab\
 │   ├── scope\                      AUDIT_SCOPE, SEVERITY, agent prompt
 │   ├── reports\                    your per-driver reports
 │   ├── evidence\                   your evidence logs
-│   └── projects\                   Ghidra/analysis projects
+│   └── projects\                   analysis projects
 ├── poc\
 │   ├── dynamic\                    VM-only PoC logs and helpers
 │   └── reference\                  reference PoC material

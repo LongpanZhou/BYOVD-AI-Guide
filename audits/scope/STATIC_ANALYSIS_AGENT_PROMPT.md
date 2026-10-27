@@ -36,10 +36,9 @@ Only kernel memory writes count. MSR, port I/O, PCI config, SMBus/EC, and fixed-
 3. Do not stop at import presence. Trace the actual IOCTL path.
 4. Resolve the **effective** SDDL/DACL passed to the device-creation call. Do not list every SDDL string and call it done.
 5. Admin-only DACLs are in scope (`R2`). A privilege check is not a dead end if an administrator can satisfy it.
-6. Cite code addresses for every claim. Primary engine is local Ghidra 12.1.4 headless; REA is
-   optional for cross-checks. Retain REA evidence IDs when used. If REA is unavailable or
-   contended, continue with Ghidra and record the dump path and function addresses; do not block,
-   and do not run more than four REA sessions at once.
+6. Cite code addresses for every claim. The engine is **REA** — use it exclusively; do not
+   substitute another decompiler. Stay within REA's session limits; if REA is unavailable,
+   wait or defer the audit rather than switch tools.
 7. No exploit code, no PoC, no BYOVD instructions.
 
 ## Workflow
@@ -117,7 +116,7 @@ Write the complete report to the assigned path:
 | File | ... |
 | SHA-256 | ... |
 | Analysis date | ... |
-| Method | Static-only via local Ghidra 12.1.4 headless (REA optional) |
+| Method | Static-only via REA |
 | Reach | R1 / R2 / R3 |
 | Setup required | none / service / devnode / hardware / composition |
 | Write quality | W1 / W2 / W3 / W3P / W0 |
